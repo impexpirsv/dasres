@@ -1,5 +1,5 @@
 import { prisma } from "../../../lib/prisma";
-import DeleteCompanyButton from "../../components/DeleteCompanyButton.tsx";
+import DeleteCompanyButton from "../../components/DeleteCompanyButton";
 import Link from "next/link";
 export default async function CompanyProfilePage({
   params,
