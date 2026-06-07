@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import CompaniesList from "../components/CompaniesList.tsx";
+import CompaniesList from "../components/CompaniesList";
 
 export default async function CompaniesPage() {
   const companies = await prisma.company.findMany();
