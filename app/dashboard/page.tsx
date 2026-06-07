@@ -1,5 +1,5 @@
-import DashboardSidebar from "../components/DashboardSidebar.tsx";
-import ProtectedRoute from "../components/ProtectedRoute.tsx";
+import DashboardSidebar from "../components/DashboardSidebar";
+import ProtectedRoute from "../components/ProtectedRoute";
 import { prisma } from "../../lib/prisma";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

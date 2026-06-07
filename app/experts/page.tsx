@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import ExpertsList from "../components/ExpertsList.tsx";
+import ExpertsList from "../components/ExpertsList";
 
 export default async function ExpertsPage() {
   const experts = await prisma.expert.findMany();

@@ -1,8 +1,8 @@
 import { prisma } from "../../../lib/prisma";
-import MakeAdminButton from "../../components/MakeAdminButton.tsx";
-import DeleteUserButton from "../../components/DeleteUserButton.tsx";
+import MakeAdminButton from "../../components/MakeAdminButton";
+import DeleteUserButton from "../../components/DeleteUserButton";
 import { redirect } from "next/navigation";
-import AdminProtectedRoute from "../../components/AdminProtectedRoute.tsx";
+import AdminProtectedRoute from "../../components/AdminProtectedRoute";
 export default async function UsersPage() {
     const currentUser =
   await prisma.user.findFirst();

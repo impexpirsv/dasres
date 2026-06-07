@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
-import DeleteOpportunityButton from "../../components/DeleteOpportunityButton.tsx";
+import DeleteOpportunityButton from "../../components/DeleteOpportunityButton";
 export default async function OpportunityProfilePage({
   params,
 }: {

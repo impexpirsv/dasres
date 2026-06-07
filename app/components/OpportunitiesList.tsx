@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import DirectoryCard from "./DirectoryCard.tsx";
-import SearchBox from "./SearchBox.tsx";
-import CountryFilter from "./CountryFilter.tsx";
+import DirectoryCard from "./DirectoryCard";
+import SearchBox from "./SearchBox";
+import CountryFilter from "./CountryFilter";
 
 type Opportunity = {
   id: number;

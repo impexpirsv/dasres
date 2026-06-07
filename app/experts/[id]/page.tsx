@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
-import DeleteExpertButton from "../../components/DeleteExpertButton.tsx";
+import DeleteExpertButton from "../../components/DeleteExpertButton";
 
 export default async function ExpertProfilePage({
   params,

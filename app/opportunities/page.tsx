@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import OpportunitiesList from "../components/OpportunitiesList.tsx";
+import OpportunitiesList from "../components/OpportunitiesList";
 
 export default async function OpportunitiesPage() {
   const opportunities = await prisma.opportunity.findMany();

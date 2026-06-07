@@ -1,10 +1,10 @@
-import Navbar from "./components/Navbar.tsx";
-import Hero from "./components/Hero.tsx";
-import Services from "./components/Services.tsx";
-import Experts from "./components/Experts.tsx";
-import Companies from "./components/Companies.tsx";
-import Opportunities from "./components/Opportunities.tsx";
-import Footer from "./components/Footer.tsx";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Services from "./components/Services";
+import Experts from "./components/Experts";
+import Companies from "./components/Companies";
+import Opportunities from "./components/Opportunities";
+import Footer from "./components/Footer";
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
