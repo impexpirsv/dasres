@@ -57,6 +57,7 @@ export default function NewExpertPage() {
           className="space-y-4"
         >
           <input
+          required
             placeholder="Name"
             value={form.name}
             onChange={(e) =>
@@ -69,6 +70,7 @@ export default function NewExpertPage() {
           />
 
           <input
+          required
             placeholder="Country"
             value={form.country}
             onChange={(e) =>
@@ -81,6 +83,7 @@ export default function NewExpertPage() {
           />
 
           <input
+          required
             placeholder="Specialty"
             value={form.specialty}
             onChange={(e) =>
@@ -93,6 +96,7 @@ export default function NewExpertPage() {
           />
 
           <input
+          required
             placeholder="Experience"
             value={form.experience}
             onChange={(e) =>
@@ -106,6 +110,7 @@ export default function NewExpertPage() {
           />
 
           <input
+          required
             placeholder="Email"
             value={form.email}
             onChange={(e) =>

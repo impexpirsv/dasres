@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import ExpertsList from "../components/ExpertsList";
-
+import ExpertsSearch from "../components/ExpertsSearch";
+export const dynamic = "force-dynamic";
 export default async function ExpertsPage() {
   const experts = await prisma.expert.findMany();
 
@@ -15,7 +16,7 @@ export default async function ExpertsPage() {
           Find verified international trade experts.
         </p>
 
-        <ExpertsList experts={experts} />
+        <ExpertsSearch experts={experts} />
       </div>
     </div>
   );

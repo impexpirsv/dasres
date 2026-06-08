@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import CompaniesList from "../components/CompaniesList";
-
+import CompaniesSearch from "../components/CompaniesSearch";
+export const dynamic = "force-dynamic";
 export default async function CompaniesPage() {
   const companies = await prisma.company.findMany();
 
@@ -15,7 +16,7 @@ export default async function CompaniesPage() {
           Discover verified companies across global markets.
         </p>
 
-        <CompaniesList companies={companies} />
+        <CompaniesSearch companies={companies} />
       </div>
     </div>
   );

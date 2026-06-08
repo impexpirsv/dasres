@@ -5,7 +5,16 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-
+if (
+  !body.title ||
+  !body.country ||
+  !body.description
+) {
+  return Response.json(
+    { message: "All fields are required." },
+    { status: 400 }
+  );
+}
     console.log(body);
 
     const opportunity = await prisma.opportunity.create({

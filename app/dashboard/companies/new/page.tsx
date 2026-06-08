@@ -58,6 +58,7 @@ export default function NewCompanyPage() {
           className="space-y-4"
         >
           <input
+          required
             placeholder="Company Name"
             value={form.name}
             onChange={(e) =>
@@ -70,6 +71,7 @@ export default function NewCompanyPage() {
           />
 
           <input
+          required
             placeholder="Country"
             value={form.country}
             onChange={(e) =>
@@ -82,6 +84,7 @@ export default function NewCompanyPage() {
           />
 
           <input
+          required
             placeholder="Category"
             value={form.category}
             onChange={(e) =>
@@ -106,6 +109,7 @@ export default function NewCompanyPage() {
           />
 
           <input
+          required
             placeholder="Email"
             value={form.email}
             onChange={(e) =>
@@ -118,6 +122,7 @@ export default function NewCompanyPage() {
           />
 
           <input
+          required
             placeholder="Website"
             value={form.website}
             onChange={(e) =>

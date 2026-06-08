@@ -51,6 +51,7 @@ export default function NewOpportunityPage() {
           className="space-y-4"
         >
           <input
+          required
             placeholder="Title"
             value={form.title}
             onChange={(e) =>
@@ -63,6 +64,7 @@ export default function NewOpportunityPage() {
           />
 
           <input
+          required
             placeholder="Country"
             value={form.country}
             onChange={(e) =>

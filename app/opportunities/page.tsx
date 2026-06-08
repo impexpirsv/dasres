@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import OpportunitiesList from "../components/OpportunitiesList";
-
+import OpportunitiesSearch from "../components/OpportunitiesSearch";
+export const dynamic = "force-dynamic";
 export default async function OpportunitiesPage() {
   const opportunities = await prisma.opportunity.findMany();
 
@@ -15,7 +16,7 @@ export default async function OpportunitiesPage() {
           Discover international business opportunities and partnerships.
         </p>
 
-        <OpportunitiesList opportunities={opportunities} />
+        <OpportunitiesSearch opportunities={opportunities} />
       </div>
     </div>
   );

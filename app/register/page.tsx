@@ -48,18 +48,22 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
+          
             type="text"
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+required
             className="w-full p-3 rounded-lg bg-slate-950 border border-slate-700 text-white"
           />
 
           <input
+          
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
             className="w-full p-3 rounded-lg bg-slate-950 border border-slate-700 text-white"
           />
 
@@ -68,6 +72,8 @@ export default function RegisterPage() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
             className="w-full p-3 rounded-lg bg-slate-950 border border-slate-700 text-white"
           />
 

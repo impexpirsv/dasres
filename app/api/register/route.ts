@@ -11,6 +11,20 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!body.email.includes("@")) {
+      return Response.json(
+        { message: "Please enter a valid email address." },
+        { status: 400 }
+      );
+    }
+
+    if (body.password.length < 6) {
+      return Response.json(
+        { message: "Password must be at least 6 characters." },
+        { status: 400 }
+      );
+    }
+
     const existingUser = await prisma.user.findUnique({
       where: {
         email: body.email,
