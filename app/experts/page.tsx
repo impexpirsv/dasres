@@ -1,9 +1,26 @@
+import Link from "next/link";
 import { prisma } from "../../lib/prisma";
-import ExpertsList from "../components/ExpertsList";
 import ExpertsSearch from "../components/ExpertsSearch";
+
 export const dynamic = "force-dynamic";
-export default async function ExpertsPage() {
-  const experts = await prisma.expert.findMany();
+
+const PAGE_SIZE = 10;
+
+export default async function ExpertsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  const currentPage = Number(params?.page) || 1;
+
+  const totalExperts = await prisma.expert.count();
+  const totalPages = Math.ceil(totalExperts / PAGE_SIZE);
+
+  const experts = await prisma.expert.findMany({
+    skip: (currentPage - 1) * PAGE_SIZE,
+    take: PAGE_SIZE,
+  });
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -17,6 +34,30 @@ export default async function ExpertsPage() {
         </p>
 
         <ExpertsSearch experts={experts} />
+
+        <div className="flex justify-center gap-4 mt-12">
+          {currentPage > 1 && (
+            <Link
+              href={`/experts?page=${currentPage - 1}`}
+              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700"
+            >
+              Previous
+            </Link>
+          )}
+
+          <span className="px-4 py-2 text-slate-300">
+            Page {currentPage} of {totalPages || 1}
+          </span>
+
+          {currentPage < totalPages && (
+            <Link
+              href={`/experts?page=${currentPage + 1}`}
+              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700"
+            >
+              Next
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
