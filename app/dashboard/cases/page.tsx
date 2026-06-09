@@ -58,8 +58,13 @@ export default async function CasesPage() {
                   </td>
 
                   <td className="p-4">
-                    {tradeCase.title}
-                  </td>
+  <Link
+    href={`/dashboard/cases/${tradeCase.id}`}
+    className="text-blue-400 hover:underline"
+  >
+    {tradeCase.title}
+  </Link>
+</td>
 
                   <td className="p-4">
                     {tradeCase.status}
