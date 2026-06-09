@@ -12,6 +12,7 @@ interface Company {
   description: string;
   email: string;
   website: string;
+  logoUrl?: string | null;
 }
 
 export default function CompaniesSearch({
@@ -71,6 +72,13 @@ export default function CompaniesSearch({
             href={`/companies/${company.id}`}
             className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
           >
+            {company.logoUrl && (
+               <img
+                src={company.logoUrl}
+                alt={company.name}
+                className="w-full h-40 object-contain rounded-xl mb-4 bg-white p-3"
+                />
+            )}
             <h2 className="text-2xl font-bold mb-2">
               {company.name}
             </h2>

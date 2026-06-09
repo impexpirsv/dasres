@@ -18,9 +18,12 @@ export default async function OpportunitiesPage({
   const totalPages = Math.ceil(totalOpportunities / PAGE_SIZE);
 
   const opportunities = await prisma.opportunity.findMany({
-    skip: (currentPage - 1) * PAGE_SIZE,
-    take: PAGE_SIZE,
-  });
+  skip: (currentPage - 1) * PAGE_SIZE,
+  take: PAGE_SIZE,
+  orderBy: {
+    id: "desc",
+  },
+});
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">

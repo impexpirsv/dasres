@@ -6,17 +6,46 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum PlanType {
+  FREE
+  GOLD
+  DIAMOND
+  ENTERPRISE
+}
+
+enum CaseStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
 model Expert {
-  id         Int    @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   name       String
   country    String
   specialty  String
   status     String
   experience String
   email      String
+  imageUrl   String?
+
+  verificationStatus VerificationStatus @default(PENDING)
+  verifiedAt         DateTime?
+  planType           PlanType           @default(FREE)
+
+  createdAt DateTime @default(now())
 }
+
 model Company {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   country     String
   category    String
@@ -24,19 +53,94 @@ model Company {
   description String
   email       String
   website     String
+  logoUrl     String?
+
+  verificationStatus VerificationStatus @default(PENDING)
+  verifiedAt         DateTime?
+  planType           PlanType           @default(FREE)
+
+  createdAt DateTime @default(now())
 }
+
 model Opportunity {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   title       String
   country     String
   status      String
   description String
+  imageUrl    String?
 }
+
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  email     String   @unique
+  email     String    @unique
   password  String
-  role      String   @default("user")
+  role      String    @default("user")
+  createdAt DateTime  @default(now())
+  sessions  Session[]
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
   createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TradeCase {
+  id Int @id @default(autoincrement())
+
+  title       String
+  description String
+
+  status CaseStatus @default(OPEN)
+
+  customerId   Int
+  assignedToId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  steps     CaseStep[]
+  documents CaseDocument[]
+  messages  CaseMessage[]
+}
+
+model CaseStep {
+  id Int @id @default(autoincrement())
+
+  caseId Int
+  title  String
+
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model CaseDocument {
+  id Int @id @default(autoincrement())
+
+  caseId  Int
+  name    String
+  fileUrl String
+
+  createdAt DateTime @default(now())
+
+  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model CaseMessage {
+  id Int @id @default(autoincrement())
+
+  caseId  Int
+  content String
+
+  createdAt DateTime @default(now())
+
+  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
 }

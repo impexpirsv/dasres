@@ -2,9 +2,18 @@
 
 import Link from "next/link";
 
-export default function DashboardSidebar() {
-  function handleLogout() {
-    localStorage.removeItem("dasres_user");
+interface DashboardSidebarProps {
+  isAdmin: boolean;
+}
+
+export default function DashboardSidebar({
+  isAdmin,
+}: DashboardSidebarProps) {
+  async function handleLogout() {
+    await fetch("/api/logout", {
+      method: "POST",
+    });
+
     window.location.href = "/login";
   }
 
@@ -19,9 +28,11 @@ export default function DashboardSidebar() {
           Dashboard
         </Link>
 
-        <Link href="/dashboard/users">
-         Users
-        </Link>
+        {isAdmin && (
+          <Link href="/dashboard/users">
+            Users
+          </Link>
+        )}
 
         <Link href="/experts">
           Experts

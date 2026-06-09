@@ -1,42 +1,265 @@
 import { prisma } from "../../../../lib/prisma";
+import { requireAdmin } from "../../../../lib/auth";
+import fs from "fs/promises";
+import path from "path";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
+
+const extensionMap: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const companyId = Number(id);
+
+    if (Number.isNaN(companyId)) {
+      return Response.json(
+        { message: "Invalid company id" },
+        { status: 400 }
+      );
+    }
+
+    const company = await prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+    });
+
+    if (!company) {
+      return Response.json(
+        { message: "Company not found" },
+        { status: 404 }
+      );
+    }
+
+    return Response.json(company);
+  } catch (error) {
+    return Response.json(
+      { message: "Error loading company" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
+  try {
+    await requireAdmin();
 
-  await prisma.company.delete({
-    where: {
-      id: Number(id),
-    },
-  });
+    const { id } = await params;
+    const companyId = Number(id);
 
-  return Response.json({
-    message: "Company deleted",
-  });
+    if (Number.isNaN(companyId)) {
+      return Response.json(
+        { message: "Invalid company id" },
+        { status: 400 }
+      );
+    }
+
+    const company = await prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+      select: {
+        logoUrl: true,
+      },
+    });
+
+    if (!company) {
+      return Response.json(
+        { message: "Company not found" },
+        { status: 404 }
+      );
+    }
+
+    if (company.logoUrl) {
+      const filePath = path.join(
+        process.cwd(),
+        "public",
+        company.logoUrl
+      );
+
+      try {
+        await fs.unlink(filePath);
+      } catch {
+        // اگر لوگو قبلاً حذف شده بود، حذف رکورد متوقف نشود
+      }
+    }
+
+    await prisma.company.delete({
+      where: {
+        id: companyId,
+      },
+    });
+
+    return Response.json({
+      message: "Company deleted",
+    });
+  } catch (error) {
+    return Response.json(
+      { message: "Error deleting company" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const body = await request.json();
+  try {
+    await requireAdmin();
 
-  const company = await prisma.company.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      name: body.name,
-      country: body.country,
-      category: body.category,
-      description: body.description,
-      email: body.email,
-      website: body.website,
-    },
-  });
+    const { id } = await params;
+    const companyId = Number(id);
 
-  return Response.json(company);
+    if (Number.isNaN(companyId)) {
+      return Response.json(
+        { message: "Invalid company id" },
+        { status: 400 }
+      );
+    }
+
+    const currentCompany = await prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+      select: {
+        logoUrl: true,
+      },
+    });
+
+    if (!currentCompany) {
+      return Response.json(
+        { message: "Company not found" },
+        { status: 404 }
+      );
+    }
+
+    const formData = await request.formData();
+
+    const name = String(formData.get("name") || "").trim();
+    const country = String(formData.get("country") || "").trim();
+    const category = String(formData.get("category") || "").trim();
+    const description = String(
+      formData.get("description") || ""
+    ).trim();
+    const email = String(formData.get("email") || "").trim();
+    const website = String(formData.get("website") || "").trim();
+
+    const logo = formData.get("logo") as File | null;
+
+    if (
+      !name ||
+      !country ||
+      !category ||
+      !description ||
+      !email ||
+      !website
+    ) {
+      return Response.json(
+        { message: "All fields are required." },
+        { status: 400 }
+      );
+    }
+
+    let logoUrl = currentCompany.logoUrl;
+
+    if (logo && logo.size > 0) {
+      if (!ALLOWED_IMAGE_TYPES.includes(logo.type)) {
+        return Response.json(
+          {
+            message:
+              "Invalid logo type. Only JPG, PNG and WEBP are allowed.",
+          },
+          { status: 400 }
+        );
+      }
+
+      if (logo.size > MAX_FILE_SIZE) {
+        return Response.json(
+          {
+            message:
+              "Logo is too large. Maximum size is 5MB.",
+          },
+          { status: 400 }
+        );
+      }
+
+      if (currentCompany.logoUrl) {
+        const oldLogoPath = path.join(
+          process.cwd(),
+          "public",
+          currentCompany.logoUrl
+        );
+
+        try {
+          await fs.unlink(oldLogoPath);
+        } catch {
+          // اگر لوگوی قبلی وجود نداشت، آپدیت متوقف نشود
+        }
+      }
+
+      const bytes = await logo.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const uploadDir = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        "companies"
+      );
+
+      await fs.mkdir(uploadDir, { recursive: true });
+
+      const fileExtension = extensionMap[logo.type];
+
+      const fileName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2)}.${fileExtension}`;
+
+      const filePath = path.join(uploadDir, fileName);
+
+      await fs.writeFile(filePath, buffer);
+
+      logoUrl = `/uploads/companies/${fileName}`;
+    }
+
+    const company = await prisma.company.update({
+      where: {
+        id: companyId,
+      },
+      data: {
+        name,
+        country,
+        category,
+        description,
+        email,
+        website,
+        logoUrl,
+      },
+    });
+
+    return Response.json(company);
+  } catch (error) {
+    return Response.json(
+      { message: "Error updating company" },
+      { status: 500 }
+    );
+  }
 }

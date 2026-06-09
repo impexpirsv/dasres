@@ -23,18 +23,11 @@ export default function LoginPage() {
 
     const data = await response.json();
 
-   if (response.ok) {
-  localStorage.setItem(
-    "dasres_user",
-    JSON.stringify(data.user)
-  );
-
-  window.location.href = "/dashboard";
-} else {
-  setMessage(
-    data.message || "Login failed."
-  );
-}
+    if (response.ok) {
+      window.location.href = "/dashboard";
+    } else {
+      setMessage(data.message || "Login failed.");
+    }
   }
 
   return (
@@ -53,7 +46,9 @@ export default function LoginPage() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
             className="w-full p-3 rounded-lg bg-slate-950 border border-slate-700 text-white"
           />
 
@@ -61,7 +56,9 @@ export default function LoginPage() {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
             className="w-full p-3 rounded-lg bg-slate-950 border border-slate-700 text-white"
           />
 
@@ -71,7 +68,7 @@ export default function LoginPage() {
         </form>
 
         {message && (
-          <p className="text-green-400 mt-6">
+          <p className="text-red-400 mt-6">
             {message}
           </p>
         )}

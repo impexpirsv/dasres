@@ -11,37 +11,68 @@ export default function NewExpertPage() {
     email: "",
   });
 
-  const [message, setMessage] = useState("");
+  const [imageFile, setImageFile] =
+    useState<File | null>(null);
+
+  const [message, setMessage] =
+    useState("");
 
   async function handleSubmit(
     e: React.FormEvent
   ) {
     e.preventDefault();
 
-    const response = await fetch(
-      "/api/experts",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
-        body: JSON.stringify(form),
-      }
-    );
+    try {
+      const formData = new FormData();
 
-    if (response.ok) {
-      setMessage(
-        "Expert created successfully."
+      formData.append("name", form.name);
+      formData.append("country", form.country);
+      formData.append(
+        "specialty",
+        form.specialty
+      );
+      formData.append(
+        "experience",
+        form.experience
+      );
+      formData.append("email", form.email);
+
+      if (imageFile) {
+        formData.append(
+          "image",
+          imageFile
+        );
+      }
+
+      const response = await fetch(
+        "/api/experts",
+        {
+          method: "POST",
+          body: formData,
+        }
       );
 
-      setForm({
-        name: "",
-        country: "",
-        specialty: "",
-        experience: "",
-        email: "",
-      });
+      if (response.ok) {
+        setMessage(
+          "Expert created successfully."
+        );
+
+        setForm({
+          name: "",
+          country: "",
+          specialty: "",
+          experience: "",
+          email: "",
+        });
+
+        setImageFile(null);
+      } else {
+        setMessage(
+          "Error creating expert."
+        );
+      }
+    } catch (error) {
+      setMessage("Something went wrong.");
     }
   }
 
@@ -57,7 +88,7 @@ export default function NewExpertPage() {
           className="space-y-4"
         >
           <input
-          required
+            required
             placeholder="Name"
             value={form.name}
             onChange={(e) =>
@@ -70,7 +101,7 @@ export default function NewExpertPage() {
           />
 
           <input
-          required
+            required
             placeholder="Country"
             value={form.country}
             onChange={(e) =>
@@ -83,20 +114,21 @@ export default function NewExpertPage() {
           />
 
           <input
-          required
+            required
             placeholder="Specialty"
             value={form.specialty}
             onChange={(e) =>
               setForm({
                 ...form,
-                specialty: e.target.value,
+                specialty:
+                  e.target.value,
               })
             }
             className="w-full p-3 rounded bg-slate-900"
           />
 
           <input
-          required
+            required
             placeholder="Experience"
             value={form.experience}
             onChange={(e) =>
@@ -110,7 +142,8 @@ export default function NewExpertPage() {
           />
 
           <input
-          required
+            required
+            type="email"
             placeholder="Email"
             value={form.email}
             onChange={(e) =>
@@ -122,7 +155,19 @@ export default function NewExpertPage() {
             className="w-full p-3 rounded bg-slate-900"
           />
 
-          <button className="bg-blue-600 px-6 py-3 rounded">
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={(e) =>
+              setImageFile(
+                e.target.files?.[0] ||
+                  null
+              )
+            }
+            className="w-full p-3 rounded bg-slate-900"
+          />
+
+          <button className="bg-blue-600 px-6 py-3 rounded hover:bg-blue-700">
             Create Expert
           </button>
         </form>

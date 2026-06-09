@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 export default function EditCompanyPage() {
@@ -18,17 +18,55 @@ export default function EditCompanyPage() {
     website: "",
   });
 
+  const [logo, setLogo] = useState<File | null>(null);
+  const [currentLogoUrl, setCurrentLogoUrl] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    async function fetchCompany() {
+      const response = await fetch(`/api/companies/${id}`);
+
+      if (!response.ok) {
+        setMessage("Error loading company.");
+        return;
+      }
+
+      const company = await response.json();
+
+      setForm({
+        name: company.name || "",
+        country: company.country || "",
+        category: company.category || "",
+        description: company.description || "",
+        email: company.email || "",
+        website: company.website || "",
+      });
+
+      setCurrentLogoUrl(company.logoUrl || "");
+    }
+
+    fetchCompany();
+  }, [id]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    const formData = new FormData();
+
+    formData.append("name", form.name);
+    formData.append("country", form.country);
+    formData.append("category", form.category);
+    formData.append("description", form.description);
+    formData.append("email", form.email);
+    formData.append("website", form.website);
+
+    if (logo) {
+      formData.append("logo", logo);
+    }
+
     const response = await fetch(`/api/companies/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
+      body: formData,
     });
 
     if (response.ok) {
@@ -47,6 +85,16 @@ export default function EditCompanyPage() {
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {currentLogoUrl && (
+            <div className="bg-white rounded-xl border border-slate-800 p-6">
+              <img
+                src={currentLogoUrl}
+                alt="Current company logo"
+                className="w-full h-48 object-contain"
+              />
+            </div>
+          )}
+
           <input
             placeholder="Company Name"
             value={form.name}
@@ -69,7 +117,10 @@ export default function EditCompanyPage() {
             placeholder="Category"
             value={form.category}
             onChange={(e) =>
-              setForm({ ...form, category: e.target.value })
+              setForm({
+                ...form,
+                category: e.target.value,
+              })
             }
             className="w-full p-3 rounded bg-slate-900 text-white"
           />
@@ -78,12 +129,17 @@ export default function EditCompanyPage() {
             placeholder="Description"
             value={form.description}
             onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
+              setForm({
+                ...form,
+                description: e.target.value,
+              })
             }
             className="w-full p-3 rounded bg-slate-900 text-white"
+            rows={5}
           />
 
           <input
+            type="email"
             placeholder="Email"
             value={form.email}
             onChange={(e) =>
@@ -100,6 +156,21 @@ export default function EditCompanyPage() {
             }
             className="w-full p-3 rounded bg-slate-900 text-white"
           />
+
+          <div>
+            <label className="block mb-2 text-slate-300">
+              Replace Logo
+            </label>
+
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(e) =>
+                setLogo(e.target.files?.[0] || null)
+              }
+              className="w-full p-3 rounded bg-slate-900 text-white"
+            />
+          </div>
 
           <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded">
             Update Company

@@ -11,6 +11,7 @@ interface Expert {
   status: string;
   experience: string;
   email: string;
+  imageUrl?: string | null;
 }
 
 export default function ExpertsSearch({
@@ -70,6 +71,13 @@ export default function ExpertsSearch({
             href={`/experts/${expert.id}`}
             className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
           >
+            {expert.imageUrl && (
+             <img
+              src={expert.imageUrl}
+              alt={expert.name}
+              className="w-full h-48 object-cover rounded-xl mb-4"
+              />
+           )}
             <h2 className="text-2xl font-bold mb-2">
               {expert.name}
             </h2>

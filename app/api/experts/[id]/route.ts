@@ -1,42 +1,264 @@
 import { prisma } from "../../../../lib/prisma";
+import { requireAdmin } from "../../../../lib/auth";
+import fs from "fs/promises";
+import path from "path";
 
-export async function DELETE(
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
+
+const extensionMap: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
+
+export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
+  try {
+    const { id } = await params;
+    const expertId = Number(id);
 
-  await prisma.expert.delete({
-    where: {
-      id: Number(id),
-    },
-  });
+    if (Number.isNaN(expertId)) {
+      return Response.json(
+        { message: "Invalid expert id" },
+        { status: 400 }
+      );
+    }
 
-  return Response.json({
-    message: "Expert deleted",
-  });
+    const expert = await prisma.expert.findUnique({
+      where: {
+        id: expertId,
+      },
+    });
+
+    if (!expert) {
+      return Response.json(
+        { message: "Expert not found" },
+        { status: 404 }
+      );
+    }
+
+    return Response.json(expert);
+  } catch (error) {
+    return Response.json(
+      { message: "Error loading expert" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
+  try {
+    await requireAdmin();
 
-  const body = await request.json();
+    const { id } = await params;
+    const expertId = Number(id);
 
-  const expert = await prisma.expert.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      name: body.name,
-      country: body.country,
-      specialty: body.specialty,
-      experience: body.experience,
-      email: body.email,
-    },
-  });
+    if (Number.isNaN(expertId)) {
+      return Response.json(
+        { message: "Invalid expert id" },
+        { status: 400 }
+      );
+    }
 
-  return Response.json(expert);
+    const currentExpert = await prisma.expert.findUnique({
+      where: {
+        id: expertId,
+      },
+      select: {
+        imageUrl: true,
+      },
+    });
+
+    if (!currentExpert) {
+      return Response.json(
+        { message: "Expert not found" },
+        { status: 404 }
+      );
+    }
+
+    const formData = await request.formData();
+
+    const name = String(formData.get("name") || "").trim();
+    const country = String(formData.get("country") || "").trim();
+    const specialty = String(
+      formData.get("specialty") || ""
+    ).trim();
+    const experience = String(
+      formData.get("experience") || ""
+    ).trim();
+    const email = String(formData.get("email") || "").trim();
+
+    const image = formData.get("image") as File | null;
+
+    if (
+      !name ||
+      !country ||
+      !specialty ||
+      !experience ||
+      !email
+    ) {
+      return Response.json(
+        { message: "All fields are required." },
+        { status: 400 }
+      );
+    }
+
+    let imageUrl = currentExpert.imageUrl;
+
+    if (image && image.size > 0) {
+      if (!ALLOWED_IMAGE_TYPES.includes(image.type)) {
+        return Response.json(
+          {
+            message:
+              "Invalid image type. Only JPG, PNG and WEBP are allowed.",
+          },
+          { status: 400 }
+        );
+      }
+
+      if (image.size > MAX_FILE_SIZE) {
+        return Response.json(
+          {
+            message:
+              "Image is too large. Maximum size is 5MB.",
+          },
+          { status: 400 }
+        );
+      }
+
+      if (currentExpert.imageUrl) {
+        const oldImagePath = path.join(
+          process.cwd(),
+          "public",
+          currentExpert.imageUrl
+        );
+
+        try {
+          await fs.unlink(oldImagePath);
+        } catch {
+          // اگر عکس قبلی وجود نداشت، آپدیت متوقف نشود
+        }
+      }
+
+      const bytes = await image.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const uploadDir = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        "experts"
+      );
+
+      await fs.mkdir(uploadDir, { recursive: true });
+
+      const fileExtension = extensionMap[image.type];
+
+      const fileName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2)}.${fileExtension}`;
+
+      const filePath = path.join(uploadDir, fileName);
+
+      await fs.writeFile(filePath, buffer);
+
+      imageUrl = `/uploads/experts/${fileName}`;
+    }
+
+    const expert = await prisma.expert.update({
+      where: {
+        id: expertId,
+      },
+      data: {
+        name,
+        country,
+        specialty,
+        experience,
+        email,
+        imageUrl,
+      },
+    });
+
+    return Response.json(expert);
+  } catch (error) {
+    return Response.json(
+      { message: "Error updating expert" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await requireAdmin();
+
+    const { id } = await params;
+    const expertId = Number(id);
+
+    if (Number.isNaN(expertId)) {
+      return Response.json(
+        { message: "Invalid expert id" },
+        { status: 400 }
+      );
+    }
+
+    const expert = await prisma.expert.findUnique({
+      where: {
+        id: expertId,
+      },
+      select: {
+        imageUrl: true,
+      },
+    });
+
+    if (!expert) {
+      return Response.json(
+        { message: "Expert not found" },
+        { status: 404 }
+      );
+    }
+
+    if (expert.imageUrl) {
+      const filePath = path.join(
+        process.cwd(),
+        "public",
+        expert.imageUrl
+      );
+
+      try {
+        await fs.unlink(filePath);
+      } catch {
+        // اگر عکس قبلاً حذف شده بود، حذف رکورد متوقف نشود
+      }
+    }
+
+    await prisma.expert.delete({
+      where: {
+        id: expertId,
+      },
+    });
+
+    return Response.json({
+      message: "Expert deleted",
+    });
+  } catch (error) {
+    return Response.json(
+      { message: "Error deleting expert" },
+      { status: 500 }
+    );
+  }
 }

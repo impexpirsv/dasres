@@ -1,15 +1,11 @@
 import { prisma } from "../../../lib/prisma";
+import { requireAdmin } from "../../../lib/auth";
 import MakeAdminButton from "../../components/MakeAdminButton";
 import DeleteUserButton from "../../components/DeleteUserButton";
-import { redirect } from "next/navigation";
-import AdminProtectedRoute from "../../components/AdminProtectedRoute";
-export default async function UsersPage() {
-    const currentUser =
-  await prisma.user.findFirst();
 
-if (currentUser?.role !== "admin") {
-  redirect("/dashboard");
-}
+export default async function UsersPage() {
+  await requireAdmin();
+
   const users = await prisma.user.findMany({
     orderBy: {
       id: "desc",
@@ -17,7 +13,6 @@ if (currentUser?.role !== "admin") {
   });
 
   return (
-    <AdminProtectedRoute>
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-6 py-20">
         <h1 className="text-4xl font-bold mb-8">
@@ -50,12 +45,11 @@ if (currentUser?.role !== "admin") {
                   <td className="p-4">
                     <div className="flex gap-3">
                       {user.role !== "admin" && (
-                        <MakeAdminButton id={user.id} />
+                        <>
+                          <MakeAdminButton id={user.id} />
+                          <DeleteUserButton id={user.id} />
+                        </>
                       )}
-
-                      {user.role !== "admin" && (
-  <DeleteUserButton id={user.id} />
-)}
                     </div>
                   </td>
                 </tr>
@@ -65,6 +59,5 @@ if (currentUser?.role !== "admin") {
         </div>
       </div>
     </div>
-    </AdminProtectedRoute>
   );
 }

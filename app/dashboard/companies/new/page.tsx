@@ -12,37 +12,49 @@ export default function NewCompanyPage() {
     website: "",
   });
 
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [message, setMessage] = useState("");
 
-  async function handleSubmit(
-    e: React.FormEvent
-  ) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const response = await fetch(
-      "/api/companies",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
+    try {
+      const formData = new FormData();
+
+      formData.append("name", form.name);
+      formData.append("country", form.country);
+      formData.append("category", form.category);
+      formData.append("description", form.description);
+      formData.append("email", form.email);
+      formData.append("website", form.website);
+
+      if (logoFile) {
+        formData.append("logo", logoFile);
       }
-    );
 
-    if (response.ok) {
-      setMessage(
-        "Company created successfully."
-      );
-
-      setForm({
-        name: "",
-        country: "",
-        category: "",
-        description: "",
-        email: "",
-        website: "",
+      const response = await fetch("/api/companies", {
+        method: "POST",
+        body: formData,
       });
+
+      if (response.ok) {
+        setMessage("Company created successfully.");
+
+        setForm({
+          name: "",
+          country: "",
+          category: "",
+          description: "",
+          email: "",
+          website: "",
+        });
+
+        setLogoFile(null);
+      } else {
+        setMessage("Error creating company.");
+      }
+    } catch (error) {
+      setMessage("Something went wrong.");
     }
   }
 
@@ -53,12 +65,9 @@ export default function NewCompanyPage() {
           Add Company
         </h1>
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
-          required
+            required
             placeholder="Company Name"
             value={form.name}
             onChange={(e) =>
@@ -71,7 +80,7 @@ export default function NewCompanyPage() {
           />
 
           <input
-          required
+            required
             placeholder="Country"
             value={form.country}
             onChange={(e) =>
@@ -84,7 +93,7 @@ export default function NewCompanyPage() {
           />
 
           <input
-          required
+            required
             placeholder="Category"
             value={form.category}
             onChange={(e) =>
@@ -97,6 +106,7 @@ export default function NewCompanyPage() {
           />
 
           <textarea
+            required
             placeholder="Description"
             value={form.description}
             onChange={(e) =>
@@ -109,7 +119,8 @@ export default function NewCompanyPage() {
           />
 
           <input
-          required
+            required
+            type="email"
             placeholder="Email"
             value={form.email}
             onChange={(e) =>
@@ -122,7 +133,7 @@ export default function NewCompanyPage() {
           />
 
           <input
-          required
+            required
             placeholder="Website"
             value={form.website}
             onChange={(e) =>
@@ -134,15 +145,22 @@ export default function NewCompanyPage() {
             className="w-full p-3 rounded bg-slate-900"
           />
 
-          <button className="bg-blue-600 px-6 py-3 rounded">
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={(e) =>
+              setLogoFile(e.target.files?.[0] || null)
+            }
+            className="w-full p-3 rounded bg-slate-900"
+          />
+
+          <button className="bg-blue-600 px-6 py-3 rounded hover:bg-blue-700">
             Create Company
           </button>
         </form>
 
         {message && (
-          <p className="mt-6 text-green-400">
-            {message}
-          </p>
+          <p className="mt-6 text-green-400">{message}</p>
         )}
       </div>
     </div>

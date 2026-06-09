@@ -1,4 +1,5 @@
 import { prisma } from "../../../lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: Request) {
   try {
@@ -38,18 +39,28 @@ export async function POST(request: Request) {
       );
     }
 
+    const hashedPassword = await bcrypt.hash(
+      body.password,
+      10
+    );
+
     const user = await prisma.user.create({
       data: {
         name: body.name,
         email: body.email,
-        password: body.password,
+        password: hashedPassword,
         role: "user",
       },
     });
 
     return Response.json({
       message: "User created successfully",
-      user,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (error) {
     console.error("REGISTER_ERROR", error);

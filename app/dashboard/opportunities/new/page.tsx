@@ -4,23 +4,39 @@ import { useState } from "react";
 
 export default function NewOpportunityPage() {
   const [form, setForm] = useState({
-    title: "",
-    country: "",
-    description: "",
-  });
+  title: "",
+  country: "",
+  description: "",
+});
+
+const [image, setImage] =
+  useState<File | null>(null);
 
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const response = await fetch("/api/opportunities", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    const formData = new FormData();
+
+formData.append("title", form.title);
+formData.append("country", form.country);
+formData.append(
+  "description",
+  form.description
+);
+
+if (image) {
+  formData.append("image", image);
+}
+
+const response = await fetch(
+  "/api/opportunities",
+  {
+    method: "POST",
+    body: formData,
+  }
+);
 
     const data = await response.json();
 
@@ -28,10 +44,12 @@ export default function NewOpportunityPage() {
       setMessage("Opportunity created successfully.");
 
       setForm({
-        title: "",
-        country: "",
-        description: "",
-      });
+  title: "",
+  country: "",
+  description: "",
+});
+
+setImage(null);
     } else {
       setMessage(
         data.message || "Error creating opportunity."
@@ -75,6 +93,16 @@ export default function NewOpportunityPage() {
             }
             className="w-full p-3 rounded bg-slate-900"
           />
+          <input
+  type="file"
+  accept="image/*"
+  onChange={(e) =>
+    setImage(
+      e.target.files?.[0] || null
+    )
+  }
+  className="w-full p-3 rounded bg-slate-900"
+/>
 
           <textarea
             placeholder="Description"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 export default function EditExpertPage() {
@@ -17,17 +17,53 @@ export default function EditExpertPage() {
     email: "",
   });
 
+  const [image, setImage] = useState<File | null>(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    async function fetchExpert() {
+      const response = await fetch(`/api/experts/${id}`);
+
+      if (!response.ok) {
+        setMessage("Error loading expert.");
+        return;
+      }
+
+      const expert = await response.json();
+
+      setForm({
+        name: expert.name || "",
+        country: expert.country || "",
+        specialty: expert.specialty || "",
+        experience: expert.experience || "",
+        email: expert.email || "",
+      });
+
+      setCurrentImageUrl(expert.imageUrl || "");
+    }
+
+    fetchExpert();
+  }, [id]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    const formData = new FormData();
+
+    formData.append("name", form.name);
+    formData.append("country", form.country);
+    formData.append("specialty", form.specialty);
+    formData.append("experience", form.experience);
+    formData.append("email", form.email);
+
+    if (image) {
+      formData.append("image", image);
+    }
+
     const response = await fetch(`/api/experts/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
+      body: formData,
     });
 
     if (response.ok) {
@@ -46,6 +82,14 @@ export default function EditExpertPage() {
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {currentImageUrl && (
+            <img
+              src={currentImageUrl}
+              alt="Current expert"
+              className="w-full h-64 object-cover rounded-xl border border-slate-800"
+            />
+          )}
+
           <input
             placeholder="Name"
             value={form.name}
@@ -68,7 +112,10 @@ export default function EditExpertPage() {
             placeholder="Specialty"
             value={form.specialty}
             onChange={(e) =>
-              setForm({ ...form, specialty: e.target.value })
+              setForm({
+                ...form,
+                specialty: e.target.value,
+              })
             }
             className="w-full p-3 rounded bg-slate-900 text-white"
           />
@@ -77,12 +124,16 @@ export default function EditExpertPage() {
             placeholder="Experience"
             value={form.experience}
             onChange={(e) =>
-              setForm({ ...form, experience: e.target.value })
+              setForm({
+                ...form,
+                experience: e.target.value,
+              })
             }
             className="w-full p-3 rounded bg-slate-900 text-white"
           />
 
           <input
+            type="email"
             placeholder="Email"
             value={form.email}
             onChange={(e) =>
@@ -90,6 +141,21 @@ export default function EditExpertPage() {
             }
             className="w-full p-3 rounded bg-slate-900 text-white"
           />
+
+          <div>
+            <label className="block mb-2 text-slate-300">
+              Replace Image
+            </label>
+
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(e) =>
+                setImage(e.target.files?.[0] || null)
+              }
+              className="w-full p-3 rounded bg-slate-900 text-white"
+            />
+          </div>
 
           <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded">
             Update Expert
