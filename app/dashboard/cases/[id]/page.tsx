@@ -5,6 +5,7 @@ import CompleteCaseStepButton from "../../../components/CompleteCaseStepButton";
 import AddCaseMessageForm from "../../../components/AddCaseMessageForm";
 import AddCaseDocumentForm from "../../../components/AddCaseDocumentForm";
 import AddCaseProposalForm from "../../../components/AddCaseProposalForm";
+import ProposalActionButtons from "../../../components/ProposalActionButtons";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -262,6 +263,9 @@ export default async function CaseDetailPage({
                       <p className="text-xs text-slate-500 mt-2">
                         {proposal.status}
                       </p>
+                      {proposal.status === "PENDING" && (
+                        <ProposalActionButtons proposalId={proposal.id} />
+                      )}
                     </div>
                   ))}
                 </div>
