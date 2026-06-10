@@ -14,9 +14,24 @@ export async function POST(
     const message = String(body.message || "").trim();
     const price = String(body.price || "").trim();
 
+    const companyId = body.companyId
+      ? Number(body.companyId)
+      : null;
+
+    const expertId = body.expertId
+      ? Number(body.expertId)
+      : null;
+
     if (!message) {
       return Response.json(
         { message: "Proposal message is required" },
+        { status: 400 }
+      );
+    }
+
+    if (!companyId) {
+      return Response.json(
+        { message: "Company is required" },
         { status: 400 }
       );
     }
@@ -44,6 +59,8 @@ export async function POST(
     await prisma.caseProposal.create({
       data: {
         caseId: Number(id),
+        companyId,
+        expertId,
         message,
         price: price || null,
       },

@@ -41,6 +41,10 @@ export default async function CaseDetailPage({
         orderBy: {
           id: "desc",
         },
+        include: {
+          company: true,
+          expert: true,
+        },
       },
     },
   });
@@ -59,6 +63,19 @@ export default async function CaseDetailPage({
     user.role !== "admin" &&
     tradeCase.customerId !== user.id
   ) {
+    const companies = await prisma.company.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+    const experts = await prisma.expert.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
         <h1 className="text-4xl font-bold">
@@ -67,7 +84,20 @@ export default async function CaseDetailPage({
       </div>
     );
   }
+  const winningProposal = tradeCase.proposals.find(
+    (proposal) => proposal.id === tradeCase.acceptedProposalId
+  );
+  const companies = await prisma.company.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
 
+  const experts = await prisma.expert.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-6 py-20">
@@ -183,8 +213,27 @@ export default async function CaseDetailPage({
                     Winning Proposal
                   </p>
                   <p className="text-slate-200">
-                    {tradeCase.acceptedProposalId || "Not selected"}
+                    {winningProposal
+                      ? `#${winningProposal.id} - ${winningProposal.price || "No price"}`
+                      : "Not selected"}
                   </p>
+                  <div>
+                    <p className="text-slate-500 text-sm">
+                      Winning Company
+                    </p>
+                    <p className="text-slate-200">
+                      {winningProposal?.company?.name || "Not selected"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-slate-500 text-sm">
+                      Winning Expert
+                    </p>
+                    <p className="text-slate-200">
+                      {winningProposal?.expert?.name || "Not selected"}
+                    </p>
+                  </div>
                 </div>
 
                 <div>
@@ -260,12 +309,16 @@ export default async function CaseDetailPage({
                 Proposals
               </h2>
               {tradeCase.status === "OPEN" ? (
-  <AddCaseProposalForm caseId={tradeCase.id} />
-) : (
-  <p className="text-slate-500 mb-6">
-    This case is already in progress. New proposals are closed.
-  </p>
-)}
+                <AddCaseProposalForm
+                  caseId={tradeCase.id}
+                  companies={companies}
+                  experts={experts}
+                />
+              ) : (
+                <p className="text-slate-500 mb-6">
+                  This case is already in progress. New proposals are closed.
+                </p>
+              )}
               {tradeCase.proposals.length === 0 ? (
                 <p className="text-slate-500">
                   No proposals yet.
@@ -279,6 +332,18 @@ export default async function CaseDetailPage({
                     >
                       <p className="font-semibold mb-2">
                         {proposal.price || "No price"}
+                      </p>
+
+                      <p className="text-sm text-blue-400">
+                        Company:
+                        {" "}
+                        {proposal.company?.name || "Unknown"}
+                      </p>
+
+                      <p className="text-sm text-emerald-400">
+                        Expert:
+                        {" "}
+                        {proposal.expert?.name || "Not assigned"}
                       </p>
 
                       <p className="text-sm text-slate-300">

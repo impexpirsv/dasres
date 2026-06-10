@@ -48,6 +48,8 @@ model Expert {
   planType           PlanType           @default(FREE)
 
   createdAt DateTime @default(now())
+
+  proposals CaseProposal[]
 }
 
 model Company {
@@ -66,6 +68,11 @@ model Company {
   planType           PlanType           @default(FREE)
 
   createdAt DateTime @default(now())
+
+  ownerId Int?
+  owner   User? @relation(fields: [ownerId], references: [id])
+
+  proposals CaseProposal[]
 }
 
 model Opportunity {
@@ -85,6 +92,7 @@ model User {
   role      String    @default("user")
   createdAt DateTime  @default(now())
   sessions  Session[]
+  companies Company[]
 }
 
 model Session {
@@ -135,6 +143,9 @@ model CaseProposal {
   createdAt DateTime @default(now())
 
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  company Company? @relation(fields: [companyId], references: [id])
+  expert  Expert?  @relation(fields: [expertId], references: [id])
 }
 
 model CaseStep {
