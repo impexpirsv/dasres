@@ -108,6 +108,9 @@ model TradeCase {
   customerId   Int
   assignedToId Int?
 
+  acceptedProposalId Int?
+  assignedAt         DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

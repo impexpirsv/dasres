@@ -42,6 +42,17 @@ export async function PATCH(
       },
     });
 
+    await prisma.tradeCase.update({
+  where: {
+    id: proposal.caseId,
+  },
+  data: {
+    acceptedProposalId: proposal.id,
+    assignedAt: new Date(),
+    status: "IN_PROGRESS",
+  },
+});
+
     return Response.json({
       message: "Proposal accepted",
     });

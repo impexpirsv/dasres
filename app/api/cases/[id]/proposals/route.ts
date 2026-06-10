@@ -21,6 +21,26 @@ export async function POST(
       );
     }
 
+    const tradeCase = await prisma.tradeCase.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!tradeCase) {
+      return Response.json(
+        { message: "Case not found" },
+        { status: 404 }
+      );
+    }
+
+    if (tradeCase.status !== "OPEN") {
+      return Response.json(
+        { message: "This case is not accepting proposals" },
+        { status: 400 }
+      );
+    }
+
     await prisma.caseProposal.create({
       data: {
         caseId: Number(id),

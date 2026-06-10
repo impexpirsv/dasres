@@ -178,6 +178,25 @@ export default async function CaseDetailPage({
                     {tradeCase.updatedAt.toLocaleDateString()}
                   </p>
                 </div>
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Winning Proposal
+                  </p>
+                  <p className="text-slate-200">
+                    {tradeCase.acceptedProposalId || "Not selected"}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Assigned At
+                  </p>
+                  <p className="text-slate-200">
+                    {tradeCase.assignedAt
+                      ? tradeCase.assignedAt.toLocaleDateString()
+                      : "Not assigned"}
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -240,7 +259,13 @@ export default async function CaseDetailPage({
               <h2 className="text-2xl font-bold mb-4">
                 Proposals
               </h2>
-              <AddCaseProposalForm caseId={tradeCase.id} />
+              {tradeCase.status === "OPEN" ? (
+  <AddCaseProposalForm caseId={tradeCase.id} />
+) : (
+  <p className="text-slate-500 mb-6">
+    This case is already in progress. New proposals are closed.
+  </p>
+)}
               {tradeCase.proposals.length === 0 ? (
                 <p className="text-slate-500">
                   No proposals yet.
