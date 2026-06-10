@@ -1,5 +1,4 @@
 import Link from "next/link";
-import DashboardSidebar from "../components/DashboardSidebar";
 import { prisma } from "../../lib/prisma";
 import { requireUser } from "../../lib/auth";
 
@@ -49,12 +48,7 @@ export default async function DashboardPage() {
       : [];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex">
-      <DashboardSidebar
-        isAdmin={user.role === "admin"}
-      />
-
-      <main className="flex-1">
+    
         <div className="max-w-7xl mx-auto px-6 py-20">
           <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mb-8">
             <h2 className="text-2xl font-bold mb-4">
@@ -150,7 +144,7 @@ export default async function DashboardPage() {
                 Admin Panel
               </h2>
 
-              <div className="grid md:grid-cols-5 gap-6">
+              <div className="grid md:grid-cols-4 gap-6">
                 <Link
                   href="/dashboard/users"
                   className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-green-500"
@@ -332,7 +326,6 @@ export default async function DashboardPage() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+      
   );
 }

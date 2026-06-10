@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface DashboardSidebarProps {
   isAdmin: boolean;
@@ -9,6 +10,8 @@ interface DashboardSidebarProps {
 export default function DashboardSidebar({
   isAdmin,
 }: DashboardSidebarProps) {
+  const pathname = usePathname();
+
   async function handleLogout() {
     await fetch("/api/logout", {
       method: "POST",
@@ -17,38 +20,117 @@ export default function DashboardSidebar({
     window.location.href = "/login";
   }
 
-  return (
-    <aside className="w-64 bg-slate-900 border-r border-slate-800 p-6">
-      <h2 className="text-2xl font-bold mb-8">
-        DASRES
-      </h2>
+  function getLinkClass(path: string) {
+    const isActive =
+      path === "/dashboard"
+        ? pathname === "/dashboard"
+        : pathname === path ||
+        pathname.startsWith(path + "/");
 
-      <nav className="flex flex-col gap-4">
-        <Link href="/dashboard">
+    return `
+      block rounded-xl px-4 py-3 text-sm transition
+      ${isActive
+        ? "bg-blue-600 text-white"
+        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+      }
+    `;
+  }
+
+  const sectionTitleClass =
+    "px-4 pt-5 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-500";
+
+  return (
+    <aside className="w-72 min-h-screen bg-slate-950 border-r border-slate-800 p-5">
+      <div className="mb-8 px-4">
+        <h2 className="text-2xl font-black tracking-wide">
+          DASRES
+        </h2>
+        <p className="text-xs text-slate-500 mt-1">
+          Trade Platform
+        </p>
+
+      </div>
+
+      <nav className="flex flex-col gap-1">
+        <p className={sectionTitleClass}>Main</p>
+        <Link
+          href="/dashboard"
+          className={getLinkClass("/dashboard")}
+        >
           Dashboard
         </Link>
-
-        {isAdmin && (
-          <Link href="/dashboard/users">
-            Users
-          </Link>
-        )}
-
-        <Link href="/experts">
+        <Link
+          href="/dashboard/experts"
+          className={getLinkClass("/dashboard/experts")}
+        >
           Experts
         </Link>
 
-        <Link href="/companies">
+        <Link
+          href="/dashboard/companies"
+          className={getLinkClass("/dashboard/companies")}
+        >
           Companies
         </Link>
 
-        <Link href="/opportunities">
+        <Link
+          href="/dashboard/opportunities"
+          className={getLinkClass("/dashboard/opportunities")}
+        >
           Opportunities
         </Link>
+        <p className={sectionTitleClass}>
+          Trade Management
+        </p>
+
+        <Link
+          href="/dashboard/cases"
+          className={getLinkClass("/dashboard/cases")}
+        >
+          Trade Cases
+        </Link>
+
+        <Link
+          href="/dashboard/my-cases"
+          className={getLinkClass("/dashboard/my-cases")}
+        >
+          My Active Cases
+        </Link>
+
+        <Link
+          href="/dashboard/my-proposals"
+          className={getLinkClass("/dashboard/my-proposals")}
+        >
+          My Proposals
+        </Link>
+
+        <p className={sectionTitleClass}>Ownership</p>
+
+        <Link
+          href="/dashboard/my-companies"
+          className={getLinkClass("/dashboard/my-companies")}
+        >
+          My Companies
+        </Link>
+
+        {isAdmin && (
+          <>
+            <p className={sectionTitleClass}>Admin</p>
+
+            <Link
+              href="/dashboard/users"
+              className={getLinkClass("/dashboard/users")}
+            >
+              Users
+            </Link>
+          </>
+        )}
+
+        <p className={sectionTitleClass}>Account</p>
 
         <button
           onClick={handleLogout}
-          className="text-left text-red-400 hover:text-red-300"
+          className="mt-2 rounded-xl px-4 py-3 text-left text-sm text-red-400 hover:bg-red-950/40 hover:text-red-300 transition"
         >
           Logout
         </button>
