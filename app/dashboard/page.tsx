@@ -14,7 +14,14 @@ export default async function DashboardPage() {
   const companiesCount = await prisma.company.count();
   const opportunitiesCount =
     await prisma.opportunity.count();
-  const casesCount = await prisma.tradeCase.count();
+  const casesCount =
+  user.role === "admin"
+    ? await prisma.tradeCase.count()
+    : await prisma.tradeCase.count({
+        where: {
+          customerId: user.id,
+        },
+      });
   const latestExperts =
     await prisma.expert.findMany({
       orderBy: { id: "desc" },

@@ -11,7 +11,7 @@ type Props = {
 export default async function CaseDetailPage({
   params,
 }: Props) {
-  await requireUser();
+  const user = await requireUser();
 
   const { id } = await params;
 
@@ -38,15 +38,28 @@ export default async function CaseDetailPage({
     },
   });
 
-  if (!tradeCase) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">
-          Case Not Found
-        </h1>
-      </div>
-    );
-  }
+ if (!tradeCase) {
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      <h1 className="text-4xl font-bold">
+        Case Not Found
+      </h1>
+    </div>
+  );
+}
+
+if (
+  user.role !== "admin" &&
+  tradeCase.customerId !== user.id
+) {
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      <h1 className="text-4xl font-bold">
+        Access Denied
+      </h1>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">

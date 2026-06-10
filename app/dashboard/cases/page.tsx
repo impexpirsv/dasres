@@ -1,12 +1,19 @@
 import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
-
+import { requireUser } from "../../../lib/auth";
 export default async function CasesPage() {
+  const user = await requireUser();
   const cases = await prisma.tradeCase.findMany({
-    orderBy: {
-      id: "desc",
-    },
-  });
+  where:
+    user.role === "admin"
+      ? {}
+      : {
+          customerId: user.id,
+        },
+  orderBy: {
+    id: "desc",
+  },
+});
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
