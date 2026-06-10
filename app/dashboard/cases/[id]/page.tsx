@@ -4,6 +4,7 @@ import Link from "next/link";
 import CompleteCaseStepButton from "../../../components/CompleteCaseStepButton";
 import AddCaseMessageForm from "../../../components/AddCaseMessageForm";
 import AddCaseDocumentForm from "../../../components/AddCaseDocumentForm";
+import AddCaseProposalForm from "../../../components/AddCaseProposalForm";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -111,8 +112,8 @@ export default async function CaseDetailPage({
                   >
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center ${step.completed
-                          ? "bg-emerald-600"
-                          : "bg-slate-700"
+                        ? "bg-emerald-600"
+                        : "bg-slate-700"
                         }`}
                     >
                       {step.completed ? "✓" : "•"}
@@ -238,7 +239,7 @@ export default async function CaseDetailPage({
               <h2 className="text-2xl font-bold mb-4">
                 Proposals
               </h2>
-
+              <AddCaseProposalForm caseId={tradeCase.id} />
               {tradeCase.proposals.length === 0 ? (
                 <p className="text-slate-500">
                   No proposals yet.
