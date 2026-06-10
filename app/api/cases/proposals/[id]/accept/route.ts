@@ -10,9 +10,32 @@ export async function PATCH(
 
     const { id } = await params;
 
+    const proposal =
+      await prisma.caseProposal.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+
+    if (!proposal) {
+      return Response.json(
+        { message: "Proposal not found" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.caseProposal.updateMany({
+      where: {
+        caseId: proposal.caseId,
+      },
+      data: {
+        status: "REJECTED",
+      },
+    });
+
     await prisma.caseProposal.update({
       where: {
-        id: Number(id),
+        id: proposal.id,
       },
       data: {
         status: "ACCEPTED",
