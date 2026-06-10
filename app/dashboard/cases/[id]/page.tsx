@@ -35,31 +35,36 @@ export default async function CaseDetailPage({
           id: "asc",
         },
       },
+      proposals: {
+        orderBy: {
+          id: "desc",
+        },
+      },
     },
   });
 
- if (!tradeCase) {
-  return (
-    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-      <h1 className="text-4xl font-bold">
-        Case Not Found
-      </h1>
-    </div>
-  );
-}
+  if (!tradeCase) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+        <h1 className="text-4xl font-bold">
+          Case Not Found
+        </h1>
+      </div>
+    );
+  }
 
-if (
-  user.role !== "admin" &&
-  tradeCase.customerId !== user.id
-) {
-  return (
-    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-      <h1 className="text-4xl font-bold">
-        Access Denied
-      </h1>
-    </div>
-  );
-}
+  if (
+    user.role !== "admin" &&
+    tradeCase.customerId !== user.id
+  ) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+        <h1 className="text-4xl font-bold">
+          Access Denied
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -105,34 +110,33 @@ if (
                     className="flex items-start gap-4 bg-slate-950 border border-slate-800 rounded-2xl p-4"
                   >
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        step.completed
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${step.completed
                           ? "bg-emerald-600"
                           : "bg-slate-700"
-                      }`}
+                        }`}
                     >
                       {step.completed ? "✓" : "•"}
                     </div>
 
                     <div className="flex justify-between items-center w-full">
-  <div>
-    <p className="font-semibold">
-      {step.title}
-    </p>
+                      <div>
+                        <p className="font-semibold">
+                          {step.title}
+                        </p>
 
-    <p className="text-sm text-slate-500">
-      {step.completed
-        ? "Completed"
-        : "Pending"}
-    </p>
-  </div>
+                        <p className="text-sm text-slate-500">
+                          {step.completed
+                            ? "Completed"
+                            : "Pending"}
+                        </p>
+                      </div>
 
-  {!step.completed && (
-    <CompleteCaseStepButton
-      stepId={step.id}
-    />
-  )}
-</div>
+                      {!step.completed && (
+                        <CompleteCaseStepButton
+                          stepId={step.id}
+                        />
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -176,34 +180,34 @@ if (
             </div>
 
             <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-  <h2 className="text-2xl font-bold mb-4">
-    Documents
-  </h2>
+              <h2 className="text-2xl font-bold mb-4">
+                Documents
+              </h2>
 
-  <AddCaseDocumentForm caseId={tradeCase.id} />
+              <AddCaseDocumentForm caseId={tradeCase.id} />
 
-  <div className="mt-6">
-    {tradeCase.documents.length === 0 ? (
-      <p className="text-slate-500">
-        No documents uploaded yet.
-      </p>
-    ) : (
-      <div className="space-y-3">
-        {tradeCase.documents.map((document) => (
-          <a
-            key={document.id}
-            href={document.fileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block bg-slate-800 rounded-xl p-3 hover:bg-slate-700"
-          >
-            {document.name}
-          </a>
-        ))}
-      </div>
-    )}
-  </div>
-</div>
+              <div className="mt-6">
+                {tradeCase.documents.length === 0 ? (
+                  <p className="text-slate-500">
+                    No documents uploaded yet.
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {tradeCase.documents.map((document) => (
+                      <a
+                        key={document.id}
+                        href={document.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block bg-slate-800 rounded-xl p-3 hover:bg-slate-700"
+                      >
+                        {document.name}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
 
             <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
               <h2 className="text-2xl font-bold mb-4">
@@ -225,6 +229,38 @@ if (
                       className="bg-slate-800 rounded-xl p-3"
                     >
                       <p>{message.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold mb-4">
+                Proposals
+              </h2>
+
+              {tradeCase.proposals.length === 0 ? (
+                <p className="text-slate-500">
+                  No proposals yet.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {tradeCase.proposals.map((proposal) => (
+                    <div
+                      key={proposal.id}
+                      className="bg-slate-800 rounded-xl p-4"
+                    >
+                      <p className="font-semibold mb-2">
+                        {proposal.price || "No price"}
+                      </p>
+
+                      <p className="text-sm text-slate-300">
+                        {proposal.message}
+                      </p>
+
+                      <p className="text-xs text-slate-500 mt-2">
+                        {proposal.status}
+                      </p>
                     </div>
                   ))}
                 </div>
