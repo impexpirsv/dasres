@@ -11,13 +11,29 @@ export async function PATCH(
     const { id } = await params;
     const companyId = Number(id);
 
-    await prisma.company.update({
-      where: { id: companyId },
-      data: {
-        verificationStatus: "VERIFIED",
-        verifiedAt: new Date(),
-      },
-    });
+    const company =
+  await prisma.company.update({
+    where: {
+      id: companyId,
+    },
+    data: {
+      verificationStatus: "VERIFIED",
+      verifiedAt: new Date(),
+    },
+  });
+
+if (company.ownerId) {
+  await prisma.notification.create({
+    data: {
+      userId: company.ownerId,
+      title: "Company Verified",
+      message:
+        "Your company has been successfully verified.",
+      type: "COMPANY_VERIFIED",
+      link: `/companies/${company.id}`,
+    },
+  });
+}
 
     return Response.json({
       message: "Company verified",

@@ -1,5 +1,5 @@
 import { prisma } from "../../../../lib/prisma";
-import { requireAdmin } from "../../../../lib/auth";
+import { requireUser } from "../../../../lib/auth";
 import fs from "fs/promises";
 import path from "path";
 
@@ -16,6 +16,13 @@ const extensionMap: Record<string, string> = {
   "image/png": "png",
   "image/webp": "webp",
 };
+
+function canManageCompany(user: {
+  id: number;
+  role: string;
+}, ownerId: number | null) {
+  return user.role === "admin" || ownerId === user.id;
+}
 
 export async function GET(
   request: Request,
@@ -46,7 +53,7 @@ export async function GET(
     }
 
     return Response.json(company);
-  } catch (error) {
+  } catch {
     return Response.json(
       { message: "Error loading company" },
       { status: 500 }
@@ -59,7 +66,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireAdmin();
+    const user = await requireUser();
 
     const { id } = await params;
     const companyId = Number(id);
@@ -77,6 +84,7 @@ export async function DELETE(
       },
       select: {
         logoUrl: true,
+        ownerId: true,
       },
     });
 
@@ -84,6 +92,13 @@ export async function DELETE(
       return Response.json(
         { message: "Company not found" },
         { status: 404 }
+      );
+    }
+
+    if (!canManageCompany(user, company.ownerId)) {
+      return Response.json(
+        { message: "Unauthorized" },
+        { status: 403 }
       );
     }
 
@@ -96,9 +111,7 @@ export async function DELETE(
 
       try {
         await fs.unlink(filePath);
-      } catch {
-        // اگر لوگو قبلاً حذف شده بود، حذف رکورد متوقف نشود
-      }
+      } catch {}
     }
 
     await prisma.company.delete({
@@ -110,7 +123,7 @@ export async function DELETE(
     return Response.json({
       message: "Company deleted",
     });
-  } catch (error) {
+  } catch {
     return Response.json(
       { message: "Error deleting company" },
       { status: 500 }
@@ -123,7 +136,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireAdmin();
+    const user = await requireUser();
 
     const { id } = await params;
     const companyId = Number(id);
@@ -135,19 +148,28 @@ export async function PUT(
       );
     }
 
-    const currentCompany = await prisma.company.findUnique({
-      where: {
-        id: companyId,
-      },
-      select: {
-        logoUrl: true,
-      },
-    });
+    const currentCompany =
+      await prisma.company.findUnique({
+        where: {
+          id: companyId,
+        },
+        select: {
+          logoUrl: true,
+          ownerId: true,
+        },
+      });
 
     if (!currentCompany) {
       return Response.json(
         { message: "Company not found" },
         { status: 404 }
+      );
+    }
+
+    if (!canManageCompany(user, currentCompany.ownerId)) {
+      return Response.json(
+        { message: "Unauthorized" },
+        { status: 403 }
       );
     }
 
@@ -170,7 +192,6 @@ export async function PUT(
       !category ||
       !description ||
       !email ||
-      !website
     ) {
       return Response.json(
         { message: "All fields are required." },
@@ -210,9 +231,7 @@ export async function PUT(
 
         try {
           await fs.unlink(oldLogoPath);
-        } catch {
-          // اگر لوگوی قبلی وجود نداشت، آپدیت متوقف نشود
-        }
+        } catch {}
       }
 
       const bytes = await logo.arrayBuffer();
@@ -256,7 +275,7 @@ export async function PUT(
     });
 
     return Response.json(company);
-  } catch (error) {
+  } catch {
     return Response.json(
       { message: "Error updating company" },
       { status: 500 }

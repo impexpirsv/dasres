@@ -125,8 +125,19 @@ export default function DashboardSidebar({
             >
               Users
             </Link>
+
+            <Link
+              href="/dashboard/verifications"
+              className={getLinkClass(
+                "/dashboard/verifications"
+              )}
+            >
+              Verifications
+            </Link>
           </>
         )}
+
+        
 
         <p className={sectionTitleClass}>
           Communication

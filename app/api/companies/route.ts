@@ -101,7 +101,7 @@ export async function POST(request: Request) {
         name,
         country,
         category,
-        status: "Verified Company",
+        status: "Active",
         description,
         email,
         website,

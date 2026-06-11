@@ -3,6 +3,8 @@ import DeleteCompanyButton from "../../components/DeleteCompanyButton";
 import Link from "next/link";
 import type { Metadata } from "next";
 import CompanyVerificationButtons from "../../components/CompanyVerificationButtons";
+import { requireUser } from "../../../lib/auth";
+
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -61,6 +63,9 @@ export default async function CompanyProfilePage({
 }: Props) {
   const { id } = await params;
 
+  const user = await requireUser();
+  const isAdmin = user.role === "admin";
+
   const company = await prisma.company.findUnique({
     where: {
       id: Number(id),
@@ -76,6 +81,9 @@ export default async function CompanyProfilePage({
       </div>
     );
   }
+
+  const canManageCompany =
+    isAdmin || company.ownerId === user.id;
 
   const companySchema = {
     "@context": "https://schema.org",
@@ -117,7 +125,7 @@ export default async function CompanyProfilePage({
 
       <div className="max-w-6xl mx-auto px-6 py-20">
         <Link
-          href="/companies"
+          href="/dashboard/companies"
           className="text-blue-400 hover:underline mb-8 inline-block"
         >
           ← Back to Companies
@@ -137,58 +145,56 @@ export default async function CompanyProfilePage({
 
             <div className="p-10">
               <div className="flex flex-wrap items-center gap-3 mb-4">
-  <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
-    Status: {company.status}
-  </span>
+                <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
+                  Status: {company.status}
+                </span>
 
-  <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
-    {company.country}
-  </span>
+                <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
+                  {company.country}
+                </span>
 
-  {company.verificationStatus === "VERIFIED" && (
-    <span className="bg-emerald-600 px-4 py-2 rounded-full text-sm">
-      ✓ Verified Company
-    </span>
-  )}
+                {company.verificationStatus === "VERIFIED" && (
+                  <span className="bg-emerald-600 px-4 py-2 rounded-full text-sm">
+                    ✓ Verified Company
+                  </span>
+                )}
 
-  {company.verificationStatus === "REJECTED" && (
-    <span className="bg-red-600 px-4 py-2 rounded-full text-sm">
-      Rejected
-    </span>
-  )}
+                {company.verificationStatus === "REJECTED" && (
+                  <span className="bg-red-600 px-4 py-2 rounded-full text-sm">
+                    Rejected
+                  </span>
+                )}
 
-  {company.verificationStatus === "PENDING" && (
-    <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
-      Pending Verification
-    </span>
-  )}
-</div>
+                {company.verificationStatus === "PENDING" && (
+                  <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
+                    Pending Verification
+                  </span>
+                )}
+              </div>
 
               <div className="flex flex-wrap items-center gap-3 mb-4">
-  <h1 className="text-5xl font-bold">
-    {company.name}
-  </h1>
+                <h1 className="text-5xl font-bold">
+                  {company.name}
+                </h1>
 
-  
+                {company.planType === "GOLD" && (
+                  <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
+                    Gold
+                  </span>
+                )}
 
-  {company.planType === "GOLD" && (
-    <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
-      Gold
-    </span>
-  )}
+                {company.planType === "DIAMOND" && (
+                  <span className="bg-cyan-600 px-4 py-2 rounded-full text-sm">
+                    Diamond
+                  </span>
+                )}
 
-  {company.planType === "DIAMOND" && (
-    <span className="bg-cyan-600 px-4 py-2 rounded-full text-sm">
-      Diamond
-    </span>
-  )}
-
-  {company.planType === "ENTERPRISE" && (
-    <span className="bg-purple-600 px-4 py-2 rounded-full text-sm">
-      Enterprise
-    </span>
-  )}
-</div>
+                {company.planType === "ENTERPRISE" && (
+                  <span className="bg-purple-600 px-4 py-2 rounded-full text-sm">
+                    Enterprise
+                  </span>
+                )}
+              </div>
 
               <p className="text-blue-400 text-2xl mb-8">
                 {company.category}
@@ -227,7 +233,7 @@ export default async function CompanyProfilePage({
                     Website
                   </p>
                   <p className="text-slate-200 break-all">
-                    {company.website}
+                    {company.website || "Not provided"}
                   </p>
                 </div>
 
@@ -257,38 +263,46 @@ export default async function CompanyProfilePage({
                 Send Email
               </a>
 
-              <a
-                href={company.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 block text-center bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl"
-              >
-                Visit Website
-              </a>
+              {company.website && (
+                <a
+                  href={company.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 block text-center bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl"
+                >
+                  Visit Website
+                </a>
+              )}
             </div>
 
-            <div className="flex flex-col gap-3">
-  <div className="bg-slate-800 rounded-xl p-4">
-    <p className="text-slate-500 text-sm mb-2">
-      Verification Status
-    </p>
+            {canManageCompany && (
+              <div className="flex flex-col gap-3">
+                {isAdmin && (
+                  <div className="bg-slate-800 rounded-xl p-4">
+                    <p className="text-slate-500 text-sm mb-2">
+                      Verification Status
+                    </p>
 
-    <p className="text-slate-200 font-semibold mb-4">
-      {company.verificationStatus}
-    </p>
+                    <p className="text-slate-200 font-semibold mb-4">
+                      {company.verificationStatus}
+                    </p>
 
-    <CompanyVerificationButtons companyId={company.id} />
-  </div>
+                    <CompanyVerificationButtons
+                      companyId={company.id}
+                    />
+                  </div>
+                )}
 
-  <Link
-    href={`/dashboard/companies/${company.id}/edit`}
-    className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-center"
-  >
-    Edit Company
-  </Link>
+                <Link
+                  href={`/dashboard/companies/${company.id}/edit`}
+                  className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-center"
+                >
+                  Edit Company
+                </Link>
 
-  <DeleteCompanyButton id={company.id} />
-</div>
+                <DeleteCompanyButton id={company.id} />
+              </div>
+            )}
           </aside>
         </div>
       </div>

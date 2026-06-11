@@ -2,11 +2,50 @@ import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-
+import {
+  getBestPlan,
+  getCaseLimit,
+} from "../../../../lib/plans";
+const PLAN_LIMITS_ENABLED = false;
 async function createCase(formData: FormData) {
   "use server";
 
   const user = await requireUser();
+  const ownedCompanies =
+    await prisma.company.findMany({
+      where: {
+        ownerId: user.id,
+      },
+      select: {
+        planType: true,
+      },
+    });
+
+  const bestPlan = getBestPlan(
+    ownedCompanies.map((company) => company.planType)
+  );
+
+  const caseLimit = getCaseLimit(bestPlan);
+
+  const activeCasesCount =
+    await prisma.tradeCase.count({
+      where: {
+        customerId: user.id,
+        status: {
+          in: ["OPEN", "IN_PROGRESS"],
+        },
+      },
+    });
+
+  if (
+  PLAN_LIMITS_ENABLED &&
+  user.role !== "admin" &&
+  activeCasesCount >= caseLimit
+) {
+  throw new Error(
+    `Your ${bestPlan} plan allows up to ${caseLimit} active trade cases.`
+  );
+}
 
   const title = String(formData.get("title") || "");
   const description = String(
