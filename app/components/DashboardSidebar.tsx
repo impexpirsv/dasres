@@ -5,10 +5,12 @@ import { usePathname } from "next/navigation";
 
 interface DashboardSidebarProps {
   isAdmin: boolean;
+  unreadNotificationsCount: number;
 }
 
 export default function DashboardSidebar({
   isAdmin,
+  unreadNotificationsCount,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
 
@@ -126,6 +128,26 @@ export default function DashboardSidebar({
           </>
         )}
 
+        <p className={sectionTitleClass}>
+          Communication
+        </p>
+
+        <Link
+          href="/dashboard/notifications"
+          className={getLinkClass(
+            "/dashboard/notifications"
+          )}
+        >
+          <span className="flex items-center justify-between">
+            <span>Notifications</span>
+
+            {unreadNotificationsCount > 0 && (
+              <span className="ml-3 rounded-full bg-blue-500 px-2 py-0.5 text-xs font-bold text-white">
+                {unreadNotificationsCount}
+              </span>
+            )}
+          </span>
+        </Link>
         <p className={sectionTitleClass}>Account</p>
 
         <button

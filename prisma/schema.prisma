@@ -93,6 +93,8 @@ model User {
   createdAt DateTime  @default(now())
   sessions  Session[]
   companies Company[]
+
+  notifications Notification[]
 }
 
 model Session {
@@ -181,4 +183,22 @@ model CaseMessage {
   createdAt DateTime @default(now())
 
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+
+  userId Int
+
+  title   String
+  message String
+  type    String
+
+  isRead Boolean @default(false)
+
+  link String?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

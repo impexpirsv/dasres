@@ -15,6 +15,13 @@ export async function PATCH(
         where: {
           id: Number(id),
         },
+        include: {
+          company: {
+            include: {
+              owner: true,
+            },
+          },
+        },
       });
 
     if (!proposal) {
@@ -23,6 +30,37 @@ export async function PATCH(
         { status: 404 }
       );
     }
+
+    const tradeCase =
+      await prisma.tradeCase.findUnique({
+        where: {
+          id: proposal.caseId,
+        },
+      });
+
+    if (!tradeCase) {
+      return Response.json(
+        { message: "Case not found" },
+        { status: 404 }
+      );
+    }
+
+    const rejectedProposals =
+      await prisma.caseProposal.findMany({
+        where: {
+          caseId: proposal.caseId,
+          id: {
+            not: proposal.id,
+          },
+        },
+        include: {
+          company: {
+            include: {
+              owner: true,
+            },
+          },
+        },
+      });
 
     await prisma.caseProposal.updateMany({
       where: {
@@ -43,15 +81,43 @@ export async function PATCH(
     });
 
     await prisma.tradeCase.update({
-  where: {
-    id: proposal.caseId,
-  },
-  data: {
-    acceptedProposalId: proposal.id,
-    assignedAt: new Date(),
-    status: "IN_PROGRESS",
-  },
-});
+      where: {
+        id: proposal.caseId,
+      },
+      data: {
+        acceptedProposalId: proposal.id,
+        assignedAt: new Date(),
+        status: "IN_PROGRESS",
+      },
+    });
+
+    if (proposal.company?.ownerId) {
+      await prisma.notification.create({
+        data: {
+          userId: proposal.company.ownerId,
+          title: "Proposal Accepted",
+          message:
+            "Your proposal has been accepted.",
+          type: "PROPOSAL_ACCEPTED",
+          link: `/dashboard/cases/${tradeCase.id}`,
+        },
+      });
+    }
+
+    for (const rejectedProposal of rejectedProposals) {
+      if (rejectedProposal.company?.ownerId) {
+        await prisma.notification.create({
+          data: {
+            userId: rejectedProposal.company.ownerId,
+            title: "Proposal Rejected",
+            message:
+              "Your proposal was not selected.",
+            type: "PROPOSAL_REJECTED",
+            link: `/dashboard/cases/${tradeCase.id}`,
+          },
+        });
+      }
+    }
 
     return Response.json({
       message: "Proposal accepted",

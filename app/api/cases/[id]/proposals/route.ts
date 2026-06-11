@@ -66,6 +66,17 @@ export async function POST(
       },
     });
 
+    await prisma.notification.create({
+      data: {
+        userId: tradeCase.customerId,
+        title: "New Proposal Received",
+        message:
+          "A new proposal has been submitted for your trade case.",
+        type: "PROPOSAL_SUBMITTED",
+        link: `/dashboard/cases/${tradeCase.id}`,
+      },
+    });
+
     return Response.json({
       message: "Proposal created",
     });
