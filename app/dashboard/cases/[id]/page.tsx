@@ -6,6 +6,8 @@ import AddCaseMessageForm from "../../../components/AddCaseMessageForm";
 import AddCaseDocumentForm from "../../../components/AddCaseDocumentForm";
 import AddCaseProposalForm from "../../../components/AddCaseProposalForm";
 import ProposalActionButtons from "../../../components/ProposalActionButtons";
+import CompleteCaseButton from "../../../components/CompleteCaseButton";
+import AddReviewForm from "../../../components/AddReviewForm";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -46,6 +48,7 @@ export default async function CaseDetailPage({
           expert: true,
         },
       },
+      reviews: true,
     },
   });
 
@@ -59,45 +62,94 @@ export default async function CaseDetailPage({
     );
   }
 
-  if (
-    user.role !== "admin" &&
-    tradeCase.customerId !== user.id
-  ) {
-    const companies = await prisma.company.findMany({
-      orderBy: {
-        name: "asc",
-      },
-    });
+ const isAdmin = user.role === "admin";
+const isCustomer = tradeCase.customerId === user.id;
 
-    const experts = await prisma.expert.findMany({
-      orderBy: {
-        name: "asc",
-      },
-    });
+const winningProposal = tradeCase.proposals.find(
+  (proposal) =>
+    proposal.id === tradeCase.acceptedProposalId
+);
 
+const acceptedProviderUserId =
+  winningProposal?.company?.ownerId || null;
 
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">
-          Access Denied
-        </h1>
-      </div>
-    );
-  }
-  const winningProposal = tradeCase.proposals.find(
-    (proposal) => proposal.id === tradeCase.acceptedProposalId
-  );
-  const companies = await prisma.company.findMany({
+const isAcceptedProvider =
+  acceptedProviderUserId === user.id;
+
+const userMatchingCompanies =
+  await prisma.company.findMany({
+    where: {
+      ownerId: user.id,
+      category: tradeCase.category,
+    },
     orderBy: {
       name: "asc",
     },
   });
+
+const canViewCase =
+  isAdmin ||
+  isCustomer ||
+  isAcceptedProvider ||
+  (tradeCase.status === "OPEN" &&
+    userMatchingCompanies.length > 0);
+
+if (!canViewCase) {
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      <h1 className="text-4xl font-bold">
+        Access Denied
+      </h1>
+    </div>
+  );
+}
+
+const hasReviewedProvider =
+  acceptedProviderUserId
+    ? tradeCase.reviews.some(
+        (review) =>
+          review.reviewerId === user.id &&
+          review.reviewedUserId === acceptedProviderUserId
+      )
+    : true;
+
+const hasReviewedCustomer =
+  tradeCase.reviews.some(
+    (review) =>
+      review.reviewerId === user.id &&
+      review.reviewedUserId === tradeCase.customerId
+  );
+  const companies = isAdmin
+    ? await prisma.company.findMany({
+      where: {
+        category: tradeCase.category,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    })
+    : userMatchingCompanies;
 
   const experts = await prisma.expert.findMany({
+    where: {
+      specialty: tradeCase.category,
+      ...(isAdmin
+        ? {}
+        : {
+          ownerId: user.id,
+        }),
+    },
     orderBy: {
       name: "asc",
     },
   });
+
+  const canSubmitProposal =
+    tradeCase.status === "OPEN" &&
+    !tradeCase.acceptedProposalId &&
+    !isCustomer &&
+    companies.length > 0;
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-6 py-20">
@@ -118,6 +170,10 @@ export default async function CaseDetailPage({
 
                 <span className="bg-blue-600 px-4 py-2 rounded-full text-sm">
                   {tradeCase.status}
+                </span>
+
+                <span className="bg-purple-600 px-4 py-2 rounded-full text-sm">
+                  {tradeCase.category}
                 </span>
               </div>
 
@@ -163,7 +219,7 @@ export default async function CaseDetailPage({
                         </p>
                       </div>
 
-                      {!step.completed && (
+                      {isAdmin && !step.completed && (
                         <CompleteCaseStepButton
                           stepId={step.id}
                         />
@@ -180,7 +236,40 @@ export default async function CaseDetailPage({
               <h2 className="text-2xl font-bold mb-4">
                 Case Information
               </h2>
+              {tradeCase.status === "COMPLETED" && (
+                <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+                  <h2 className="text-2xl font-bold mb-4">
+                    Reviews
+                  </h2>
 
+                  {isCustomer &&
+                    acceptedProviderUserId &&
+                    !hasReviewedProvider && (
+                      <AddReviewForm
+                        caseId={tradeCase.id}
+                        reviewedUserId={acceptedProviderUserId}
+                        label="Review accepted provider"
+                      />
+                    )}
+
+                  {!isCustomer &&
+                    acceptedProviderUserId === user.id &&
+                    !hasReviewedCustomer && (
+                      <AddReviewForm
+                        caseId={tradeCase.id}
+                        reviewedUserId={tradeCase.customerId}
+                        label="Review customer"
+                      />
+                    )}
+
+                  {((isCustomer && hasReviewedProvider) ||
+                    (!isCustomer && hasReviewedCustomer)) && (
+                      <p className="text-slate-500">
+                        Your review has already been submitted.
+                      </p>
+                    )}
+                </div>
+              )}
               <div className="space-y-4">
                 <div>
                   <p className="text-slate-500 text-sm">
@@ -188,6 +277,15 @@ export default async function CaseDetailPage({
                   </p>
                   <p className="text-slate-200">
                     {tradeCase.status}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Category
+                  </p>
+                  <p className="text-slate-200">
+                    {tradeCase.category}
                   </p>
                 </div>
 
@@ -208,32 +306,37 @@ export default async function CaseDetailPage({
                     {tradeCase.updatedAt.toLocaleDateString()}
                   </p>
                 </div>
+
                 <div>
                   <p className="text-slate-500 text-sm">
                     Winning Proposal
                   </p>
                   <p className="text-slate-200">
                     {winningProposal
-                      ? `#${winningProposal.id} - ${winningProposal.price || "No price"}`
+                      ? `#${winningProposal.id} - ${winningProposal.price || "No price"
+                      }`
                       : "Not selected"}
                   </p>
-                  <div>
-                    <p className="text-slate-500 text-sm">
-                      Winning Company
-                    </p>
-                    <p className="text-slate-200">
-                      {winningProposal?.company?.name || "Not selected"}
-                    </p>
-                  </div>
+                </div>
 
-                  <div>
-                    <p className="text-slate-500 text-sm">
-                      Winning Expert
-                    </p>
-                    <p className="text-slate-200">
-                      {winningProposal?.expert?.name || "Not selected"}
-                    </p>
-                  </div>
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Winning Company
+                  </p>
+                  <p className="text-slate-200">
+                    {winningProposal?.company?.name ||
+                      "Not selected"}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Winning Expert
+                  </p>
+                  <p className="text-slate-200">
+                    {winningProposal?.expert?.name ||
+                      "Not selected"}
+                  </p>
                 </div>
 
                 <div>
@@ -245,6 +348,12 @@ export default async function CaseDetailPage({
                       ? tradeCase.assignedAt.toLocaleDateString()
                       : "Not assigned"}
                   </p>
+                  {(isAdmin || isCustomer) &&
+                    tradeCase.status === "IN_PROGRESS" && (
+                      <div className="pt-4 border-t border-slate-800">
+                        <CompleteCaseButton caseId={tradeCase.id} />
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
@@ -254,7 +363,9 @@ export default async function CaseDetailPage({
                 Documents
               </h2>
 
-              <AddCaseDocumentForm caseId={tradeCase.id} />
+              {(isAdmin || isCustomer) && (
+                <AddCaseDocumentForm caseId={tradeCase.id} />
+              )}
 
               <div className="mt-6">
                 {tradeCase.documents.length === 0 ? (
@@ -284,41 +395,59 @@ export default async function CaseDetailPage({
                 Messages
               </h2>
 
-              <AddCaseMessageForm caseId={tradeCase.id} />
-
-              <div className="mt-6"></div>
-              {tradeCase.messages.length === 0 ? (
-                <p className="text-slate-500">
-                  No messages yet.
-                </p>
-              ) : (
-                <div className="space-y-3">
-                  {tradeCase.messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className="bg-slate-800 rounded-xl p-3"
-                    >
-                      <p>{message.content}</p>
-                    </div>
-                  ))}
-                </div>
+              {(isAdmin || isCustomer) && (
+                <AddCaseMessageForm caseId={tradeCase.id} />
               )}
+
+              <div className="mt-6">
+                {tradeCase.messages.length === 0 ? (
+                  <p className="text-slate-500">
+                    No messages yet.
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {tradeCase.messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className="bg-slate-800 rounded-xl p-3"
+                      >
+                        <p>{message.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
+
             <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
               <h2 className="text-2xl font-bold mb-4">
                 Proposals
               </h2>
-              {tradeCase.status === "OPEN" ? (
+
+              {canSubmitProposal ? (
                 <AddCaseProposalForm
                   caseId={tradeCase.id}
                   companies={companies}
                   experts={experts}
                 />
-              ) : (
+              ) : tradeCase.acceptedProposalId ? (
+                <p className="text-slate-500 mb-6">
+                  A winning proposal has already been selected.
+                </p>
+              ) : tradeCase.status !== "OPEN" ? (
                 <p className="text-slate-500 mb-6">
                   This case is already in progress. New proposals are closed.
                 </p>
+              ) : isCustomer ? (
+                <p className="text-slate-500 mb-6">
+                  You cannot submit a proposal for your own case.
+                </p>
+              ) : (
+                <p className="text-slate-500 mb-6">
+                  You do not have a matching company for this case category.
+                </p>
               )}
+
               {tradeCase.proposals.length === 0 ? (
                 <p className="text-slate-500">
                   No proposals yet.
@@ -335,15 +464,14 @@ export default async function CaseDetailPage({
                       </p>
 
                       <p className="text-sm text-blue-400">
-                        Company:
-                        {" "}
+                        Company:{" "}
                         {proposal.company?.name || "Unknown"}
                       </p>
 
                       <p className="text-sm text-emerald-400">
-                        Expert:
-                        {" "}
-                        {proposal.expert?.name || "Not assigned"}
+                        Expert:{" "}
+                        {proposal.expert?.name ||
+                          "Not assigned"}
                       </p>
 
                       <p className="text-sm text-slate-300">
@@ -353,9 +481,13 @@ export default async function CaseDetailPage({
                       <p className="text-xs text-slate-500 mt-2">
                         {proposal.status}
                       </p>
-                      {proposal.status === "PENDING" && (
-                        <ProposalActionButtons proposalId={proposal.id} />
-                      )}
+
+                      {isCustomer &&
+                        proposal.status === "PENDING" && (
+                          <ProposalActionButtons
+                            proposalId={proposal.id}
+                          />
+                        )}
                     </div>
                   ))}
                 </div>

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import DeleteExpertButton from "../../components/DeleteExpertButton";
 import type { Metadata } from "next";
+import ExpertReviewForm from "../../components/ExpertReviewForm";
+import { cookies } from "next/headers";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -21,7 +23,8 @@ export async function generateMetadata({
   if (!expert) {
     return {
       title: "Expert Not Found",
-      description: "The requested expert profile could not be found.",
+      description:
+        "The requested expert profile could not be found.",
     };
   }
 
@@ -75,6 +78,51 @@ export default async function ExpertProfilePage({
       </div>
     );
   }
+
+  const reviews = expert.ownerId
+    ? await prisma.review.findMany({
+        where: {
+          reviewedUserId: expert.ownerId,
+        },
+        include: {
+          reviewer: true,
+        },
+        orderBy: {
+          id: "desc",
+        },
+      })
+    : [];
+
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce(
+          (sum, review) => sum + review.rating,
+          0
+        ) / reviews.length
+      : 0;
+
+  const cookieStore = await cookies();
+
+  const token =
+    cookieStore.get("dasres_session_token")?.value;
+
+  const session = token
+    ? await prisma.session.findUnique({
+        where: {
+          token,
+        },
+        include: {
+          user: true,
+        },
+      })
+    : null;
+
+  const currentUser = session?.user || null;
+
+  const canReview =
+    currentUser &&
+    expert.ownerId &&
+    currentUser.id !== expert.ownerId;
 
   const expertSchema = {
     "@context": "https://schema.org",
@@ -209,6 +257,59 @@ export default async function ExpertProfilePage({
               </div>
             </aside>
           </div>
+
+          <div className="mt-10 bg-slate-900 rounded-3xl p-6 border border-slate-800">
+            <h2 className="text-2xl font-bold mb-4">
+              Expert Rating
+            </h2>
+
+            {reviews.length > 0 ? (
+              <div className="mb-6">
+                <p className="text-yellow-400 text-xl font-bold">
+                  ⭐ {averageRating.toFixed(1)} / 5
+                </p>
+                <p className="text-slate-400">
+                  Based on {reviews.length} review
+                  {reviews.length > 1 ? "s" : ""}
+                </p>
+              </div>
+            ) : (
+              <p className="text-slate-400 mb-6">
+                No reviews yet for this expert.
+              </p>
+            )}
+
+            <div className="space-y-4">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="bg-slate-950 border border-slate-800 rounded-2xl p-4"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-semibold">
+                      {review.reviewer?.name ||
+                        review.reviewer?.email ||
+                        "User"}
+                    </p>
+
+                    <p className="text-yellow-400">
+                      ⭐ {review.rating}/5
+                    </p>
+                  </div>
+
+                  {review.comment && (
+                    <p className="text-slate-300">
+                      {review.comment}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {canReview && (
+            <ExpertReviewForm expertId={expert.id} />
+          )}
         </div>
       </div>
     </>

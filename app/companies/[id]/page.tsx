@@ -82,6 +82,25 @@ export default async function CompanyProfilePage({
     );
   }
 
+  const companyReviews = company.ownerId
+    ? await prisma.review.findMany({
+        where: {
+          reviewedUserId: company.ownerId,
+        },
+        orderBy: {
+          id: "desc",
+        },
+      })
+    : [];
+
+  const averageRating =
+    companyReviews.length > 0
+      ? companyReviews.reduce(
+          (sum, review) => sum + review.rating,
+          0
+        ) / companyReviews.length
+      : null;
+
   const canManageCompany =
     isAdmin || company.ownerId === user.id;
 
@@ -200,6 +219,29 @@ export default async function CompanyProfilePage({
                 {company.category}
               </p>
 
+              <div className="mb-8 rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                <p className="text-slate-500 text-sm mb-2">
+                  Company Rating
+                </p>
+
+                {averageRating ? (
+                  <div>
+                    <p className="text-3xl font-bold text-yellow-400">
+                      ⭐ {averageRating.toFixed(1)} / 5.0
+                    </p>
+
+                    <p className="text-slate-400 mt-2">
+                      Based on {companyReviews.length} review
+                      {companyReviews.length === 1 ? "" : "s"}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-slate-500">
+                    No reviews yet.
+                  </p>
+                )}
+              </div>
+
               <div className="border-t border-slate-800 pt-8">
                 <h2 className="text-2xl font-bold mb-4">
                   Company Description
@@ -252,6 +294,17 @@ export default async function CompanyProfilePage({
                   </p>
                   <p className="text-slate-200">
                     {company.category}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Reputation
+                  </p>
+                  <p className="text-slate-200">
+                    {averageRating
+                      ? `⭐ ${averageRating.toFixed(1)} (${companyReviews.length} reviews)`
+                      : "No reviews yet"}
                   </p>
                 </div>
               </div>

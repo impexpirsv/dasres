@@ -1,5 +1,5 @@
 import { prisma } from "../../../lib/prisma";
-import { requireAdmin } from "../../../lib/auth";
+import { requireUser } from "../../../lib/auth";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 
@@ -13,7 +13,7 @@ const ALLOWED_IMAGE_TYPES = [
 
 export async function POST(request: Request) {
   try {
-    await requireAdmin();
+    const user = await requireUser();
 
     const formData = await request.formData();
 
@@ -101,10 +101,11 @@ export async function POST(request: Request) {
         name,
         country,
         specialty,
-        status: "Verified Expert",
+        status: "Active",
         experience,
         email,
         imageUrl,
+        ownerId: user.id,
       },
     });
 

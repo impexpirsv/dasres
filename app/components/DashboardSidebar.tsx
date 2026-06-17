@@ -89,7 +89,7 @@ export default function DashboardSidebar({
           href="/dashboard/cases"
           className={getLinkClass("/dashboard/cases")}
         >
-          Trade Cases
+          My Cases
         </Link>
 
         <Link
@@ -106,6 +106,14 @@ export default function DashboardSidebar({
           My Proposals
         </Link>
 
+        <Link
+          href="/dashboard/open-cases"
+          className={getLinkClass("/dashboard/open-cases")}
+        >
+          Open Cases
+        </Link>
+
+
         <p className={sectionTitleClass}>Ownership</p>
 
         <Link
@@ -113,6 +121,12 @@ export default function DashboardSidebar({
           className={getLinkClass("/dashboard/my-companies")}
         >
           My Companies
+        </Link>
+        <Link
+          href="/dashboard/my-experts"
+          className={getLinkClass("/dashboard/my-experts")}
+        >
+          My Experts
         </Link>
 
         {isAdmin && (
@@ -137,7 +151,7 @@ export default function DashboardSidebar({
           </>
         )}
 
-        
+
 
         <p className={sectionTitleClass}>
           Communication

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { TRADE_CATEGORIES } from "../../../../lib/categories";
 
 export default function NewCompanyPage() {
   const [form, setForm] = useState({
     name: "",
     country: "",
-    category: "",
+    category: "General",
     description: "",
     email: "",
     website: "",
@@ -43,7 +44,7 @@ export default function NewCompanyPage() {
         setForm({
           name: "",
           country: "",
-          category: "",
+          category: "General",
           description: "",
           email: "",
           website: "",
@@ -51,9 +52,10 @@ export default function NewCompanyPage() {
 
         setLogoFile(null);
       } else {
-        setMessage("Error creating company.");
+        const data = await response.json();
+        setMessage(data.message || "Error creating company.");
       }
-    } catch (error) {
+    } catch {
       setMessage("Something went wrong.");
     }
   }
@@ -92,9 +94,8 @@ export default function NewCompanyPage() {
             className="w-full p-3 rounded bg-slate-900"
           />
 
-          <input
+          <select
             required
-            placeholder="Category"
             value={form.category}
             onChange={(e) =>
               setForm({
@@ -103,7 +104,13 @@ export default function NewCompanyPage() {
               })
             }
             className="w-full p-3 rounded bg-slate-900"
-          />
+          >
+            {TRADE_CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
 
           <textarea
             required
@@ -133,7 +140,6 @@ export default function NewCompanyPage() {
           />
 
           <input
-            required
             placeholder="Website"
             value={form.website}
             onChange={(e) =>

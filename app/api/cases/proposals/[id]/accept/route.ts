@@ -6,7 +6,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireUser();
+    const user = await requireUser();
 
     const { id } = await params;
 
@@ -44,6 +44,37 @@ export async function PATCH(
         { status: 404 }
       );
     }
+
+    if (
+  user.role !== "admin" &&
+  tradeCase.customerId !== user.id
+) {
+  return Response.json(
+    {
+      message: "You can only accept proposals for your own case.",
+    },
+    { status: 403 }
+  );
+}
+
+if (tradeCase.acceptedProposalId) {
+  return Response.json(
+    {
+      message:
+        "A proposal has already been accepted for this case.",
+    },
+    { status: 400 }
+  );
+}
+
+if (tradeCase.status !== "OPEN") {
+  return Response.json(
+    {
+      message: "This case is not open for proposal acceptance.",
+    },
+    { status: 400 }
+  );
+}
 
     const rejectedProposals =
       await prisma.caseProposal.findMany({

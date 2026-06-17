@@ -29,26 +29,48 @@ export default function AddCaseProposalForm({
   const [companyId, setCompanyId] = useState("");
   const [expertId, setExpertId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function submitProposal(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!message.trim()) return;
+    setError("");
+
+    if (!message.trim()) {
+      setError("Proposal message is required.");
+      return;
+    }
+
+    if (!companyId) {
+      setError("Please select a company.");
+      return;
+    }
 
     setLoading(true);
 
-    await fetch(`/api/cases/${caseId}/proposals`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message,
-        price,
-        companyId,
-        expertId,
-      }),
-    });
+    const response = await fetch(
+      `/api/cases/${caseId}/proposals`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+          price,
+          companyId,
+          expertId,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.message || "Failed to submit proposal.");
+      setLoading(false);
+      return;
+    }
 
     setMessage("");
     setPrice("");
@@ -61,6 +83,12 @@ export default function AddCaseProposalForm({
 
   return (
     <form onSubmit={submitProposal} className="space-y-3 mb-6">
+      {error && (
+        <div className="rounded-xl border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-300">
+          {error}
+        </div>
+      )}
+
       <select
         value={companyId}
         onChange={(e) => setCompanyId(e.target.value)}
@@ -79,7 +107,7 @@ export default function AddCaseProposalForm({
         onChange={(e) => setExpertId(e.target.value)}
         className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
       >
-        <option value="">Select expert optional</option>
+        <option value="">No expert / optional</option>
         {experts.map((expert) => (
           <option key={expert.id} value={expert.id}>
             {expert.name}

@@ -6,9 +6,10 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireUser();
+    const user = await requireUser();
 
     const { id } = await params;
+    const caseId = Number(id);
     const body = await request.json();
 
     const message = String(body.message || "").trim();
@@ -38,7 +39,7 @@ export async function POST(
 
     const tradeCase = await prisma.tradeCase.findUnique({
       where: {
-        id: Number(id),
+        id: caseId,
       },
     });
 
@@ -56,9 +57,89 @@ export async function POST(
       );
     }
 
+    
+
+    
+
+    const company = await prisma.company.findFirst({
+      where: {
+        id: companyId,
+        category: tradeCase.category,
+        ...(user.role === "admin"
+          ? {}
+          : {
+              ownerId: user.id,
+            }),
+      },
+      select: {
+        id: true,
+        ownerId: true,
+        category: true,
+      },
+    });
+
+    if (!company) {
+      return Response.json(
+        {
+          message:
+            "Invalid company. Company must belong to you and match this case category.",
+        },
+        { status: 403 }
+      );
+    }
+
+    if (expertId) {
+      const expert = await prisma.expert.findFirst({
+        where: {
+          id: expertId,
+          specialty: tradeCase.category,
+          ...(user.role === "admin"
+            ? {}
+            : {
+                ownerId: user.id,
+              }),
+        },
+        select: {
+          id: true,
+          ownerId: true,
+          specialty: true,
+        },
+      });
+
+      if (!expert) {
+        return Response.json(
+          {
+            message:
+              "Invalid expert. Expert must belong to you and match this case category.",
+          },
+          { status: 403 }
+        );
+      }
+    }
+
+    const existingProposal =
+      await prisma.caseProposal.findFirst({
+        where: {
+          caseId: tradeCase.id,
+          companyId,
+          expertId,
+        },
+      });
+
+    if (existingProposal) {
+      return Response.json(
+        {
+          message: expertId
+            ? "This company and expert have already submitted a proposal for this case."
+            : "This company has already submitted a proposal without an expert for this case.",
+        },
+        { status: 400 }
+      );
+    }
+
     await prisma.caseProposal.create({
       data: {
-        caseId: Number(id),
+        caseId,
         companyId,
         expertId,
         message,
@@ -80,7 +161,9 @@ export async function POST(
     return Response.json({
       message: "Proposal created",
     });
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return Response.json(
       { message: "Failed to create proposal" },
       { status: 500 }

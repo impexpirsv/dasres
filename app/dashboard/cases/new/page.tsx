@@ -6,11 +6,25 @@ import {
   getBestPlan,
   getCaseLimit,
 } from "../../../../lib/plans";
+
 const PLAN_LIMITS_ENABLED = false;
+
+const CASE_CATEGORIES = [
+  "General",
+  "Customs Clearance",
+  "Shipping",
+  "Inspection",
+  "Insurance",
+  "Sourcing",
+  "Documentation",
+  "Payment",
+];
+
 async function createCase(formData: FormData) {
   "use server";
 
   const user = await requireUser();
+
   const ownedCompanies =
     await prisma.company.findMany({
       where: {
@@ -38,27 +52,35 @@ async function createCase(formData: FormData) {
     });
 
   if (
-  PLAN_LIMITS_ENABLED &&
-  user.role !== "admin" &&
-  activeCasesCount >= caseLimit
-) {
-  throw new Error(
-    `Your ${bestPlan} plan allows up to ${caseLimit} active trade cases.`
-  );
-}
+    PLAN_LIMITS_ENABLED &&
+    user.role !== "admin" &&
+    activeCasesCount >= caseLimit
+  ) {
+    throw new Error(
+      `Your ${bestPlan} plan allows up to ${caseLimit} active trade cases.`
+    );
+  }
 
-  const title = String(formData.get("title") || "");
+  const title = String(formData.get("title") || "").trim();
+  const category = String(
+    formData.get("category") || "General"
+  ).trim();
   const description = String(
     formData.get("description") || ""
-  );
+  ).trim();
 
   if (!title || !description) {
     throw new Error("Title and description are required");
   }
 
+  if (!CASE_CATEGORIES.includes(category)) {
+    throw new Error("Invalid case category");
+  }
+
   const tradeCase = await prisma.tradeCase.create({
     data: {
       title,
+      category,
       description,
       customerId: user.id,
       status: "OPEN",
@@ -129,6 +151,31 @@ export default async function NewCasePage() {
                 placeholder="Need customs clearance in Dubai"
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm text-slate-400 mb-2">
+                Case Category
+              </label>
+
+              <select
+                name="category"
+                defaultValue="General"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+              >
+                {CASE_CATEGORIES.map((category) => (
+                  <option
+                    key={category}
+                    value={category}
+                  >
+                    {category}
+                  </option>
+                ))}
+              </select>
+
+              <p className="text-xs text-slate-500 mt-2">
+                This helps Dasres match the case with relevant companies and experts.
+              </p>
             </div>
 
             <div>
