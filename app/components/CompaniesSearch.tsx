@@ -13,6 +13,9 @@ interface Company {
   email: string;
   website: string;
   logoUrl?: string | null;
+
+  averageRating: number;
+  reviewCount: number;
 }
 
 export default function CompaniesSearch({
@@ -24,7 +27,7 @@ export default function CompaniesSearch({
   const [country, setCountry] = useState("");
 
   const countries = Array.from(
-    new Set(companies.map((company) => company.country))
+    new Set(companies.map((company) => company.country)),
   );
 
   const filteredCompanies = companies.filter((company) => {
@@ -33,8 +36,7 @@ export default function CompaniesSearch({
       company.country.toLowerCase().includes(search.toLowerCase()) ||
       company.category.toLowerCase().includes(search.toLowerCase());
 
-    const matchesCountry =
-      country === "" || company.country === country;
+    const matchesCountry = country === "" || company.country === country;
 
     return matchesSearch && matchesCountry;
   });
@@ -73,23 +75,26 @@ export default function CompaniesSearch({
             className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
           >
             {company.logoUrl && (
-               <img
+              <img
                 src={company.logoUrl}
                 alt={company.name}
                 className="w-full h-40 object-contain rounded-xl mb-4 bg-white p-3"
-                />
+              />
             )}
-            <h2 className="text-2xl font-bold mb-2">
-              {company.name}
-            </h2>
+            <h2 className="text-2xl font-bold mb-2">{company.name}</h2>
 
-            <p className="text-blue-400">
-              {company.category}
-            </p>
+            <p className="text-blue-400">{company.category}</p>
 
-            <p className="text-slate-400 mt-2">
-              {company.country}
-            </p>
+            {company.reviewCount > 0 ? (
+              <div className="mt-3 text-yellow-400 font-semibold">
+                ⭐ {company.averageRating.toFixed(1)} ({company.reviewCount}{" "}
+                {company.reviewCount > 1 ? "reviews" : "review"})
+              </div>
+            ) : (
+              <div className="mt-3 text-slate-500">No rating yet</div>
+            )}
+
+            <p className="text-slate-400 mt-2">{company.country}</p>
 
             <div className="mt-4 inline-block bg-green-600 px-3 py-1 rounded">
               {company.status}

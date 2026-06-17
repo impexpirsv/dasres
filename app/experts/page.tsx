@@ -20,7 +20,39 @@ export default async function ExpertsPage({
   const experts = await prisma.expert.findMany({
     skip: (currentPage - 1) * PAGE_SIZE,
     take: PAGE_SIZE,
+    orderBy: {
+      id: "desc",
+    },
   });
+
+  const expertsWithRatings = await Promise.all(
+    experts.map(async (expert) => {
+      const reviews = expert.ownerId
+        ? await prisma.review.findMany({
+            where: {
+              reviewedUserId: expert.ownerId,
+            },
+            select: {
+              rating: true,
+            },
+          })
+        : [];
+
+      const averageRating =
+        reviews.length > 0
+          ? reviews.reduce(
+              (sum, review) => sum + review.rating,
+              0
+            ) / reviews.length
+          : 0;
+
+      return {
+        ...expert,
+        averageRating,
+        reviewCount: reviews.length,
+      };
+    })
+  );
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -33,7 +65,7 @@ export default async function ExpertsPage({
           Find verified international trade experts.
         </p>
 
-        <ExpertsSearch experts={experts} />
+        <ExpertsSearch experts={expertsWithRatings} />
 
         <div className="flex justify-center gap-4 mt-12">
           {currentPage > 1 && (

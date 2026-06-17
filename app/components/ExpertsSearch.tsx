@@ -12,6 +12,8 @@ interface Expert {
   experience: string;
   email: string;
   imageUrl?: string | null;
+  averageRating: number;
+  reviewCount: number;
 }
 
 export default function ExpertsSearch({
@@ -28,9 +30,15 @@ export default function ExpertsSearch({
 
   const filteredExperts = experts.filter((expert) => {
     const matchesSearch =
-      expert.name.toLowerCase().includes(search.toLowerCase()) ||
-      expert.country.toLowerCase().includes(search.toLowerCase()) ||
-      expert.specialty.toLowerCase().includes(search.toLowerCase());
+      expert.name
+        .toLowerCase()
+        .includes(search.toLowerCase()) ||
+      expert.country
+        .toLowerCase()
+        .includes(search.toLowerCase()) ||
+      expert.specialty
+        .toLowerCase()
+        .includes(search.toLowerCase());
 
     const matchesCountry =
       country === "" || expert.country === country;
@@ -72,12 +80,13 @@ export default function ExpertsSearch({
             className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
           >
             {expert.imageUrl && (
-             <img
-              src={expert.imageUrl}
-              alt={expert.name}
-              className="w-full h-48 object-cover rounded-xl mb-4"
+              <img
+                src={expert.imageUrl}
+                alt={expert.name}
+                className="w-full h-48 object-cover rounded-xl mb-4"
               />
-           )}
+            )}
+
             <h2 className="text-2xl font-bold mb-2">
               {expert.name}
             </h2>
@@ -85,6 +94,18 @@ export default function ExpertsSearch({
             <p className="text-blue-400">
               {expert.specialty}
             </p>
+
+            {expert.reviewCount > 0 ? (
+              <div className="mt-3 text-yellow-400 font-semibold">
+                ⭐ {expert.averageRating.toFixed(1)} (
+                {expert.reviewCount}{" "}
+                {expert.reviewCount > 1 ? "reviews" : "review"})
+              </div>
+            ) : (
+              <div className="mt-3 text-slate-500">
+                No rating yet
+              </div>
+            )}
 
             <p className="text-slate-400 mt-2">
               {expert.country}

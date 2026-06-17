@@ -2,8 +2,6 @@ import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import DeleteExpertButton from "../../components/DeleteExpertButton";
 import type { Metadata } from "next";
-import ExpertReviewForm from "../../components/ExpertReviewForm";
-import { cookies } from "next/headers";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -101,29 +99,6 @@ export default async function ExpertProfilePage({
         ) / reviews.length
       : 0;
 
-  const cookieStore = await cookies();
-
-  const token =
-    cookieStore.get("dasres_session_token")?.value;
-
-  const session = token
-    ? await prisma.session.findUnique({
-        where: {
-          token,
-        },
-        include: {
-          user: true,
-        },
-      })
-    : null;
-
-  const currentUser = session?.user || null;
-
-  const canReview =
-    currentUser &&
-    expert.ownerId &&
-    currentUser.id !== expert.ownerId;
-
   const expertSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -180,9 +155,21 @@ export default async function ExpertProfilePage({
                   {expert.name}
                 </h1>
 
-                <p className="text-blue-400 text-2xl mb-8">
+                <p className="text-blue-400 text-2xl mb-4">
                   {expert.specialty}
                 </p>
+
+                {reviews.length > 0 ? (
+                  <div className="mb-8 text-yellow-400 font-semibold text-lg">
+                    ⭐ {averageRating.toFixed(1)} / 5 (
+                    {reviews.length}{" "}
+                    {reviews.length > 1 ? "reviews" : "review"})
+                  </div>
+                ) : (
+                  <div className="mb-8 text-slate-500">
+                    No rating yet
+                  </div>
+                )}
 
                 <div className="border-t border-slate-800 pt-8">
                   <h2 className="text-2xl font-bold mb-4">
@@ -307,9 +294,10 @@ export default async function ExpertProfilePage({
             </div>
           </div>
 
-          {canReview && (
-            <ExpertReviewForm expertId={expert.id} />
-          )}
+          <div className="mt-8 bg-slate-900 border border-slate-800 rounded-3xl p-6 text-slate-400">
+            Reviews can only be submitted after a completed trade
+            case.
+          </div>
         </div>
       </div>
     </>

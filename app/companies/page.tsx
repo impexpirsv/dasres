@@ -18,9 +18,41 @@ export default async function CompaniesPage({
   const totalPages = Math.ceil(totalCompanies / PAGE_SIZE);
 
   const companies = await prisma.company.findMany({
-    skip: (currentPage - 1) * PAGE_SIZE,
-    take: PAGE_SIZE,
-  });
+  skip: (currentPage - 1) * PAGE_SIZE,
+  take: PAGE_SIZE,
+  orderBy: {
+    id: "desc",
+  },
+});
+
+const companiesWithRatings = await Promise.all(
+  companies.map(async (company) => {
+    const reviews = company.ownerId
+      ? await prisma.review.findMany({
+          where: {
+            reviewedUserId: company.ownerId,
+          },
+          select: {
+            rating: true,
+          },
+        })
+      : [];
+
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce(
+            (sum, review) => sum + review.rating,
+            0
+          ) / reviews.length
+        : 0;
+
+    return {
+      ...company,
+      averageRating,
+      reviewCount: reviews.length,
+    };
+  })
+);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -31,7 +63,7 @@ export default async function CompaniesPage({
           Find verified international trade companies.
         </p>
 
-        <CompaniesSearch companies={companies} />
+        <CompaniesSearch companies={companiesWithRatings} />
 
         <div className="flex justify-center gap-4 mt-12">
           {currentPage > 1 && (
