@@ -37,10 +37,13 @@ export default async function CaseDetailPage({ params }: Props) {
         },
       },
       documents: {
-        orderBy: {
-          id: "desc",
-        },
-      },
+  orderBy: {
+    id: "desc",
+  },
+  include: {
+    uploader: true,
+  },
+},
       messages: {
         orderBy: {
           id: "asc",
@@ -294,9 +297,12 @@ export default async function CaseDetailPage({ params }: Props) {
               <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
                 <h2 className="text-2xl font-bold mb-4">Messages</h2>
 
-                {(isAdmin || isCustomer || isAcceptedProvider) && (
-                  <AddCaseMessageForm caseId={tradeCase.id} />
-                )}
+               {(isAdmin ||
+  isCustomer ||
+  isAcceptedProvider) &&
+  tradeCase.status !== "COMPLETED" && (
+    <AddCaseMessageForm caseId={tradeCase.id} />
+)}
 
                 <div className="mt-6">
                   {tradeCase.messages.length === 0 ? (
@@ -351,9 +357,12 @@ export default async function CaseDetailPage({ params }: Props) {
               <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
                 <h2 className="text-2xl font-bold mb-4">Documents</h2>
 
-                {(isAdmin || isCustomer || isAcceptedProvider) && (
-                  <AddCaseDocumentForm caseId={tradeCase.id} />
-                )}
+             {(isAdmin ||
+  isCustomer ||
+  isAcceptedProvider) &&
+  tradeCase.status !== "COMPLETED" && (
+    <AddCaseDocumentForm caseId={tradeCase.id} />
+)}
 
                 <div className="mt-6">
                   {tradeCase.documents.length === 0 ? (
@@ -361,16 +370,36 @@ export default async function CaseDetailPage({ params }: Props) {
                   ) : (
                     <div className="space-y-3">
                       {tradeCase.documents.map((document) => (
-                        <a
-                          key={document.id}
-                          href={document.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block bg-slate-950 border border-slate-800 rounded-xl p-3 hover:border-blue-500"
-                        >
-                          {document.name}
-                        </a>
-                      ))}
+  <div
+    key={document.id}
+    className="bg-slate-800 rounded-xl p-4"
+  >
+    <div className="flex justify-between items-start gap-4">
+      <div>
+        <p className="font-semibold">
+          {document.name}
+        </p>
+
+        <p className="text-sm text-blue-400 mt-1">
+          Uploaded by {document.uploader.name}
+        </p>
+
+        <p className="text-xs text-slate-500 mt-1">
+          {document.createdAt.toLocaleString()}
+        </p>
+      </div>
+
+      <a
+        href={document.fileUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm"
+      >
+        Download
+      </a>
+    </div>
+  </div>
+))}
                     </div>
                   )}
                 </div>

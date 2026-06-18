@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function NotificationLink({
   id,
@@ -11,18 +11,24 @@ export default function NotificationLink({
   href: string;
   children: React.ReactNode;
 }) {
-  async function handleClick() {
-    await fetch(
-      `/api/notifications/${id}/read`,
-      {
-        method: "POST",
-      }
-    );
+  const router = useRouter();
+
+  async function handleClick(
+    e: React.MouseEvent<HTMLAnchorElement>
+  ) {
+    e.preventDefault();
+
+    await fetch(`/api/notifications/${id}/read`, {
+      method: "POST",
+    });
+
+    router.refresh();
+    router.push(href);
   }
 
   return (
-    <Link href={href} onClick={handleClick}>
+    <a href={href} onClick={handleClick}>
       {children}
-    </Link>
+    </a>
   );
 }

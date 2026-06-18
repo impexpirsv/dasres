@@ -65,6 +65,7 @@ model User {
   notifications Notification[]
   sessions      Session[]
   caseMessages  CaseMessage[]
+  caseDocuments CaseDocument[]
   reviewsGiven  Review[]       @relation("ReviewAuthor")
 
   reviewsReceived Review[] @relation("ReviewTarget")
@@ -122,12 +123,19 @@ model CaseStep {
 }
 
 model CaseDocument {
-  id        Int       @id @default(autoincrement())
-  caseId    Int
-  name      String
-  fileUrl   String
-  createdAt DateTime  @default(now())
+  id Int @id @default(autoincrement())
+
+  caseId     Int
+  uploaderId Int
+
+  name    String
+  fileUrl String
+
+  createdAt DateTime @default(now())
+
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  uploader User @relation(fields: [uploaderId], references: [id])
 }
 
 model CaseMessage {

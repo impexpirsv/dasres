@@ -8,9 +8,65 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireUser();
+    const user = await requireUser();
 
     const { id } = await params;
+    const caseId = Number(id);
+
+    if (!caseId || Number.isNaN(caseId)) {
+      return Response.json(
+        { message: "Invalid case id" },
+        { status: 400 }
+      );
+    }
+
+    const tradeCase = await prisma.tradeCase.findUnique({
+      where: {
+        id: caseId,
+      },
+      include: {
+        proposals: {
+          where: {
+            status: "ACCEPTED",
+          },
+          include: {
+            company: true,
+          },
+        },
+      },
+    });
+
+    if (!tradeCase) {
+      return Response.json(
+        { message: "Case not found" },
+        { status: 404 }
+      );
+    }
+if (tradeCase.status === "COMPLETED") {
+  return Response.json(
+    {
+      message: "Completed cases are read-only.",
+    },
+    { status: 400 }
+  );
+}
+    const acceptedProposal = tradeCase.proposals[0];
+
+    const isAdmin = user.role === "admin";
+    const isCustomer = tradeCase.customerId === user.id;
+    const isAcceptedProvider =
+      acceptedProposal?.company?.ownerId === user.id;
+
+    if (!isAdmin && !isCustomer && !isAcceptedProvider) {
+      return Response.json(
+        {
+          message:
+            "You are not allowed to upload documents for this case.",
+        },
+        { status: 403 }
+      );
+    }
+
     const formData = await request.formData();
 
     const file = formData.get("file") as File | null;
@@ -34,7 +90,12 @@ export async function POST(
 
     await mkdir(uploadDir, { recursive: true });
 
-    const fileName = `${Date.now()}-${file.name}`;
+    const safeFileName = file.name.replace(
+      /[^a-zA-Z0-9._-]/g,
+      "-"
+    );
+
+    const fileName = `${Date.now()}-${safeFileName}`;
     const filePath = path.join(uploadDir, fileName);
 
     await writeFile(filePath, buffer);
@@ -43,7 +104,8 @@ export async function POST(
 
     await prisma.caseDocument.create({
       data: {
-        caseId: Number(id),
+        caseId,
+        uploaderId: user.id,
         name: file.name,
         fileUrl,
       },
@@ -52,7 +114,9 @@ export async function POST(
     return Response.json({
       message: "Document uploaded",
     });
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return Response.json(
       { message: "Failed to upload document" },
       { status: 500 }
