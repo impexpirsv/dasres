@@ -11,6 +11,13 @@ export async function PATCH(
     const { id } = await params;
     const caseId = Number(id);
 
+    if (!caseId || Number.isNaN(caseId)) {
+      return Response.json(
+        { message: "Invalid case id" },
+        { status: 400 }
+      );
+    }
+
     const tradeCase = await prisma.tradeCase.findUnique({
       where: {
         id: caseId,
@@ -47,14 +54,25 @@ export async function PATCH(
       );
     }
 
-    await prisma.tradeCase.update({
-      where: {
-        id: caseId,
-      },
-      data: {
-        status: "COMPLETED",
-      },
-    });
+    await prisma.$transaction([
+      prisma.tradeCase.update({
+        where: {
+          id: caseId,
+        },
+        data: {
+          status: "COMPLETED",
+        },
+      }),
+
+      prisma.caseStep.updateMany({
+        where: {
+          caseId,
+        },
+        data: {
+          completed: true,
+        },
+      }),
+    ]);
 
     return Response.json({
       message: "Case completed",

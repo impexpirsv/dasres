@@ -64,10 +64,10 @@ model User {
   experts       Expert[]
   notifications Notification[]
   sessions      Session[]
+  caseMessages  CaseMessage[]
+  reviewsGiven  Review[]       @relation("ReviewAuthor")
 
-  reviewsGiven Review[] @relation("ReviewAuthor")
-
-reviewsReceived Review[] @relation("ReviewTarget")
+  reviewsReceived Review[] @relation("ReviewTarget")
 }
 
 model Session {
@@ -131,11 +131,18 @@ model CaseDocument {
 }
 
 model CaseMessage {
-  id        Int       @id @default(autoincrement())
-  caseId    Int
-  content   String
-  createdAt DateTime  @default(now())
+  id Int @id @default(autoincrement())
+
+  caseId   Int
+  senderId Int
+
+  content String
+
+  createdAt DateTime @default(now())
+
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  sender User @relation(fields: [senderId], references: [id])
 }
 
 model Notification {
@@ -150,23 +157,22 @@ model Notification {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-
 model Review {
   id Int @id @default(autoincrement())
 
   caseId Int?
 
-  reviewerId Int
+  reviewerId     Int
   reviewedUserId Int
 
-  rating Int
+  rating  Int
   comment String?
 
   createdAt DateTime @default(now())
 
   tradeCase TradeCase? @relation(fields: [caseId], references: [id], onDelete: Cascade)
 
-  reviewer User @relation("ReviewAuthor", fields: [reviewerId], references: [id])
+  reviewer     User @relation("ReviewAuthor", fields: [reviewerId], references: [id])
   reviewedUser User @relation("ReviewTarget", fields: [reviewedUserId], references: [id])
 }
 
