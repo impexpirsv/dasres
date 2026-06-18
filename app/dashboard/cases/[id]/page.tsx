@@ -297,10 +297,8 @@ export default async function CaseDetailPage({ params }: Props) {
               <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
                 <h2 className="text-2xl font-bold mb-4">Messages</h2>
 
-               {(isAdmin ||
-  isCustomer ||
-  isAcceptedProvider) &&
-  tradeCase.status !== "COMPLETED" && (
+               {(isAdmin || isCustomer || isAcceptedProvider) &&
+  tradeCase.status === "IN_PROGRESS" && (
     <AddCaseMessageForm caseId={tradeCase.id} />
 )}
 
@@ -357,10 +355,8 @@ export default async function CaseDetailPage({ params }: Props) {
               <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
                 <h2 className="text-2xl font-bold mb-4">Documents</h2>
 
-             {(isAdmin ||
-  isCustomer ||
-  isAcceptedProvider) &&
-  tradeCase.status !== "COMPLETED" && (
+            {(isAdmin || isCustomer || isAcceptedProvider) &&
+  tradeCase.status === "IN_PROGRESS" && (
     <AddCaseDocumentForm caseId={tradeCase.id} />
 )}
 

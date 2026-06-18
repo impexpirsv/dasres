@@ -42,10 +42,11 @@ export async function POST(
         { status: 404 }
       );
     }
-if (tradeCase.status === "COMPLETED") {
+if (tradeCase.status !== "IN_PROGRESS") {
   return Response.json(
     {
-      message: "Completed cases are read-only.",
+      message:
+        "Documents can only be uploaded for in-progress cases.",
     },
     { status: 400 }
   );

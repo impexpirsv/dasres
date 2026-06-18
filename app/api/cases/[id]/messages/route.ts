@@ -43,14 +43,15 @@ export async function POST(
       return Response.json({ message: "Case not found" }, { status: 404 });
     }
 
-    if (tradeCase.status === "COMPLETED") {
-      return Response.json(
-        {
-          message: "Completed cases are read-only.",
-        },
-        { status: 400 },
-      );
-    }
+    if (tradeCase.status !== "IN_PROGRESS") {
+  return Response.json(
+    {
+      message:
+        "Messages are only available for in-progress cases.",
+    },
+    { status: 400 }
+  );
+}
 
     const acceptedProposal = tradeCase.proposals[0];
 
