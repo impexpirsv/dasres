@@ -26,14 +26,14 @@ export default function DashboardSidebar({
     const isActive =
       path === "/dashboard"
         ? pathname === "/dashboard"
-        : pathname === path ||
-        pathname.startsWith(path + "/");
+        : pathname === path || pathname.startsWith(path + "/");
 
     return `
       block rounded-xl px-4 py-3 text-sm transition
-      ${isActive
-        ? "bg-blue-600 text-white"
-        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+      ${
+        isActive
+          ? "bg-blue-600 text-white"
+          : "text-slate-300 hover:bg-slate-800 hover:text-white"
       }
     `;
   }
@@ -44,21 +44,13 @@ export default function DashboardSidebar({
   return (
     <aside className="w-72 min-h-screen bg-slate-950 border-r border-slate-800 p-5">
       <div className="mb-8 px-4">
-        <h2 className="text-2xl font-black tracking-wide">
-          DASRES
-        </h2>
-        <p className="text-xs text-slate-500 mt-1">
-          Trade Platform
-        </p>
-
+        <h2 className="text-2xl font-black tracking-wide">DASRES</h2>
+        <p className="text-xs text-slate-500 mt-1">Trade Platform</p>
       </div>
 
       <nav className="flex flex-col gap-1">
         <p className={sectionTitleClass}>Main</p>
-        <Link
-          href="/dashboard"
-          className={getLinkClass("/dashboard")}
-        >
+        <Link href="/dashboard" className={getLinkClass("/dashboard")}>
           Dashboard
         </Link>
         <Link
@@ -81,9 +73,7 @@ export default function DashboardSidebar({
         >
           Opportunities
         </Link>
-        <p className={sectionTitleClass}>
-          Trade Management
-        </p>
+        <p className={sectionTitleClass}>Trade Management</p>
 
         <Link
           href="/dashboard/cases"
@@ -107,12 +97,18 @@ export default function DashboardSidebar({
         </Link>
 
         <Link
+          href="/dashboard/reviews"
+          className={getLinkClass("/dashboard/reviews")}
+        >
+          My Reviews
+        </Link>
+
+        <Link
           href="/dashboard/open-cases"
           className={getLinkClass("/dashboard/open-cases")}
         >
           Open Cases
         </Link>
-
 
         <p className={sectionTitleClass}>Ownership</p>
 
@@ -142,26 +138,18 @@ export default function DashboardSidebar({
 
             <Link
               href="/dashboard/verifications"
-              className={getLinkClass(
-                "/dashboard/verifications"
-              )}
+              className={getLinkClass("/dashboard/verifications")}
             >
               Verifications
             </Link>
           </>
         )}
 
-
-
-        <p className={sectionTitleClass}>
-          Communication
-        </p>
+        <p className={sectionTitleClass}>Communication</p>
 
         <Link
           href="/dashboard/notifications"
-          className={getLinkClass(
-            "/dashboard/notifications"
-          )}
+          className={getLinkClass("/dashboard/notifications")}
         >
           <span className="flex items-center justify-between">
             <span>Notifications</span>
