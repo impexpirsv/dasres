@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import NotificationLink from "../../components/NotificationLink";
+import MarkAllNotificationsReadButton from "../../components/MarkAllNotificationsReadButton";
 export default async function NotificationsPage() {
     const user = await requireUser();
 
@@ -20,7 +21,18 @@ export default async function NotificationsPage() {
             <h1 className="text-4xl font-bold mb-8">
                 Notifications
             </h1>
+<div className="mb-8 flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900 p-5">
+  <div>
+    <p className="font-semibold">
+      Notification Center
+    </p>
+    <p className="text-sm text-slate-500">
+      Manage your case updates, messages, documents and system alerts.
+    </p>
+  </div>
 
+  <MarkAllNotificationsReadButton />
+</div>
             <div className="space-y-4">
                 {notifications.length === 0 && (
                     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
