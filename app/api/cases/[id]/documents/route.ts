@@ -42,21 +42,26 @@ export async function POST(
         { status: 404 }
       );
     }
-if (tradeCase.status !== "IN_PROGRESS") {
-  return Response.json(
-    {
-      message:
-        "Documents can only be uploaded for in-progress cases.",
-    },
-    { status: 400 }
-  );
-}
+
+    if (tradeCase.status !== "IN_PROGRESS") {
+      return Response.json(
+        {
+          message:
+            "Documents can only be uploaded for in-progress cases.",
+        },
+        { status: 400 }
+      );
+    }
+
     const acceptedProposal = tradeCase.proposals[0];
 
     const isAdmin = user.role === "admin";
     const isCustomer = tradeCase.customerId === user.id;
+    const acceptedProviderUserId =
+      acceptedProposal?.company?.ownerId || null;
+
     const isAcceptedProvider =
-      acceptedProposal?.company?.ownerId === user.id;
+      acceptedProviderUserId === user.id;
 
     if (!isAdmin && !isCustomer && !isAcceptedProvider) {
       return Response.json(
@@ -78,7 +83,37 @@ if (tradeCase.status !== "IN_PROGRESS") {
         { status: 400 }
       );
     }
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
+if (file.size > MAX_FILE_SIZE) {
+  return Response.json(
+    {
+      message:
+        "Maximum file size is 10MB.",
+    },
+    { status: 400 }
+  );
+}
+const ALLOWED_FILE_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
+
+if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+  return Response.json(
+    {
+      message:
+        "Only PDF, Word, Excel, JPG, PNG and WEBP files are allowed.",
+    },
+    { status: 400 }
+  );
+}
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
@@ -103,13 +138,46 @@ if (tradeCase.status !== "IN_PROGRESS") {
 
     const fileUrl = `/uploads/cases/${fileName}`;
 
-    await prisma.caseDocument.create({
-      data: {
-        caseId,
-        uploaderId: user.id,
-        name: file.name,
-        fileUrl,
-      },
+    await prisma.$transaction(async (tx) => {
+      await tx.caseDocument.create({
+        data: {
+          caseId,
+          uploaderId: user.id,
+          name: file.name,
+          fileUrl,
+        },
+      });
+
+      const receiverIds = new Set<number>();
+
+      if (tradeCase.customerId !== user.id) {
+        receiverIds.add(tradeCase.customerId);
+      }
+
+      if (
+        acceptedProviderUserId &&
+        acceptedProviderUserId !== user.id
+      ) {
+        receiverIds.add(acceptedProviderUserId);
+      }
+
+      await Promise.all(
+        Array.from(receiverIds).map((receiverId) =>
+          tx.notification.create({
+            data: {
+              userId: receiverId,
+              title: "New case document",
+              message: `${
+                user.name || user.email
+              } uploaded a document in case: ${
+                tradeCase.title
+              }`,
+              type: "CASE_DOCUMENT",
+              link: `/dashboard/cases/${tradeCase.id}`,
+            },
+          })
+        )
+      );
     });
 
     return Response.json({
