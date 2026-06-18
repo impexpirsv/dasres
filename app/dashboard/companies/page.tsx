@@ -25,7 +25,62 @@ export default async function DashboardCompaniesPage({
     await prisma.company.findMany({
       skip: (currentPage - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
+      orderBy: {
+        id: "desc",
+      },
+      select: {
+        id: true,
+        name: true,
+        country: true,
+        category: true,
+        status: true,
+        description: true,
+        email: true,
+        website: true,
+        logoUrl: true,
+        ownerId: true,
+        verificationStatus: true,
+      },
     });
+
+  const companiesWithRatings = await Promise.all(
+    companies.map(async (company) => {
+      const reviews = company.ownerId
+        ? await prisma.review.findMany({
+            where: {
+              reviewedUserId: company.ownerId,
+            },
+            select: {
+              rating: true,
+            },
+          })
+        : [];
+
+      const averageRating =
+        reviews.length > 0
+          ? reviews.reduce(
+              (sum, review) => sum + review.rating,
+              0
+            ) / reviews.length
+          : 0;
+
+      return {
+        id: company.id,
+        name: company.name,
+        country: company.country,
+        category: company.category,
+        status: company.status,
+        description: company.description,
+        email: company.email,
+        website: company.website,
+        logoUrl: company.logoUrl,
+        verificationStatus:
+          company.verificationStatus,
+        averageRating,
+        reviewCount: reviews.length,
+      };
+    })
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
@@ -37,7 +92,9 @@ export default async function DashboardCompaniesPage({
         Manage and browse verified international trade companies.
       </p>
 
-      <CompaniesSearch companies={companies} />
+      <CompaniesSearch
+        companies={companiesWithRatings}
+      />
 
       <div className="flex justify-center gap-4 mt-12">
         {currentPage > 1 && (

@@ -9,11 +9,40 @@ interface Expert {
   country: string;
   specialty: string;
   status: string;
+  verificationStatus: string;
   experience: string;
   email: string;
   imageUrl?: string | null;
   averageRating: number;
   reviewCount: number;
+}
+
+function VerificationBadge({
+  status,
+}: {
+  status: string;
+}) {
+  if (status === "VERIFIED") {
+    return (
+      <span className="inline-block bg-emerald-600 px-3 py-1 rounded text-sm">
+        ✓ Verified
+      </span>
+    );
+  }
+
+  if (status === "REJECTED") {
+    return (
+      <span className="inline-block bg-red-600 px-3 py-1 rounded text-sm">
+        Rejected
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-block bg-yellow-600 px-3 py-1 rounded text-sm">
+      Pending
+    </span>
+  );
 }
 
 export default function ExpertsSearch({
@@ -87,9 +116,15 @@ export default function ExpertsSearch({
               />
             )}
 
-            <h2 className="text-2xl font-bold mb-2">
-              {expert.name}
-            </h2>
+            <div className="flex justify-between items-start gap-3 mb-2">
+              <h2 className="text-2xl font-bold">
+                {expert.name}
+              </h2>
+
+              <VerificationBadge
+                status={expert.verificationStatus}
+              />
+            </div>
 
             <p className="text-blue-400">
               {expert.specialty}

@@ -9,6 +9,7 @@ interface Company {
   country: string;
   category: string;
   status: string;
+  verificationStatus: string;
   description: string;
   email: string;
   website: string;
@@ -16,6 +17,34 @@ interface Company {
 
   averageRating: number;
   reviewCount: number;
+}
+
+function VerificationBadge({
+  status,
+}: {
+  status: string;
+}) {
+  if (status === "VERIFIED") {
+    return (
+      <span className="inline-block bg-emerald-600 px-3 py-1 rounded text-sm">
+        ✓ Verified
+      </span>
+    );
+  }
+
+  if (status === "REJECTED") {
+    return (
+      <span className="inline-block bg-red-600 px-3 py-1 rounded text-sm">
+        Rejected
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-block bg-yellow-600 px-3 py-1 rounded text-sm">
+      Pending
+    </span>
+  );
 }
 
 export default function CompaniesSearch({
@@ -27,7 +56,7 @@ export default function CompaniesSearch({
   const [country, setCountry] = useState("");
 
   const countries = Array.from(
-    new Set(companies.map((company) => company.country)),
+    new Set(companies.map((company) => company.country))
   );
 
   const filteredCompanies = companies.filter((company) => {
@@ -36,7 +65,8 @@ export default function CompaniesSearch({
       company.country.toLowerCase().includes(search.toLowerCase()) ||
       company.category.toLowerCase().includes(search.toLowerCase());
 
-    const matchesCountry = country === "" || company.country === country;
+    const matchesCountry =
+      country === "" || company.country === country;
 
     return matchesSearch && matchesCountry;
   });
@@ -81,20 +111,38 @@ export default function CompaniesSearch({
                 className="w-full h-40 object-contain rounded-xl mb-4 bg-white p-3"
               />
             )}
-            <h2 className="text-2xl font-bold mb-2">{company.name}</h2>
 
-            <p className="text-blue-400">{company.category}</p>
+            <div className="flex justify-between items-start gap-3 mb-2">
+              <h2 className="text-2xl font-bold">
+                {company.name}
+              </h2>
+
+              <VerificationBadge
+                status={company.verificationStatus}
+              />
+            </div>
+
+            <p className="text-blue-400">
+              {company.category}
+            </p>
 
             {company.reviewCount > 0 ? (
               <div className="mt-3 text-yellow-400 font-semibold">
-                ⭐ {company.averageRating.toFixed(1)} ({company.reviewCount}{" "}
-                {company.reviewCount > 1 ? "reviews" : "review"})
+                ⭐ {company.averageRating.toFixed(1)} (
+                {company.reviewCount}{" "}
+                {company.reviewCount > 1
+                  ? "reviews"
+                  : "review"})
               </div>
             ) : (
-              <div className="mt-3 text-slate-500">No rating yet</div>
+              <div className="mt-3 text-slate-500">
+                No rating yet
+              </div>
             )}
 
-            <p className="text-slate-400 mt-2">{company.country}</p>
+            <p className="text-slate-400 mt-2">
+              {company.country}
+            </p>
 
             <div className="mt-4 inline-block bg-green-600 px-3 py-1 rounded">
               {company.status}

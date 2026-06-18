@@ -20,7 +20,60 @@ export default async function DashboardExpertsPage({
   const experts = await prisma.expert.findMany({
     skip: (currentPage - 1) * PAGE_SIZE,
     take: PAGE_SIZE,
+    orderBy: {
+      id: "desc",
+    },
+    select: {
+      id: true,
+      name: true,
+      country: true,
+      specialty: true,
+      status: true,
+      experience: true,
+      email: true,
+      imageUrl: true,
+      ownerId: true,
+      verificationStatus: true,
+    },
   });
+
+  const expertsWithRatings = await Promise.all(
+    experts.map(async (expert) => {
+      const reviews = expert.ownerId
+        ? await prisma.review.findMany({
+            where: {
+              reviewedUserId: expert.ownerId,
+            },
+            select: {
+              rating: true,
+            },
+          })
+        : [];
+
+      const averageRating =
+        reviews.length > 0
+          ? reviews.reduce(
+              (sum, review) => sum + review.rating,
+              0
+            ) / reviews.length
+          : 0;
+
+      return {
+        id: expert.id,
+        name: expert.name,
+        country: expert.country,
+        specialty: expert.specialty,
+        status: expert.status,
+        experience: expert.experience,
+        email: expert.email,
+        imageUrl: expert.imageUrl,
+        verificationStatus:
+          expert.verificationStatus,
+        averageRating,
+        reviewCount: reviews.length,
+      };
+    })
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
@@ -32,7 +85,7 @@ export default async function DashboardExpertsPage({
         Manage and browse verified international trade experts.
       </p>
 
-      <ExpertsSearch experts={experts} />
+      <ExpertsSearch experts={expertsWithRatings} />
 
       <div className="flex justify-center gap-4 mt-12">
         {currentPage > 1 && (
