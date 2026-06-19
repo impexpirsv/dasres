@@ -1,7 +1,30 @@
 import Link from "next/link";
 import { prisma } from "../../lib/prisma";
 import { requireUser } from "../../lib/auth";
+function getActivityTitle(action: string) {
+  switch (action) {
+    case "PROPOSAL_SUBMITTED":
+      return "📨 Proposal Submitted";
 
+    case "PROPOSAL_ACCEPTED":
+      return "✅ Proposal Accepted";
+
+    case "PROPOSAL_REJECTED":
+      return "❌ Proposal Rejected";
+
+    case "CASE_COMPLETED":
+      return "🏁 Case Completed";
+
+    case "DOCUMENT_UPLOADED":
+      return "📄 Document Uploaded";
+
+    case "MESSAGE_SENT":
+      return "💬 Message Sent";
+
+    default:
+      return action.replaceAll("_", " ");
+  }
+}
 export default async function DashboardPage() {
   const user = await requireUser();
 
@@ -35,7 +58,53 @@ export default async function DashboardPage() {
             customerId: user.id,
           },
         });
+  const myProposalsCount =
+    user.role === "admin"
+      ? await prisma.caseProposal.count()
+      : await prisma.caseProposal.count({
+          where: {
+            company: {
+              ownerId: user.id,
+            },
+          },
+        });
 
+  const acceptedProposalsCount =
+    user.role === "admin"
+      ? await prisma.caseProposal.count({
+          where: {
+            status: "ACCEPTED",
+          },
+        })
+      : await prisma.caseProposal.count({
+          where: {
+            status: "ACCEPTED",
+            company: {
+              ownerId: user.id,
+            },
+          },
+        });
+
+  const unreadNotificationsCount = await prisma.notification.count({
+    where: {
+      userId: user.id,
+      isRead: false,
+    },
+  });
+
+  const openTicketsCount =
+    user.role === "admin"
+      ? await prisma.ticket.count({
+          where: {
+            status: "OPEN",
+          },
+        })
+      : await prisma.ticket.count({
+          where: {
+            userId: user.id,
+            status: "OPEN",
+          },
+        });
   const myCompanies = await prisma.company.findMany({
     where: {
       ownerId: user.id,
@@ -174,6 +243,110 @@ export default async function DashboardPage() {
     .filter((company) => company.reviewCount > 0)
     .sort((a, b) => b.averageRating - a.averageRating)
     .slice(0, 5);
+  const inProgressCasesCount =
+    user.role === "admin"
+      ? await prisma.tradeCase.count({
+          where: {
+            status: "IN_PROGRESS",
+          },
+        })
+      : await prisma.tradeCase.count({
+          where: {
+            status: "IN_PROGRESS",
+            OR: [
+              {
+                customerId: user.id,
+              },
+              {
+                proposals: {
+                  some: {
+                    company: {
+                      ownerId: user.id,
+                    },
+                    status: "ACCEPTED",
+                  },
+                },
+              },
+            ],
+          },
+        });
+
+  const completedCasesCount =
+    user.role === "admin"
+      ? await prisma.tradeCase.count({
+          where: {
+            status: "COMPLETED",
+          },
+        })
+      : await prisma.tradeCase.count({
+          where: {
+            status: "COMPLETED",
+            OR: [
+              {
+                customerId: user.id,
+              },
+              {
+                proposals: {
+                  some: {
+                    company: {
+                      ownerId: user.id,
+                    },
+                    status: "ACCEPTED",
+                  },
+                },
+              },
+            ],
+          },
+        });
+  const rejectedProposalsCount =
+    user.role === "admin"
+      ? await prisma.caseProposal.count({
+          where: {
+            status: "REJECTED",
+          },
+        })
+      : await prisma.caseProposal.count({
+          where: {
+            status: "REJECTED",
+            company: {
+              ownerId: user.id,
+            },
+          },
+        });
+
+  const resolvedProposalsCount =
+    acceptedProposalsCount + rejectedProposalsCount;
+  const proposalSuccessRate =
+    resolvedProposalsCount > 0
+      ? Math.round((acceptedProposalsCount / resolvedProposalsCount) * 100)
+      : 0;
+  const recentActivities =
+    user.role === "admin"
+      ? await prisma.caseActivity.findMany({
+          orderBy: {
+            id: "desc",
+          },
+          take: 8,
+          include: {
+            user: true,
+            tradeCase: true,
+          },
+        })
+      : await prisma.caseActivity.findMany({
+          where: {
+            tradeCase: {
+              customerId: user.id,
+            },
+          },
+          orderBy: {
+            id: "desc",
+          },
+          take: 8,
+          include: {
+            user: true,
+            tradeCase: true,
+          },
+        });
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mb-8">
@@ -198,7 +371,7 @@ export default async function DashboardPage() {
         Manage your Dasres account, profiles and trade activities.
       </p>
 
-      <div className="grid md:grid-cols-5 gap-6">
+      <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6">
         <Link
           href={user.role === "admin" ? "/experts" : "/dashboard/my-experts"}
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
@@ -278,6 +451,74 @@ export default async function DashboardPage() {
           </div>
 
           <p className="text-slate-400 mt-3">Available opportunities</p>
+        </Link>
+        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+          <h2 className="text-xl font-semibold mb-3">In Progress</h2>
+
+          <div className="text-5xl font-bold text-orange-400">
+            {inProgressCasesCount}
+          </div>
+
+          <p className="text-slate-400 mt-3">Active trade projects</p>
+        </div>
+
+        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+          <h2 className="text-xl font-semibold mb-3">Completed</h2>
+
+          <div className="text-5xl font-bold text-green-400">
+            {completedCasesCount}
+          </div>
+
+          <p className="text-slate-400 mt-3">Finished projects</p>
+        </div>
+
+        <Link
+          href="/dashboard/my-proposals"
+          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500"
+        >
+          <h2 className="text-xl font-semibold mb-3">Proposals</h2>
+
+          <div className="text-5xl font-bold text-yellow-400">
+            {myProposalsCount}
+          </div>
+        </Link>
+
+        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+          <h2 className="text-xl font-semibold mb-3">Accepted</h2>
+
+          <div className="text-5xl font-bold text-green-400">
+            {acceptedProposalsCount}
+          </div>
+        </div>
+        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+          <h2 className="text-xl font-semibold mb-3">Success Rate</h2>
+
+          <div className="text-5xl font-bold text-emerald-400">
+            {proposalSuccessRate}%
+          </div>
+
+          <p className="text-slate-400 mt-3">Proposal acceptance rate</p>
+        </div>
+        <Link
+          href="/dashboard/notifications"
+          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
+        >
+          <h2 className="text-xl font-semibold mb-3">Notifications</h2>
+
+          <div className="text-5xl font-bold text-blue-400">
+            {unreadNotificationsCount}
+          </div>
+        </Link>
+
+        <Link
+          href="/dashboard/tickets"
+          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500"
+        >
+          <h2 className="text-xl font-semibold mb-3">Open Tickets</h2>
+
+          <div className="text-5xl font-bold text-purple-400">
+            {openTicketsCount}
+          </div>
         </Link>
       </div>
 
@@ -570,6 +811,46 @@ export default async function DashboardPage() {
           </div>
         </div>
       )}
+      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold">Recent Activity</h2>
+        </div>
+
+        {recentActivities.length === 0 ? (
+          <p className="text-slate-500">No activity found.</p>
+        ) : (
+          <div className="space-y-4">
+            {recentActivities.map((activity) => (
+              <div
+                key={activity.id}
+                className="border-b border-slate-800 pb-4 last:border-0"
+              >
+                <p className="font-medium">
+                  {getActivityTitle(activity.action)}
+                </p>
+
+                {activity.details && (
+                  <p className="text-slate-400 text-sm mt-1">
+                    {activity.details}
+                  </p>
+                )}
+
+                <p className="text-xs text-slate-500 mt-2">
+  {activity.user?.name || "System"} •{" "}
+  <Link
+    href={`/dashboard/cases/${activity.caseId}`}
+    className="text-blue-400 hover:underline"
+  >
+    {activity.tradeCase.title}
+  </Link>{" "}
+  • {activity.createdAt.toLocaleString()}
+</p>
+                
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

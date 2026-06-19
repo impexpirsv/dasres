@@ -86,18 +86,17 @@ export default async function TicketDetailPage({ params }: Props) {
   >
     {ticket.status}
   </span>
-
-  {ticket.status === "OPEN" ? (
-    <CloseTicketButton
+{ticket.status !== "CLOSED" ? (
+  <CloseTicketButton
+    ticketId={ticket.id}
+  />
+) : (
+  user.role === "admin" && (
+    <ReopenTicketButton
       ticketId={ticket.id}
     />
-  ) : (
-    user.role === "admin" && (
-      <ReopenTicketButton
-        ticketId={ticket.id}
-      />
-    )
-  )}
+  )
+)}
 </div>
         </div>
 
@@ -166,13 +165,13 @@ export default async function TicketDetailPage({ params }: Props) {
             })}
           </div>
         )}
-        {ticket.status === "OPEN" ? (
-          <AddTicketReplyForm ticketId={ticket.id} />
-        ) : (
-          <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-500">
-            This ticket is closed.
-          </div>
-        )}
+        {ticket.status === "CLOSED" ? (
+  <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-500">
+    This ticket is closed.
+  </div>
+) : (
+  <AddTicketReplyForm ticketId={ticket.id} />
+)}
       </div>
     </div>
   );

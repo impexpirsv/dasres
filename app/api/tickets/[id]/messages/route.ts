@@ -3,7 +3,7 @@ import { requireUser } from "../../../../../lib/auth";
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const user = await requireUser();
@@ -12,23 +12,15 @@ export async function POST(
     const ticketId = Number(id);
 
     if (!ticketId || Number.isNaN(ticketId)) {
-      return Response.json(
-        { message: "Invalid ticket id" },
-        { status: 400 }
-      );
+      return Response.json({ message: "Invalid ticket id" }, { status: 400 });
     }
 
     const body = await request.json();
 
-    const message = String(
-      body.message || ""
-    ).trim();
+    const message = String(body.message || "").trim();
 
     if (!message) {
-      return Response.json(
-        { message: "Message is required" },
-        { status: 400 }
-      );
+      return Response.json({ message: "Message is required" }, { status: 400 });
     }
 
     const ticket = await prisma.ticket.findUnique({
@@ -38,16 +30,13 @@ export async function POST(
     });
 
     if (!ticket) {
-      return Response.json(
-        { message: "Ticket not found" },
-        { status: 404 }
-      );
+      return Response.json({ message: "Ticket not found" }, { status: 404 });
     }
 
     if (ticket.status !== "OPEN") {
       return Response.json(
         { message: "Closed tickets cannot receive replies." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -55,10 +44,7 @@ export async function POST(
     const isOwner = ticket.userId === user.id;
 
     if (!isAdmin && !isOwner) {
-      return Response.json(
-        { message: "Access denied" },
-        { status: 403 }
-      );
+      return Response.json({ message: "Access denied" }, { status: 403 });
     }
 
     await prisma.$transaction(async (tx) => {
@@ -69,7 +55,16 @@ export async function POST(
           message,
         },
       });
-
+      if (isAdmin && ticket.status === "OPEN") {
+        await tx.ticket.update({
+          where: {
+            id: ticket.id,
+          },
+          data: {
+            status: "IN_PROGRESS",
+          },
+        });
+      }
       const receiverIds = new Set<number>();
 
       if (isAdmin) {
@@ -102,8 +97,8 @@ export async function POST(
               type: "TICKET_REPLY",
               link: `/dashboard/tickets/${ticket.id}`,
             },
-          })
-        )
+          }),
+        ),
       );
     });
 
@@ -113,9 +108,6 @@ export async function POST(
   } catch (error) {
     console.error(error);
 
-    return Response.json(
-      { message: "Failed to add reply" },
-      { status: 500 }
-    );
+    return Response.json({ message: "Failed to add reply" }, { status: 500 });
   }
 }
