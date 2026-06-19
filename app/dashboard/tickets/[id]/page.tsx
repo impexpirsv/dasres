@@ -3,6 +3,7 @@ import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
 import AddTicketReplyForm from "../../../components/AddTicketReplyForm";
 import CloseTicketButton from "../../../components/CloseTicketButton";
+import ReopenTicketButton from "../../../components/ReopenTicketButton";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -76,18 +77,28 @@ export default async function TicketDetailPage({ params }: Props) {
 
           
           <div className="flex items-center gap-3">
-            <span
-              className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                ticket.status === "OPEN" ? "bg-emerald-600" : "bg-slate-700"
-              }`}
-            >
-              {ticket.status}
-            </span>
+  <span
+    className={`rounded-full px-4 py-2 text-sm font-semibold ${
+      ticket.status === "OPEN"
+        ? "bg-emerald-600"
+        : "bg-slate-700"
+    }`}
+  >
+    {ticket.status}
+  </span>
 
-            {ticket.status === "OPEN" && (
-              <CloseTicketButton ticketId={ticket.id} />
-            )}
-          </div>
+  {ticket.status === "OPEN" ? (
+    <CloseTicketButton
+      ticketId={ticket.id}
+    />
+  ) : (
+    user.role === "admin" && (
+      <ReopenTicketButton
+        ticketId={ticket.id}
+      />
+    )
+  )}
+</div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-4 mt-8">
