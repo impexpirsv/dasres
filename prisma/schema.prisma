@@ -54,19 +54,21 @@ model Opportunity {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  name          String
-  email         String         @unique
-  password      String
-  role          String         @default("user")
-  createdAt     DateTime       @default(now())
-  companies     Company[]
-  experts       Expert[]
-  notifications Notification[]
-  sessions      Session[]
-  caseMessages  CaseMessage[]
-  caseDocuments CaseDocument[]
-  reviewsGiven  Review[]       @relation("ReviewAuthor")
+  id             Int             @id @default(autoincrement())
+  name           String
+  email          String          @unique
+  password       String
+  role           String          @default("user")
+  createdAt      DateTime        @default(now())
+  companies      Company[]
+  experts        Expert[]
+  notifications  Notification[]
+  sessions       Session[]
+  caseMessages   CaseMessage[]
+  caseDocuments  CaseDocument[]
+  tickets        Ticket[]
+  ticketMessages TicketMessage[]
+  reviewsGiven   Review[]        @relation("ReviewAuthor")
 
   reviewsReceived Review[] @relation("ReviewTarget")
 }
@@ -188,6 +190,37 @@ enum VerificationStatus {
   PENDING
   VERIFIED
   REJECTED
+}
+
+model Ticket {
+  id Int @id @default(autoincrement())
+
+  userId Int
+
+  subject  String
+  status   String @default("OPEN")
+  category String @default("GENERAL")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  messages TicketMessage[]
+}
+
+model TicketMessage {
+  id Int @id @default(autoincrement())
+
+  ticketId Int
+  senderId Int
+
+  message String
+
+  createdAt DateTime @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  sender User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 enum PlanType {

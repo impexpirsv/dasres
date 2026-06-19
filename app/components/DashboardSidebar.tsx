@@ -109,7 +109,12 @@ export default function DashboardSidebar({
         >
           Open Cases
         </Link>
-
+        <Link
+          href="/dashboard/tickets"
+          className={getLinkClass("/dashboard/tickets")}
+        >
+          Tickets
+        </Link>
         <p className={sectionTitleClass}>Ownership</p>
 
         <Link
