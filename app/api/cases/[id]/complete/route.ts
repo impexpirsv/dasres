@@ -54,25 +54,34 @@ export async function PATCH(
       );
     }
 
-    await prisma.$transaction([
-      prisma.tradeCase.update({
-        where: {
-          id: caseId,
-        },
-        data: {
-          status: "COMPLETED",
-        },
-      }),
+    await prisma.$transaction(async (tx) => {
+  await tx.tradeCase.update({
+    where: {
+      id: caseId,
+    },
+    data: {
+      status: "COMPLETED",
+    },
+  });
 
-      prisma.caseStep.updateMany({
-        where: {
-          caseId,
-        },
-        data: {
-          completed: true,
-        },
-      }),
-    ]);
+  await tx.caseStep.updateMany({
+    where: {
+      caseId,
+    },
+    data: {
+      completed: true,
+    },
+  });
+
+  await tx.caseActivity.create({
+    data: {
+      caseId,
+      userId: user.id,
+      action: "CASE_COMPLETED",
+      details: `${user.name || user.email} completed this case`,
+    },
+  });
+});
 
     return Response.json({
       message: "Case completed",

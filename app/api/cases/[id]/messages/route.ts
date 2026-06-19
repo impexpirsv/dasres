@@ -44,14 +44,13 @@ export async function POST(
     }
 
     if (tradeCase.status !== "IN_PROGRESS") {
-  return Response.json(
-    {
-      message:
-        "Messages are only available for in-progress cases.",
-    },
-    { status: 400 }
-  );
-}
+      return Response.json(
+        {
+          message: "Messages are only available for in-progress cases.",
+        },
+        { status: 400 },
+      );
+    }
 
     const acceptedProposal = tradeCase.proposals[0];
 
@@ -78,7 +77,14 @@ export async function POST(
           content,
         },
       });
-
+      await tx.caseActivity.create({
+  data: {
+    caseId,
+    userId: user.id,
+    action: "MESSAGE_SENT",
+    details: `${user.name || user.email} sent a message`,
+  },
+      });
       const receiverIds = new Set<number>();
 
       if (tradeCase.customerId !== user.id) {

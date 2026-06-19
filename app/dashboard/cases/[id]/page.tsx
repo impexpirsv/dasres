@@ -37,13 +37,13 @@ export default async function CaseDetailPage({ params }: Props) {
         },
       },
       documents: {
-  orderBy: {
-    id: "desc",
-  },
-  include: {
-    uploader: true,
-  },
-},
+        orderBy: {
+          id: "desc",
+        },
+        include: {
+          uploader: true,
+        },
+      },
       messages: {
         orderBy: {
           id: "asc",
@@ -62,6 +62,14 @@ export default async function CaseDetailPage({ params }: Props) {
         },
       },
       reviews: true,
+      activities: {
+        orderBy: {
+          id: "desc",
+        },
+        include: {
+          user: true,
+        },
+      },
     },
   });
 
@@ -297,10 +305,10 @@ export default async function CaseDetailPage({ params }: Props) {
               <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
                 <h2 className="text-2xl font-bold mb-4">Messages</h2>
 
-               {(isAdmin || isCustomer || isAcceptedProvider) &&
-  tradeCase.status === "IN_PROGRESS" && (
-    <AddCaseMessageForm caseId={tradeCase.id} />
-)}
+                {(isAdmin || isCustomer || isAcceptedProvider) &&
+                  tradeCase.status === "IN_PROGRESS" && (
+                    <AddCaseMessageForm caseId={tradeCase.id} />
+                  )}
 
                 <div className="mt-6">
                   {tradeCase.messages.length === 0 ? (
@@ -308,45 +316,45 @@ export default async function CaseDetailPage({ params }: Props) {
                   ) : (
                     <div className="space-y-3">
                       {tradeCase.messages.map((message) => {
-  const isMine = message.senderId === user.id;
+                        const isMine = message.senderId === user.id;
 
-  return (
-    <div
-      key={message.id}
-      className={`flex ${
-        isMine ? "justify-end" : "justify-start"
-      }`}
-    >
-      <div
-        className={`max-w-[80%] rounded-2xl p-4 ${
-          isMine
-            ? "bg-blue-600 text-white"
-            : "bg-slate-800 text-slate-200"
-        }`}
-      >
-        <div className="flex justify-between items-center gap-4 mb-2">
-          <p
-            className={`text-sm font-semibold ${
-              isMine ? "text-blue-100" : "text-blue-400"
-            }`}
-          >
-            {message.sender.name}
-          </p>
+                        return (
+                          <div
+                            key={message.id}
+                            className={`flex ${
+                              isMine ? "justify-end" : "justify-start"
+                            }`}
+                          >
+                            <div
+                              className={`max-w-[80%] rounded-2xl p-4 ${
+                                isMine
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-slate-800 text-slate-200"
+                              }`}
+                            >
+                              <div className="flex justify-between items-center gap-4 mb-2">
+                                <p
+                                  className={`text-sm font-semibold ${
+                                    isMine ? "text-blue-100" : "text-blue-400"
+                                  }`}
+                                >
+                                  {message.sender.name}
+                                </p>
 
-          <p
-            className={`text-xs ${
-              isMine ? "text-blue-100" : "text-slate-500"
-            }`}
-          >
-            {message.createdAt.toLocaleString()}
-          </p>
-        </div>
+                                <p
+                                  className={`text-xs ${
+                                    isMine ? "text-blue-100" : "text-slate-500"
+                                  }`}
+                                >
+                                  {message.createdAt.toLocaleString()}
+                                </p>
+                              </div>
 
-        <p>{message.content}</p>
-      </div>
-    </div>
-  );
-})}
+                              <p>{message.content}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -355,10 +363,10 @@ export default async function CaseDetailPage({ params }: Props) {
               <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
                 <h2 className="text-2xl font-bold mb-4">Documents</h2>
 
-            {(isAdmin || isCustomer || isAcceptedProvider) &&
-  tradeCase.status === "IN_PROGRESS" && (
-    <AddCaseDocumentForm caseId={tradeCase.id} />
-)}
+                {(isAdmin || isCustomer || isAcceptedProvider) &&
+                  tradeCase.status === "IN_PROGRESS" && (
+                    <AddCaseDocumentForm caseId={tradeCase.id} />
+                  )}
 
                 <div className="mt-6">
                   {tradeCase.documents.length === 0 ? (
@@ -366,36 +374,34 @@ export default async function CaseDetailPage({ params }: Props) {
                   ) : (
                     <div className="space-y-3">
                       {tradeCase.documents.map((document) => (
-  <div
-    key={document.id}
-    className="bg-slate-800 rounded-xl p-4"
-  >
-    <div className="flex justify-between items-start gap-4">
-      <div>
-        <p className="font-semibold">
-          {document.name}
-        </p>
+                        <div
+                          key={document.id}
+                          className="bg-slate-800 rounded-xl p-4"
+                        >
+                          <div className="flex justify-between items-start gap-4">
+                            <div>
+                              <p className="font-semibold">{document.name}</p>
 
-        <p className="text-sm text-blue-400 mt-1">
-          Uploaded by {document.uploader.name}
-        </p>
+                              <p className="text-sm text-blue-400 mt-1">
+                                Uploaded by {document.uploader.name}
+                              </p>
 
-        <p className="text-xs text-slate-500 mt-1">
-          {document.createdAt.toLocaleString()}
-        </p>
-      </div>
+                              <p className="text-xs text-slate-500 mt-1">
+                                {document.createdAt.toLocaleString()}
+                              </p>
+                            </div>
 
-      <a
-        href={document.fileUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm"
-      >
-        Download
-      </a>
-    </div>
-  </div>
-))}
+                            <a
+                              href={document.fileUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm"
+                            >
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -480,7 +486,37 @@ export default async function CaseDetailPage({ params }: Props) {
                   </div>
                 )}
             </section>
+            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold mb-4">Case Activity</h2>
 
+              {tradeCase.activities.length === 0 ? (
+                <p className="text-slate-500">No activity recorded yet.</p>
+              ) : (
+                <div className="space-y-4">
+                  {tradeCase.activities.map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="border-l-2 border-blue-600 pl-4"
+                    >
+                      <p className="font-semibold">{activity.action}</p>
+
+                      {activity.details && (
+                        <p className="text-sm text-slate-400 mt-1">
+                          {activity.details}
+                        </p>
+                      )}
+
+                      <p className="text-xs text-slate-500 mt-1">
+                        {activity.user?.name ||
+                          activity.user?.email ||
+                          "System"}{" "}
+                        · {activity.createdAt.toLocaleString()}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
             {tradeCase.status === "COMPLETED" && (
               <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
                 <h2 className="text-2xl font-bold mb-4">Reviews</h2>

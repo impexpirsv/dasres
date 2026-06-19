@@ -140,13 +140,23 @@ if (!ALLOWED_FILE_TYPES.includes(file.type)) {
 
     await prisma.$transaction(async (tx) => {
       await tx.caseDocument.create({
-        data: {
-          caseId,
-          uploaderId: user.id,
-          name: file.name,
-          fileUrl,
-        },
-      });
+  data: {
+    caseId,
+    uploaderId: user.id,
+    name: file.name,
+    fileUrl,
+  },
+});
+
+await tx.caseActivity.create({
+  data: {
+    caseId,
+    userId: user.id,
+    action: "DOCUMENT_UPLOADED",
+    details: `${user.name || user.email} uploaded document: ${file.name}`,
+  },
+});
+
 
       const receiverIds = new Set<number>();
 

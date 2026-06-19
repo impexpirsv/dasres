@@ -18,19 +18,49 @@ export async function POST(request: Request) {
       );
     }
 
-    const ticket = await prisma.ticket.create({
-      data: {
-        userId: user.id,
-        subject,
-        category,
-        messages: {
-          create: {
-            senderId: user.id,
-            message,
+    const ticket = await prisma.$transaction(
+  async (tx) => {
+    const createdTicket =
+      await tx.ticket.create({
+        data: {
+          userId: user.id,
+          subject,
+          category,
+          messages: {
+            create: {
+              senderId: user.id,
+              message,
+            },
           },
         },
-      },
-    });
+      });
+
+    const admins =
+      await tx.user.findMany({
+        where: {
+          role: "admin",
+        },
+      });
+
+    await Promise.all(
+      admins.map((admin) =>
+        tx.notification.create({
+          data: {
+            userId: admin.id,
+            title: "New ticket created",
+            message: `${
+              user.name || user.email
+            } created a new ticket: ${subject}`,
+            type: "TICKET_CREATED",
+            link: `/dashboard/tickets/${createdTicket.id}`,
+          },
+        })
+      )
+    );
+
+    return createdTicket;
+  }
+);
 
     return Response.json({
       message: "Ticket created.",

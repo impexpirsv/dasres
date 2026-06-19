@@ -44,6 +44,13 @@ export async function POST(
       );
     }
 
+    if (ticket.status !== "OPEN") {
+      return Response.json(
+        { message: "Closed tickets cannot receive replies." },
+        { status: 400 }
+      );
+    }
+
     const isAdmin = user.role === "admin";
     const isOwner = ticket.userId === user.id;
 
@@ -54,12 +61,50 @@ export async function POST(
       );
     }
 
-    await prisma.ticketMessage.create({
-      data: {
-        ticketId,
-        senderId: user.id,
-        message,
-      },
+    await prisma.$transaction(async (tx) => {
+      await tx.ticketMessage.create({
+        data: {
+          ticketId,
+          senderId: user.id,
+          message,
+        },
+      });
+
+      const receiverIds = new Set<number>();
+
+      if (isAdmin) {
+        if (ticket.userId !== user.id) {
+          receiverIds.add(ticket.userId);
+        }
+      } else {
+        const admins = await tx.user.findMany({
+          where: {
+            role: "admin",
+          },
+        });
+
+        admins.forEach((admin) => {
+          if (admin.id !== user.id) {
+            receiverIds.add(admin.id);
+          }
+        });
+      }
+
+      await Promise.all(
+        Array.from(receiverIds).map((receiverId) =>
+          tx.notification.create({
+            data: {
+              userId: receiverId,
+              title: "New ticket reply",
+              message: `${
+                user.name || user.email
+              } replied to ticket: ${ticket.subject}`,
+              type: "TICKET_REPLY",
+              link: `/dashboard/tickets/${ticket.id}`,
+            },
+          })
+        )
+      );
     });
 
     return Response.json({

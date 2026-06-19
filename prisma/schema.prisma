@@ -54,23 +54,23 @@ model Opportunity {
 }
 
 model User {
-  id             Int             @id @default(autoincrement())
-  name           String
-  email          String          @unique
-  password       String
-  role           String          @default("user")
-  createdAt      DateTime        @default(now())
-  companies      Company[]
-  experts        Expert[]
-  notifications  Notification[]
-  sessions       Session[]
-  caseMessages   CaseMessage[]
-  caseDocuments  CaseDocument[]
-  tickets        Ticket[]
-  ticketMessages TicketMessage[]
-  reviewsGiven   Review[]        @relation("ReviewAuthor")
-
-  reviewsReceived Review[] @relation("ReviewTarget")
+  id              Int             @id @default(autoincrement())
+  name            String
+  email           String          @unique
+  password        String
+  role            String          @default("user")
+  createdAt       DateTime        @default(now())
+  companies       Company[]
+  experts         Expert[]
+  notifications   Notification[]
+  sessions        Session[]
+  caseMessages    CaseMessage[]
+  caseDocuments   CaseDocument[]
+  tickets         Ticket[]
+  ticketMessages  TicketMessage[]
+  reviewsGiven    Review[]        @relation("ReviewAuthor")
+  caseActivities  CaseActivity[]
+  reviewsReceived Review[]        @relation("ReviewTarget")
 }
 
 model Session {
@@ -99,6 +99,7 @@ model TradeCase {
   proposals          CaseProposal[]
   steps              CaseStep[]
   reviews            Review[]
+  activities         CaseActivity[]
 }
 
 model CaseProposal {
@@ -221,6 +222,22 @@ model TicketMessage {
 
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   sender User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model CaseActivity {
+  id Int @id @default(autoincrement())
+
+  caseId Int
+  userId Int?
+
+  action  String
+  details String?
+
+  createdAt DateTime @default(now())
+
+  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 enum PlanType {

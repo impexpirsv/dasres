@@ -137,15 +137,37 @@ export async function POST(
       );
     }
 
-    await prisma.caseProposal.create({
-      data: {
-        caseId,
-        companyId,
-        expertId,
-        message,
-        price: price || null,
-      },
-    });
+    await prisma.$transaction(async (tx) => {
+  const createdProposal = await tx.caseProposal.create({
+    data: {
+      caseId,
+      companyId,
+      expertId,
+      message,
+      price: price || null,
+    },
+  });
+
+  await tx.caseActivity.create({
+    data: {
+      caseId,
+      userId: user.id,
+      action: "PROPOSAL_SUBMITTED",
+      details: `Proposal #${createdProposal.id} submitted.`,
+    },
+  });
+
+  await tx.notification.create({
+    data: {
+      userId: tradeCase.customerId,
+      title: "New Proposal Received",
+      message:
+        "A new proposal has been submitted for your trade case.",
+      type: "PROPOSAL_SUBMITTED",
+      link: `/dashboard/cases/${tradeCase.id}`,
+    },
+  });
+});
 
     await prisma.notification.create({
       data: {
