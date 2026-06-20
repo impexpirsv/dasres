@@ -56,6 +56,50 @@ export async function generateMetadata({
   };
 }
 
+function getPremiumBorder(planType: string) {
+  if (planType === "GOLD") {
+    return "border-yellow-500 shadow-lg shadow-yellow-500/10";
+  }
+
+  if (planType === "DIAMOND") {
+    return "border-cyan-500 shadow-lg shadow-cyan-500/10";
+  }
+
+  if (planType === "ENTERPRISE") {
+    return "border-purple-500 shadow-lg shadow-purple-500/10";
+  }
+
+  return "border-slate-800";
+}
+
+function PlanBadge({ planType }: { planType: string }) {
+  if (planType === "GOLD") {
+    return (
+      <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
+        🥇 GOLD
+      </span>
+    );
+  }
+
+  if (planType === "DIAMOND") {
+    return (
+      <span className="bg-cyan-600 px-4 py-2 rounded-full text-sm">
+        💎 DIAMOND
+      </span>
+    );
+  }
+
+  if (planType === "ENTERPRISE") {
+    return (
+      <span className="bg-purple-600 px-4 py-2 rounded-full text-sm">
+        👑 ENTERPRISE
+      </span>
+    );
+  }
+
+  return null;
+}
+
 export default async function ExpertProfilePage({
   params,
 }: Props) {
@@ -99,6 +143,10 @@ export default async function ExpertProfilePage({
         ) / reviews.length
       : 0;
 
+  const premiumBorder = getPremiumBorder(
+    expert.planType
+  );
+
   const expertSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -131,7 +179,9 @@ export default async function ExpertProfilePage({
           </Link>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden">
+            <div
+              className={`lg:col-span-2 bg-slate-900 rounded-3xl border overflow-hidden ${premiumBorder}`}
+            >
               {expert.imageUrl && (
                 <img
                   src={expert.imageUrl}
@@ -151,25 +201,63 @@ export default async function ExpertProfilePage({
                   </span>
                 </div>
 
-                <h1 className="text-5xl font-bold mb-4">
-                  {expert.name}
-                </h1>
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <h1 className="text-5xl font-bold">
+                    {expert.name}
+                  </h1>
+
+                  <PlanBadge
+                    planType={expert.planType}
+                  />
+                </div>
 
                 <p className="text-blue-400 text-2xl mb-4">
                   {expert.specialty}
                 </p>
 
-                {reviews.length > 0 ? (
-                  <div className="mb-8 text-yellow-400 font-semibold text-lg">
-                    ⭐ {averageRating.toFixed(1)} / 5 (
-                    {reviews.length}{" "}
-                    {reviews.length > 1 ? "reviews" : "review"})
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                    <p className="text-slate-500 text-sm mb-1">
+                      Rating
+                    </p>
+
+                    <p className="text-2xl font-bold text-yellow-400">
+                      {reviews.length > 0
+                        ? `⭐ ${averageRating.toFixed(1)}`
+                        : "N/A"}
+                    </p>
                   </div>
-                ) : (
-                  <div className="mb-8 text-slate-500">
-                    No rating yet
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                    <p className="text-slate-500 text-sm mb-1">
+                      Reviews
+                    </p>
+
+                    <p className="text-2xl font-bold text-slate-200">
+                      {reviews.length}
+                    </p>
                   </div>
-                )}
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                    <p className="text-slate-500 text-sm mb-1">
+                      Specialty
+                    </p>
+
+                    <p className="text-xl font-bold text-blue-400">
+                      {expert.specialty}
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                    <p className="text-slate-500 text-sm mb-1">
+                      Country
+                    </p>
+
+                    <p className="text-2xl font-bold text-blue-400">
+                      {expert.country}
+                    </p>
+                  </div>
+                </div>
 
                 <div className="border-t border-slate-800 pt-8">
                   <h2 className="text-2xl font-bold mb-4">
@@ -180,11 +268,51 @@ export default async function ExpertProfilePage({
                     {expert.experience}
                   </p>
                 </div>
+
+                <div className="border-t border-slate-800 pt-8 mt-8">
+                  <h2 className="text-2xl font-bold mb-4">
+                    Recent Reviews
+                  </h2>
+
+                  {reviews.length === 0 ? (
+                    <p className="text-slate-500">
+                      No reviews yet.
+                    </p>
+                  ) : (
+                    <div className="space-y-4">
+                      {reviews.slice(0, 3).map((review) => (
+                        <div
+                          key={review.id}
+                          className="rounded-2xl border border-slate-800 bg-slate-950 p-5"
+                        >
+                          <div className="flex items-center justify-between gap-4 mb-2">
+                            <p className="font-semibold">
+                              {review.reviewer?.name ||
+                                review.reviewer?.email ||
+                                "User"}
+                            </p>
+
+                            <p className="text-yellow-400">
+                              ⭐ {review.rating}/5
+                            </p>
+                          </div>
+
+                          <p className="text-slate-300 leading-7">
+                            {review.comment ||
+                              "No comment provided."}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
             <aside className="space-y-6">
-              <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <div
+                className={`bg-slate-900 rounded-3xl border p-6 ${premiumBorder}`}
+              >
                 <h2 className="text-2xl font-bold mb-6">
                   Contact Expert
                 </h2>
@@ -216,6 +344,17 @@ export default async function ExpertProfilePage({
                       {expert.specialty}
                     </p>
                   </div>
+
+                  <div>
+                    <p className="text-slate-500 text-sm">
+                      Reputation
+                    </p>
+                    <p className="text-slate-200">
+                      {reviews.length > 0
+                        ? `⭐ ${averageRating.toFixed(1)} (${reviews.length} reviews)`
+                        : "No reviews yet"}
+                    </p>
+                  </div>
                 </div>
 
                 <a
@@ -245,58 +384,8 @@ export default async function ExpertProfilePage({
             </aside>
           </div>
 
-          <div className="mt-10 bg-slate-900 rounded-3xl p-6 border border-slate-800">
-            <h2 className="text-2xl font-bold mb-4">
-              Expert Rating
-            </h2>
-
-            {reviews.length > 0 ? (
-              <div className="mb-6">
-                <p className="text-yellow-400 text-xl font-bold">
-                  ⭐ {averageRating.toFixed(1)} / 5
-                </p>
-                <p className="text-slate-400">
-                  Based on {reviews.length} review
-                  {reviews.length > 1 ? "s" : ""}
-                </p>
-              </div>
-            ) : (
-              <p className="text-slate-400 mb-6">
-                No reviews yet for this expert.
-              </p>
-            )}
-
-            <div className="space-y-4">
-              {reviews.map((review) => (
-                <div
-                  key={review.id}
-                  className="bg-slate-950 border border-slate-800 rounded-2xl p-4"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-semibold">
-                      {review.reviewer?.name ||
-                        review.reviewer?.email ||
-                        "User"}
-                    </p>
-
-                    <p className="text-yellow-400">
-                      ⭐ {review.rating}/5
-                    </p>
-                  </div>
-
-                  {review.comment && (
-                    <p className="text-slate-300">
-                      {review.comment}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
           <div className="mt-8 bg-slate-900 border border-slate-800 rounded-3xl p-6 text-slate-400">
-            Reviews can only be submitted after a completed trade
-            case.
+            Reviews can only be submitted after a completed trade case.
           </div>
         </div>
       </div>

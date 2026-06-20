@@ -72,6 +72,7 @@ model User {
   sessions        Session[]
   tickets         Ticket[]
   ticketMessages  TicketMessage[]
+  savedCases SavedCase[]
 }
 
 model Session {
@@ -101,6 +102,7 @@ model TradeCase {
   proposals          CaseProposal[]
   steps              CaseStep[]
   reviews            Review[]
+  savedCases SavedCase[]
 }
 
 model CaseProposal {
@@ -203,6 +205,22 @@ model CaseActivity {
   createdAt DateTime  @default(now())
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
   user      User?     @relation(fields: [userId], references: [id])
+}
+
+
+model SavedCase {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  caseId Int
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, caseId])
 }
 
 enum VerificationStatus {

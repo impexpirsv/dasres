@@ -15,21 +15,21 @@ export async function POST(request: Request) {
     if (!caseId || !reviewedUserId || !rating) {
       return Response.json(
         { message: "Case, reviewed user and rating are required." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (rating < 1 || rating > 5) {
       return Response.json(
         { message: "Rating must be between 1 and 5." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (reviewedUserId === user.id) {
       return Response.json(
         { message: "You cannot review yourself." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -50,16 +50,13 @@ export async function POST(request: Request) {
     });
 
     if (!tradeCase) {
-      return Response.json(
-        { message: "Case not found." },
-        { status: 404 }
-      );
+      return Response.json({ message: "Case not found." }, { status: 404 });
     }
 
     if (tradeCase.status !== "COMPLETED") {
       return Response.json(
         { message: "Only completed cases can be reviewed." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -68,32 +65,31 @@ export async function POST(request: Request) {
     if (!acceptedProposal?.company?.ownerId) {
       return Response.json(
         { message: "Accepted proposal owner not found." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const isCustomer = tradeCase.customerId === user.id;
-    const isProvider =
-      acceptedProposal.company.ownerId === user.id;
-
-    if (!isCustomer && !isProvider && user.role !== "admin") {
+    const isProvider = acceptedProposal.company.ownerId === user.id;
+    const expectedReviewedUserId = isCustomer
+      ? acceptedProposal.company.ownerId
+      : tradeCase.customerId;
+    if (!isCustomer && !isProvider) {
       return Response.json(
         { message: "You are not allowed to review this case." },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
-    const allowedReviewedUserIds = [
-      tradeCase.customerId,
-      acceptedProposal.company.ownerId,
-    ];
-
-    if (!allowedReviewedUserIds.includes(reviewedUserId)) {
-      return Response.json(
-        { message: "You can only review the customer or accepted provider." },
-        { status: 403 }
-      );
-    }
+    if (reviewedUserId !== expectedReviewedUserId) {
+  return Response.json(
+    {
+      message:
+        "You can only review the opposite party in this completed case.",
+    },
+    { status: 403 }
+  );
+}
 
     const existingReview = await prisma.review.findFirst({
       where: {
@@ -106,19 +102,30 @@ export async function POST(request: Request) {
     if (existingReview) {
       return Response.json(
         { message: "You have already reviewed this user for this case." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    await prisma.review.create({
-      data: {
-        caseId,
-        reviewerId: user.id,
-        reviewedUserId,
-        rating,
-        comment: comment || null,
-      },
-    });
+    await prisma.$transaction(async (tx) => {
+  await tx.review.create({
+    data: {
+      caseId,
+      reviewerId: user.id,
+      reviewedUserId,
+      rating,
+      comment: comment || null,
+    },
+  });
+
+  await tx.caseActivity.create({
+    data: {
+      caseId,
+      userId: user.id,
+      action: "REVIEW_SUBMITTED",
+      details: `${user.name || user.email} submitted a ${rating}-star review.`,
+    },
+  });
+});
 
     return Response.json({
       message: "Review submitted.",
@@ -128,7 +135,7 @@ export async function POST(request: Request) {
 
     return Response.json(
       { message: "Failed to submit review." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

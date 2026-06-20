@@ -32,7 +32,7 @@ export default function DashboardSidebar({
       block rounded-xl px-4 py-3 text-sm transition
       ${
         isActive
-          ? "bg-blue-600 text-white"
+          ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
           : "text-slate-300 hover:bg-slate-800 hover:text-white"
       }
     `;
@@ -43,9 +43,14 @@ export default function DashboardSidebar({
 
   return (
     <aside className="w-72 min-h-screen bg-slate-950 border-r border-slate-800 p-5">
-      <div className="mb-8 px-4">
-        <h2 className="text-2xl font-black tracking-wide">DASRES</h2>
-        <p className="text-xs text-slate-500 mt-1">Trade Platform</p>
+      <div className="mb-8 px-4 pb-6 border-b border-slate-800">
+        <h2 className="text-3xl font-black tracking-wider text-white">
+          DASRES
+        </h2>
+
+        <p className="text-xs text-slate-500 mt-1">
+          Trust Ecosystem For Global Trade
+        </p>
       </div>
 
       <nav className="flex flex-col gap-1">
@@ -110,6 +115,12 @@ export default function DashboardSidebar({
           Open Cases
         </Link>
         <Link
+          href="/dashboard/saved-cases"
+          className={getLinkClass("/dashboard/saved-cases")}
+        >
+          Saved Cases
+        </Link>
+        <Link
           href="/dashboard/tickets"
           className={getLinkClass("/dashboard/tickets")}
         >
@@ -160,14 +171,24 @@ export default function DashboardSidebar({
             <span>Notifications</span>
 
             {unreadNotificationsCount > 0 && (
-              <span className="ml-3 rounded-full bg-blue-500 px-2 py-0.5 text-xs font-bold text-white">
+              <span className="ml-3 rounded-full bg-red-500 animate-pulse px-2 py-0.5 text-xs font-bold text-white">
                 {unreadNotificationsCount}
               </span>
             )}
           </span>
         </Link>
         <p className={sectionTitleClass}>Subscription</p>
+        <div className="px-4 pb-2">
+          <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3">
+            <p className="text-xs font-semibold text-yellow-400">
+              PREMIUM FEATURES
+            </p>
 
+            <p className="text-xs text-slate-400 mt-1">
+              Plans, limits and visibility
+            </p>
+          </div>
+        </div>
         <Link
           href="/dashboard/subscription"
           className={getLinkClass("/dashboard/subscription")}
@@ -175,13 +196,14 @@ export default function DashboardSidebar({
           Subscription
         </Link>
         <p className={sectionTitleClass}>Account</p>
-
-        <button
-          onClick={handleLogout}
-          className="mt-2 rounded-xl px-4 py-3 text-left text-sm text-red-400 hover:bg-red-950/40 hover:text-red-300 transition"
-        >
-          Logout
-        </button>
+        <div className="mt-6 border-t border-slate-800 pt-6">
+          <button
+            onClick={handleLogout}
+            className="w-full rounded-xl px-4 py-3 text-left text-sm text-red-400 hover:bg-red-950/40 hover:text-red-300 transition"
+          >
+            Logout
+          </button>
+        </div>
       </nav>
     </aside>
   );

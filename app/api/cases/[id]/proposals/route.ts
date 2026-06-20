@@ -86,7 +86,7 @@ export async function POST(
       );
     }
 
-    let expertPlanType: PlanType | null = null;
+    
 
     if (expertId) {
       const expert = await prisma.expert.findFirst({
@@ -117,7 +117,7 @@ export async function POST(
         );
       }
 
-      expertPlanType = expert.planType;
+      
     }
 
     const existingProposal =

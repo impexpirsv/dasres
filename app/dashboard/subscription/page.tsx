@@ -1,16 +1,12 @@
 import Link from "next/link";
 import { requireUser } from "../../../lib/auth";
-import {
-  getCaseLimit,
-  getProposalLimit,
-} from "../../../lib/plans";
-
+import { getCaseLimit, getProposalLimit } from "../../../lib/plans";
+import { prisma } from "../../../lib/prisma";
 const plans = [
   {
     name: "FREE",
     title: "Free",
-    description:
-      "For testing Dasres and starting basic trade activity.",
+    description: "For testing Dasres and starting basic trade activity.",
     price: "$0",
     features: [
       "3 active trade cases",
@@ -22,8 +18,7 @@ const plans = [
   {
     name: "GOLD",
     title: "Gold",
-    description:
-      "For growing teams that need more visibility and capacity.",
+    description: "For growing teams that need more visibility and capacity.",
     price: "$29/mo",
     features: [
       "20 active trade cases",
@@ -35,8 +30,7 @@ const plans = [
   {
     name: "DIAMOND",
     title: "Diamond",
-    description:
-      "For serious providers and frequent trade operators.",
+    description: "For serious providers and frequent trade operators.",
     price: "$99/mo",
     features: [
       "Unlimited active trade cases",
@@ -48,8 +42,7 @@ const plans = [
   {
     name: "ENTERPRISE",
     title: "Enterprise",
-    description:
-      "For large trade companies, agencies and enterprise teams.",
+    description: "For large trade companies, agencies and enterprise teams.",
     price: "Custom Pricing",
     features: [
       "Unlimited active trade cases",
@@ -62,9 +55,7 @@ const plans = [
 ];
 
 function formatLimit(limit: number) {
-  return limit === Number.MAX_SAFE_INTEGER
-    ? "Unlimited"
-    : String(limit);
+  return limit === Number.MAX_SAFE_INTEGER ? "Unlimited" : String(limit);
 }
 
 function getPlanColor(planType: string) {
@@ -87,18 +78,30 @@ export default async function SubscriptionPage() {
   const user = await requireUser();
 
   const currentCaseLimit = getCaseLimit(user.planType);
-  const currentProposalLimit =
-    getProposalLimit(user.planType);
+  const currentProposalLimit = getProposalLimit(user.planType);
+  const activeCasesUsed = await prisma.tradeCase.count({
+    where: {
+      customerId: user.id,
+      status: {
+        in: ["OPEN", "IN_PROGRESS"],
+      },
+    },
+  });
 
+  const proposalsUsed = await prisma.caseProposal.count({
+    where: {
+      company: {
+        ownerId: user.id,
+      },
+    },
+  });
   const currentPlanColor = getPlanColor(user.planType);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
         <div className="mb-10">
-          <h1 className="text-5xl font-bold mb-4">
-            Subscription
-          </h1>
+          <h1 className="text-5xl font-bold mb-4">Subscription</h1>
 
           <p className="text-slate-400 max-w-3xl">
             Manage your Dasres plan, usage limits and premium visibility.
@@ -109,9 +112,7 @@ export default async function SubscriptionPage() {
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 mb-10">
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <p className="text-slate-500 text-sm">
-                Current Plan
-              </p>
+              <p className="text-slate-500 text-sm">Current Plan</p>
 
               <div
                 className={`text-4xl font-bold mt-2 ${
@@ -129,22 +130,22 @@ export default async function SubscriptionPage() {
             </div>
 
             <div>
-              <p className="text-slate-500 text-sm">
-                Active Case Limit
-              </p>
+              <p className="text-slate-500 text-sm">Active Cases Used</p>
 
               <div className="text-4xl font-bold text-cyan-400 mt-2">
-                {formatLimit(currentCaseLimit)}
+                {currentCaseLimit === Number.MAX_SAFE_INTEGER
+                  ? `${activeCasesUsed} / Unlimited`
+                  : `${activeCasesUsed} / ${currentCaseLimit}`}
               </div>
             </div>
 
             <div>
-              <p className="text-slate-500 text-sm">
-                Proposal Limit
-              </p>
+              <p className="text-slate-500 text-sm">Proposals Used</p>
 
               <div className="text-4xl font-bold text-emerald-400 mt-2">
-                {formatLimit(currentProposalLimit)}
+                {currentProposalLimit === Number.MAX_SAFE_INTEGER
+                  ? `${proposalsUsed} / Unlimited`
+                  : `${proposalsUsed} / ${currentProposalLimit}`}
               </div>
             </div>
           </div>
@@ -152,8 +153,7 @@ export default async function SubscriptionPage() {
 
         <div className="grid lg:grid-cols-4 gap-6">
           {plans.map((plan) => {
-            const isCurrentPlan =
-              plan.name === user.planType;
+            const isCurrentPlan = plan.name === user.planType;
 
             return (
               <div
@@ -171,9 +171,7 @@ export default async function SubscriptionPage() {
                 }`}
               >
                 <div className="flex items-center justify-between gap-4 mb-4">
-                  <h2 className="text-2xl font-bold">
-                    {plan.title}
-                  </h2>
+                  <h2 className="text-2xl font-bold">{plan.title}</h2>
 
                   {isCurrentPlan && (
                     <span
@@ -196,16 +194,11 @@ export default async function SubscriptionPage() {
                   {plan.description}
                 </p>
 
-                <div className="text-3xl font-bold mt-6">
-                  {plan.price}
-                </div>
+                <div className="text-3xl font-bold mt-6">{plan.price}</div>
 
                 <ul className="space-y-3 mt-6">
                   {plan.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="text-slate-300 text-sm"
-                    >
+                    <li key={feature} className="text-slate-300 text-sm">
                       ✓ {feature}
                     </li>
                   ))}
@@ -231,9 +224,7 @@ export default async function SubscriptionPage() {
         </div>
 
         <div className="mt-10 bg-slate-900 border border-slate-800 rounded-3xl p-8">
-          <h2 className="text-2xl font-bold mb-3">
-            Need a higher plan?
-          </h2>
+          <h2 className="text-2xl font-bold mb-3">Need a higher plan?</h2>
 
           <p className="text-slate-400 mb-6">
             Payments are not active yet. For now, admins can manually upgrade

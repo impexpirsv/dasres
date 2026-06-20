@@ -27,7 +27,7 @@ export default function AddCaseMessageForm({
       body: JSON.stringify({ content }),
     });
 
-    console.log(await response.json());
+    await response.json();
 
     setContent("");
     router.refresh();

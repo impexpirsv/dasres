@@ -52,20 +52,68 @@ export default async function MyCasesPage() {
       id: "desc",
     },
   });
+  const inProgressCases = cases.filter(
+    (tradeCase) => tradeCase.status === "IN_PROGRESS",
+  ).length;
 
+  const completedCases = cases.filter(
+    (tradeCase) => tradeCase.status === "COMPLETED",
+  ).length;
+
+  const totalDocuments = cases.reduce(
+    (sum, tradeCase) => sum + tradeCase.documents.length,
+    0,
+  );
+
+  const totalMessages = cases.reduce(
+    (sum, tradeCase) => sum + tradeCase.messages.length,
+    0,
+  );
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-6 py-20">
         <div className="mb-10">
-          <h1 className="text-4xl font-bold mb-3">
-            My Active Cases
-          </h1>
+          <h1 className="text-4xl font-bold mb-3">My Active Cases</h1>
 
           <p className="text-slate-400">
             Cases where your company proposal has been accepted.
           </p>
         </div>
+        <div className="grid md:grid-cols-4 gap-6 mb-10">
+          <div className="bg-slate-900 border border-blue-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">Assigned Cases</p>
 
+            <p className="text-4xl font-bold text-blue-400 mt-2">
+              {cases.length}
+            </p>
+          </div>
+
+          <div className="bg-slate-900 border border-amber-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">In Progress</p>
+
+            <p className="text-4xl font-bold text-amber-400 mt-2">
+              {inProgressCases}
+            </p>
+          </div>
+
+          <div className="bg-slate-900 border border-emerald-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">Completed</p>
+
+            <p className="text-4xl font-bold text-emerald-400 mt-2">
+              {completedCases}
+            </p>
+          </div>
+
+          <div className="bg-slate-900 border border-cyan-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">Workload</p>
+
+            <p className="text-4xl font-bold text-cyan-400 mt-2">
+              {totalMessages + totalDocuments}
+            </p>
+
+            <p className="text-xs text-slate-500 mt-2">Messages + Documents</p>
+          </div>
+        </div>
         {cases.length === 0 ? (
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-slate-400">
             No active cases yet.
@@ -73,13 +121,11 @@ export default async function MyCasesPage() {
         ) : (
           <div className="grid lg:grid-cols-2 gap-6">
             {cases.map((tradeCase) => {
-              const acceptedProposal =
-                tradeCase.proposals[0];
+              const acceptedProposal = tradeCase.proposals[0];
 
-              const completedSteps =
-                tradeCase.steps.filter(
-                  (step) => step.completed
-                ).length;
+              const completedSteps = tradeCase.steps.filter(
+                (step) => step.completed,
+              ).length;
 
               const totalSteps = tradeCase.steps.length;
 
@@ -102,7 +148,7 @@ export default async function MyCasesPage() {
 
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusClass(
-                        tradeCase.status
+                        tradeCase.status,
                       )}`}
                     >
                       {tradeCase.status}
@@ -125,38 +171,28 @@ export default async function MyCasesPage() {
 
                   <div className="space-y-3 text-sm">
                     <div>
-                      <p className="text-slate-500">
-                        Accepted Company
-                      </p>
+                      <p className="text-slate-500">Accepted Company</p>
                       <p className="text-slate-200 font-medium">
-                        {acceptedProposal?.company?.name ||
-                          "N/A"}
+                        {acceptedProposal?.company?.name || "N/A"}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-slate-500">
-                        Assigned Expert
-                      </p>
+                      <p className="text-slate-500">Assigned Expert</p>
                       <p className="text-slate-200 font-medium">
-                        {acceptedProposal?.expert?.name ||
-                          "Not assigned"}
+                        {acceptedProposal?.expert?.name || "Not assigned"}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-slate-500">
-                        Proposal Price
-                      </p>
+                      <p className="text-slate-500">Proposal Price</p>
                       <p className="text-slate-200 font-medium">
                         {acceptedProposal?.price || "N/A"}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-slate-500">
-                        Timeline Progress
-                      </p>
+                      <p className="text-slate-500">Timeline Progress</p>
                       <p className="text-slate-200 font-medium">
                         {completedSteps} / {totalSteps} steps completed
                       </p>
@@ -165,8 +201,7 @@ export default async function MyCasesPage() {
 
                   <div className="mt-6 pt-5 border-t border-slate-800 flex justify-between items-center">
                     <span className="text-xs text-slate-500">
-                      Updated{" "}
-                      {tradeCase.updatedAt.toLocaleDateString()}
+                      Updated {tradeCase.updatedAt.toLocaleDateString()}
                     </span>
 
                     <span className="text-blue-400 text-sm group-hover:underline">

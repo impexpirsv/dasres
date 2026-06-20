@@ -9,9 +9,7 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
   const company = await prisma.company.findUnique({
@@ -23,8 +21,7 @@ export async function generateMetadata({
   if (!company) {
     return {
       title: "Company Not Found",
-      description:
-        "The requested company profile could not be found.",
+      description: "The requested company profile could not be found.",
     };
   }
 
@@ -51,16 +48,12 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: company.logoUrl
-        ? [company.logoUrl]
-        : ["/og-image.png"],
+      images: company.logoUrl ? [company.logoUrl] : ["/og-image.png"],
     },
   };
 }
 
-export default async function CompanyProfilePage({
-  params,
-}: Props) {
+export default async function CompanyProfilePage({ params }: Props) {
   const { id } = await params;
 
   const user = await requireUser();
@@ -75,9 +68,7 @@ export default async function CompanyProfilePage({
   if (!company) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">
-          Company Not Found
-        </h1>
+        <h1 className="text-4xl font-bold">Company Not Found</h1>
       </div>
     );
   }
@@ -95,14 +86,11 @@ export default async function CompanyProfilePage({
 
   const averageRating =
     companyReviews.length > 0
-      ? companyReviews.reduce(
-          (sum, review) => sum + review.rating,
-          0
-        ) / companyReviews.length
+      ? companyReviews.reduce((sum, review) => sum + review.rating, 0) /
+        companyReviews.length
       : null;
 
-  const canManageCompany =
-    isAdmin || company.ownerId === user.id;
+  const canManageCompany = isAdmin || company.ownerId === user.id;
 
   const companySchema = {
     "@context": "https://schema.org",
@@ -111,9 +99,7 @@ export default async function CompanyProfilePage({
     description: company.description,
     url: company.website,
     email: company.email,
-    logo: company.logoUrl
-      ? company.logoUrl
-      : "/og-image.png",
+    logo: company.logoUrl ? company.logoUrl : "/og-image.png",
     address: {
       "@type": "PostalAddress",
       addressCountry: company.country,
@@ -151,7 +137,15 @@ export default async function CompanyProfilePage({
         </Link>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden">
+          <div className={`lg:col-span-2 bg-slate-900 rounded-3xl border overflow-hidden ${
+  company.planType === "GOLD"
+    ? "border-yellow-500 shadow-lg shadow-yellow-500/10"
+    : company.planType === "DIAMOND"
+      ? "border-cyan-500 shadow-lg shadow-cyan-500/10"
+      : company.planType === "ENTERPRISE"
+        ? "border-purple-500 shadow-lg shadow-purple-500/10"
+        : "border-slate-800"
+}`}>
             {company.logoUrl && (
               <div className="bg-white p-10">
                 <img
@@ -192,9 +186,7 @@ export default async function CompanyProfilePage({
               </div>
 
               <div className="flex flex-wrap items-center gap-3 mb-4">
-                <h1 className="text-5xl font-bold">
-                  {company.name}
-                </h1>
+                <h1 className="text-5xl font-bold">{company.name}</h1>
 
                 {company.planType === "GOLD" && (
                   <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
@@ -215,14 +207,50 @@ export default async function CompanyProfilePage({
                 )}
               </div>
 
-              <p className="text-blue-400 text-2xl mb-8">
-                {company.category}
-              </p>
+              <p className="text-blue-400 text-2xl mb-8">{company.category}</p>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-slate-500 text-sm mb-1">Rating</p>
 
+                  <p className="text-2xl font-bold text-yellow-400">
+                    {averageRating ? `⭐ ${averageRating.toFixed(1)}` : "N/A"}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-slate-500 text-sm mb-1">Reviews</p>
+
+                  <p className="text-2xl font-bold text-slate-200">
+                    {companyReviews.length}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-slate-500 text-sm mb-1">Verification</p>
+
+                  <p
+                    className={`text-2xl font-bold ${
+                      company.verificationStatus === "VERIFIED"
+                        ? "text-emerald-400"
+                        : company.verificationStatus === "REJECTED"
+                          ? "text-red-400"
+                          : "text-yellow-400"
+                    }`}
+                  >
+                    {company.verificationStatus}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-slate-500 text-sm mb-1">Country</p>
+
+                  <p className="text-2xl font-bold text-blue-400">
+                    {company.country}
+                  </p>
+                </div>
+              </div>
               <div className="mb-8 rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <p className="text-slate-500 text-sm mb-2">
-                  Company Rating
-                </p>
+                <p className="text-slate-500 text-sm mb-2">Company Rating</p>
 
                 {averageRating ? (
                   <div>
@@ -236,71 +264,85 @@ export default async function CompanyProfilePage({
                     </p>
                   </div>
                 ) : (
-                  <p className="text-slate-500">
-                    No reviews yet.
-                  </p>
+                  <p className="text-slate-500">No reviews yet.</p>
                 )}
               </div>
 
               <div className="border-t border-slate-800 pt-8">
-                <h2 className="text-2xl font-bold mb-4">
-                  Company Description
-                </h2>
+                <h2 className="text-2xl font-bold mb-4">Company Description</h2>
 
                 <p className="text-slate-300 text-lg leading-8">
                   {company.description}
                 </p>
               </div>
+              <div className="border-t border-slate-800 pt-8 mt-8">
+                <h2 className="text-2xl font-bold mb-4">Recent Reviews</h2>
+
+                {companyReviews.length === 0 ? (
+                  <p className="text-slate-500">No reviews yet.</p>
+                ) : (
+                  <div className="space-y-4">
+                    {companyReviews.slice(0, 3).map((review) => (
+                      <div
+                        key={review.id}
+                        className="rounded-2xl border border-slate-800 bg-slate-950 p-5"
+                      >
+                        <p className="text-yellow-400 font-semibold mb-2">
+                          {"⭐".repeat(review.rating)}
+                        </p>
+
+                        <p className="text-slate-300 leading-7">
+                          {review.comment || "No comment provided."}
+                        </p>
+
+                        <p className="text-xs text-slate-500 mt-3">
+                          {review.createdAt.toLocaleDateString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
           <aside className="space-y-6">
-            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-6">
-                Company Information
-              </h2>
+            <div className={`bg-slate-900 rounded-3xl border p-6 ${
+  company.planType === "GOLD"
+    ? "border-yellow-500 shadow-lg shadow-yellow-500/10"
+    : company.planType === "DIAMOND"
+      ? "border-cyan-500 shadow-lg shadow-cyan-500/10"
+      : company.planType === "ENTERPRISE"
+        ? "border-purple-500 shadow-lg shadow-purple-500/10"
+        : "border-slate-800"
+}`}>
+              <h2 className="text-2xl font-bold mb-6">Company Information</h2>
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-slate-500 text-sm">
-                    Email
-                  </p>
-                  <p className="text-slate-200 break-all">
-                    {company.email}
-                  </p>
+                  <p className="text-slate-500 text-sm">Email</p>
+                  <p className="text-slate-200 break-all">{company.email}</p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">
-                    Website
-                  </p>
+                  <p className="text-slate-500 text-sm">Website</p>
                   <p className="text-slate-200 break-all">
                     {company.website || "Not provided"}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">
-                    Country
-                  </p>
-                  <p className="text-slate-200">
-                    {company.country}
-                  </p>
+                  <p className="text-slate-500 text-sm">Country</p>
+                  <p className="text-slate-200">{company.country}</p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">
-                    Category
-                  </p>
-                  <p className="text-slate-200">
-                    {company.category}
-                  </p>
+                  <p className="text-slate-500 text-sm">Category</p>
+                  <p className="text-slate-200">{company.category}</p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">
-                    Reputation
-                  </p>
+                  <p className="text-slate-500 text-sm">Reputation</p>
                   <p className="text-slate-200">
                     {averageRating
                       ? `⭐ ${averageRating.toFixed(1)} (${companyReviews.length} reviews)`
@@ -340,9 +382,7 @@ export default async function CompanyProfilePage({
                       {company.verificationStatus}
                     </p>
 
-                    <CompanyVerificationButtons
-                      companyId={company.id}
-                    />
+                    <CompanyVerificationButtons companyId={company.id} />
                   </div>
                 )}
 

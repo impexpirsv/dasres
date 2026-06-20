@@ -37,16 +37,28 @@ export default async function CasesPage() {
       id: "desc",
     },
   });
+  const openCases = cases.filter(
+    (tradeCase) => tradeCase.status === "OPEN",
+  ).length;
 
+  const inProgressCases = cases.filter(
+    (tradeCase) => tradeCase.status === "IN_PROGRESS",
+  ).length;
+
+  const completedCases = cases.filter(
+    (tradeCase) => tradeCase.status === "COMPLETED",
+  ).length;
+
+  const cancelledCases = cases.filter(
+    (tradeCase) => tradeCase.status === "CANCELLED",
+  ).length;
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-6 py-20">
         <div className="flex items-center justify-between mb-10">
           <div>
             <h1 className="text-4xl font-bold mb-3">
-              {user.role === "admin"
-                ? "All Trade Cases"
-                : "My Cases"}
+              {user.role === "admin" ? "All Trade Cases" : "My Cases"}
             </h1>
 
             <p className="text-slate-400">
@@ -61,7 +73,45 @@ export default async function CasesPage() {
             New Case
           </Link>
         </div>
+        <div className="grid md:grid-cols-5 gap-6 mb-10">
+          <div className="bg-slate-900 border border-blue-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">Total Cases</p>
 
+            <p className="text-4xl font-bold text-blue-400 mt-2">
+              {cases.length}
+            </p>
+          </div>
+
+          <div className="bg-slate-900 border border-cyan-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">Open</p>
+
+            <p className="text-4xl font-bold text-cyan-400 mt-2">{openCases}</p>
+          </div>
+
+          <div className="bg-slate-900 border border-amber-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">In Progress</p>
+
+            <p className="text-4xl font-bold text-amber-400 mt-2">
+              {inProgressCases}
+            </p>
+          </div>
+
+          <div className="bg-slate-900 border border-emerald-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">Completed</p>
+
+            <p className="text-4xl font-bold text-emerald-400 mt-2">
+              {completedCases}
+            </p>
+          </div>
+
+          <div className="bg-slate-900 border border-red-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">Cancelled</p>
+
+            <p className="text-4xl font-bold text-red-400 mt-2">
+              {cancelledCases}
+            </p>
+          </div>
+        </div>
         {cases.length === 0 ? (
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center text-slate-500">
             No cases found.
@@ -69,19 +119,15 @@ export default async function CasesPage() {
         ) : (
           <div className="grid lg:grid-cols-2 gap-6">
             {cases.map((tradeCase) => {
-              const completedSteps =
-                tradeCase.steps.filter(
-                  (step) => step.completed
-                ).length;
+              const completedSteps = tradeCase.steps.filter(
+                (step) => step.completed,
+              ).length;
 
               const totalSteps = tradeCase.steps.length;
 
-              const acceptedProposal =
-                tradeCase.proposals.find(
-                  (proposal) =>
-                    proposal.id ===
-                    tradeCase.acceptedProposalId
-                );
+              const acceptedProposal = tradeCase.proposals.find(
+                (proposal) => proposal.id === tradeCase.acceptedProposalId,
+              );
 
               return (
                 <Link
@@ -102,7 +148,7 @@ export default async function CasesPage() {
 
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusClass(
-                        tradeCase.status
+                        tradeCase.status,
                       )}`}
                     >
                       {tradeCase.status}
@@ -133,18 +179,14 @@ export default async function CasesPage() {
 
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-slate-500">
-                        Timeline
-                      </p>
+                      <p className="text-slate-500">Timeline</p>
                       <p className="text-slate-200 font-medium">
                         {completedSteps} / {totalSteps} steps
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-slate-500">
-                        Winning Proposal
-                      </p>
+                      <p className="text-slate-500">Winning Proposal</p>
                       <p className="text-slate-200 font-medium">
                         {acceptedProposal
                           ? `#${acceptedProposal.id}`
@@ -153,18 +195,14 @@ export default async function CasesPage() {
                     </div>
 
                     <div>
-                      <p className="text-slate-500">
-                        Created
-                      </p>
+                      <p className="text-slate-500">Created</p>
                       <p className="text-slate-200 font-medium">
                         {tradeCase.createdAt.toLocaleDateString()}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-slate-500">
-                        Updated
-                      </p>
+                      <p className="text-slate-500">Updated</p>
                       <p className="text-slate-200 font-medium">
                         {tradeCase.updatedAt.toLocaleDateString()}
                       </p>

@@ -28,7 +28,43 @@ function getActivityTitle(action: string) {
 }
 export default async function DashboardPage() {
   const user = await requireUser();
+  const pendingCompaniesCount =
+    user.role === "admin"
+      ? await prisma.company.count({
+          where: {
+            verificationStatus: "PENDING",
+          },
+        })
+      : 0;
 
+  const pendingExpertsCount =
+    user.role === "admin"
+      ? await prisma.expert.count({
+          where: {
+            verificationStatus: "PENDING",
+          },
+        })
+      : 0;
+
+  const totalReviewsCount =
+    user.role === "admin"
+      ? await prisma.review.count()
+      : await prisma.review.count({
+          where: {
+            reviewedUserId: user.id,
+          },
+        });
+
+  const premiumUsersCount =
+    user.role === "admin"
+      ? await prisma.user.count({
+          where: {
+            planType: {
+              in: ["GOLD", "DIAMOND", "ENTERPRISE"],
+            },
+          },
+        })
+      : 0;
   const usersCount = user.role === "admin" ? await prisma.user.count() : 0;
 
   const expertsCount =
@@ -376,7 +412,105 @@ export default async function DashboardPage() {
       <p className="text-slate-400 mb-12">
         Manage your Dasres account, profiles and trade activities.
       </p>
+      <div className="grid md:grid-cols-4 gap-4 mb-10">
+        <Link
+          href="/dashboard/cases/new"
+          className="bg-blue-600 hover:bg-blue-700 rounded-2xl p-5"
+        >
+          <div className="text-lg font-bold">New Case</div>
 
+          <div className="text-sm text-blue-100 mt-2">
+            Create a trade request
+          </div>
+        </Link>
+
+        <Link
+          href="/dashboard/open-cases"
+          className="bg-emerald-600 hover:bg-emerald-700 rounded-2xl p-5"
+        >
+          <div className="text-lg font-bold">Open Cases</div>
+
+          <div className="text-sm text-emerald-100 mt-2">
+            Find new opportunities
+          </div>
+        </Link>
+
+        <Link
+          href="/dashboard/my-companies"
+          className="bg-purple-600 hover:bg-purple-700 rounded-2xl p-5"
+        >
+          <div className="text-lg font-bold">My Companies</div>
+
+          <div className="text-sm text-purple-100 mt-2">
+            Manage company profiles
+          </div>
+        </Link>
+
+        <Link
+          href="/dashboard/tickets"
+          className="bg-slate-800 hover:bg-slate-700 rounded-2xl p-5"
+        >
+          <div className="text-lg font-bold">Support</div>
+
+          <div className="text-sm text-slate-300 mt-2">
+            Contact platform support
+          </div>
+        </Link>
+      </div>
+      {user.role === "admin" && (
+        <div className="mb-12 bg-slate-900 border border-blue-500 rounded-3xl p-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+              <h2 className="text-3xl font-bold">Admin Command Center</h2>
+
+              <p className="text-slate-400 mt-2">
+                High-level operational overview of Dasres.
+              </p>
+            </div>
+
+            <Link
+              href="/dashboard/verifications"
+              className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl text-center"
+            >
+              Review Verifications
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+              <p className="text-slate-500 text-sm">Pending Verifications</p>
+
+              <p className="text-4xl font-bold text-yellow-400 mt-2">
+                {pendingCompaniesCount + pendingExpertsCount}
+              </p>
+            </div>
+
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+              <p className="text-slate-500 text-sm">Total Reviews</p>
+
+              <p className="text-4xl font-bold text-emerald-400 mt-2">
+                {totalReviewsCount}
+              </p>
+            </div>
+
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+              <p className="text-slate-500 text-sm">Premium Users</p>
+
+              <p className="text-4xl font-bold text-purple-400 mt-2">
+                {premiumUsersCount}
+              </p>
+            </div>
+
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+              <p className="text-slate-500 text-sm">Open Tickets</p>
+
+              <p className="text-4xl font-bold text-blue-400 mt-2">
+                {openTicketsCount}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6">
         <div className="bg-slate-900 p-6 rounded-2xl border border-yellow-500">
           <h2 className="text-xl font-semibold mb-3">Current Plan</h2>
@@ -393,15 +527,15 @@ export default async function DashboardPage() {
 
           <div className="text-3xl font-bold text-cyan-400">
             {proposalLimit === Number.MAX_SAFE_INTEGER
-  ? `${myProposalsCount} / Unlimited`
-  : `${myProposalsCount} / ${proposalLimit}`}
+              ? `${myProposalsCount} / Unlimited`
+              : `${myProposalsCount} / ${proposalLimit}`}
           </div>
 
           <p className="text-slate-400 mt-3">
-  {proposalLimit === Number.MAX_SAFE_INTEGER
-    ? "Unlimited plan"
-    : `${proposalUsagePercent}% used`}
-</p>
+            {proposalLimit === Number.MAX_SAFE_INTEGER
+              ? "Unlimited plan"
+              : `${proposalUsagePercent}% used`}
+          </p>
         </div>
         <Link
           href={user.role === "admin" ? "/experts" : "/dashboard/my-experts"}

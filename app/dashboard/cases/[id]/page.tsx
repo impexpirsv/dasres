@@ -8,7 +8,63 @@ import AddCaseProposalForm from "../../../components/AddCaseProposalForm";
 import ProposalActionButtons from "../../../components/ProposalActionButtons";
 import CompleteCaseButton from "../../../components/CompleteCaseButton";
 import AddReviewForm from "../../../components/AddReviewForm";
+function getActivityDisplay(action: string) {
+  switch (action) {
+    case "PROPOSAL_SUBMITTED":
+      return {
+        title: "Proposal Submitted",
+        icon: "📨",
+        border: "border-yellow-500",
+      };
 
+    case "PROPOSAL_ACCEPTED":
+      return {
+        title: "Proposal Accepted",
+        icon: "✅",
+        border: "border-green-500",
+      };
+
+    case "PROPOSAL_REJECTED":
+      return {
+        title: "Proposal Rejected",
+        icon: "❌",
+        border: "border-red-500",
+      };
+
+    case "MESSAGE_SENT":
+      return {
+        title: "Message Sent",
+        icon: "💬",
+        border: "border-blue-500",
+      };
+
+    case "DOCUMENT_UPLOADED":
+      return {
+        title: "Document Uploaded",
+        icon: "📄",
+        border: "border-purple-500",
+      };
+
+    case "CASE_COMPLETED":
+      return {
+        title: "Case Completed",
+        icon: "🏁",
+        border: "border-emerald-500",
+      };
+    case "REVIEW_SUBMITTED":
+      return {
+        title: "Review Submitted",
+        icon: "⭐",
+        border: "border-yellow-500",
+      };
+    default:
+      return {
+        title: action.replaceAll("_", " "),
+        icon: "•",
+        border: "border-slate-600",
+      };
+  }
+}
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -193,6 +249,39 @@ export default async function CaseDetailPage({ params }: Props) {
               <p className="text-slate-300 leading-8">
                 {tradeCase.description}
               </p>
+              <div className="grid md:grid-cols-5 gap-4 mt-8">
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Proposals</p>
+
+                  <p className="text-3xl font-bold text-blue-400">
+                    {tradeCase.proposals.length}
+                  </p>
+                </div>
+
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Messages</p>
+
+                  <p className="text-3xl font-bold text-emerald-400">
+                    {tradeCase.messages.length}
+                  </p>
+                </div>
+
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Documents</p>
+
+                  <p className="text-3xl font-bold text-cyan-400">
+                    {tradeCase.documents.length}
+                  </p>
+                </div>
+
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Activities</p>
+
+                  <p className="text-3xl font-bold text-purple-400">
+                    {tradeCase.activities.length}
+                  </p>
+                </div>
+              </div>
             </section>
 
             <section className="bg-slate-900 rounded-3xl border border-slate-800 p-8">
@@ -266,7 +355,11 @@ export default async function CaseDetailPage({ params }: Props) {
                   {tradeCase.proposals.map((proposal) => (
                     <div
                       key={proposal.id}
-                      className="bg-slate-950 border border-slate-800 rounded-2xl p-5"
+                      className={`rounded-2xl p-5 border ${
+                        proposal.id === tradeCase.acceptedProposalId
+                          ? "bg-green-950/30 border-green-500"
+                          : "bg-slate-950 border-slate-800"
+                      }`}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                         <p className="font-semibold text-lg">
@@ -457,6 +550,14 @@ export default async function CaseDetailPage({ params }: Props) {
 
                 <div>
                   <p className="text-slate-500 text-sm">Winning Company</p>
+                  {winningProposal?.company?.id && (
+                    <Link
+                      href={`/companies/${winningProposal.company.id}`}
+                      className="inline-block mt-2 text-blue-400 hover:underline"
+                    >
+                      View Company →
+                    </Link>
+                  )}
                   <p className="text-slate-200">
                     {winningProposal?.company?.name || "Not selected"}
                   </p>
@@ -464,11 +565,34 @@ export default async function CaseDetailPage({ params }: Props) {
 
                 <div>
                   <p className="text-slate-500 text-sm">Winning Expert</p>
+                  {winningProposal?.expert?.id && (
+                    <Link
+                      href={`/experts/${winningProposal.expert.id}`}
+                      className="inline-block mt-2 text-blue-400 hover:underline"
+                    >
+                      View Expert →
+                    </Link>
+                  )}
                   <p className="text-slate-200">
                     {winningProposal?.expert?.name || "Not selected"}
                   </p>
-                </div>
+                  {winningProposal && (
+                    <div className="mt-4 pt-4 border-t border-slate-800">
+                      <p className="text-slate-500 text-sm">Proposal Value</p>
 
+                      <p className="text-2xl font-bold text-emerald-400 mt-1">
+                        {winningProposal.price || "N/A"}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Reviews</p>
+
+                  <p className="text-3xl font-bold text-yellow-400">
+                    {tradeCase.reviews.length}
+                  </p>
+                </div>
                 <div>
                   <p className="text-slate-500 text-sm">Assigned At</p>
                   <p className="text-slate-200">
@@ -487,33 +611,41 @@ export default async function CaseDetailPage({ params }: Props) {
                 )}
             </section>
             <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">Case Activity</h2>
+              <h2 className="text-2xl font-bold mb-4">
+                Case Activity ({tradeCase.activities.length})
+              </h2>
 
               {tradeCase.activities.length === 0 ? (
                 <p className="text-slate-500">No activity recorded yet.</p>
               ) : (
                 <div className="space-y-4">
-                  {tradeCase.activities.map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="border-l-2 border-blue-600 pl-4"
-                    >
-                      <p className="font-semibold">{activity.action}</p>
+                  {tradeCase.activities.map((activity) => {
+                    const activityDisplay = getActivityDisplay(activity.action);
 
-                      {activity.details && (
-                        <p className="text-sm text-slate-400 mt-1">
-                          {activity.details}
+                    return (
+                      <div
+                        key={activity.id}
+                        className={`border-l-2 ${activityDisplay.border} pl-4`}
+                      >
+                        <p className="font-semibold">
+                          {activityDisplay.icon} {activityDisplay.title}
                         </p>
-                      )}
 
-                      <p className="text-xs text-slate-500 mt-1">
-                        {activity.user?.name ||
-                          activity.user?.email ||
-                          "System"}{" "}
-                        · {activity.createdAt.toLocaleString()}
-                      </p>
-                    </div>
-                  ))}
+                        {activity.details && (
+                          <p className="text-sm text-slate-400 mt-1">
+                            {activity.details}
+                          </p>
+                        )}
+
+                        <p className="text-xs text-slate-500 mt-1">
+                          {activity.user?.name ||
+                            activity.user?.email ||
+                            "System"}{" "}
+                          · {activity.createdAt.toLocaleString()}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </section>
