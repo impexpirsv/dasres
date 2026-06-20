@@ -2,12 +2,10 @@ import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import {
-  getBestPlan,
-  getCaseLimit,
-} from "../../../../lib/plans";
+import { getCaseLimit } from "../../../../lib/plans";
+import CreateCaseForm from "../../../components/CreateCaseForm";
 
-const PLAN_LIMITS_ENABLED = false;
+const PLAN_LIMITS_ENABLED = true;
 
 const CASE_CATEGORIES = [
   "General",
@@ -20,26 +18,19 @@ const CASE_CATEGORIES = [
   "Payment",
 ];
 
-async function createCase(formData: FormData) {
+type CreateCaseState = {
+  error?: string;
+};
+
+async function createCase(
+  previousState: CreateCaseState,
+  formData: FormData
+): Promise<CreateCaseState> {
   "use server";
 
   const user = await requireUser();
 
-  const ownedCompanies =
-    await prisma.company.findMany({
-      where: {
-        ownerId: user.id,
-      },
-      select: {
-        planType: true,
-      },
-    });
-
-  const bestPlan = getBestPlan(
-    ownedCompanies.map((company) => company.planType)
-  );
-
-  const caseLimit = getCaseLimit(bestPlan);
+  const caseLimit = getCaseLimit(user.planType);
 
   const activeCasesCount =
     await prisma.tradeCase.count({
@@ -56,9 +47,9 @@ async function createCase(formData: FormData) {
     user.role !== "admin" &&
     activeCasesCount >= caseLimit
   ) {
-    throw new Error(
-      `Your ${bestPlan} plan allows up to ${caseLimit} active trade cases.`
-    );
+    return {
+      error: `Your ${user.planType} plan allows up to ${caseLimit} active trade cases. Upgrade your plan to create more cases.`,
+    };
   }
 
   const title = String(formData.get("title") || "").trim();
@@ -70,11 +61,15 @@ async function createCase(formData: FormData) {
   ).trim();
 
   if (!title || !description) {
-    throw new Error("Title and description are required");
+    return {
+      error: "Title and description are required.",
+    };
   }
 
   if (!CASE_CATEGORIES.includes(category)) {
-    throw new Error("Invalid case category");
+    return {
+      error: "Invalid case category.",
+    };
   }
 
   const tradeCase = await prisma.tradeCase.create({
@@ -139,65 +134,7 @@ export default async function NewCasePage() {
             Submit a new trade service request. A provider or expert can be assigned later.
           </p>
 
-          <form action={createCase} className="space-y-6">
-            <div>
-              <label className="block text-sm text-slate-400 mb-2">
-                Case Title
-              </label>
-              <input
-                name="title"
-                type="text"
-                required
-                placeholder="Need customs clearance in Dubai"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-slate-400 mb-2">
-                Case Category
-              </label>
-
-              <select
-                name="category"
-                defaultValue="General"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
-              >
-                {CASE_CATEGORIES.map((category) => (
-                  <option
-                    key={category}
-                    value={category}
-                  >
-                    {category}
-                  </option>
-                ))}
-              </select>
-
-              <p className="text-xs text-slate-500 mt-2">
-                This helps Dasres match the case with relevant companies and experts.
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm text-slate-400 mb-2">
-                Description
-              </label>
-              <textarea
-                name="description"
-                required
-                rows={7}
-                placeholder="Describe the shipment, service needed, country, documents, timeline, and any special requirements..."
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold"
-            >
-              Create Case
-            </button>
-          </form>
+          <CreateCaseForm action={createCase} />
         </div>
       </div>
     </div>

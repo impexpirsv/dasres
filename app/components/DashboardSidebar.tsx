@@ -166,6 +166,14 @@ export default function DashboardSidebar({
             )}
           </span>
         </Link>
+        <p className={sectionTitleClass}>Subscription</p>
+
+        <Link
+          href="/dashboard/subscription"
+          className={getLinkClass("/dashboard/subscription")}
+        >
+          Subscription
+        </Link>
         <p className={sectionTitleClass}>Account</p>
 
         <button

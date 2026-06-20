@@ -60,6 +60,7 @@ model User {
   password        String
   role            String          @default("user")
   createdAt       DateTime        @default(now())
+  planType        PlanType        @default(FREE)
   caseActivities  CaseActivity[]
   caseDocuments   CaseDocument[]
   caseMessages    CaseMessage[]
@@ -71,7 +72,6 @@ model User {
   sessions        Session[]
   tickets         Ticket[]
   ticketMessages  TicketMessage[]
-  planType PlanType @default(FREE)
 }
 
 model Session {
