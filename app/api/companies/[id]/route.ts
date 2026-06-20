@@ -191,7 +191,7 @@ export async function PUT(
       !country ||
       !category ||
       !description ||
-      !email ||
+      !email 
     ) {
       return Response.json(
         { message: "All fields are required." },

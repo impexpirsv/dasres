@@ -2,6 +2,7 @@ import { prisma } from "../../../lib/prisma";
 import { requireAdmin } from "../../../lib/auth";
 import MakeAdminButton from "../../components/MakeAdminButton";
 import DeleteUserButton from "../../components/DeleteUserButton";
+import ChangePlanButton from "../../components/ChangePlanButton";
 
 export default async function UsersPage() {
   await requireAdmin();
@@ -27,6 +28,7 @@ export default async function UsersPage() {
                 <th className="text-left p-4">Name</th>
                 <th className="text-left p-4">Email</th>
                 <th className="text-left p-4">Role</th>
+                <th className="text-left p-4">Plan</th>
                 <th className="text-left p-4">Actions</th>
               </tr>
             </thead>
@@ -41,6 +43,13 @@ export default async function UsersPage() {
                   <td className="p-4">{user.name}</td>
                   <td className="p-4">{user.email}</td>
                   <td className="p-4">{user.role}</td>
+
+                  <td className="p-4">
+                    <ChangePlanButton
+                      userId={user.id}
+                      currentPlan={user.planType}
+                    />
+                  </td>
 
                   <td className="p-4">
                     <div className="flex gap-3">

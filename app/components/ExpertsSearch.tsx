@@ -13,15 +13,12 @@ interface Expert {
   experience: string;
   email: string;
   imageUrl?: string | null;
+  planType: string;
   averageRating: number;
   reviewCount: number;
 }
 
-function VerificationBadge({
-  status,
-}: {
-  status: string;
-}) {
+function VerificationBadge({ status }: { status: string }) {
   if (status === "VERIFIED") {
     return (
       <span className="inline-block bg-emerald-600 px-3 py-1 rounded text-sm">
@@ -45,6 +42,34 @@ function VerificationBadge({
   );
 }
 
+function PlanBadge({ planType }: { planType: string }) {
+  if (planType === "ENTERPRISE") {
+    return (
+      <span className="inline-block bg-purple-600 px-3 py-1 rounded text-sm">
+        👑 ENTERPRISE
+      </span>
+    );
+  }
+
+  if (planType === "DIAMOND") {
+    return (
+      <span className="inline-block bg-cyan-600 px-3 py-1 rounded text-sm">
+        💎 DIAMOND
+      </span>
+    );
+  }
+
+  if (planType === "GOLD") {
+    return (
+      <span className="inline-block bg-yellow-600 px-3 py-1 rounded text-sm">
+        🥇 GOLD
+      </span>
+    );
+  }
+
+  return null;
+}
+
 export default function ExpertsSearch({
   experts,
 }: {
@@ -59,21 +84,21 @@ export default function ExpertsSearch({
 
   const filteredExperts = experts.filter((expert) => {
     const matchesSearch =
-      expert.name
-        .toLowerCase()
-        .includes(search.toLowerCase()) ||
-      expert.country
-        .toLowerCase()
-        .includes(search.toLowerCase()) ||
-      expert.specialty
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      expert.name.toLowerCase().includes(search.toLowerCase()) ||
+      expert.country.toLowerCase().includes(search.toLowerCase()) ||
+      expert.specialty.toLowerCase().includes(search.toLowerCase());
 
     const matchesCountry =
       country === "" || expert.country === country;
 
     return matchesSearch && matchesCountry;
   });
+
+  const featuredExperts = filteredExperts.filter(
+    (expert) =>
+      expert.planType === "ENTERPRISE" ||
+      expert.planType === "DIAMOND"
+  );
 
   return (
     <>
@@ -101,6 +126,71 @@ export default function ExpertsSearch({
         </select>
       </div>
 
+      {featuredExperts.length > 0 && (
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-3xl font-bold">
+                Featured Experts
+              </h2>
+
+              <p className="text-slate-400 mt-2">
+                Premium experts with higher visibility on Dasres.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {featuredExperts.slice(0, 4).map((expert) => (
+              <Link
+                key={expert.id}
+                href={`/experts/${expert.id}`}
+                className="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-3xl border border-yellow-500 hover:border-yellow-400"
+              >
+                <div className="flex items-start gap-5">
+                  {expert.imageUrl && (
+                    <img
+                      src={expert.imageUrl}
+                      alt={expert.name}
+                      className="w-28 h-28 object-cover rounded-2xl"
+                    />
+                  )}
+
+                  <div className="flex-1">
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      <PlanBadge planType={expert.planType} />
+
+                      <VerificationBadge
+                        status={expert.verificationStatus}
+                      />
+                    </div>
+
+                    <h3 className="text-2xl font-bold">
+                      {expert.name}
+                    </h3>
+
+                    <p className="text-blue-400 mt-1">
+                      {expert.specialty}
+                    </p>
+
+                    <p className="text-slate-400 mt-2">
+                      {expert.country}
+                    </p>
+
+                    {expert.reviewCount > 0 && (
+                      <p className="text-yellow-400 mt-3 font-semibold">
+                        ⭐ {expert.averageRating.toFixed(1)} ·{" "}
+                        {expert.reviewCount} reviews
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="grid md:grid-cols-3 gap-6">
         {filteredExperts.map((expert) => (
           <Link
@@ -121,9 +211,13 @@ export default function ExpertsSearch({
                 {expert.name}
               </h2>
 
-              <VerificationBadge
-                status={expert.verificationStatus}
-              />
+              <div className="flex flex-wrap gap-2 justify-end">
+                <VerificationBadge
+                  status={expert.verificationStatus}
+                />
+
+                <PlanBadge planType={expert.planType} />
+              </div>
             </div>
 
             <p className="text-blue-400">

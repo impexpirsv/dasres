@@ -14,7 +14,7 @@ interface Company {
   email: string;
   website: string;
   logoUrl?: string | null;
-
+planType: string;
   averageRating: number;
   reviewCount: number;
 }
@@ -46,7 +46,33 @@ function VerificationBadge({
     </span>
   );
 }
+function PlanBadge({ planType }: { planType: string }) {
+  if (planType === "ENTERPRISE") {
+    return (
+      <span className="inline-block bg-purple-600 px-3 py-1 rounded text-sm">
+        👑 ENTERPRISE
+      </span>
+    );
+  }
 
+  if (planType === "DIAMOND") {
+    return (
+      <span className="inline-block bg-cyan-600 px-3 py-1 rounded text-sm">
+        💎 DIAMOND
+      </span>
+    );
+  }
+
+  if (planType === "GOLD") {
+    return (
+      <span className="inline-block bg-yellow-600 px-3 py-1 rounded text-sm">
+        🥇 GOLD
+      </span>
+    );
+  }
+
+  return null;
+}
 export default function CompaniesSearch({
   companies,
 }: {
@@ -60,6 +86,7 @@ export default function CompaniesSearch({
   );
 
   const filteredCompanies = companies.filter((company) => {
+   
     const matchesSearch =
       company.name.toLowerCase().includes(search.toLowerCase()) ||
       company.country.toLowerCase().includes(search.toLowerCase()) ||
@@ -70,7 +97,11 @@ export default function CompaniesSearch({
 
     return matchesSearch && matchesCountry;
   });
-
+const featuredCompanies = filteredCompanies.filter(
+  (company) =>
+    company.planType === "ENTERPRISE" ||
+    company.planType === "DIAMOND"
+);
   return (
     <>
       <div className="grid md:grid-cols-2 gap-4 mb-8">
@@ -96,7 +127,69 @@ export default function CompaniesSearch({
           ))}
         </select>
       </div>
+{featuredCompanies.length > 0 && (
+  <div className="mb-12">
+    <div className="flex items-center justify-between mb-6">
+      <div>
+        <h2 className="text-3xl font-bold">
+          Featured Companies
+        </h2>
 
+        <p className="text-slate-400 mt-2">
+          Premium trade companies with higher visibility on Dasres.
+        </p>
+      </div>
+    </div>
+
+    <div className="grid md:grid-cols-2 gap-6">
+      {featuredCompanies.slice(0, 4).map((company) => (
+        <Link
+          key={company.id}
+          href={`/companies/${company.id}`}
+          className="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-3xl border border-yellow-500 hover:border-yellow-400"
+        >
+          <div className="flex items-start gap-5">
+            {company.logoUrl && (
+              <img
+                src={company.logoUrl}
+                alt={company.name}
+                className="w-28 h-28 object-contain rounded-2xl bg-white p-3"
+              />
+            )}
+
+            <div className="flex-1">
+              <div className="flex flex-wrap gap-2 mb-3">
+                <PlanBadge planType={company.planType} />
+                <VerificationBadge
+                  status={company.verificationStatus}
+                />
+              </div>
+
+              <h3 className="text-2xl font-bold">
+                {company.name}
+              </h3>
+
+              <p className="text-blue-400 mt-1">
+                {company.category}
+              </p>
+
+              <p className="text-slate-400 mt-2">
+                {company.country}
+              </p>
+
+              {company.reviewCount > 0 && (
+                <p className="text-yellow-400 mt-3 font-semibold">
+                  ⭐ {company.averageRating.toFixed(1)} ·{" "}
+                  {company.reviewCount} reviews
+                </p>
+              )}
+            </div>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+)}
       <div className="grid md:grid-cols-3 gap-6">
         {filteredCompanies.map((company) => (
           <Link
@@ -120,6 +213,7 @@ export default function CompaniesSearch({
               <VerificationBadge
                 status={company.verificationStatus}
               />
+              <PlanBadge planType={company.planType} />
             </div>
 
             <p className="text-blue-400">

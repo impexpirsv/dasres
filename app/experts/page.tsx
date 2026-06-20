@@ -37,7 +37,20 @@ export default async function ExpertsPage({
             },
           })
         : [];
+const planPriority = {
+  ENTERPRISE: 4,
+  DIAMOND: 3,
+  GOLD: 2,
+  FREE: 1,
+} as const;
 
+const sortedExpertsWithRatings =
+  expertsWithRatings.sort(
+    (a, b) =>
+      planPriority[b.planType] -
+        planPriority[a.planType] ||
+      b.id - a.id
+  );
       const averageRating =
         reviews.length > 0
           ? reviews.reduce(
@@ -65,7 +78,7 @@ export default async function ExpertsPage({
           Find verified international trade experts.
         </p>
 
-        <ExpertsSearch experts={expertsWithRatings} />
+        <ExpertsSearch experts={sortedExpertsWithRatings} />
 
         <div className="flex justify-center gap-4 mt-12">
           {currentPage > 1 && (

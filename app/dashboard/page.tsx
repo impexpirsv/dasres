@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../lib/prisma";
 import { requireUser } from "../../lib/auth";
+import { getProposalLimit } from "../../lib/plans";
 function getActivityTitle(action: string) {
   switch (action) {
     case "PROPOSAL_SUBMITTED":
@@ -68,7 +69,12 @@ export default async function DashboardPage() {
             },
           },
         });
+  const proposalLimit = getProposalLimit(user.planType);
 
+  const proposalUsagePercent =
+    proposalLimit === Number.MAX_SAFE_INTEGER
+      ? 0
+      : Math.min(100, Math.round((myProposalsCount / proposalLimit) * 100));
   const acceptedProposalsCount =
     user.role === "admin"
       ? await prisma.caseProposal.count({
@@ -372,6 +378,31 @@ export default async function DashboardPage() {
       </p>
 
       <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div className="bg-slate-900 p-6 rounded-2xl border border-yellow-500">
+          <h2 className="text-xl font-semibold mb-3">Current Plan</h2>
+
+          <div className="text-4xl font-bold text-yellow-400">
+            {user.planType}
+          </div>
+
+          <p className="text-slate-400 mt-3">Active subscription</p>
+        </div>
+
+        <div className="bg-slate-900 p-6 rounded-2xl border border-cyan-500">
+          <h2 className="text-xl font-semibold mb-3">Proposal Usage</h2>
+
+          <div className="text-3xl font-bold text-cyan-400">
+            {proposalLimit === Number.MAX_SAFE_INTEGER
+  ? `${myProposalsCount} / Unlimited`
+  : `${myProposalsCount} / ${proposalLimit}`}
+          </div>
+
+          <p className="text-slate-400 mt-3">
+  {proposalLimit === Number.MAX_SAFE_INTEGER
+    ? "Unlimited plan"
+    : `${proposalUsagePercent}% used`}
+</p>
+        </div>
         <Link
           href={user.role === "admin" ? "/experts" : "/dashboard/my-experts"}
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
@@ -836,16 +867,15 @@ export default async function DashboardPage() {
                 )}
 
                 <p className="text-xs text-slate-500 mt-2">
-  {activity.user?.name || "System"} •{" "}
-  <Link
-    href={`/dashboard/cases/${activity.caseId}`}
-    className="text-blue-400 hover:underline"
-  >
-    {activity.tradeCase.title}
-  </Link>{" "}
-  • {activity.createdAt.toLocaleString()}
-</p>
-                
+                  {activity.user?.name || "System"} •{" "}
+                  <Link
+                    href={`/dashboard/cases/${activity.caseId}`}
+                    className="text-blue-400 hover:underline"
+                  >
+                    {activity.tradeCase.title}
+                  </Link>{" "}
+                  • {activity.createdAt.toLocaleString()}
+                </p>
               </div>
             ))}
           </div>

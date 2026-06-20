@@ -198,19 +198,19 @@ export default async function CompanyProfilePage({
 
                 {company.planType === "GOLD" && (
                   <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
-                    Gold
+                    🥇 GOLD
                   </span>
                 )}
 
                 {company.planType === "DIAMOND" && (
                   <span className="bg-cyan-600 px-4 py-2 rounded-full text-sm">
-                    Diamond
+                    💎 DIAMOND
                   </span>
                 )}
 
                 {company.planType === "ENTERPRISE" && (
                   <span className="bg-purple-600 px-4 py-2 rounded-full text-sm">
-                    Enterprise
+                    👑 ENTERPRISE
                   </span>
                 )}
               </div>

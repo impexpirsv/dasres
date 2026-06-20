@@ -1,5 +1,6 @@
 import { prisma } from "../../../../../lib/prisma";
 import { requireUser } from "../../../../../lib/auth";
+import { getProposalLimit } from "../../../../../lib/plans";
 
 export async function POST(
   request: Request,
@@ -57,10 +58,6 @@ export async function POST(
       );
     }
 
-    
-
-    
-
     const company = await prisma.company.findFirst({
       where: {
         id: companyId,
@@ -75,6 +72,7 @@ export async function POST(
         id: true,
         ownerId: true,
         category: true,
+        planType: true,
       },
     });
 
@@ -87,6 +85,8 @@ export async function POST(
         { status: 403 }
       );
     }
+
+    let expertPlanType: PlanType | null = null;
 
     if (expertId) {
       const expert = await prisma.expert.findFirst({
@@ -103,6 +103,7 @@ export async function POST(
           id: true,
           ownerId: true,
           specialty: true,
+          planType: true,
         },
       });
 
@@ -115,6 +116,8 @@ export async function POST(
           { status: 403 }
         );
       }
+
+      expertPlanType = expert.planType;
     }
 
     const existingProposal =
@@ -137,47 +140,58 @@ export async function POST(
       );
     }
 
+    const proposalLimit =
+  getProposalLimit(user.planType);
+
+    const proposalCount =
+      await prisma.caseProposal.count({
+        where: {
+          company: {
+            ownerId: user.id,
+          },
+        },
+      });
+
+    if (proposalCount >= proposalLimit) {
+      return Response.json(
+        {
+          message: `Your current plan (${user.planType}) allows up to ${proposalLimit} proposals. Please upgrade your plan to submit more proposals.`,
+        },
+        { status: 403 }
+      );
+    }
+
     await prisma.$transaction(async (tx) => {
-  const createdProposal = await tx.caseProposal.create({
-    data: {
-      caseId,
-      companyId,
-      expertId,
-      message,
-      price: price || null,
-    },
-  });
+      const createdProposal =
+        await tx.caseProposal.create({
+          data: {
+            caseId,
+            companyId,
+            expertId,
+            message,
+            price: price || null,
+          },
+        });
 
-  await tx.caseActivity.create({
-    data: {
-      caseId,
-      userId: user.id,
-      action: "PROPOSAL_SUBMITTED",
-      details: `Proposal #${createdProposal.id} submitted.`,
-    },
-  });
+      await tx.caseActivity.create({
+        data: {
+          caseId,
+          userId: user.id,
+          action: "PROPOSAL_SUBMITTED",
+          details: `Proposal #${createdProposal.id} submitted.`,
+        },
+      });
 
-  await tx.notification.create({
-    data: {
-      userId: tradeCase.customerId,
-      title: "New Proposal Received",
-      message:
-        "A new proposal has been submitted for your trade case.",
-      type: "PROPOSAL_SUBMITTED",
-      link: `/dashboard/cases/${tradeCase.id}`,
-    },
-  });
-});
-
-    await prisma.notification.create({
-      data: {
-        userId: tradeCase.customerId,
-        title: "New Proposal Received",
-        message:
-          "A new proposal has been submitted for your trade case.",
-        type: "PROPOSAL_SUBMITTED",
-        link: `/dashboard/cases/${tradeCase.id}`,
-      },
+      await tx.notification.create({
+        data: {
+          userId: tradeCase.customerId,
+          title: "New Proposal Received",
+          message:
+            "A new proposal has been submitted for your trade case.",
+          type: "PROPOSAL_SUBMITTED",
+          link: `/dashboard/cases/${tradeCase.id}`,
+        },
+      });
     });
 
     return Response.json({

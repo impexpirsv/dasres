@@ -60,17 +60,18 @@ model User {
   password        String
   role            String          @default("user")
   createdAt       DateTime        @default(now())
+  caseActivities  CaseActivity[]
+  caseDocuments   CaseDocument[]
+  caseMessages    CaseMessage[]
   companies       Company[]
   experts         Expert[]
   notifications   Notification[]
+  reviewsReceived Review[]        @relation("ReviewTarget")
+  reviewsGiven    Review[]        @relation("ReviewAuthor")
   sessions        Session[]
-  caseMessages    CaseMessage[]
-  caseDocuments   CaseDocument[]
   tickets         Ticket[]
   ticketMessages  TicketMessage[]
-  reviewsGiven    Review[]        @relation("ReviewAuthor")
-  caseActivities  CaseActivity[]
-  reviewsReceived Review[]        @relation("ReviewTarget")
+  planType PlanType @default(FREE)
 }
 
 model Session {
@@ -94,12 +95,12 @@ model TradeCase {
   acceptedProposalId Int?
   assignedAt         DateTime?
   category           String         @default("General")
+  activities         CaseActivity[]
   documents          CaseDocument[]
   messages           CaseMessage[]
   proposals          CaseProposal[]
   steps              CaseStep[]
   reviews            Review[]
-  activities         CaseActivity[]
 }
 
 model CaseProposal {
@@ -126,34 +127,24 @@ model CaseStep {
 }
 
 model CaseDocument {
-  id Int @id @default(autoincrement())
-
+  id         Int       @id @default(autoincrement())
   caseId     Int
+  name       String
+  fileUrl    String
+  createdAt  DateTime  @default(now())
   uploaderId Int
-
-  name    String
-  fileUrl String
-
-  createdAt DateTime @default(now())
-
-  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
-
-  uploader User @relation(fields: [uploaderId], references: [id])
+  tradeCase  TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  uploader   User      @relation(fields: [uploaderId], references: [id])
 }
 
 model CaseMessage {
-  id Int @id @default(autoincrement())
-
-  caseId   Int
-  senderId Int
-
-  content String
-
-  createdAt DateTime @default(now())
-
+  id        Int       @id @default(autoincrement())
+  caseId    Int
+  content   String
+  createdAt DateTime  @default(now())
+  senderId  Int
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
-
-  sender User @relation(fields: [senderId], references: [id])
+  sender    User      @relation(fields: [senderId], references: [id])
 }
 
 model Notification {
@@ -169,75 +160,55 @@ model Notification {
 }
 
 model Review {
-  id Int @id @default(autoincrement())
-
-  caseId Int?
-
+  id             Int        @id @default(autoincrement())
+  caseId         Int?
   reviewerId     Int
   reviewedUserId Int
+  rating         Int
+  comment        String?
+  createdAt      DateTime   @default(now())
+  tradeCase      TradeCase? @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  reviewedUser   User       @relation("ReviewTarget", fields: [reviewedUserId], references: [id])
+  reviewer       User       @relation("ReviewAuthor", fields: [reviewerId], references: [id])
+}
 
-  rating  Int
-  comment String?
+model Ticket {
+  id        Int             @id @default(autoincrement())
+  userId    Int
+  subject   String
+  status    String          @default("OPEN")
+  category  String          @default("GENERAL")
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  TicketMessage[]
+}
 
+model TicketMessage {
+  id        Int      @id @default(autoincrement())
+  ticketId  Int
+  senderId  Int
+  message   String
   createdAt DateTime @default(now())
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+}
 
-  tradeCase TradeCase? @relation(fields: [caseId], references: [id], onDelete: Cascade)
-
-  reviewer     User @relation("ReviewAuthor", fields: [reviewerId], references: [id])
-  reviewedUser User @relation("ReviewTarget", fields: [reviewedUserId], references: [id])
+model CaseActivity {
+  id        Int       @id @default(autoincrement())
+  caseId    Int
+  userId    Int?
+  action    String
+  details   String?
+  createdAt DateTime  @default(now())
+  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  user      User?     @relation(fields: [userId], references: [id])
 }
 
 enum VerificationStatus {
   PENDING
   VERIFIED
   REJECTED
-}
-
-model Ticket {
-  id Int @id @default(autoincrement())
-
-  userId Int
-
-  subject  String
-  status   String @default("OPEN")
-  category String @default("GENERAL")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  messages TicketMessage[]
-}
-
-model TicketMessage {
-  id Int @id @default(autoincrement())
-
-  ticketId Int
-  senderId Int
-
-  message String
-
-  createdAt DateTime @default(now())
-
-  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  sender User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
-}
-
-model CaseActivity {
-  id Int @id @default(autoincrement())
-
-  caseId Int
-  userId Int?
-
-  action  String
-  details String?
-
-  createdAt DateTime @default(now())
-
-  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
-
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 enum PlanType {

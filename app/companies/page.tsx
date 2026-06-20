@@ -35,6 +35,7 @@ export default async function CompaniesPage({
       website: true,
       logoUrl: true,
       ownerId: true,
+      planType: true,
     },
   });
 
@@ -52,7 +53,20 @@ export default async function CompaniesPage({
 
         : [];
         
+const planPriority = {
+  ENTERPRISE: 4,
+  DIAMOND: 3,
+  GOLD: 2,
+  FREE: 1,
+} as const;
 
+const sortedCompaniesWithRatings =
+  companiesWithRatings.sort(
+    (a, b) =>
+      planPriority[b.planType] -
+        planPriority[a.planType] ||
+      b.id - a.id
+  );
       const averageRating =
         reviews.length > 0
           ? reviews.reduce(
@@ -74,6 +88,7 @@ export default async function CompaniesPage({
         logoUrl: company.logoUrl,
         averageRating,
         reviewCount: reviews.length,
+        planType: company.planType,
       };
     })
   );
@@ -89,7 +104,7 @@ export default async function CompaniesPage({
           Manage and browse verified international trade companies.
         </p>
 
-        <CompaniesSearch companies={companiesWithRatings} />
+       <CompaniesSearch companies={sortedCompaniesWithRatings} />
 
         <div className="flex justify-center gap-4 mt-12">
           {currentPage > 1 && (
