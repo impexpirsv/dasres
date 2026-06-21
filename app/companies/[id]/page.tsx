@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import CompanyVerificationButtons from "../../components/CompanyVerificationButtons";
 import { requireUser } from "../../../lib/auth";
-
+import { calculateTrustScore } from "../../../lib/ranking";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -91,7 +91,28 @@ export default async function CompanyProfilePage({ params }: Props) {
       : null;
 
   const canManageCompany = isAdmin || company.ownerId === user.id;
+  const completedCases = company.ownerId
+    ? await prisma.tradeCase.count({
+        where: {
+          status: "COMPLETED",
+          proposals: {
+            some: {
+              status: "ACCEPTED",
+              company: {
+                ownerId: company.ownerId,
+              },
+            },
+          },
+        },
+      })
+    : 0;
 
+  const trustScore = calculateTrustScore({
+    averageRating: averageRating || 0,
+    completedCases,
+    verificationStatus: company.verificationStatus,
+    planType: company.planType,
+  });
   const companySchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -137,15 +158,17 @@ export default async function CompanyProfilePage({ params }: Props) {
         </Link>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          <div className={`lg:col-span-2 bg-slate-900 rounded-3xl border overflow-hidden ${
-  company.planType === "GOLD"
-    ? "border-yellow-500 shadow-lg shadow-yellow-500/10"
-    : company.planType === "DIAMOND"
-      ? "border-cyan-500 shadow-lg shadow-cyan-500/10"
-      : company.planType === "ENTERPRISE"
-        ? "border-purple-500 shadow-lg shadow-purple-500/10"
-        : "border-slate-800"
-}`}>
+          <div
+            className={`lg:col-span-2 bg-slate-900 rounded-3xl border overflow-hidden ${
+              company.planType === "GOLD"
+                ? "border-yellow-500 shadow-lg shadow-yellow-500/10"
+                : company.planType === "DIAMOND"
+                  ? "border-cyan-500 shadow-lg shadow-cyan-500/10"
+                  : company.planType === "ENTERPRISE"
+                    ? "border-purple-500 shadow-lg shadow-purple-500/10"
+                    : "border-slate-800"
+            }`}
+          >
             {company.logoUrl && (
               <div className="bg-white p-10">
                 <img
@@ -210,6 +233,13 @@ export default async function CompanyProfilePage({ params }: Props) {
               <p className="text-blue-400 text-2xl mb-8">{company.category}</p>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-slate-500 text-sm mb-1">Trust Score</p>
+
+                  <p className="text-2xl font-bold text-emerald-400">
+                    {trustScore}/100
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
                   <p className="text-slate-500 text-sm mb-1">Rating</p>
 
                   <p className="text-2xl font-bold text-yellow-400">
@@ -262,6 +292,13 @@ export default async function CompanyProfilePage({ params }: Props) {
                       Based on {companyReviews.length} review
                       {companyReviews.length === 1 ? "" : "s"}
                     </p>
+                    <p className="text-emerald-400 mt-3 font-semibold">
+                      Trust Score: {trustScore}/100
+                    </p>
+
+                    <p className="text-slate-500 text-sm mt-1">
+                      Completed Cases: {completedCases}
+                    </p>
                   </div>
                 ) : (
                   <p className="text-slate-500">No reviews yet.</p>
@@ -307,15 +344,17 @@ export default async function CompanyProfilePage({ params }: Props) {
           </div>
 
           <aside className="space-y-6">
-            <div className={`bg-slate-900 rounded-3xl border p-6 ${
-  company.planType === "GOLD"
-    ? "border-yellow-500 shadow-lg shadow-yellow-500/10"
-    : company.planType === "DIAMOND"
-      ? "border-cyan-500 shadow-lg shadow-cyan-500/10"
-      : company.planType === "ENTERPRISE"
-        ? "border-purple-500 shadow-lg shadow-purple-500/10"
-        : "border-slate-800"
-}`}>
+            <div
+              className={`bg-slate-900 rounded-3xl border p-6 ${
+                company.planType === "GOLD"
+                  ? "border-yellow-500 shadow-lg shadow-yellow-500/10"
+                  : company.planType === "DIAMOND"
+                    ? "border-cyan-500 shadow-lg shadow-cyan-500/10"
+                    : company.planType === "ENTERPRISE"
+                      ? "border-purple-500 shadow-lg shadow-purple-500/10"
+                      : "border-slate-800"
+              }`}
+            >
               <h2 className="text-2xl font-bold mb-6">Company Information</h2>
 
               <div className="space-y-4">

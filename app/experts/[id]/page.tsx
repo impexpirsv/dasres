@@ -2,14 +2,13 @@ import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import DeleteExpertButton from "../../components/DeleteExpertButton";
 import type { Metadata } from "next";
-
+import { calculateTrustScore } from "../../../lib/ranking";
+import { requireUser } from "../../../lib/auth";
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
   const expert = await prisma.expert.findUnique({
@@ -21,11 +20,10 @@ export async function generateMetadata({
   if (!expert) {
     return {
       title: "Expert Not Found",
-      description:
-        "The requested expert profile could not be found.",
+      description: "The requested expert profile could not be found.",
     };
   }
-
+ 
   const title = `${expert.name} | ${expert.specialty}`;
   const description = `${expert.name} is an expert in ${expert.specialty} from ${expert.country}. Discover this expert profile on Dasres.`;
 
@@ -49,9 +47,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: expert.imageUrl
-        ? [expert.imageUrl]
-        : ["/og-image.png"],
+      images: expert.imageUrl ? [expert.imageUrl] : ["/og-image.png"],
     },
   };
 }
@@ -100,9 +96,7 @@ function PlanBadge({ planType }: { planType: string }) {
   return null;
 }
 
-export default async function ExpertProfilePage({
-  params,
-}: Props) {
+export default async function ExpertProfilePage({ params }: Props) {
   const { id } = await params;
 
   const expert = await prisma.expert.findUnique({
@@ -114,13 +108,15 @@ export default async function ExpertProfilePage({
   if (!expert) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">
-          Expert Not Found
-        </h1>
+        <h1 className="text-4xl font-bold">Expert Not Found</h1>
       </div>
     );
   }
+ const user = await requireUser();
 
+  const isAdmin = user.role === "admin";
+
+  const canManageExpert = isAdmin || expert.ownerId === user.id;
   const reviews = expert.ownerId
     ? await prisma.review.findMany({
         where: {
@@ -137,15 +133,31 @@ export default async function ExpertProfilePage({
 
   const averageRating =
     reviews.length > 0
-      ? reviews.reduce(
-          (sum, review) => sum + review.rating,
-          0
-        ) / reviews.length
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
       : 0;
+  const completedCases = expert.ownerId
+    ? await prisma.tradeCase.count({
+        where: {
+          status: "COMPLETED",
+          proposals: {
+            some: {
+              status: "ACCEPTED",
+              expert: {
+                ownerId: expert.ownerId,
+              },
+            },
+          },
+        },
+      })
+    : 0;
 
-  const premiumBorder = getPremiumBorder(
-    expert.planType
-  );
+  const trustScore = calculateTrustScore({
+    averageRating,
+    completedCases,
+    verificationStatus: expert.verificationStatus,
+    planType: expert.planType,
+  });
+  const premiumBorder = getPremiumBorder(expert.planType);
 
   const expertSchema = {
     "@context": "https://schema.org",
@@ -202,24 +214,24 @@ export default async function ExpertProfilePage({
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 mb-4">
-                  <h1 className="text-5xl font-bold">
-                    {expert.name}
-                  </h1>
+                  <h1 className="text-5xl font-bold">{expert.name}</h1>
 
-                  <PlanBadge
-                    planType={expert.planType}
-                  />
+                  <PlanBadge planType={expert.planType} />
                 </div>
 
                 <p className="text-blue-400 text-2xl mb-4">
                   {expert.specialty}
                 </p>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-slate-500 text-sm mb-1">Trust Score</p>
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                  <p className="text-2xl font-bold text-emerald-400">
+                    {trustScore}/100
+                  </p>
+                </div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-slate-500 text-sm mb-1">
-                      Rating
-                    </p>
+                    <p className="text-slate-500 text-sm mb-1">Rating</p>
 
                     <p className="text-2xl font-bold text-yellow-400">
                       {reviews.length > 0
@@ -229,9 +241,7 @@ export default async function ExpertProfilePage({
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-slate-500 text-sm mb-1">
-                      Reviews
-                    </p>
+                    <p className="text-slate-500 text-sm mb-1">Reviews</p>
 
                     <p className="text-2xl font-bold text-slate-200">
                       {reviews.length}
@@ -239,9 +249,7 @@ export default async function ExpertProfilePage({
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-slate-500 text-sm mb-1">
-                      Specialty
-                    </p>
+                    <p className="text-slate-500 text-sm mb-1">Specialty</p>
 
                     <p className="text-xl font-bold text-blue-400">
                       {expert.specialty}
@@ -249,9 +257,7 @@ export default async function ExpertProfilePage({
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-slate-500 text-sm mb-1">
-                      Country
-                    </p>
+                    <p className="text-slate-500 text-sm mb-1">Country</p>
 
                     <p className="text-2xl font-bold text-blue-400">
                       {expert.country}
@@ -260,9 +266,7 @@ export default async function ExpertProfilePage({
                 </div>
 
                 <div className="border-t border-slate-800 pt-8">
-                  <h2 className="text-2xl font-bold mb-4">
-                    Experience
-                  </h2>
+                  <h2 className="text-2xl font-bold mb-4">Experience</h2>
 
                   <p className="text-slate-300 text-lg leading-8">
                     {expert.experience}
@@ -270,14 +274,10 @@ export default async function ExpertProfilePage({
                 </div>
 
                 <div className="border-t border-slate-800 pt-8 mt-8">
-                  <h2 className="text-2xl font-bold mb-4">
-                    Recent Reviews
-                  </h2>
+                  <h2 className="text-2xl font-bold mb-4">Recent Reviews</h2>
 
                   {reviews.length === 0 ? (
-                    <p className="text-slate-500">
-                      No reviews yet.
-                    </p>
+                    <p className="text-slate-500">No reviews yet.</p>
                   ) : (
                     <div className="space-y-4">
                       {reviews.slice(0, 3).map((review) => (
@@ -298,8 +298,7 @@ export default async function ExpertProfilePage({
                           </div>
 
                           <p className="text-slate-300 leading-7">
-                            {review.comment ||
-                              "No comment provided."}
+                            {review.comment || "No comment provided."}
                           </p>
                         </div>
                       ))}
@@ -313,47 +312,44 @@ export default async function ExpertProfilePage({
               <div
                 className={`bg-slate-900 rounded-3xl border p-6 ${premiumBorder}`}
               >
-                <h2 className="text-2xl font-bold mb-6">
-                  Contact Expert
-                </h2>
+                <h2 className="text-2xl font-bold mb-6">Contact Expert</h2>
 
                 <div className="space-y-4">
                   <div>
-                    <p className="text-slate-500 text-sm">
-                      Email
-                    </p>
-                    <p className="text-slate-200 break-all">
-                      {expert.email}
-                    </p>
+                    <p className="text-slate-500 text-sm">Email</p>
+                    <p className="text-slate-200 break-all">{expert.email}</p>
                   </div>
 
                   <div>
-                    <p className="text-slate-500 text-sm">
-                      Country
-                    </p>
-                    <p className="text-slate-200">
-                      {expert.country}
-                    </p>
+                    <p className="text-slate-500 text-sm">Country</p>
+                    <p className="text-slate-200">{expert.country}</p>
                   </div>
 
                   <div>
-                    <p className="text-slate-500 text-sm">
-                      Specialty
-                    </p>
-                    <p className="text-slate-200">
-                      {expert.specialty}
-                    </p>
+                    <p className="text-slate-500 text-sm">Specialty</p>
+                    <p className="text-slate-200">{expert.specialty}</p>
                   </div>
 
                   <div>
-                    <p className="text-slate-500 text-sm">
-                      Reputation
-                    </p>
+                    <p className="text-slate-500 text-sm">Reputation</p>
                     <p className="text-slate-200">
                       {reviews.length > 0
                         ? `⭐ ${averageRating.toFixed(1)} (${reviews.length} reviews)`
                         : "No reviews yet"}
                     </p>
+                  </div>
+                  <div>
+                    <p className="text-slate-500 text-sm">Trust Score</p>
+
+                    <p className="text-emerald-400 font-semibold">
+                      {trustScore}/100
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-slate-500 text-sm">Completed Cases</p>
+
+                    <p className="text-slate-200">{completedCases}</p>
                   </div>
                 </div>
 
@@ -364,23 +360,22 @@ export default async function ExpertProfilePage({
                   Send Email
                 </a>
               </div>
+              {canManageExpert && (
+                <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+                  <h2 className="text-2xl font-bold mb-4">Admin Actions</h2>
 
-              <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-                <h2 className="text-2xl font-bold mb-4">
-                  Admin Actions
-                </h2>
+                  <div className="flex flex-col gap-3">
+                    <Link
+                      href={`/dashboard/experts/${expert.id}/edit`}
+                      className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-center"
+                    >
+                      Edit Expert
+                    </Link>
 
-                <div className="flex flex-col gap-3">
-                  <Link
-                    href={`/dashboard/experts/${expert.id}/edit`}
-                    className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-center"
-                  >
-                    Edit Expert
-                  </Link>
-
-                  <DeleteExpertButton id={expert.id} />
+                    <DeleteExpertButton id={expert.id} />
+                  </div>
                 </div>
-              </div>
+              )}
             </aside>
           </div>
 
