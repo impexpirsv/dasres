@@ -25,18 +25,35 @@ export default async function ExpertsPage({
     },
   });
 
-  const expertsWithRatings = await Promise.all(
-    experts.map(async (expert) => {
-      const reviews = expert.ownerId
-        ? await prisma.review.findMany({
-            where: {
-              reviewedUserId: expert.ownerId,
-            },
-            select: {
-              rating: true,
-            },
-          })
-        : [];
+ const expertsWithRatings = await Promise.all(
+  experts.map(async (expert) => {
+    const reviews = expert.ownerId
+      ? await prisma.review.findMany({
+          where: {
+            reviewedUserId: expert.ownerId,
+          },
+          select: {
+            rating: true,
+          },
+        })
+      : [];
+
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce(
+            (sum, review) => sum + review.rating,
+            0
+          ) / reviews.length
+        : 0;
+
+    return {
+      ...expert,
+      averageRating,
+      reviewCount: reviews.length,
+    };
+  })
+);
+
 const planPriority = {
   ENTERPRISE: 4,
   DIAMOND: 3,
@@ -50,21 +67,6 @@ const sortedExpertsWithRatings =
       planPriority[b.planType] -
         planPriority[a.planType] ||
       b.id - a.id
-  );
-      const averageRating =
-        reviews.length > 0
-          ? reviews.reduce(
-              (sum, review) => sum + review.rating,
-              0
-            ) / reviews.length
-          : 0;
-
-      return {
-        ...expert,
-        averageRating,
-        reviewCount: reviews.length,
-      };
-    })
   );
  
   return (

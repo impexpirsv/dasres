@@ -113,7 +113,7 @@ export default async function MyExpertsPage() {
             {experts.map((expert) => (
               <Link
                 key={expert.id}
-                href={`/experts/${expert.id}`}
+                href={`/dashboard/experts/${expert.id}`}
                 className="group bg-slate-900 border border-slate-800 rounded-3xl p-6 hover:border-blue-500 transition"
               >
                 <h2 className="text-2xl font-bold mb-2">{expert.name}</h2>

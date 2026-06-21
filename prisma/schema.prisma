@@ -73,6 +73,7 @@ model User {
   tickets         Ticket[]
   ticketMessages  TicketMessage[]
   savedCases SavedCase[]
+  customerCases TradeCase[] @relation("CustomerCases")
 }
 
 model Session {
@@ -90,6 +91,7 @@ model TradeCase {
   description        String
   status             CaseStatus     @default(OPEN)
   customerId         Int
+  customer           User           @relation("CustomerCases", fields: [customerId], references: [id], onDelete: Cascade)
   assignedToId       Int?
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt

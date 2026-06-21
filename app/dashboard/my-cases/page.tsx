@@ -128,7 +128,10 @@ export default async function MyCasesPage() {
               ).length;
 
               const totalSteps = tradeCase.steps.length;
-
+              const progressPercent =
+                totalSteps > 0
+                  ? Math.round((completedSteps / totalSteps) * 100)
+                  : 0;
               return (
                 <Link
                   key={tradeCase.id}
@@ -192,8 +195,24 @@ export default async function MyCasesPage() {
                     </div>
 
                     <div>
-                      <p className="text-slate-500">Timeline Progress</p>
-                      <p className="text-slate-200 font-medium">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-slate-500">Timeline Progress</p>
+
+                        <p className="text-slate-300 font-medium">
+                          {progressPercent}%
+                        </p>
+                      </div>
+
+                      <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-emerald-500"
+                          style={{
+                            width: `${progressPercent}%`,
+                          }}
+                        />
+                      </div>
+
+                      <p className="text-slate-500 text-xs mt-2">
                         {completedSteps} / {totalSteps} steps completed
                       </p>
                     </div>

@@ -142,7 +142,7 @@ export default async function MyCompaniesPage() {
             {companies.map((company) => (
               <Link
                 key={company.id}
-                href={`/companies/${company.id}`}
+                href={`/dashboard/companies/${company.id}`}
                 className="group bg-slate-900 border border-slate-800 rounded-3xl p-6 hover:border-blue-500 transition"
               >
                 <div className="flex flex-wrap items-center gap-3 mb-4">

@@ -145,7 +145,7 @@ const featuredCompanies = filteredCompanies.filter(
       {featuredCompanies.slice(0, 4).map((company) => (
         <Link
           key={company.id}
-          href={`/companies/${company.id}`}
+          href={`/dashboard/companies/${company.id}`}
           className="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-3xl border border-yellow-500 hover:border-yellow-400"
         >
           <div className="flex items-start gap-5">
@@ -194,7 +194,7 @@ const featuredCompanies = filteredCompanies.filter(
         {filteredCompanies.map((company) => (
           <Link
             key={company.id}
-            href={`/companies/${company.id}`}
+            href={`/dashboard/companies/${company.id}`}
             className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
           >
             {company.logoUrl && (

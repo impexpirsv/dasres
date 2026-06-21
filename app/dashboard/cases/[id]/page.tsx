@@ -185,7 +185,20 @@ export default async function CaseDetailPage({ params }: Props) {
       review.reviewerId === user.id &&
       review.reviewedUserId === tradeCase.customerId,
   );
-
+  const recommendedCompanies = await prisma.company.findMany({
+    where: {
+      category: tradeCase.category,
+      verificationStatus: "VERIFIED",
+    },
+    include: {
+      owner: {
+        include: {
+          reviewsReceived: true,
+        },
+      },
+    },
+    take: 5,
+  });
   const companies = isAdmin
     ? await prisma.company.findMany({
         where: {
@@ -216,7 +229,16 @@ export default async function CaseDetailPage({ params }: Props) {
     !tradeCase.acceptedProposalId &&
     !isCustomer &&
     companies.length > 0;
+  const completedStepsCount = tradeCase.steps.filter(
+    (step) => step.completed,
+  ).length;
 
+  const totalStepsCount = tradeCase.steps.length;
+
+  const progressPercent =
+    totalStepsCount > 0
+      ? Math.round((completedStepsCount / totalStepsCount) * 100)
+      : 0;
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
@@ -285,7 +307,28 @@ export default async function CaseDetailPage({ params }: Props) {
             </section>
 
             <section className="bg-slate-900 rounded-3xl border border-slate-800 p-8">
-              <h2 className="text-2xl font-bold mb-6">Case Timeline</h2>
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <h2 className="text-2xl font-bold">Case Timeline</h2>
+
+                <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
+                  {progressPercent}% Complete
+                </span>
+              </div>
+
+              <div className="mb-6">
+                <div className="h-3 w-full rounded-full bg-slate-800 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-emerald-500 transition-all"
+                    style={{
+                      width: `${progressPercent}%`,
+                    }}
+                  />
+                </div>
+
+                <p className="mt-2 text-sm text-slate-500">
+                  {completedStepsCount} of {totalStepsCount} steps completed
+                </p>
+              </div>
 
               <div className="space-y-4">
                 {tradeCase.steps.map((step) => (
@@ -532,7 +575,25 @@ export default async function CaseDetailPage({ params }: Props) {
                 </div>
               </div>
             </section>
+            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold mb-4">Recommended Companies</h2>
 
+              <div className="space-y-3">
+                {recommendedCompanies.map((company) => (
+                  <Link
+                    key={company.id}
+                    href={`/companies/${company.id}`}
+                    className="block bg-slate-950 border border-slate-800 rounded-2xl p-4 hover:border-blue-500 transition"
+                  >
+                    <p className="font-semibold">{company.name}</p>
+
+                    <p className="text-sm text-slate-400">{company.country}</p>
+
+                    <p className="text-xs text-emerald-400 mt-1">VERIFIED</p>
+                  </Link>
+                ))}
+              </div>
+            </section>
             <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
               <h2 className="text-2xl font-bold mb-4">Assigned Provider</h2>
 

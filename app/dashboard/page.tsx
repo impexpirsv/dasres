@@ -707,7 +707,7 @@ export default async function DashboardPage() {
               topRatedExperts.map((expert) => (
                 <Link
                   key={expert.id}
-                  href={`/experts/${expert.id}`}
+                  href={`/dashboard/experts/${expert.id}`}
                   className="block bg-slate-950 border border-slate-800 rounded-xl p-4 hover:border-blue-500"
                 >
                   <div className="flex justify-between gap-4">
@@ -753,7 +753,7 @@ export default async function DashboardPage() {
               topRatedCompanies.map((company) => (
                 <Link
                   key={company.id}
-                  href={`/companies/${company.id}`}
+                  href={`/dashboard/companies/${company.id}`}
                   className="block bg-slate-950 border border-slate-800 rounded-xl p-4 hover:border-blue-500"
                 >
                   <div className="flex justify-between gap-4">
@@ -856,7 +856,7 @@ export default async function DashboardPage() {
               latestExperts.map((expert) => (
                 <Link
                   key={expert.id}
-                  href={`/experts/${expert.id}`}
+                  href={`/dashboard/experts/${expert.id}`}
                   className="block border-b border-slate-800 pb-3 last:border-0"
                 >
                   <p className="font-semibold">{expert.name}</p>
@@ -895,7 +895,7 @@ export default async function DashboardPage() {
               latestCompanies.map((company) => (
                 <Link
                   key={company.id}
-                  href={`/companies/${company.id}`}
+                  href={`/dashboard/companies/${company.id}`}
                   className="block border-b border-slate-800 pb-3 last:border-0"
                 >
                   <p className="font-semibold">{company.name}</p>

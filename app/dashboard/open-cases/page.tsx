@@ -44,6 +44,13 @@ export default async function OpenCasesPage() {
           userId: user.id,
         },
       },
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
     },
   });
 
@@ -167,7 +174,12 @@ export default async function OpenCasesPage() {
                 <h2 className="text-2xl font-bold mb-3 group-hover:text-blue-400 transition">
                   {tradeCase.title}
                 </h2>
-
+                <p className="text-sm text-slate-500 mb-4">
+                  Requested by:{" "}
+                  <span className="text-slate-300">
+                    {tradeCase.customer.name || tradeCase.customer.email}
+                  </span>
+                </p>
                 <p className="text-slate-400 text-sm leading-6 mb-5 line-clamp-3">
                   {tradeCase.description}
                 </p>

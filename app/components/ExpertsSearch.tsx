@@ -144,7 +144,7 @@ export default function ExpertsSearch({
             {featuredExperts.slice(0, 4).map((expert) => (
               <Link
                 key={expert.id}
-                href={`/experts/${expert.id}`}
+                href={`/dashboard/experts/${expert.id}`}
                 className="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-3xl border border-yellow-500 hover:border-yellow-400"
               >
                 <div className="flex items-start gap-5">
@@ -195,7 +195,7 @@ export default function ExpertsSearch({
         {filteredExperts.map((expert) => (
           <Link
             key={expert.id}
-            href={`/experts/${expert.id}`}
+            href={`/dashboard/experts/${expert.id}`}
             className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
           >
             {expert.imageUrl && (
