@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import SaveCaseButton from "../../components/SaveCaseButton";
+import StopLinkClick from "../../components/StopLinkClick";
 export default async function OpenCasesPage() {
   const user = await requireUser();
 
@@ -203,13 +204,12 @@ export default async function OpenCasesPage() {
                   </p>
 
                   <div className="flex items-center gap-3">
-                    <div onClick={(event) => event.preventDefault()}>
+                    <StopLinkClick>
                       <SaveCaseButton
                         caseId={tradeCase.id}
                         initialSaved={tradeCase.savedCases.length > 0}
                       />
-                    </div>
-
+                    </StopLinkClick>
                     <span className="text-blue-400 text-sm group-hover:underline">
                       View Case →
                     </span>

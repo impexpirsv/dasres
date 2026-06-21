@@ -33,9 +33,7 @@ export default async function SavedCasesPage() {
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
         <div className="mb-10">
-          <h1 className="text-5xl font-bold mb-4">
-            Saved Cases
-          </h1>
+          <h1 className="text-5xl font-bold mb-4">Saved Cases</h1>
 
           <p className="text-slate-400">
             Trade cases you saved for later review.
@@ -77,9 +75,7 @@ export default async function SavedCasesPage() {
 
                   <div className="grid grid-cols-3 gap-4 mb-5">
                     <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                      <p className="text-slate-500 text-xs">
-                        Proposals
-                      </p>
+                      <p className="text-slate-500 text-xs">Proposals</p>
 
                       <p className="text-2xl font-bold text-blue-400 mt-1">
                         {tradeCase.proposals.length}
@@ -87,9 +83,7 @@ export default async function SavedCasesPage() {
                     </div>
 
                     <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                      <p className="text-slate-500 text-xs">
-                        Documents
-                      </p>
+                      <p className="text-slate-500 text-xs">Documents</p>
 
                       <p className="text-2xl font-bold text-cyan-400 mt-1">
                         {tradeCase.documents.length}
@@ -97,9 +91,7 @@ export default async function SavedCasesPage() {
                     </div>
 
                     <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                      <p className="text-slate-500 text-xs">
-                        Messages
-                      </p>
+                      <p className="text-slate-500 text-xs">Messages</p>
 
                       <p className="text-2xl font-bold text-emerald-400 mt-1">
                         {tradeCase.messages.length}
@@ -109,26 +101,12 @@ export default async function SavedCasesPage() {
 
                   <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-slate-800">
                     <p className="text-xs text-slate-500">
-                      Saved:{" "}
-                      {savedCase.createdAt.toLocaleDateString()}
+                      Saved: {savedCase.createdAt.toLocaleDateString()}
                     </p>
 
-                    <div className="flex items-center gap-3">
-                      <div
-                        onClick={(event) =>
-                          event.preventDefault()
-                        }
-                      >
-                        <SaveCaseButton
-                          caseId={tradeCase.id}
-                         initialSaved={tradeCase.savedCases.length > 0}
-                        />
-                      </div>
-
-                      <span className="text-blue-400 text-sm group-hover:underline">
-                        View Case →
-                      </span>
-                    </div>
+                    <span className="text-blue-400 text-sm group-hover:underline">
+                      View Case →
+                    </span>
                   </div>
                 </Link>
               );
