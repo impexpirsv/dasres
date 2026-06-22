@@ -137,6 +137,20 @@ export default async function SubscriptionPage() {
                   ? `${activeCasesUsed} / Unlimited`
                   : `${activeCasesUsed} / ${currentCaseLimit}`}
               </div>
+
+              {currentCaseLimit !== Number.MAX_SAFE_INTEGER && (
+                <div className="mt-4 h-3 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-cyan-500 rounded-full"
+                    style={{
+                      width: `${Math.min(
+                        (activeCasesUsed / currentCaseLimit) * 100,
+                        100,
+                      )}%`,
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             <div>
@@ -147,11 +161,25 @@ export default async function SubscriptionPage() {
                   ? `${proposalsUsed} / Unlimited`
                   : `${proposalsUsed} / ${currentProposalLimit}`}
               </div>
+
+              {currentProposalLimit !== Number.MAX_SAFE_INTEGER && (
+                <div className="mt-4 h-3 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-emerald-500 rounded-full"
+                    style={{
+                      width: `${Math.min(
+                        (proposalsUsed / currentProposalLimit) * 100,
+                        100,
+                      )}%`,
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {plans.map((plan) => {
             const isCurrentPlan = plan.name === user.planType;
 
@@ -204,20 +232,32 @@ export default async function SubscriptionPage() {
                   ))}
                 </ul>
 
-                <button
-                  disabled={isCurrentPlan}
-                  className={`w-full mt-8 px-5 py-3 rounded-xl font-semibold ${
-                    isCurrentPlan
-                      ? "bg-slate-800 text-slate-500 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700 text-white"
-                  }`}
-                >
-                  {isCurrentPlan
-                    ? "Current Plan"
-                    : plan.name === "ENTERPRISE"
-                      ? "Contact Sales"
-                      : `Upgrade to ${plan.title}`}
-                </button>
+                {isCurrentPlan ? (
+                  <button
+                    disabled
+                    className="w-full mt-8 px-5 py-3 rounded-xl font-semibold bg-slate-800 text-slate-500 cursor-not-allowed"
+                  >
+                    Current Plan
+                  </button>
+                ) : plan.name === "ENTERPRISE" ? (
+                  <button className="w-full mt-8 px-5 py-3 rounded-xl font-semibold bg-blue-600 hover:bg-blue-700 text-white transition">
+                    Contact Sales
+                  </button>
+                ) : plan.name === "FREE" ? (
+                  <button
+                    disabled
+                    className="w-full mt-8 px-5 py-3 rounded-xl font-semibold bg-slate-800 text-slate-500 cursor-not-allowed"
+                  >
+                    Not Available
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    className="w-full mt-8 px-5 py-3 rounded-xl font-semibold bg-blue-600/60 text-white cursor-not-allowed"
+                  >
+                    Request Upgrade
+                  </button>
+                )}
               </div>
             );
           })}

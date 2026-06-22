@@ -37,7 +37,8 @@ export default function SaveCaseButton({
       {loading
         ? "Saving..."
         : initialSaved
-          ? "★ Saved"
+          ? "Unsave"
+          
           : "☆ Save Case"}
     </button>
   );

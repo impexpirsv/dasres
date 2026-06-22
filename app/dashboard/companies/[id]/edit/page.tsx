@@ -70,7 +70,7 @@ export default function EditCompanyPage() {
     });
 
     if (response.ok) {
-      router.push(`/companies/${id}`);
+      router.push(`/dashboard/companies/${id}`);
       router.refresh();
     } else {
       setMessage("Error updating company.");

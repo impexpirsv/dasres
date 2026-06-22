@@ -3,9 +3,20 @@ import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import SaveCaseButton from "../../components/SaveCaseButton";
 import StopLinkClick from "../../components/StopLinkClick";
-export default async function OpenCasesPage() {
-  const user = await requireUser();
 
+export default async function OpenCasesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{
+    category?: string;
+    sort?: string;
+  }>;
+}) {
+  const user = await requireUser();
+  const params = await searchParams;
+
+  const selectedCategory = params?.category || "ALL";
+  const selectedSort = params?.sort || "newest";
   const myCompanies = await prisma.company.findMany({
     where: {
       ownerId: user.id,
@@ -21,19 +32,20 @@ export default async function OpenCasesPage() {
   const categories = [
     ...new Set(myCompanies.map((company) => company.category).filter(Boolean)),
   ];
-
+  const filteredCategories =
+    selectedCategory === "ALL" ? categories : [selectedCategory];
   const openCases = await prisma.tradeCase.findMany({
     where: {
       status: "OPEN",
       category: {
-        in: categories,
+        in: filteredCategories,
       },
       NOT: {
         customerId: user.id,
       },
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: selectedSort === "oldest" ? "asc" : "desc",
     },
     include: {
       proposals: true,
@@ -68,6 +80,9 @@ export default async function OpenCasesPage() {
   const highCompetitionCases = openCases.filter(
     (tradeCase) => tradeCase.proposals.length >= 3,
   ).length;
+  const savedMatchingCases = openCases.filter(
+    (tradeCase) => tradeCase.savedCases.length > 0,
+  ).length;
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -88,8 +103,62 @@ export default async function OpenCasesPage() {
             My Proposals
           </Link>
         </div>
+        <div className="flex flex-wrap items-center gap-3 mb-8">
+          <span className="text-sm text-slate-400">Sort by:</span>
 
-        <div className="grid md:grid-cols-4 gap-6 mb-10">
+          <Link
+            href="/dashboard/open-cases?sort=newest"
+            className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+              selectedSort === "newest"
+                ? "bg-blue-600 text-white"
+                : "bg-slate-900 border border-slate-800 text-slate-300 hover:border-blue-500"
+            }`}
+          >
+            Newest
+          </Link>
+
+          <Link
+            href="/dashboard/open-cases?sort=oldest"
+            className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+              selectedSort === "oldest"
+                ? "bg-blue-600 text-white"
+                : "bg-slate-900 border border-slate-800 text-slate-300 hover:border-blue-500"
+            }`}
+          >
+            Oldest
+          </Link>
+        </div>
+        <div className="flex flex-wrap items-center gap-3 mb-8">
+          <span className="text-sm text-slate-400">Category:</span>
+
+          <Link
+            href={`/dashboard/open-cases?sort=${selectedSort}`}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+              selectedCategory === "ALL"
+                ? "bg-purple-600 text-white"
+                : "bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500"
+            }`}
+          >
+            All
+          </Link>
+
+          {categories.map((category) => (
+            <Link
+              key={category}
+              href={`/dashboard/open-cases?category=${encodeURIComponent(
+                category,
+              )}&sort=${selectedSort}`}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+                selectedCategory === category
+                  ? "bg-purple-600 text-white"
+                  : "bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500"
+              }`}
+            >
+              {category}
+            </Link>
+          ))}
+        </div>
+        <div className="grid md:grid-cols-2 xl:grid-cols-5 gap-6 mb-10">
           <div className="bg-slate-900 border border-blue-500 rounded-2xl p-6">
             <p className="text-slate-400 text-sm">Matching Cases</p>
 
@@ -121,6 +190,13 @@ export default async function OpenCasesPage() {
               {mySubmittedProposals}
             </p>
           </div>
+          <div className="bg-slate-900 border border-pink-500 rounded-2xl p-6">
+            <p className="text-slate-400 text-sm">Saved Matching</p>
+
+            <p className="text-4xl font-bold text-pink-400 mt-2">
+              {savedMatchingCases}
+            </p>
+          </div>
         </div>
 
         {categories.length === 0 && (
@@ -144,8 +220,22 @@ export default async function OpenCasesPage() {
         )}
 
         {openCases.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center text-slate-500">
-            No matching open cases found.
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center">
+            <div className="text-6xl mb-4">📭</div>
+
+            <h2 className="text-2xl font-bold mb-3">No Matching Cases Found</h2>
+
+            <p className="text-slate-400 max-w-md mx-auto">
+              There are currently no open cases matching your company
+              categories. Try again later or expand your company services.
+            </p>
+
+            <Link
+              href="/dashboard/my-companies"
+              className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl"
+            >
+              Manage Companies
+            </Link>
           </div>
         ) : (
           <div className="grid lg:grid-cols-2 gap-6">
@@ -163,7 +253,11 @@ export default async function OpenCasesPage() {
                   <span className="bg-blue-600 px-3 py-1 rounded-full text-xs">
                     {tradeCase.status}
                   </span>
-
+                  {tradeCase.savedCases.length > 0 && (
+                    <span className="bg-yellow-600 text-black px-3 py-1 rounded-full text-xs font-semibold">
+                      ★ Saved
+                    </span>
+                  )}
                   {tradeCase.proposals.length >= 3 && (
                     <span className="bg-yellow-600 text-black px-3 py-1 rounded-full text-xs font-semibold">
                       High Competition

@@ -415,11 +415,31 @@ export default async function CaseDetailPage({ params }: Props) {
                       </div>
 
                       <p className="text-sm text-blue-400">
-                        Company: {proposal.company?.name || "Unknown"}
+                        Company:{" "}
+                        {proposal.company?.id ? (
+                          <Link
+                            href={`/dashboard/companies/${proposal.company.id}`}
+                            className="text-blue-400 hover:underline"
+                          >
+                            {proposal.company.name}
+                          </Link>
+                        ) : (
+                          "Unknown"
+                        )}
                       </p>
 
                       <p className="text-sm text-emerald-400 mt-1">
-                        Expert: {proposal.expert?.name || "Not assigned"}
+                        Expert:{" "}
+                        {proposal.expert?.id ? (
+                          <Link
+                            href={`/dashboard/experts/${proposal.expert.id}`}
+                            className="text-emerald-400 hover:underline"
+                          >
+                            {proposal.expert.name}
+                          </Link>
+                        ) : (
+                          "Not assigned"
+                        )}
                       </p>
 
                       <p className="text-sm text-slate-300 mt-3">

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../lib/prisma";
 import { requireUser } from "../../lib/auth";
-import { getProposalLimit } from "../../lib/plans";
+import { getCaseLimit, getProposalLimit } from "../../lib/plans";
 function getActivityTitle(action: string) {
   switch (action) {
     case "PROPOSAL_SUBMITTED":
@@ -65,6 +65,62 @@ export default async function DashboardPage() {
           },
         })
       : 0;
+  const currentCaseLimit = getCaseLimit(user.planType);
+  const currentProposalLimit = getProposalLimit(user.planType);
+
+  const activeCasesUsed = await prisma.tradeCase.count({
+    where: {
+      customerId: user.id,
+    },
+  });
+  const proposalsUsed = await prisma.caseProposal.count({
+    where: {
+      OR: [
+        {
+          company: {
+            ownerId: user.id,
+          },
+        },
+        {
+          expert: {
+            ownerId: user.id,
+          },
+        },
+      ],
+    },
+  });
+  const userCaseWhere = {
+    OR: [
+      {
+        customerId: user.id,
+      },
+      {
+        proposals: {
+          some: {
+            company: {
+              ownerId: user.id,
+            },
+            status: "ACCEPTED",
+          },
+        },
+      },
+    ],
+  };
+
+  const totalUserCases = await prisma.tradeCase.count({
+    where: userCaseWhere,
+  });
+
+  const completedUserCases = await prisma.tradeCase.count({
+    where: {
+      ...userCaseWhere,
+      status: "COMPLETED",
+    },
+  });
+  const successRate =
+    totalUserCases === 0
+      ? 0
+      : Math.round((completedUserCases / totalUserCases) * 100);
   const usersCount = user.role === "admin" ? await prisma.user.count() : 0;
 
   const expertsCount =
@@ -457,6 +513,78 @@ export default async function DashboardPage() {
           </div>
         </Link>
       </div>
+      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12">
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <p className="text-slate-500 text-sm">Current Plan</p>
+
+            <h2 className="text-3xl font-bold text-yellow-400 mt-2">
+              {user.planType}
+            </h2>
+          </div>
+
+          <Link
+            href="/subscription"
+            className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold"
+          >
+            Manage Plan
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <div className="flex justify-between text-sm text-slate-400 mb-2">
+              <span>Active Cases</span>
+
+              <span>
+                {currentCaseLimit === Number.MAX_SAFE_INTEGER
+                  ? `${activeCasesUsed} / Unlimited`
+                  : `${activeCasesUsed} / ${currentCaseLimit}`}
+              </span>
+            </div>
+
+            {currentCaseLimit !== Number.MAX_SAFE_INTEGER && (
+              <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-cyan-500 rounded-full"
+                  style={{
+                    width: `${Math.min(
+                      (activeCasesUsed / currentCaseLimit) * 100,
+                      100,
+                    )}%`,
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          <div>
+            <div className="flex justify-between text-sm text-slate-400 mb-2">
+              <span>Proposals</span>
+
+              <span>
+                {currentProposalLimit === Number.MAX_SAFE_INTEGER
+                  ? `${proposalsUsed} / Unlimited`
+                  : `${proposalsUsed} / ${currentProposalLimit}`}
+              </span>
+            </div>
+
+            {currentProposalLimit !== Number.MAX_SAFE_INTEGER && (
+              <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-emerald-500 rounded-full"
+                  style={{
+                    width: `${Math.min(
+                      (proposalsUsed / currentProposalLimit) * 100,
+                      100,
+                    )}%`,
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
       {user.role === "admin" && (
         <div className="mb-12 bg-slate-900 border border-blue-500 rounded-3xl p-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -476,7 +604,7 @@ export default async function DashboardPage() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-4 gap-6 mt-8">
             <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
               <p className="text-slate-500 text-sm">Pending Verifications</p>
 
@@ -511,7 +639,7 @@ export default async function DashboardPage() {
           </div>
         </div>
       )}
-      <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
         <div className="bg-slate-900 p-6 rounded-2xl border border-yellow-500">
           <h2 className="text-xl font-semibold mb-3">Current Plan</h2>
 
@@ -587,16 +715,26 @@ export default async function DashboardPage() {
 
           <p className="text-slate-400 mt-3">Active trade opportunities</p>
         </Link>
+        <div className="bg-slate-900 p-6 rounded-2xl border border-emerald-500">
+          <h2 className="text-xl font-semibold mb-3">Case Success Rate</h2>
 
+          <div className="text-5xl font-bold text-emerald-400">
+            {successRate}%
+          </div>
+
+          <p className="text-slate-400 mt-3">
+            {completedUserCases} completed of {totalUserCases} cases
+          </p>
+        </div>
         <Link
           href="/dashboard/cases"
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-cyan-500"
         >
           <h2 className="text-xl font-semibold mb-3">
-            {user.role === "admin" ? "Trade Cases" : "My Cases"}
+            {user.role === "admin" ? "Trade Cases" : "Trade Cases"}
           </h2>
 
-          <div className="text-5xl font-bold text-cyan-400">{casesCount}</div>
+          <div className="text-5xl font-bold text-cyan-400">{totalUserCases}</div>
 
           <p className="text-slate-400 mt-3">
             {user.role === "admin"
@@ -656,9 +794,9 @@ export default async function DashboardPage() {
           </div>
         </div>
         <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <h2 className="text-xl font-semibold mb-3">Success Rate</h2>
+          <h2 className="text-xl font-semibold mb-3">Proposal Success Rate</h2>
 
-          <div className="text-5xl font-bold text-emerald-400">
+          <div className="text-5xl font-bold text-cyan-400">
             {proposalSuccessRate}%
           </div>
 
