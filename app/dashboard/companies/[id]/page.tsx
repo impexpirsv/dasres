@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import CompanyVerificationButtons from "../../../components/CompanyVerificationButtons";
 import { requireUser } from "../../../../lib/auth";
 import { calculateTrustScore } from "../../../../lib/ranking";
+import SaveCompanyButton from "../../../components/SaveCompanyButton";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -112,6 +113,14 @@ export default async function CompanyProfilePage({ params }: Props) {
     completedCases,
     verificationStatus: company.verificationStatus,
     planType: company.planType,
+  });
+  const existingSave = await prisma.savedCompany.findUnique({
+    where: {
+      userId_companyId: {
+        userId: user.id,
+        companyId: company.id,
+      },
+    },
   });
   const companySchema = {
     "@context": "https://schema.org",
@@ -389,7 +398,10 @@ export default async function CompanyProfilePage({ params }: Props) {
                   </p>
                 </div>
               </div>
-
+              <SaveCompanyButton
+                companyId={company.id}
+                initialSaved={!!existingSave}
+              />
               <a
                 href={`mailto:${company.email}`}
                 className="mt-6 block text-center bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
