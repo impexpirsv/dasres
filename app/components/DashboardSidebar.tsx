@@ -6,11 +6,13 @@ import { usePathname } from "next/navigation";
 interface DashboardSidebarProps {
   isAdmin: boolean;
   unreadNotificationsCount: number;
+  mobileOpen?: boolean;
 }
 
 export default function DashboardSidebar({
   isAdmin,
   unreadNotificationsCount,
+  mobileOpen = false,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
 
@@ -42,7 +44,11 @@ export default function DashboardSidebar({
     "px-4 pt-5 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-500";
 
   return (
-    <aside className="w-72 min-h-screen bg-slate-950 border-r border-slate-800 p-5">
+    <aside
+  className={`${
+    mobileOpen ? "block" : "hidden lg:block"
+  } w-72 min-h-screen bg-slate-950 border-r border-slate-800 p-5 overflow-y-auto`}
+>
       <div className="mb-8 px-4 pb-6 border-b border-slate-800">
         <h2 className="text-3xl font-black tracking-wider text-white">
           DASRES

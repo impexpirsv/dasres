@@ -271,7 +271,32 @@ export default async function CaseDetailPage({ params }: Props) {
               <p className="text-slate-300 leading-8">
                 {tradeCase.description}
               </p>
-              <div className="grid md:grid-cols-5 gap-4 mt-8">
+              <div className="grid md:grid-cols-3 gap-4 mt-6">
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Customer</p>
+
+                  <p className="font-semibold text-slate-200 mt-1">
+                    {isCustomer ? "You" : `User #${tradeCase.customerId}`}
+                  </p>
+                </div>
+
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Winning Company</p>
+
+                  <p className="font-semibold text-slate-200 mt-1">
+                    {winningProposal?.company?.name || "Not selected"}
+                  </p>
+                </div>
+
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Winning Expert</p>
+
+                  <p className="font-semibold text-slate-200 mt-1">
+                    {winningProposal?.expert?.name || "Not assigned"}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mt-8">
                 <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
                   <p className="text-slate-500 text-sm">Proposals</p>
 
@@ -303,6 +328,13 @@ export default async function CaseDetailPage({ params }: Props) {
                     {tradeCase.activities.length}
                   </p>
                 </div>
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                  <p className="text-slate-500 text-sm">Progress</p>
+
+                  <p className="text-3xl font-bold text-emerald-400">
+                    {progressPercent}%
+                  </p>
+                </div>
               </div>
             </section>
 
@@ -331,34 +363,44 @@ export default async function CaseDetailPage({ params }: Props) {
               </div>
 
               <div className="space-y-4">
-                {tradeCase.steps.map((step) => (
-                  <div
-                    key={step.id}
-                    className="flex items-start gap-4 bg-slate-950 border border-slate-800 rounded-2xl p-4"
-                  >
+                {tradeCase.steps.map((step) => {
+                  const isFinalStep = step.title === "Completed";
+
+                  return (
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        step.completed ? "bg-emerald-600" : "bg-slate-700"
+                      key={step.id}
+                      className={`flex items-start gap-4 rounded-2xl p-4 border ${
+                        isFinalStep && step.completed
+                          ? "bg-emerald-600/20 border-emerald-400"
+                          : step.completed
+                            ? "bg-emerald-950/30 border-emerald-600"
+                            : "bg-slate-950 border-slate-800"
                       }`}
                     >
-                      {step.completed ? "✓" : "•"}
-                    </div>
-
-                    <div className="flex justify-between items-center w-full">
-                      <div>
-                        <p className="font-semibold">{step.title}</p>
-
-                        <p className="text-sm text-slate-500">
-                          {step.completed ? "Completed" : "Pending"}
-                        </p>
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          step.completed ? "bg-emerald-600" : "bg-slate-700"
+                        }`}
+                      >
+                        {step.completed ? "✓" : "○"}
                       </div>
 
-                      {isAdmin && !step.completed && (
-                        <CompleteCaseStepButton stepId={step.id} />
-                      )}
+                      <div className="flex justify-between items-center w-full">
+                        <div>
+                          <p className="font-semibold">{step.title}</p>
+
+                          <p className="text-sm text-slate-500">
+                            {step.completed ? "Completed" : "Pending"}
+                          </p>
+                        </div>
+
+                        {isAdmin && !step.completed && (
+                          <CompleteCaseStepButton stepId={step.id} />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
 

@@ -115,8 +115,22 @@ export default async function MyCasesPage() {
           </div>
         </div>
         {cases.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-slate-400">
-            No active cases yet.
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center">
+            <div className="text-6xl mb-4">🧭</div>
+
+            <h2 className="text-2xl font-bold mb-3">No Active Cases Yet</h2>
+
+            <p className="text-slate-400 max-w-md mx-auto">
+              Once one of your company proposals is accepted, the assigned trade
+              case will appear here.
+            </p>
+
+            <Link
+              href="/dashboard/open-cases"
+              className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl"
+            >
+              Browse Open Cases
+            </Link>
           </div>
         ) : (
           <div className="grid lg:grid-cols-2 gap-6">

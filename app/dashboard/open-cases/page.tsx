@@ -219,7 +219,7 @@ export default async function OpenCasesPage({
           </div>
         )}
 
-        {openCases.length === 0 ? (
+        {categories.length === 0 ? null : openCases.length === 0 ? (
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center">
             <div className="text-6xl mb-4">📭</div>
 
