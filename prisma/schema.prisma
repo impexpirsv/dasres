@@ -23,6 +23,7 @@ model Expert {
   ownerId            Int?
   proposals          CaseProposal[]
   owner              User?              @relation(fields: [ownerId], references: [id])
+savedBy SavedExpert[]
 }
 
 model Company {
@@ -42,6 +43,7 @@ model Company {
   ownerId            Int?
   proposals          CaseProposal[]
   owner              User?              @relation(fields: [ownerId], references: [id])
+savedBy SavedCompany[]
 }
 
 model Opportunity {
@@ -73,6 +75,8 @@ model User {
   tickets         Ticket[]
   ticketMessages  TicketMessage[]
   savedCases SavedCase[]
+  savedCompanies SavedCompany[]
+savedExperts   SavedExpert[]
   customerCases TradeCase[] @relation("CustomerCases")
 }
 
@@ -249,4 +253,27 @@ enum ProposalStatus {
   PENDING
   ACCEPTED
   REJECTED
+}
+model SavedCompany {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  companyId Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, companyId])
+}
+
+model SavedExpert {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  expertId  Int
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expert Expert @relation(fields: [expertId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, expertId])
 }
