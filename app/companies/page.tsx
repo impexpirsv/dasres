@@ -6,6 +6,13 @@ export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 10;
 
+const planPriority = {
+  ENTERPRISE: 4,
+  DIAMOND: 3,
+  GOLD: 2,
+  FREE: 1,
+} as const;
+
 export default async function CompaniesPage({
   searchParams,
 }: {
@@ -50,23 +57,8 @@ export default async function CompaniesPage({
               rating: true,
             },
           })
-
         : [];
-        
-const planPriority = {
-  ENTERPRISE: 4,
-  DIAMOND: 3,
-  GOLD: 2,
-  FREE: 1,
-} as const;
 
-const sortedCompaniesWithRatings =
-  companiesWithRatings.sort(
-    (a, b) =>
-      planPriority[b.planType] -
-        planPriority[a.planType] ||
-      b.id - a.id
-  );
       const averageRating =
         reviews.length > 0
           ? reviews.reduce(
@@ -93,6 +85,13 @@ const sortedCompaniesWithRatings =
     })
   );
 
+  const sortedCompaniesWithRatings = [...companiesWithRatings].sort(
+    (a, b) =>
+      planPriority[b.planType] - planPriority[a.planType] ||
+      b.averageRating - a.averageRating ||
+      b.id - a.id
+  );
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
@@ -104,7 +103,7 @@ const sortedCompaniesWithRatings =
           Manage and browse verified international trade companies.
         </p>
 
-       <CompaniesSearch companies={sortedCompaniesWithRatings} />
+        <CompaniesSearch companies={sortedCompaniesWithRatings} />
 
         <div className="flex justify-center gap-4 mt-12">
           {currentPage > 1 && (

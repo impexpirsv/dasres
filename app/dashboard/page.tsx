@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "../../lib/prisma";
 import { requireUser } from "../../lib/auth";
 import { getCaseLimit, getProposalLimit } from "../../lib/plans";
+import { ProposalStatus } from "@prisma/client";
 function getActivityTitle(action: string) {
   switch (action) {
     case "PROPOSAL_SUBMITTED":
@@ -100,7 +101,7 @@ export default async function DashboardPage() {
             company: {
               ownerId: user.id,
             },
-            status: "ACCEPTED",
+            status: ProposalStatus.ACCEPTED,
           },
         },
       },
