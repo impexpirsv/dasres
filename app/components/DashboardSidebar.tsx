@@ -45,10 +45,10 @@ export default function DashboardSidebar({
 
   return (
     <aside
-  className={`${
-    mobileOpen ? "block" : "hidden lg:block"
-  } w-72 min-h-screen bg-slate-950 border-r border-slate-800 p-5 overflow-y-auto`}
->
+      className={`${
+        mobileOpen ? "block" : "hidden lg:block"
+      } w-72 min-h-screen bg-slate-950 border-r border-slate-800 p-5 overflow-y-auto`}
+    >
       <div className="mb-8 px-4 pb-6 border-b border-slate-800">
         <h2 className="text-3xl font-black tracking-wider text-white">
           DASRES
@@ -125,6 +125,12 @@ export default function DashboardSidebar({
           className={getLinkClass("/dashboard/saved-cases")}
         >
           Saved Cases
+        </Link>
+        <Link 
+        href="/dashboard/saved-companies" 
+           className={getLinkClass("/dashboard/saved-cases")}
+        >
+          Saved Companies
         </Link>
         <Link
           href="/dashboard/tickets"
