@@ -4,6 +4,7 @@ import DeleteExpertButton from "../../../components/DeleteExpertButton";
 import type { Metadata } from "next";
 import { calculateTrustScore } from "../../../../lib/ranking";
 import { requireUser } from "../../../../lib/auth";
+import SaveExpertButton from "../../../components/SaveExpertButton";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: "The requested expert profile could not be found.",
     };
   }
- 
+
   const title = `${expert.name} | ${expert.specialty}`;
   const description = `${expert.name} is an expert in ${expert.specialty} from ${expert.country}. Discover this expert profile on Dasres.`;
 
@@ -112,10 +113,17 @@ export default async function ExpertProfilePage({ params }: Props) {
       </div>
     );
   }
- const user = await requireUser();
+  const user = await requireUser();
 
   const isAdmin = user.role === "admin";
-
+  const existingSave = await prisma.savedExpert.findUnique({
+    where: {
+      userId_expertId: {
+        userId: user.id,
+        expertId: expert.id,
+      },
+    },
+  });
   const canManageExpert = isAdmin || expert.ownerId === user.id;
   const reviews = expert.ownerId
     ? await prisma.review.findMany({
@@ -352,7 +360,10 @@ export default async function ExpertProfilePage({ params }: Props) {
                     <p className="text-slate-200">{completedCases}</p>
                   </div>
                 </div>
-
+                <SaveExpertButton
+                  expertId={expert.id}
+                  initialSaved={!!existingSave}
+                />
                 <a
                   href={`mailto:${expert.email}`}
                   className="mt-6 block text-center bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
