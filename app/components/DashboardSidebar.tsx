@@ -126,11 +126,17 @@ export default function DashboardSidebar({
         >
           Saved Cases
         </Link>
-        <Link 
-        href="/dashboard/saved-companies" 
-           className={getLinkClass("/dashboard/saved-cases")}
+        <Link
+          href="/dashboard/saved-companies"
+          className={getLinkClass("/dashboard/saved-cases")}
         >
           Saved Companies
+        </Link>
+        <Link
+          href="/dashboard/saved-experts"
+          className={getLinkClass("/dashboard/saved-experts")}
+        >
+          Saved Experts
         </Link>
         <Link
           href="/dashboard/tickets"
