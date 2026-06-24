@@ -1,77 +1,62 @@
-export default function Experts() {
+import Link from "next/link";
+import { prisma } from "../../lib/prisma";
+
+export default async function Experts() {
+  const experts = await prisma.expert.findMany({
+    take: 3,
+    orderBy: {
+      verifiedAt: "desc",
+    },
+  });
   return (
-<section className="bg-slate-950 py-24">
-  <div className="max-w-7xl mx-auto px-6">
+    <section className="bg-slate-950 py-24">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-between items-center mb-12">
+          <div>
+            <h2 className="text-4xl font-bold mb-3">Featured Experts</h2>
 
-    <div className="flex justify-between items-center mb-12">
-      <div>
-        <h2 className="text-4xl font-bold mb-3">
-          Featured Experts
-        </h2>
+            <p className="text-slate-400">
+              Connect with trusted international trade professionals.
+            </p>
+          </div>
 
-        <p className="text-slate-400">
-          Connect with trusted international trade professionals.
-        </p>
+          <Link href="/experts" className="text-blue-400">
+            View All →
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {experts.map((expert) => (
+            <div
+              key={expert.id}
+              className="bg-slate-900 rounded-2xl p-6 border border-slate-800 hover:border-blue-500/40 transition"
+            >
+              <div className="text-5xl mb-4">👨‍💼</div>
+
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="text-xl font-semibold">{expert.name}</h3>
+
+                {expert.verificationStatus === "VERIFIED" && (
+                  <span className="bg-emerald-500/20 text-emerald-400 text-xs px-2 py-1 rounded-full">
+                    Verified
+                  </span>
+                )}
+              </div>
+
+              <p className="text-blue-400">{expert.specialty}</p>
+
+              <p className="text-slate-400 mt-2">{expert.country}</p>
+
+              <Link
+                href={`/experts/${expert.id}`}
+                className="inline-block mt-5 text-blue-400 hover:text-blue-300"
+              >
+                View Profile →
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
-
-      <button className="text-blue-400">
-        View All →
-      </button>
-    </div>
-
-    <div className="grid md:grid-cols-3 gap-6">
-
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-        <div className="text-5xl mb-4">👨‍💼</div>
-
-        <h3 className="text-xl font-semibold">
-          David Chen
-        </h3>
-
-        <p className="text-blue-400 mt-2">
-          China Sourcing Expert
-        </p>
-
-        <p className="text-slate-400 mt-4">
-          12 years experience in sourcing and supplier verification.
-        </p>
-      </div>
-
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-        <div className="text-5xl mb-4">👩‍💼</div>
-
-        <h3 className="text-xl font-semibold">
-          Rita Moradi
-        </h3>
-
-        <p className="text-blue-400 mt-2">
-          Trade Consultant
-        </p>
-
-        <p className="text-slate-400 mt-4">
-          International trade strategy and market development specialist.
-        </p>
-      </div>
-
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-        <div className="text-5xl mb-4">👨‍💼</div>
-
-        <h3 className="text-xl font-semibold">
-          Seid Rahimi
-        </h3>
-
-        <p className="text-blue-400 mt-2">
-          Logistics Expert
-        </p>
-
-        <p className="text-slate-400 mt-4">
-          Air, sea and multimodal transportation consultant.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
+    </section>
   );
 }

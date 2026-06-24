@@ -5,11 +5,15 @@ import Experts from "./components/Experts";
 import Companies from "./components/Companies";
 import Opportunities from "./components/Opportunities";
 import Footer from "./components/Footer";
+import LiveStats from "./components/LiveStats";
+import TopRatedShowcase from "./components/TopRatedShowcase";
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <Navbar />
       <Hero />
+      <LiveStats />
+      <TopRatedShowcase />
       <Services />
       <Experts />
       <Companies />

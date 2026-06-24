@@ -70,14 +70,24 @@ export default function DashboardSidebar({
         >
           Experts
         </Link>
-
+        <Link
+          href="/dashboard/top-experts"
+          className={getLinkClass("/dashboard/top-experts")}
+        >
+          Top Experts
+        </Link>
         <Link
           href="/dashboard/companies"
           className={getLinkClass("/dashboard/companies")}
         >
           Companies
         </Link>
-
+        <Link
+          href="/dashboard/top-companies"
+          className={getLinkClass("/dashboard/top-companies")}
+        >
+          Top Companies
+        </Link>
         <Link
           href="/dashboard/opportunities"
           className={getLinkClass("/dashboard/opportunities")}
@@ -152,6 +162,7 @@ export default function DashboardSidebar({
         >
           My Companies
         </Link>
+
         <Link
           href="/dashboard/my-experts"
           className={getLinkClass("/dashboard/my-experts")}
