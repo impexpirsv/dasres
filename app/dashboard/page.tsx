@@ -162,6 +162,23 @@ export default async function DashboardPage() {
             },
           },
         });
+  const savedCasesCount = await prisma.savedCase.count({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  const savedCompaniesCount = await prisma.savedCompany.count({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  const savedExpertsCount = await prisma.savedExpert.count({
+    where: {
+      userId: user.id,
+    },
+  });
   const proposalLimit = getProposalLimit(user.planType);
 
   const proposalUsagePercent =
@@ -667,6 +684,44 @@ export default async function DashboardPage() {
           </p>
         </div>
         <Link
+          href="/dashboard/saved-cases"
+          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
+        >
+          <h2 className="text-xl font-semibold mb-3">Saved Cases</h2>
+
+          <div className="text-5xl font-bold text-blue-400">
+            {savedCasesCount}
+          </div>
+
+          <p className="text-slate-400 mt-3">Cases saved for later</p>
+        </Link>
+
+        <Link
+          href="/dashboard/saved-companies"
+          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500 transition"
+        >
+          <h2 className="text-xl font-semibold mb-3">Saved Companies</h2>
+
+          <div className="text-5xl font-bold text-yellow-400">
+            {savedCompaniesCount}
+          </div>
+
+          <p className="text-slate-400 mt-3">Companies in your network</p>
+        </Link>
+
+        <Link
+          href="/dashboard/saved-experts"
+          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500 transition"
+        >
+          <h2 className="text-xl font-semibold mb-3">Saved Experts</h2>
+
+          <div className="text-5xl font-bold text-emerald-400">
+            {savedExpertsCount}
+          </div>
+
+          <p className="text-slate-400 mt-3">Experts in your network</p>
+        </Link>
+        <Link
           href={user.role === "admin" ? "/experts" : "/dashboard/my-experts"}
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
         >
@@ -735,7 +790,9 @@ export default async function DashboardPage() {
             {user.role === "admin" ? "Trade Cases" : "Trade Cases"}
           </h2>
 
-          <div className="text-5xl font-bold text-cyan-400">{totalUserCases}</div>
+          <div className="text-5xl font-bold text-cyan-400">
+            {totalUserCases}
+          </div>
 
           <p className="text-slate-400 mt-3">
             {user.role === "admin"
