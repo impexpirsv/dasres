@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../lib/prisma";
 import CompaniesSearch from "../components/CompaniesSearch";
+import { calculateTrustScore } from "../../lib/ranking";
 
 export const dynamic = "force-dynamic";
 
@@ -67,6 +68,13 @@ export default async function CompaniesPage({
             ) / reviews.length
           : 0;
 
+      const trustScore = calculateTrustScore({
+        averageRating,
+        completedCases: 0,
+        verificationStatus: company.verificationStatus,
+        planType: company.planType,
+      });
+
       return {
         id: company.id,
         name: company.name,
@@ -81,6 +89,7 @@ export default async function CompaniesPage({
         averageRating,
         reviewCount: reviews.length,
         planType: company.planType,
+        trustScore,
       };
     })
   );
@@ -88,22 +97,76 @@ export default async function CompaniesPage({
   const sortedCompaniesWithRatings = [...companiesWithRatings].sort(
     (a, b) =>
       planPriority[b.planType] - planPriority[a.planType] ||
+      b.trustScore - a.trustScore ||
       b.averageRating - a.averageRating ||
       b.id - a.id
   );
 
+  const verifiedCompaniesCount =
+    sortedCompaniesWithRatings.filter(
+      (company) =>
+        company.verificationStatus === "VERIFIED"
+    ).length;
+
+  const ratedCompaniesCount =
+    sortedCompaniesWithRatings.filter(
+      (company) => company.averageRating > 0
+    ).length;
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
-        <h1 className="text-5xl font-bold mb-4">
-          Companies Directory
-        </h1>
+        <div className="mb-12">
+          <p className="text-blue-400 font-semibold mb-3">
+            Verified Company Network
+          </p>
 
-        <p className="text-slate-400 mb-12">
-          Manage and browse verified international trade companies.
-        </p>
+          <h1 className="text-5xl md:text-6xl font-black mb-5">
+            Discover trusted trade companies
+          </h1>
 
-        <CompaniesSearch companies={sortedCompaniesWithRatings} />
+          <p className="text-slate-400 text-lg max-w-3xl">
+            Browse verified international companies across customs,
+            shipping, inspection, sourcing, logistics and global trade
+            services.
+          </p>
+
+          <div className="grid sm:grid-cols-3 gap-4 mt-10">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <p className="text-3xl font-bold text-blue-400">
+                {totalCompanies}
+              </p>
+
+              <p className="text-slate-400 text-sm mt-1">
+                Total Companies
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <p className="text-3xl font-bold text-emerald-400">
+                {verifiedCompaniesCount}
+              </p>
+
+              <p className="text-slate-400 text-sm mt-1">
+                Verified Companies
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <p className="text-3xl font-bold text-yellow-400">
+                {ratedCompaniesCount}
+              </p>
+
+              <p className="text-slate-400 text-sm mt-1">
+                Rated Companies
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <CompaniesSearch
+          companies={sortedCompaniesWithRatings}
+        />
 
         <div className="flex justify-center gap-4 mt-12">
           {currentPage > 1 && (

@@ -23,7 +23,7 @@ model Expert {
   ownerId            Int?
   proposals          CaseProposal[]
   owner              User?              @relation(fields: [ownerId], references: [id])
-savedBy SavedExpert[]
+  savedBy            SavedExpert[]
 }
 
 model Company {
@@ -43,7 +43,7 @@ model Company {
   ownerId            Int?
   proposals          CaseProposal[]
   owner              User?              @relation(fields: [ownerId], references: [id])
-savedBy SavedCompany[]
+  savedBy            SavedCompany[]
 }
 
 model Opportunity {
@@ -71,13 +71,13 @@ model User {
   notifications   Notification[]
   reviewsReceived Review[]        @relation("ReviewTarget")
   reviewsGiven    Review[]        @relation("ReviewAuthor")
+  savedCases      SavedCase[]
+  savedCompanies  SavedCompany[]
+  savedExperts    SavedExpert[]
   sessions        Session[]
   tickets         Ticket[]
   ticketMessages  TicketMessage[]
-  savedCases SavedCase[]
-  savedCompanies SavedCompany[]
-savedExperts   SavedExpert[]
-  customerCases TradeCase[] @relation("CustomerCases")
+  customerCases   TradeCase[]     @relation("CustomerCases")
 }
 
 model Session {
@@ -95,7 +95,6 @@ model TradeCase {
   description        String
   status             CaseStatus     @default(OPEN)
   customerId         Int
-  customer           User           @relation("CustomerCases", fields: [customerId], references: [id], onDelete: Cascade)
   assignedToId       Int?
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
@@ -108,7 +107,8 @@ model TradeCase {
   proposals          CaseProposal[]
   steps              CaseStep[]
   reviews            Review[]
-  savedCases SavedCase[]
+  savedCases         SavedCase[]
+  customer           User           @relation("CustomerCases", fields: [customerId], references: [id], onDelete: Cascade)
 }
 
 model CaseProposal {
@@ -213,20 +213,37 @@ model CaseActivity {
   user      User?     @relation(fields: [userId], references: [id])
 }
 
-
 model SavedCase {
-  id Int @id @default(autoincrement())
-
-  userId Int
-  caseId Int
-
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  caseId    Int
+  createdAt DateTime  @default(now())
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, caseId])
+}
+
+model SavedCompany {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  companyId Int
+  createdAt DateTime @default(now())
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, companyId])
+}
+
+model SavedExpert {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  expertId  Int
+  createdAt DateTime @default(now())
+  expert    Expert   @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, expertId])
 }
 
 enum VerificationStatus {
@@ -253,27 +270,4 @@ enum ProposalStatus {
   PENDING
   ACCEPTED
   REJECTED
-}
-model SavedCompany {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  companyId Int
-  createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, companyId])
-}
-
-model SavedExpert {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  expertId  Int
-  createdAt DateTime @default(now())
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expert Expert @relation(fields: [expertId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, expertId])
 }

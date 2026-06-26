@@ -88,7 +88,7 @@ export default function OpportunitiesSearch({
           (opportunity) => (
             <Link
               key={opportunity.id}
-              href={`/opportunities/${opportunity.id}`}
+              href={`/dashboard/opportunities/${opportunity.id}`}
               className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-blue-500"
             >
               {opportunity.imageUrl && (

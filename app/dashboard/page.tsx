@@ -531,7 +531,7 @@ export default async function DashboardPage() {
           </div>
         </Link>
       </div>
-      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12">
+      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12 mb-10">
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
             <p className="text-slate-500 text-sm">Current Plan</p>
@@ -889,7 +889,7 @@ export default async function DashboardPage() {
             <h2 className="text-xl font-bold">🏆 Top Rated Experts</h2>
 
             <Link
-              href="/experts"
+              href="/dashboard/experts"
               className="text-blue-400 text-sm hover:underline"
             >
               View all
@@ -935,7 +935,7 @@ export default async function DashboardPage() {
             <h2 className="text-xl font-bold">🏆 Top Rated Companies</h2>
 
             <Link
-              href="/companies"
+              href="/dashboard/companies"
               className="text-blue-400 text-sm hover:underline"
             >
               View all
@@ -993,7 +993,7 @@ export default async function DashboardPage() {
             </Link>
 
             <Link
-              href="/experts"
+             href="/dashboard/experts"
               className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
             >
               <h3 className="text-lg font-semibold">Experts</h3>
@@ -1004,7 +1004,7 @@ export default async function DashboardPage() {
             </Link>
 
             <Link
-              href="/companies"
+              href="/dashboard/companies"
               className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500"
             >
               <h3 className="text-lg font-semibold">Companies</h3>
@@ -1015,7 +1015,7 @@ export default async function DashboardPage() {
             </Link>
 
             <Link
-              href="/opportunities"
+              href="/dashboard/opportunities"
               className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500"
             >
               <h3 className="text-lg font-semibold">Opportunities</h3>
@@ -1110,7 +1110,7 @@ export default async function DashboardPage() {
             <h2 className="text-xl font-bold">Latest Opportunities</h2>
 
             <Link
-              href="/opportunities"
+              href="/dashboard/opportunities"
               className="text-blue-400 text-sm hover:underline"
             >
               View all
@@ -1124,7 +1124,7 @@ export default async function DashboardPage() {
               latestOpportunities.map((opportunity) => (
                 <Link
                   key={opportunity.id}
-                  href={`/opportunities/${opportunity.id}`}
+                 href={`/dashboard/opportunities/${opportunity.id}`}
                   className="block border-b border-slate-800 pb-3 last:border-0"
                 >
                   <p className="font-semibold">{opportunity.title}</p>

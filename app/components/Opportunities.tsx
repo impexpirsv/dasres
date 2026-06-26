@@ -57,7 +57,7 @@ export default async function Opportunities() {
               </p>
 
               <Link
-                href={`/opportunities/${opportunity.id}`}
+                href={`/dashboard/opportunities/${opportunity.id}`}
                 className="text-blue-400 hover:text-blue-300"
               >
                 View Opportunity →
