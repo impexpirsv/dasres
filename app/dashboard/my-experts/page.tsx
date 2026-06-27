@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
+import EmptyState from "../../components/EmptyState";
 function getVerificationClass(status: string) {
   switch (status) {
     case "VERIFIED":
@@ -105,9 +106,13 @@ export default async function MyExpertsPage() {
           </div>
         </div>
         {experts.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-slate-400">
-            You do not own any experts yet.
-          </div>
+          <EmptyState
+            icon="👨‍💼"
+            title="No experts yet"
+            description="Create your first expert profile to showcase your experience and receive trade requests."
+            buttonText="Add Expert"
+            href="/dashboard/experts/new"
+          />
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {experts.map((expert) => (

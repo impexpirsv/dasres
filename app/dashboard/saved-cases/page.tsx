@@ -2,7 +2,7 @@ import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import SaveCaseButton from "../../components/SaveCaseButton";
-
+import EmptyState from "../../components/EmptyState";
 export default async function SavedCasesPage() {
   const user = await requireUser();
 
@@ -41,9 +41,13 @@ export default async function SavedCasesPage() {
         </div>
 
         {savedCases.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-slate-400">
-            You have not saved any cases yet.
-          </div>
+          <EmptyState
+            icon="⭐"
+            title="No saved cases yet"
+            description="Save interesting trade cases to access them later."
+            buttonText="Browse Open Cases"
+            href="/dashboard/open-cases"
+          />
         ) : (
           <div className="grid lg:grid-cols-2 gap-6">
             {savedCases.map((savedCase) => {

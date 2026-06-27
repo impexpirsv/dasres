@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
-
+import EmptyState from "../../components/EmptyState";
 export default async function SavedExpertsPage() {
   const user = await requireUser();
 
@@ -20,14 +20,16 @@ export default async function SavedExpertsPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
-        <h1 className="text-4xl font-bold mb-10">
-          Saved Experts
-        </h1>
+        <h1 className="text-4xl font-bold mb-10">Saved Experts</h1>
 
         {savedExperts.length === 0 ? (
-          <div className="bg-slate-900 rounded-2xl p-8 text-slate-400">
-            No saved experts yet.
-          </div>
+          <EmptyState
+            icon="👨‍💼"
+            title="No saved experts yet"
+            description="Save experienced professionals to quickly contact them for future trade projects."
+            buttonText="Browse Experts"
+            href="/dashboard/experts"
+          />
         ) : (
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
             {savedExperts.map((saved) => (
@@ -39,13 +41,9 @@ export default async function SavedExpertsPage() {
                   {saved.expert.name}
                 </h2>
 
-                <p className="text-slate-400">
-                  {saved.expert.specialty}
-                </p>
+                <p className="text-slate-400">{saved.expert.specialty}</p>
 
-                <p className="text-slate-500 mt-2">
-                  {saved.expert.country}
-                </p>
+                <p className="text-slate-500 mt-2">{saved.expert.country}</p>
 
                 <div className="mt-6">
                   <Link

@@ -2,10 +2,46 @@ import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import DeleteOpportunityButton from "../../components/DeleteOpportunityButton";
 import type { Metadata } from "next";
-
+import { requireUser } from "../../../lib/auth";
+import { formatCountry } from "../../../lib/format";
+import Navbar from "../../components/Navbar";
 type Props = {
   params: Promise<{ id: string }>;
 };
+
+function StatusBadge({ status }: { status: string }) {
+  const normalizedStatus = status.toUpperCase();
+
+  if (normalizedStatus === "OPEN") {
+    return (
+      <span className="rounded-full bg-emerald-600 px-4 py-2 text-sm">
+        Open
+      </span>
+    );
+  }
+
+  if (normalizedStatus === "IN_PROGRESS") {
+    return (
+      <span className="rounded-full bg-yellow-600 px-4 py-2 text-sm">
+        In Progress
+      </span>
+    );
+  }
+
+  if (normalizedStatus === "CLOSED") {
+    return (
+      <span className="rounded-full bg-red-600 px-4 py-2 text-sm">
+        Closed
+      </span>
+    );
+  }
+
+  return (
+    <span className="rounded-full bg-slate-700 px-4 py-2 text-sm">
+      {status}
+    </span>
+  );
+}
 
 export async function generateMetadata({
   params,
@@ -66,6 +102,9 @@ export default async function OpportunityProfilePage({
 }: Props) {
   const { id } = await params;
 
+  const user = await requireUser();
+  const isAdmin = user.role === "admin";
+
   const opportunity =
     await prisma.opportunity.findUnique({
       where: {
@@ -115,6 +154,7 @@ export default async function OpportunityProfilePage({
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+  <Navbar />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -122,7 +162,7 @@ export default async function OpportunityProfilePage({
         }}
       />
 
-      <div className="max-w-5xl mx-auto px-6 py-20">
+      <div className="max-w-7xl mx-auto px-6 py-20">
         <Link
           href="/opportunities"
           className="text-blue-400 hover:underline mb-8 inline-block"
@@ -130,51 +170,205 @@ export default async function OpportunityProfilePage({
           ← Back to Opportunities
         </Link>
 
-        <div className="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden">
-          {opportunity.imageUrl && (
-            <img
-              src={opportunity.imageUrl}
-              alt={opportunity.title}
-              className="w-full h-80 object-cover"
-            />
-          )}
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden">
+            {opportunity.imageUrl ? (
+              <img
+                src={opportunity.imageUrl}
+                alt={opportunity.title}
+                className="w-full h-96 object-cover"
+              />
+            ) : (
+              <div className="h-96 bg-slate-800 flex items-center justify-center text-7xl">
+                🌍
+              </div>
+            )}
 
-          <div className="p-10">
-            <h1 className="text-5xl font-bold mb-4">
-              {opportunity.title}
-            </h1>
+            <div className="p-10">
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <StatusBadge status={opportunity.status} />
 
-            <div className="flex flex-wrap items-center gap-3 mb-8">
-              <span className="bg-green-600 px-4 py-2 rounded-full text-sm">
-                {opportunity.status}
-              </span>
+                <span className="rounded-full bg-blue-500/20 px-4 py-2 text-sm text-blue-400">
+                  {formatCountry(opportunity.country)}
+                </span>
 
-              <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
-                {opportunity.country}
-              </span>
-            </div>
+                <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
+                  Trade Opportunity
+                </span>
+              </div>
 
-            <div className="border-t border-slate-800 pt-8">
-              <h2 className="text-2xl font-bold mb-4">
-                Opportunity Description
-              </h2>
+              <h1 className="text-5xl md:text-6xl font-black leading-tight mb-6">
+                {opportunity.title}
+              </h1>
 
-              <p className="text-slate-300 text-lg leading-8">
-                {opportunity.description}
-              </p>
-            </div>
+              <div className="grid sm:grid-cols-3 gap-4 mb-10">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                  <p className="text-slate-500 text-sm mb-1">
+                    Status
+                  </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href={`/dashboard/opportunities/${opportunity.id}/edit`}
-                className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
-              >
-                Edit Opportunity
-              </Link>
+                  <p className="text-2xl font-bold text-emerald-400">
+                    {opportunity.status}
+                  </p>
+                </div>
 
-              <DeleteOpportunityButton id={opportunity.id} />
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                  <p className="text-slate-500 text-sm mb-1">
+                    Country
+                  </p>
+
+                  <p className="text-2xl font-bold text-blue-400">
+                    {formatCountry(opportunity.country)}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                  <p className="text-slate-500 text-sm mb-1">
+                    Visibility
+                  </p>
+
+                  <p className="text-2xl font-bold text-yellow-400">
+                    Public
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-t border-slate-800 pt-8">
+                <h2 className="text-2xl font-bold mb-4">
+                  Opportunity Description
+                </h2>
+
+                <p className="text-slate-300 text-lg leading-8">
+                  {opportunity.description}
+                </p>
+              </div>
+
+              <div className="border-t border-slate-800 pt-8 mt-8">
+                <h2 className="text-2xl font-bold mb-4">
+                  How to respond
+                </h2>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                    <p className="text-blue-400 font-bold mb-2">
+                      1. Review
+                    </p>
+
+                    <p className="text-slate-400">
+                      Read the full opportunity requirements.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                    <p className="text-blue-400 font-bold mb-2">
+                      2. Contact
+                    </p>
+
+                    <p className="text-slate-400">
+                      Reach out through Dasres or email.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                    <p className="text-blue-400 font-bold mb-2">
+                      3. Collaborate
+                    </p>
+
+                    <p className="text-slate-400">
+                      Build a trusted trade partnership.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {isAdmin && (
+                <div className="border-t border-slate-800 pt-8 mt-8 flex flex-wrap gap-3">
+                  <Link
+                    href={`/dashboard/opportunities/${opportunity.id}/edit`}
+                    className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
+                  >
+                    Edit Opportunity
+                  </Link>
+
+                  <DeleteOpportunityButton
+                    id={opportunity.id}
+                  />
+                </div>
+              )}
             </div>
           </div>
+
+          <aside className="space-y-6">
+            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold mb-6">
+                Opportunity Summary
+              </h2>
+
+              <div className="space-y-4">
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Country
+                  </p>
+
+                  <p className="text-slate-200">
+                    {formatCountry(opportunity.country)}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Status
+                  </p>
+
+                  <p className="text-slate-200">
+                    {opportunity.status}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Type
+                  </p>
+
+                  <p className="text-slate-200">
+                    Trade Opportunity
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                href="/dashboard/cases/new"
+                className="mt-6 block text-center bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
+              >
+                Open Trade Case
+              </Link>
+
+              <Link
+                href="/companies"
+                className="mt-3 block text-center bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl"
+              >
+                Find Companies
+              </Link>
+
+              <Link
+                href="/experts"
+                className="mt-3 block text-center bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl"
+              >
+                Find Experts
+              </Link>
+            </div>
+
+            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold mb-4">
+                Trust Notice
+              </h2>
+
+              <p className="text-slate-400 leading-7">
+                Always verify trade details, documents and service
+                providers before starting any international transaction.
+              </p>
+            </div>
+          </aside>
         </div>
       </div>
     </div>

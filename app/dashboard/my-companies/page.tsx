@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
-
+import EmptyState from "../../components/EmptyState";
 function getVerificationClass(status: string) {
   switch (status) {
     case "VERIFIED":
@@ -44,19 +44,19 @@ export default async function MyCompaniesPage() {
   });
 
   const verifiedCompanies = companies.filter(
-    (company) => company.verificationStatus === "VERIFIED"
+    (company) => company.verificationStatus === "VERIFIED",
   ).length;
 
   const pendingCompanies = companies.filter(
-    (company) => company.verificationStatus === "PENDING"
+    (company) => company.verificationStatus === "PENDING",
   ).length;
 
   const rejectedCompanies = companies.filter(
-    (company) => company.verificationStatus === "REJECTED"
+    (company) => company.verificationStatus === "REJECTED",
   ).length;
 
   const premiumCompanies = companies.filter(
-    (company) => company.planType !== "FREE"
+    (company) => company.planType !== "FREE",
   ).length;
 
   return (
@@ -64,12 +64,11 @@ export default async function MyCompaniesPage() {
       <div className="max-w-7xl mx-auto px-6 py-20">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
           <div>
-            <h1 className="text-5xl font-bold">
-              My Companies
-            </h1>
+            <h1 className="text-5xl font-bold">My Companies</h1>
 
             <p className="text-slate-400 mt-3">
-              Manage your owned company profiles, verification status and plan visibility.
+              Manage your owned company profiles, verification status and plan
+              visibility.
             </p>
           </div>
 
@@ -83,9 +82,7 @@ export default async function MyCompaniesPage() {
 
         <div className="grid md:grid-cols-5 gap-6 mb-10">
           <div className="bg-slate-900 border border-blue-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Total
-            </p>
+            <p className="text-slate-400 text-sm">Total</p>
 
             <p className="text-4xl font-bold text-blue-400 mt-2">
               {companies.length}
@@ -93,9 +90,7 @@ export default async function MyCompaniesPage() {
           </div>
 
           <div className="bg-slate-900 border border-emerald-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Verified
-            </p>
+            <p className="text-slate-400 text-sm">Verified</p>
 
             <p className="text-4xl font-bold text-emerald-400 mt-2">
               {verifiedCompanies}
@@ -103,9 +98,7 @@ export default async function MyCompaniesPage() {
           </div>
 
           <div className="bg-slate-900 border border-yellow-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Pending
-            </p>
+            <p className="text-slate-400 text-sm">Pending</p>
 
             <p className="text-4xl font-bold text-yellow-400 mt-2">
               {pendingCompanies}
@@ -113,9 +106,7 @@ export default async function MyCompaniesPage() {
           </div>
 
           <div className="bg-slate-900 border border-red-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Rejected
-            </p>
+            <p className="text-slate-400 text-sm">Rejected</p>
 
             <p className="text-4xl font-bold text-red-400 mt-2">
               {rejectedCompanies}
@@ -123,9 +114,7 @@ export default async function MyCompaniesPage() {
           </div>
 
           <div className="bg-slate-900 border border-purple-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Premium
-            </p>
+            <p className="text-slate-400 text-sm">Premium</p>
 
             <p className="text-4xl font-bold text-purple-400 mt-2">
               {premiumCompanies}
@@ -134,9 +123,13 @@ export default async function MyCompaniesPage() {
         </div>
 
         {companies.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-slate-400">
-            You do not own any companies yet.
-          </div>
+          <EmptyState
+            icon="🏢"
+            title="No companies yet"
+            description="Create your first company profile to participate in trade opportunities and submit proposals."
+            buttonText="Add Company"
+            href="/dashboard/companies/new"
+          />
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {companies.map((company) => (
@@ -148,7 +141,7 @@ export default async function MyCompaniesPage() {
                 <div className="flex flex-wrap items-center gap-3 mb-4">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${getVerificationClass(
-                      company.verificationStatus
+                      company.verificationStatus,
                     )}`}
                   >
                     {company.verificationStatus}
@@ -156,7 +149,7 @@ export default async function MyCompaniesPage() {
 
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${getPlanClass(
-                      company.planType
+                      company.planType,
                     )}`}
                   >
                     {company.planType}
@@ -171,13 +164,9 @@ export default async function MyCompaniesPage() {
                   {company.name}
                 </h2>
 
-                <p className="text-blue-400 mb-2">
-                  {company.category}
-                </p>
+                <p className="text-blue-400 mb-2">{company.category}</p>
 
-                <p className="text-slate-400 mb-5">
-                  {company.country}
-                </p>
+                <p className="text-slate-400 mb-5">{company.country}</p>
 
                 <p className="text-slate-500 text-sm line-clamp-2">
                   {company.description}
@@ -185,8 +174,7 @@ export default async function MyCompaniesPage() {
 
                 <div className="mt-6 pt-5 border-t border-slate-800 flex justify-between items-center">
                   <span className="text-xs text-slate-500">
-                    Created:{" "}
-                    {company.createdAt.toLocaleDateString()}
+                    Created: {company.createdAt.toLocaleDateString()}
                   </span>
 
                   <span className="text-blue-400 text-sm group-hover:underline">

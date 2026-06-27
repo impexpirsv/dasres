@@ -18,21 +18,59 @@ export default async function OpportunitiesPage({
   const totalPages = Math.ceil(totalOpportunities / PAGE_SIZE);
 
   const opportunities = await prisma.opportunity.findMany({
-  skip: (currentPage - 1) * PAGE_SIZE,
-  take: PAGE_SIZE,
-  orderBy: {
-    id: "desc",
-  },
-});
-
+    skip: (currentPage - 1) * PAGE_SIZE,
+    take: PAGE_SIZE,
+    orderBy: {
+      id: "desc",
+    },
+  });
+  const featuredOpportunities = opportunities.filter(
+    (o) => o.status === "OPEN",
+  );
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
-        <h1 className="text-5xl font-bold mb-4">Opportunities</h1>
+        <div className="mb-12">
+          <p className="text-blue-400 font-semibold mb-3">
+            Global Trade Marketplace
+          </p>
 
-        <p className="text-slate-400 mb-12">
-          Browse international trade opportunities.
-        </p>
+          <h1 className="text-5xl md:text-6xl font-black mb-5">
+            Discover international opportunities
+          </h1>
+
+          <p className="text-slate-400 text-lg max-w-3xl">
+            Explore verified trade opportunities from companies around the
+            world, connect with buyers and suppliers, and expand your
+            international business.
+          </p>
+
+          <div className="grid sm:grid-cols-3 gap-4 mt-10">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <p className="text-3xl font-bold text-blue-400">
+                {totalOpportunities}
+              </p>
+
+              <p className="text-slate-400 text-sm mt-1">Total Opportunities</p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <p className="text-3xl font-bold text-emerald-400">
+                {opportunities.filter((o) => o.status === "OPEN").length}
+              </p>
+
+              <p className="text-slate-400 text-sm mt-1">Open Opportunities</p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <p className="text-3xl font-bold text-purple-400">
+                {new Set(opportunities.map((o) => o.country)).size}
+              </p>
+
+              <p className="text-slate-400 text-sm mt-1">Countries</p>
+            </div>
+          </div>
+        </div>
 
         <OpportunitiesSearch opportunities={opportunities} />
 
