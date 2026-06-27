@@ -486,51 +486,116 @@ export default async function DashboardPage() {
       <p className="text-slate-400 mb-12">
         Manage your Dasres account, profiles and trade activities.
       </p>
-      <div className="grid md:grid-cols-4 gap-4 mb-10">
-        <Link
-          href="/dashboard/cases/new"
-          className="bg-blue-600 hover:bg-blue-700 rounded-2xl p-5"
-        >
-          <div className="text-lg font-bold">New Case</div>
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Quick Actions</h2>
 
-          <div className="text-sm text-blue-100 mt-2">
-            Create a trade request
-          </div>
-        </Link>
+          <p className="text-slate-400 text-sm">Frequently used shortcuts</p>
+        </div>
 
-        <Link
-          href="/dashboard/open-cases"
-          className="bg-emerald-600 hover:bg-emerald-700 rounded-2xl p-5"
-        >
-          <div className="text-lg font-bold">Open Cases</div>
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+          <Link
+            href="/dashboard/cases/new"
+            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-blue-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300"
+          >
+            <div className="text-4xl mb-4">➕</div>
 
-          <div className="text-sm text-emerald-100 mt-2">
-            Find new opportunities
-          </div>
-        </Link>
+            <h3 className="text-xl font-bold">Create Case</h3>
 
-        <Link
-          href="/dashboard/my-companies"
-          className="bg-purple-600 hover:bg-purple-700 rounded-2xl p-5"
-        >
-          <div className="text-lg font-bold">My Companies</div>
+            <p className="text-slate-400 mt-2">
+              Start a new international trade project.
+            </p>
+          </Link>
 
-          <div className="text-sm text-purple-100 mt-2">
-            Manage company profiles
-          </div>
-        </Link>
+          <Link
+            href="/dashboard/open-cases"
+            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-cyan-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300"
+          >
+            <div className="text-4xl mb-4">📂</div>
 
-        <Link
-          href="/dashboard/tickets"
-          className="bg-slate-800 hover:bg-slate-700 rounded-2xl p-5"
-        >
-          <div className="text-lg font-bold">Support</div>
+            <h3 className="text-xl font-bold">Open Cases</h3>
 
-          <div className="text-sm text-slate-300 mt-2">
-            Contact platform support
-          </div>
-        </Link>
-      </div>
+            <p className="text-slate-400 mt-2">
+              Browse available trade requests.
+            </p>
+          </Link>
+
+          <Link
+            href="/dashboard/my-companies"
+            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-emerald-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300"
+          >
+            <div className="text-4xl mb-4">🏢</div>
+
+            <h3 className="text-xl font-bold">My Companies</h3>
+
+            <p className="text-slate-400 mt-2">Manage your company profiles.</p>
+          </Link>
+
+          <Link
+            href="/dashboard/my-experts"
+            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-purple-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300"
+          >
+            <div className="text-4xl mb-4">👨‍💼</div>
+
+            <h3 className="text-xl font-bold">My Experts</h3>
+
+            <p className="text-slate-400 mt-2">Manage your expert profiles.</p>
+          </Link>
+        </div>
+      </section>
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Needs Your Attention</h2>
+
+          <p className="text-slate-400 text-sm">Important items to review</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+          <Link
+            href="/dashboard/notifications"
+            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-blue-500 transition-all"
+          >
+            <p className="text-slate-500 text-sm">Unread Notifications</p>
+
+            <p className="text-4xl font-bold text-blue-400 mt-3">
+              {unreadNotificationsCount}
+            </p>
+          </Link>
+
+          <Link
+            href="/dashboard/tickets"
+            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-purple-500 transition-all"
+          >
+            <p className="text-slate-500 text-sm">Open Tickets</p>
+
+            <p className="text-4xl font-bold text-purple-400 mt-3">
+              {openTicketsCount}
+            </p>
+          </Link>
+
+          <Link
+            href="/dashboard/open-cases"
+            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-emerald-500 transition-all"
+          >
+            <p className="text-slate-500 text-sm">Open Cases</p>
+
+            <p className="text-4xl font-bold text-emerald-400 mt-3">
+              {openCasesCount}
+            </p>
+          </Link>
+
+          <Link
+            href="/dashboard/my-proposals"
+            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-yellow-500 transition-all"
+          >
+            <p className="text-slate-500 text-sm">My Proposals</p>
+
+            <p className="text-4xl font-bold text-yellow-400 mt-3">
+              {myProposalsCount}
+            </p>
+          </Link>
+        </div>
+      </section>
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12 mb-10">
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
@@ -993,7 +1058,7 @@ export default async function DashboardPage() {
             </Link>
 
             <Link
-             href="/dashboard/experts"
+              href="/dashboard/experts"
               className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
             >
               <h3 className="text-lg font-semibold">Experts</h3>
@@ -1124,7 +1189,7 @@ export default async function DashboardPage() {
               latestOpportunities.map((opportunity) => (
                 <Link
                   key={opportunity.id}
-                 href={`/dashboard/opportunities/${opportunity.id}`}
+                  href={`/dashboard/opportunities/${opportunity.id}`}
                   className="block border-b border-slate-800 pb-3 last:border-0"
                 >
                   <p className="font-semibold">{opportunity.title}</p>
@@ -1181,33 +1246,53 @@ export default async function DashboardPage() {
           <p className="text-slate-500">No activity found.</p>
         ) : (
           <div className="space-y-4">
-            {recentActivities.map((activity) => (
-              <div
-                key={activity.id}
-                className="border-b border-slate-800 pb-4 last:border-0"
-              >
-                <p className="font-medium">
-                  {getActivityTitle(activity.action)}
-                </p>
+            {recentActivities.map((activity) => {
+              const badgeColor = activity.action.includes("MESSAGE")
+                ? "bg-blue-500/20 text-blue-300 border-blue-500/30"
+                : activity.action.includes("DOCUMENT")
+                  ? "bg-purple-500/20 text-purple-300 border-purple-500/30"
+                  : activity.action.includes("PROPOSAL")
+                    ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                    : activity.action.includes("CASE")
+                      ? "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"
+                      : "bg-slate-700 text-slate-300 border-slate-600";
 
-                {activity.details && (
-                  <p className="text-slate-400 text-sm mt-1">
-                    {activity.details}
+              return (
+                <div
+                  key={activity.id}
+                  className="border-b border-slate-800 pb-4 last:border-0"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-medium">
+                      {getActivityTitle(activity.action)}
+                    </p>
+
+                    <span
+                      className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${badgeColor}`}
+                    >
+                      {activity.action.replaceAll("_", " ")}
+                    </span>
+                  </div>
+
+                  {activity.details && (
+                    <p className="text-slate-400 text-sm mt-1">
+                      {activity.details}
+                    </p>
+                  )}
+
+                  <p className="text-xs text-slate-500 mt-2">
+                    {activity.user?.name || "System"} •{" "}
+                    <Link
+                      href={`/dashboard/cases/${activity.caseId}`}
+                      className="text-blue-400 hover:underline"
+                    >
+                      {activity.tradeCase.title}
+                    </Link>{" "}
+                    • {activity.createdAt.toLocaleString()}
                   </p>
-                )}
-
-                <p className="text-xs text-slate-500 mt-2">
-                  {activity.user?.name || "System"} •{" "}
-                  <Link
-                    href={`/dashboard/cases/${activity.caseId}`}
-                    className="text-blue-400 hover:underline"
-                  >
-                    {activity.tradeCase.title}
-                  </Link>{" "}
-                  • {activity.createdAt.toLocaleString()}
-                </p>
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

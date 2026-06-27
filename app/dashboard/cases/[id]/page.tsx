@@ -8,6 +8,7 @@ import AddCaseProposalForm from "../../../components/AddCaseProposalForm";
 import ProposalActionButtons from "../../../components/ProposalActionButtons";
 import CompleteCaseButton from "../../../components/CompleteCaseButton";
 import AddReviewForm from "../../../components/AddReviewForm";
+import EmptyState from "../../../components/EmptyState";
 function getActivityDisplay(action: string) {
   switch (action) {
     case "PROPOSAL_SUBMITTED":
@@ -253,16 +254,32 @@ export default async function CaseDetailPage({ params }: Props) {
           <main className="lg:col-span-2 space-y-6">
             <section className="bg-slate-900 rounded-3xl border border-slate-800 p-8">
               <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
+                <span className="bg-slate-800/80 border border-slate-700 px-4 py-2 rounded-full text-sm text-slate-300">
                   Case #{tradeCase.id}
                 </span>
 
-                <span className="bg-blue-600 px-4 py-2 rounded-full text-sm">
-                  {tradeCase.status}
+                <span
+                  className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                    tradeCase.status === "OPEN"
+                      ? "bg-blue-600"
+                      : tradeCase.status === "IN_PROGRESS"
+                        ? "bg-orange-600"
+                        : tradeCase.status === "COMPLETED"
+                          ? "bg-emerald-600"
+                          : "bg-red-600"
+                  }`}
+                >
+                  {tradeCase.status === "OPEN"
+                    ? "🟢 OPEN"
+                    : tradeCase.status === "IN_PROGRESS"
+                      ? "🟡 IN PROGRESS"
+                      : tradeCase.status === "COMPLETED"
+                        ? "✅ COMPLETED"
+                        : "🔴 CANCELLED"}
                 </span>
 
-                <span className="bg-purple-600 px-4 py-2 rounded-full text-sm">
-                  {tradeCase.category}
+                <span className="bg-purple-600/20 border border-purple-500/40 text-purple-300 px-4 py-2 rounded-full text-sm font-semibold">
+                  🧭 {tradeCase.category}
                 </span>
               </div>
 
@@ -348,13 +365,25 @@ export default async function CaseDetailPage({ params }: Props) {
               </div>
 
               <div className="mb-6">
-                <div className="h-3 w-full rounded-full bg-slate-800 overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-emerald-500 transition-all"
-                    style={{
-                      width: `${progressPercent}%`,
-                    }}
-                  />
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-400">
+                      Workflow Progress
+                    </span>
+
+                    <span className="text-sm font-semibold text-emerald-400">
+                      {progressPercent}%
+                    </span>
+                  </div>
+
+                  <div className="h-3 w-full rounded-full bg-slate-800 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 transition-all duration-500"
+                      style={{
+                        width: `${progressPercent}%`,
+                      }}
+                    />
+                  </div>
                 </div>
 
                 <p className="mt-2 text-sm text-slate-500">
@@ -382,15 +411,23 @@ export default async function CaseDetailPage({ params }: Props) {
                           step.completed ? "bg-emerald-600" : "bg-slate-700"
                         }`}
                       >
-                        {step.completed ? "✓" : "○"}
+                        {step.completed ? "✓" : "•"}
                       </div>
 
                       <div className="flex justify-between items-center w-full">
                         <div>
                           <p className="font-semibold">{step.title}</p>
 
-                          <p className="text-sm text-slate-500">
-                            {step.completed ? "Completed" : "Pending"}
+                          <p
+                            className={`text-sm mt-1 ${
+                              step.completed
+                                ? "text-emerald-400"
+                                : "text-slate-500"
+                            }`}
+                          >
+                            {step.completed
+                              ? "✓ Step completed"
+                              : "Waiting for completion"}
                           </p>
                         </div>
 
@@ -434,67 +471,124 @@ export default async function CaseDetailPage({ params }: Props) {
               )}
 
               {tradeCase.proposals.length === 0 ? (
-                <p className="text-slate-500">No proposals yet.</p>
+                <EmptyState
+                  icon="🤝"
+                  title="No proposals yet"
+                  description="Matching companies can submit proposals while this case is open."
+                />
               ) : (
                 <div className="space-y-4">
-                  {tradeCase.proposals.map((proposal) => (
-                    <div
-                      key={proposal.id}
-                      className={`rounded-2xl p-5 border ${
-                        proposal.id === tradeCase.acceptedProposalId
-                          ? "bg-green-950/30 border-green-500"
-                          : "bg-slate-950 border-slate-800"
-                      }`}
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                        <p className="font-semibold text-lg">
-                          {proposal.price || "No price"}
-                        </p>
+                  {tradeCase.proposals.map((proposal) => {
+                    const statusClass =
+                      proposal.status === "ACCEPTED"
+                        ? "bg-emerald-500/20 border border-emerald-500/40 text-emerald-300"
+                        : proposal.status === "REJECTED"
+                          ? "bg-red-500/20 border border-red-500/40 text-red-300"
+                          : "bg-yellow-500/20 border border-yellow-500/40 text-yellow-300";
 
-                        <span className="bg-slate-800 px-3 py-1 rounded-full text-xs text-slate-300">
-                          {proposal.status}
-                        </span>
-                      </div>
+                    return (
+                      <div
+                        key={proposal.id}
+                        className={`rounded-3xl p-6 border transition ${
+                          proposal.id === tradeCase.acceptedProposalId
+                            ? "bg-emerald-950/30 border-emerald-500"
+                            : "bg-slate-950 border-slate-800"
+                        }`}
+                      >
+                        <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+                          <div className="flex items-start gap-4">
+                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center text-2xl shrink-0">
+                              🏢
+                            </div>
 
-                      <p className="text-sm text-blue-400">
-                        Company:{" "}
-                        {proposal.company?.id ? (
-                          <Link
-                            href={`/dashboard/companies/${proposal.company.id}`}
-                            className="text-blue-400 hover:underline"
+                            <div>
+                              <p className="text-slate-500 text-sm">
+                                Provider Proposal
+                              </p>
+
+                              <h3 className="text-2xl font-bold mt-1">
+                                {proposal.company?.name || "Unknown Company"}
+                              </h3>
+
+                              <p className="text-sm text-slate-400 mt-1">
+                                {proposal.expert?.name
+                                  ? `Expert: ${proposal.expert.name}`
+                                  : "No expert assigned"}
+                              </p>
+                            </div>
+                          </div>
+
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${statusClass}`}
                           >
-                            {proposal.company.name}
-                          </Link>
-                        ) : (
-                          "Unknown"
-                        )}
-                      </p>
-
-                      <p className="text-sm text-emerald-400 mt-1">
-                        Expert:{" "}
-                        {proposal.expert?.id ? (
-                          <Link
-                            href={`/dashboard/experts/${proposal.expert.id}`}
-                            className="text-emerald-400 hover:underline"
-                          >
-                            {proposal.expert.name}
-                          </Link>
-                        ) : (
-                          "Not assigned"
-                        )}
-                      </p>
-
-                      <p className="text-sm text-slate-300 mt-3">
-                        {proposal.message}
-                      </p>
-
-                      {isCustomer && proposal.status === "PENDING" && (
-                        <div className="mt-4">
-                          <ProposalActionButtons proposalId={proposal.id} />
+                            {proposal.status === "ACCEPTED"
+                              ? "✓ Accepted"
+                              : proposal.status === "REJECTED"
+                                ? "Rejected"
+                                : "Pending"}
+                          </span>
                         </div>
-                      )}
-                    </div>
-                  ))}
+
+                        <div className="grid md:grid-cols-3 gap-3 mb-5">
+                          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4">
+                            <p className="text-slate-500 text-xs">Price</p>
+
+                            <p className="text-xl font-bold text-emerald-400 mt-1">
+                              {proposal.price || "No price"}
+                            </p>
+                          </div>
+
+                          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4">
+                            <p className="text-slate-500 text-xs">Company</p>
+
+                            {proposal.company?.id ? (
+                              <Link
+                                href={`/dashboard/companies/${proposal.company.id}`}
+                                className="block text-blue-400 hover:underline font-semibold mt-1 truncate"
+                              >
+                                View Company →
+                              </Link>
+                            ) : (
+                              <p className="text-slate-400 mt-1">Unknown</p>
+                            )}
+                          </div>
+
+                          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4">
+                            <p className="text-slate-500 text-xs">Expert</p>
+
+                            {proposal.expert?.id ? (
+                              <Link
+                                href={`/dashboard/experts/${proposal.expert.id}`}
+                                className="block text-cyan-400 hover:underline font-semibold mt-1 truncate"
+                              >
+                                View Expert →
+                              </Link>
+                            ) : (
+                              <p className="text-slate-400 mt-1">
+                                Not assigned
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="rounded-2xl bg-slate-900/70 border border-slate-800 p-4">
+                          <p className="text-slate-500 text-xs mb-2">
+                            Proposal Message
+                          </p>
+
+                          <p className="text-sm text-slate-300 leading-7">
+                            {proposal.message || "No message provided."}
+                          </p>
+                        </div>
+
+                        {isCustomer && proposal.status === "PENDING" && (
+                          <div className="mt-5">
+                            <ProposalActionButtons proposalId={proposal.id} />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </section>
@@ -510,7 +604,11 @@ export default async function CaseDetailPage({ params }: Props) {
 
                 <div className="mt-6">
                   {tradeCase.messages.length === 0 ? (
-                    <p className="text-slate-500">No messages yet.</p>
+                    <EmptyState
+                      icon="💬"
+                      title="No messages yet"
+                      description="Messages will appear here once the case is in progress."
+                    />
                   ) : (
                     <div className="space-y-3">
                       {tradeCase.messages.map((message) => {
@@ -568,7 +666,11 @@ export default async function CaseDetailPage({ params }: Props) {
 
                 <div className="mt-6">
                   {tradeCase.documents.length === 0 ? (
-                    <p className="text-slate-500">No documents uploaded yet.</p>
+                    <EmptyState
+                      icon="📄"
+                      title="No documents yet"
+                      description="Uploaded trade documents will be stored here."
+                    />
                   ) : (
                     <div className="space-y-3">
                       {tradeCase.documents.map((document) => (
@@ -644,7 +746,7 @@ export default async function CaseDetailPage({ params }: Props) {
                 {recommendedCompanies.map((company) => (
                   <Link
                     key={company.id}
-                    href={`/companies/${company.id}`}
+                    href={`/dashboard/companies/${company.id}`}
                     className="block bg-slate-950 border border-slate-800 rounded-2xl p-4 hover:border-blue-500 transition"
                   >
                     <p className="font-semibold">{company.name}</p>
@@ -658,7 +760,20 @@ export default async function CaseDetailPage({ params }: Props) {
             </section>
             <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
               <h2 className="text-2xl font-bold mb-4">Assigned Provider</h2>
+              {!winningProposal && (
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 mb-5">
+                  <div className="text-4xl mb-3">⏳</div>
 
+                  <h3 className="text-lg font-bold mb-2">
+                    No provider assigned yet
+                  </h3>
+
+                  <p className="text-slate-400 text-sm leading-6">
+                    Once the customer accepts a proposal, the selected company
+                    or expert will appear here as the assigned provider.
+                  </p>
+                </div>
+              )}
               <div className="space-y-4">
                 <div>
                   <p className="text-slate-500 text-sm">Winning Proposal</p>
@@ -675,7 +790,7 @@ export default async function CaseDetailPage({ params }: Props) {
                   <p className="text-slate-500 text-sm">Winning Company</p>
                   {winningProposal?.company?.id && (
                     <Link
-                      href={`/companies/${winningProposal.company.id}`}
+                      href={`/dashboard/companies/${winningProposal.company.id}`}
                       className="inline-block mt-2 text-blue-400 hover:underline"
                     >
                       View Company →
@@ -690,7 +805,7 @@ export default async function CaseDetailPage({ params }: Props) {
                   <p className="text-slate-500 text-sm">Winning Expert</p>
                   {winningProposal?.expert?.id && (
                     <Link
-                      href={`/experts/${winningProposal.expert.id}`}
+                      href={`/dashboard/experts/${winningProposal.expert.id}`}
                       className="inline-block mt-2 text-blue-400 hover:underline"
                     >
                       View Expert →
@@ -739,7 +854,11 @@ export default async function CaseDetailPage({ params }: Props) {
               </h2>
 
               {tradeCase.activities.length === 0 ? (
-                <p className="text-slate-500">No activity recorded yet.</p>
+                <EmptyState
+                  icon="📌"
+                  title="No activity yet"
+                  description="Case events, proposals, messages and document actions will appear here."
+                />
               ) : (
                 <div className="space-y-4">
                   {tradeCase.activities.map((activity) => {
