@@ -30,9 +30,7 @@ function StatusBadge({ status }: { status: string }) {
 
   if (normalizedStatus === "CLOSED") {
     return (
-      <span className="rounded-full bg-red-600 px-4 py-2 text-sm">
-        Closed
-      </span>
+      <span className="rounded-full bg-red-600 px-4 py-2 text-sm">Closed</span>
     );
   }
 
@@ -43,23 +41,19 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
-  const opportunity =
-    await prisma.opportunity.findUnique({
-      where: {
-        id: Number(id),
-      },
-    });
+  const opportunity = await prisma.opportunity.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
 
   if (!opportunity) {
     return {
       title: "Opportunity Not Found",
-      description:
-        "The requested opportunity could not be found.",
+      description: "The requested opportunity could not be found.",
     };
   }
 
@@ -90,34 +84,48 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: opportunity.imageUrl
-        ? [opportunity.imageUrl]
-        : ["/og-image.png"],
+      images: opportunity.imageUrl ? [opportunity.imageUrl] : ["/og-image.png"],
     },
   };
 }
 
-export default async function OpportunityProfilePage({
-  params,
-}: Props) {
+export default async function OpportunityProfilePage({ params }: Props) {
   const { id } = await params;
 
   const user = await requireUser();
   const isAdmin = user.role === "admin";
 
-  const opportunity =
-    await prisma.opportunity.findUnique({
-      where: {
-        id: Number(id),
-      },
-    });
-
+  const opportunity = await prisma.opportunity.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+  const relatedCompanies = await prisma.company.findMany({
+    where: {
+      verificationStatus: "VERIFIED",
+      country: opportunity?.country,
+    },
+    take: 3,
+    orderBy: {
+      verifiedAt: "desc",
+    },
+  });
+  const relatedExperts = opportunity
+    ? await prisma.expert.findMany({
+        where: {
+          verificationStatus: "VERIFIED",
+          country: opportunity.country,
+        },
+        take: 3,
+        orderBy: {
+          verifiedAt: "desc",
+        },
+      })
+    : [];
   if (!opportunity) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">
-          Opportunity Not Found
-        </h1>
+        <h1 className="text-4xl font-bold">Opportunity Not Found</h1>
       </div>
     );
   }
@@ -127,9 +135,7 @@ export default async function OpportunityProfilePage({
     "@type": "Article",
     headline: opportunity.title,
     description: opportunity.description,
-    image: opportunity.imageUrl
-      ? opportunity.imageUrl
-      : "/og-image.png",
+    image: opportunity.imageUrl ? opportunity.imageUrl : "/og-image.png",
     author: {
       "@type": "Organization",
       name: "Dasres",
@@ -154,7 +160,7 @@ export default async function OpportunityProfilePage({
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-  <Navbar />
+      <Navbar />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -201,34 +207,46 @@ export default async function OpportunityProfilePage({
                 {opportunity.title}
               </h1>
 
-              <div className="grid sm:grid-cols-3 gap-4 mb-10">
+              <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 mb-10">
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm mb-1">
-                    Status
-                  </p>
-
-                  <p className="text-2xl font-bold text-emerald-400">
+                  <p className="text-slate-500 text-sm">Status</p>
+                  <p className="text-2xl font-bold text-emerald-400 mt-2">
                     {opportunity.status}
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm mb-1">
-                    Country
-                  </p>
-
-                  <p className="text-2xl font-bold text-blue-400">
+                  <p className="text-slate-500 text-sm">Country</p>
+                  <p className="text-2xl font-bold text-blue-400 mt-2">
                     {formatCountry(opportunity.country)}
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm mb-1">
-                    Visibility
-                  </p>
-
-                  <p className="text-2xl font-bold text-yellow-400">
+                  <p className="text-slate-500 text-sm">Visibility</p>
+                  <p className="text-2xl font-bold text-yellow-400 mt-2">
                     Public
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                  <p className="text-slate-500 text-sm">Platform</p>
+                  <p className="text-2xl font-bold text-cyan-400 mt-2">
+                    Dasres
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                  <p className="text-slate-500 text-sm">Category</p>
+                  <p className="text-xl font-bold text-purple-400 mt-2">
+                    Trade
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                  <p className="text-slate-500 text-sm">Trust</p>
+                  <p className="text-2xl font-bold text-emerald-400 mt-2">
+                    Verified
                   </p>
                 </div>
               </div>
@@ -244,15 +262,11 @@ export default async function OpportunityProfilePage({
               </div>
 
               <div className="border-t border-slate-800 pt-8 mt-8">
-                <h2 className="text-2xl font-bold mb-4">
-                  How to respond
-                </h2>
+                <h2 className="text-2xl font-bold mb-4">How to respond</h2>
 
                 <div className="grid md:grid-cols-3 gap-4">
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                    <p className="text-blue-400 font-bold mb-2">
-                      1. Review
-                    </p>
+                    <p className="text-blue-400 font-bold mb-2">1. Review</p>
 
                     <p className="text-slate-400">
                       Read the full opportunity requirements.
@@ -260,9 +274,7 @@ export default async function OpportunityProfilePage({
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                    <p className="text-blue-400 font-bold mb-2">
-                      2. Contact
-                    </p>
+                    <p className="text-blue-400 font-bold mb-2">2. Contact</p>
 
                     <p className="text-slate-400">
                       Reach out through Dasres or email.
@@ -290,9 +302,7 @@ export default async function OpportunityProfilePage({
                     Edit Opportunity
                   </Link>
 
-                  <DeleteOpportunityButton
-                    id={opportunity.id}
-                  />
+                  <DeleteOpportunityButton id={opportunity.id} />
                 </div>
               )}
             </div>
@@ -300,15 +310,11 @@ export default async function OpportunityProfilePage({
 
           <aside className="space-y-6">
             <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-6">
-                Opportunity Summary
-              </h2>
+              <h2 className="text-2xl font-bold mb-6">Opportunity Summary</h2>
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-slate-500 text-sm">
-                    Country
-                  </p>
+                  <p className="text-slate-500 text-sm">Country</p>
 
                   <p className="text-slate-200">
                     {formatCountry(opportunity.country)}
@@ -316,23 +322,15 @@ export default async function OpportunityProfilePage({
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">
-                    Status
-                  </p>
+                  <p className="text-slate-500 text-sm">Status</p>
 
-                  <p className="text-slate-200">
-                    {opportunity.status}
-                  </p>
+                  <p className="text-slate-200">{opportunity.status}</p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">
-                    Type
-                  </p>
+                  <p className="text-slate-500 text-sm">Type</p>
 
-                  <p className="text-slate-200">
-                    Trade Opportunity
-                  </p>
+                  <p className="text-slate-200">Trade Opportunity</p>
                 </div>
               </div>
 
@@ -357,15 +355,70 @@ export default async function OpportunityProfilePage({
                 Find Experts
               </Link>
             </div>
-
             <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">
-                Trust Notice
-              </h2>
+              <h2 className="text-2xl font-bold mb-4">Related Companies</h2>
+
+              {relatedCompanies.length === 0 ? (
+                <p className="text-slate-500">
+                  No verified companies found for this country yet.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {relatedCompanies.map((company) => (
+                    <Link
+                      key={company.id}
+                      href={`/companies/${company.id}`}
+                      className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 hover:border-blue-500 transition"
+                    >
+                      <p className="font-semibold">{company.name}</p>
+
+                      <p className="text-sm text-slate-400 mt-1">
+                        {company.category}
+                      </p>
+
+                      <p className="text-xs text-emerald-400 mt-2">
+                        ✓ Verified
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold mb-4">Related Experts</h2>
+
+              {relatedExperts.length === 0 ? (
+                <p className="text-slate-500">
+                  No verified experts found for this country yet.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {relatedExperts.map((expert) => (
+                    <Link
+                      key={expert.id}
+                      href={`/experts/${expert.id}`}
+                      className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 hover:border-cyan-500 transition"
+                    >
+                      <p className="font-semibold">{expert.name}</p>
+
+                      <p className="text-sm text-slate-400 mt-1">
+                        {expert.specialty}
+                      </p>
+
+                      <p className="text-xs text-emerald-400 mt-2">
+                        ✓ Verified
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold mb-4">Trust Notice</h2>
 
               <p className="text-slate-400 leading-7">
-                Always verify trade details, documents and service
-                providers before starting any international transaction.
+                Always verify trade details, documents and service providers
+                before starting any international transaction.
               </p>
             </div>
           </aside>

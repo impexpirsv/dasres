@@ -834,31 +834,7 @@ export default async function DashboardPage() {
         </div>
       )}
       <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
-        <div className="bg-slate-900 p-6 rounded-2xl border border-yellow-500">
-          <h2 className="text-xl font-semibold mb-3">Current Plan</h2>
-
-          <div className="text-4xl font-bold text-yellow-400">
-            {user.planType}
-          </div>
-
-          <p className="text-slate-400 mt-3">Active subscription</p>
-        </div>
-
-        <div className="bg-slate-900 p-6 rounded-2xl border border-cyan-500">
-          <h2 className="text-xl font-semibold mb-3">Proposal Usage</h2>
-
-          <div className="text-3xl font-bold text-cyan-400">
-            {proposalLimit === Number.MAX_SAFE_INTEGER
-              ? `${myProposalsCount} / Unlimited`
-              : `${myProposalsCount} / ${proposalLimit}`}
-          </div>
-
-          <p className="text-slate-400 mt-3">
-            {proposalLimit === Number.MAX_SAFE_INTEGER
-              ? "Unlimited plan"
-              : `${proposalUsagePercent}% used`}
-          </p>
-        </div>
+        
         <Link
           href="/dashboard/saved-cases"
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
@@ -898,7 +874,7 @@ export default async function DashboardPage() {
           <p className="text-slate-400 mt-3">Experts in your network</p>
         </Link>
         <Link
-          href={user.role === "admin" ? "/experts" : "/dashboard/my-experts"}
+         href={user.role === "admin" ? "/dashboard/experts" : "/dashboard/my-experts"}
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
         >
           <h2 className="text-xl font-semibold mb-3">
@@ -936,7 +912,7 @@ export default async function DashboardPage() {
         </Link>
 
         <Link
-          href="/opportunities"
+          href="/dashboard/opportunities"
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
         >
           <h2 className="text-xl font-semibold mb-3">Opportunities</h2>
@@ -1027,15 +1003,7 @@ export default async function DashboardPage() {
             {acceptedProposalsCount}
           </div>
         </div>
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <h2 className="text-xl font-semibold mb-3">Proposal Success Rate</h2>
-
-          <div className="text-5xl font-bold text-cyan-400">
-            {proposalSuccessRate}%
-          </div>
-
-          <p className="text-slate-400 mt-3">Proposal acceptance rate</p>
-        </div>
+        
         <Link
           href="/dashboard/notifications"
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
