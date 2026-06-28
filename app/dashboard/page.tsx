@@ -11,30 +11,7 @@ import {
   getRecentActivities,
   getLatestDashboardItems,
 } from "../../lib/dashboard";
-function getActivityTitle(action: string) {
-  switch (action) {
-    case "PROPOSAL_SUBMITTED":
-      return "📨 Proposal Submitted";
 
-    case "PROPOSAL_ACCEPTED":
-      return "✅ Proposal Accepted";
-
-    case "PROPOSAL_REJECTED":
-      return "❌ Proposal Rejected";
-
-    case "CASE_COMPLETED":
-      return "🏁 Case Completed";
-
-    case "DOCUMENT_UPLOADED":
-      return "📄 Document Uploaded";
-
-    case "MESSAGE_SENT":
-      return "💬 Message Sent";
-
-    default:
-      return action.replaceAll("_", " ");
-  }
-}
 export default async function DashboardPage() {
   const user = await requireUser();
   const pendingCompaniesCount =
@@ -152,14 +129,7 @@ export default async function DashboardPage() {
 
   const opportunitiesCount = await prisma.opportunity.count();
 
-  const casesCount =
-    user.role === "admin"
-      ? await prisma.tradeCase.count()
-      : await prisma.tradeCase.count({
-          where: {
-            customerId: user.id,
-          },
-        });
+  
   const myProposalsCount =
     user.role === "admin"
       ? await prisma.caseProposal.count()
@@ -189,10 +159,7 @@ export default async function DashboardPage() {
   });
   const proposalLimit = getProposalLimit(user.planType);
 
-  const proposalUsagePercent =
-    proposalLimit === Number.MAX_SAFE_INTEGER
-      ? 0
-      : Math.min(100, Math.round((myProposalsCount / proposalLimit) * 100));
+ 
   const acceptedProposalsCount =
     user.role === "admin"
       ? await prisma.caseProposal.count({
