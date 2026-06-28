@@ -48,7 +48,12 @@ export default async function OpenCasesPage({
       createdAt: selectedSort === "oldest" ? "asc" : "desc",
     },
     include: {
-      proposals: true,
+      proposals: {
+  include: {
+    company: true,
+    expert: true,
+  },
+},
       documents: true,
       messages: true,
       savedCases: {
@@ -67,15 +72,24 @@ export default async function OpenCasesPage({
   });
 
   const mySubmittedProposals = await prisma.caseProposal.count({
-    where: {
-      company: {
-        ownerId: user.id,
-      },
-      tradeCase: {
-        status: "OPEN",
-      },
+  where: {
+    tradeCase: {
+      status: "OPEN",
     },
-  });
+    OR: [
+      {
+        company: {
+          ownerId: user.id,
+        },
+      },
+      {
+        expert: {
+          ownerId: user.id,
+        },
+      },
+    ],
+  },
+});
 
   const highCompetitionCases = openCases.filter(
     (tradeCase) => tradeCase.proposals.length >= 3,
@@ -239,7 +253,14 @@ export default async function OpenCasesPage({
           </div>
         ) : (
           <div className="grid lg:grid-cols-2 gap-6">
-            {openCases.map((tradeCase) => (
+            {openCases.map((tradeCase) => {
+  const hasApplied = tradeCase.proposals.some(
+    (proposal) =>
+      proposal.company?.ownerId === user.id ||
+      proposal.expert?.ownerId === user.id,
+  );
+
+  return (
               <Link
                 key={tradeCase.id}
                 href={`/dashboard/cases/${tradeCase.id}`}
@@ -250,14 +271,27 @@ export default async function OpenCasesPage({
                     {tradeCase.category}
                   </span>
 
-                  <span className="bg-blue-600 px-3 py-1 rounded-full text-xs">
-                    {tradeCase.status}
-                  </span>
+                  <span
+  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+    tradeCase.status === "OPEN"
+      ? "bg-emerald-600"
+      : tradeCase.status === "IN_PROGRESS"
+        ? "bg-yellow-600 text-black"
+        : "bg-slate-700"
+  }`}
+>
+  {tradeCase.status.replace("_", " ")}
+</span>
                   {tradeCase.savedCases.length > 0 && (
                     <span className="bg-yellow-600 text-black px-3 py-1 rounded-full text-xs font-semibold">
                       ★ Saved
                     </span>
                   )}
+                  {hasApplied && (
+  <span className="bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+    Applied
+  </span>
+)}
                   {tradeCase.proposals.length >= 3 && (
                     <span className="bg-yellow-600 text-black px-3 py-1 rounded-full text-xs font-semibold">
                       High Competition
@@ -322,7 +356,8 @@ export default async function OpenCasesPage({
                   </div>
                 </div>
               </Link>
-            ))}
+             );
+          })}
           </div>
         )}
       </div>
