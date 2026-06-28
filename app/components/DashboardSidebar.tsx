@@ -106,14 +106,14 @@ export default function DashboardSidebar({
           href="/dashboard/cases"
           className={getLinkClass("/dashboard/cases")}
         >
-          My Cases
+          Submitted Cases
         </Link>
 
         <Link
           href="/dashboard/my-cases"
           className={getLinkClass("/dashboard/my-cases")}
         >
-          My Active Cases
+          Active Workspaces
         </Link>
 
         <Link

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 type EmptyStateProps = {
-  icon: string;
+  icon?: string;
   title: string;
   description: string;
   buttonText?: string;
@@ -9,7 +9,7 @@ type EmptyStateProps = {
 };
 
 export default function EmptyState({
-  icon,
+ icon = "📭",
   title,
   description,
   buttonText,
