@@ -3,6 +3,14 @@ import { prisma } from "../../lib/prisma";
 import { requireUser } from "../../lib/auth";
 import { getCaseLimit, getProposalLimit } from "../../lib/plans";
 import { ProposalStatus } from "@prisma/client";
+import DashboardAnalytics from "../components/dashboard/DashboardAnalytics";
+import DashboardQuickActions from "../components/dashboard/DashboardQuickActions";
+import DashboardSubscription from "../components/dashboard/DashboardSubscription";
+import DashboardRecentActivity from "../components/dashboard/DashboardRecentActivity";
+import {
+  getRecentActivities,
+  getLatestDashboardItems,
+} from "../../lib/dashboard";
 function getActivityTitle(action: string) {
   switch (action) {
     case "PROPOSAL_SUBMITTED":
@@ -251,46 +259,8 @@ export default async function DashboardPage() {
           },
         });
 
-  const latestExperts =
-    user.role === "admin"
-      ? await prisma.expert.findMany({
-          orderBy: { id: "desc" },
-          take: 5,
-        })
-      : await prisma.expert.findMany({
-          where: {
-            ownerId: user.id,
-          },
-          orderBy: { id: "desc" },
-          take: 5,
-        });
-
-  const latestCompanies =
-    user.role === "admin"
-      ? await prisma.company.findMany({
-          orderBy: { id: "desc" },
-          take: 5,
-        })
-      : await prisma.company.findMany({
-          where: {
-            ownerId: user.id,
-          },
-          orderBy: { id: "desc" },
-          take: 5,
-        });
-
-  const latestOpportunities = await prisma.opportunity.findMany({
-    orderBy: { id: "desc" },
-    take: 5,
-  });
-
-  const latestUsers =
-    user.role === "admin"
-      ? await prisma.user.findMany({
-          orderBy: { id: "desc" },
-          take: 5,
-        })
-      : [];
+  const { latestExperts, latestCompanies, latestOpportunities, latestUsers } =
+    await getLatestDashboardItems(user);
 
   const allExperts = await prisma.expert.findMany();
 
@@ -436,33 +406,7 @@ export default async function DashboardPage() {
     resolvedProposalsCount > 0
       ? Math.round((acceptedProposalsCount / resolvedProposalsCount) * 100)
       : 0;
-  const recentActivities =
-    user.role === "admin"
-      ? await prisma.caseActivity.findMany({
-          orderBy: {
-            id: "desc",
-          },
-          take: 8,
-          include: {
-            user: true,
-            tradeCase: true,
-          },
-        })
-      : await prisma.caseActivity.findMany({
-          where: {
-            tradeCase: {
-              customerId: user.id,
-            },
-          },
-          orderBy: {
-            id: "desc",
-          },
-          take: 8,
-          include: {
-            user: true,
-            tradeCase: true,
-          },
-        });
+  const recentActivities = await getRecentActivities();
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mb-8">
@@ -486,63 +430,7 @@ export default async function DashboardPage() {
       <p className="text-slate-400 mb-12">
         Manage your Dasres account, profiles and trade activities.
       </p>
-      <section className="mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Quick Actions</h2>
-
-          <p className="text-slate-400 text-sm">Frequently used shortcuts</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
-          <Link
-            href="/dashboard/cases/new"
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-blue-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300"
-          >
-            <div className="text-4xl mb-4">➕</div>
-
-            <h3 className="text-xl font-bold">Create Case</h3>
-
-            <p className="text-slate-400 mt-2">
-              Start a new international trade project.
-            </p>
-          </Link>
-
-          <Link
-            href="/dashboard/open-cases"
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-cyan-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300"
-          >
-            <div className="text-4xl mb-4">📂</div>
-
-            <h3 className="text-xl font-bold">Open Cases</h3>
-
-            <p className="text-slate-400 mt-2">
-              Browse available trade requests.
-            </p>
-          </Link>
-
-          <Link
-            href="/dashboard/my-companies"
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-emerald-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300"
-          >
-            <div className="text-4xl mb-4">🏢</div>
-
-            <h3 className="text-xl font-bold">My Companies</h3>
-
-            <p className="text-slate-400 mt-2">Manage your company profiles.</p>
-          </Link>
-
-          <Link
-            href="/dashboard/my-experts"
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-purple-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300"
-          >
-            <div className="text-4xl mb-4">👨‍💼</div>
-
-            <h3 className="text-xl font-bold">My Experts</h3>
-
-            <p className="text-slate-400 mt-2">Manage your expert profiles.</p>
-          </Link>
-        </div>
-      </section>
+      <DashboardQuickActions />
       <section className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold">Needs Your Attention</h2>
@@ -596,189 +484,25 @@ export default async function DashboardPage() {
           </Link>
         </div>
       </section>
-      <section className="mb-12">
-  <div className="flex items-center justify-between mb-6">
-    <h2 className="text-2xl font-bold">Analytics Overview</h2>
-
-    <p className="text-slate-400 text-sm">
-      Operational performance summary
-    </p>
-  </div>
-
-  <div className="grid lg:grid-cols-3 gap-5">
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-      <p className="text-slate-500 text-sm">Case Pipeline</p>
-
-      <div className="mt-5 space-y-4">
-        <div>
-          <div className="flex justify-between text-sm mb-2">
-            <span>Open</span>
-            <span className="text-emerald-400">{openCasesCount}</span>
-          </div>
-          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-            <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${Math.min(openCasesCount * 10, 100)}%` }} />
-          </div>
-        </div>
-
-        <div>
-          <div className="flex justify-between text-sm mb-2">
-            <span>In Progress</span>
-            <span className="text-orange-400">{inProgressCasesCount}</span>
-          </div>
-          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-            <div className="h-full bg-orange-500 rounded-full" style={{ width: `${Math.min(inProgressCasesCount * 10, 100)}%` }} />
-          </div>
-        </div>
-
-        <div>
-          <div className="flex justify-between text-sm mb-2">
-            <span>Completed</span>
-            <span className="text-blue-400">{completedCasesCount}</span>
-          </div>
-          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-            <div className="h-full bg-blue-500 rounded-full" style={{ width: `${Math.min(completedCasesCount * 10, 100)}%` }} />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-      <p className="text-slate-500 text-sm">Proposal Performance</p>
-
-      <div className="mt-5">
-        <p className="text-5xl font-bold text-cyan-400">
-          {proposalSuccessRate}%
-        </p>
-
-        <p className="text-slate-400 mt-3">
-          Acceptance rate based on accepted and rejected proposals.
-        </p>
-
-        <div className="grid grid-cols-2 gap-3 mt-6">
-          <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-            <p className="text-slate-500 text-xs">Accepted</p>
-            <p className="text-2xl font-bold text-emerald-400">
-              {acceptedProposalsCount}
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-            <p className="text-slate-500 text-xs">Rejected</p>
-            <p className="text-2xl font-bold text-red-400">
-              {rejectedProposalsCount}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-      <p className="text-slate-500 text-sm">Platform Attention</p>
-
-      <div className="grid grid-cols-2 gap-3 mt-5">
-        <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-          <p className="text-slate-500 text-xs">Notifications</p>
-          <p className="text-3xl font-bold text-blue-400">
-            {unreadNotificationsCount}
-          </p>
-        </div>
-
-        <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-          <p className="text-slate-500 text-xs">Tickets</p>
-          <p className="text-3xl font-bold text-purple-400">
-            {openTicketsCount}
-          </p>
-        </div>
-
-        <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-          <p className="text-slate-500 text-xs">Reviews</p>
-          <p className="text-3xl font-bold text-yellow-400">
-            {totalReviewsCount}
-          </p>
-        </div>
-
-        <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-          <p className="text-slate-500 text-xs">Saved</p>
-          <p className="text-3xl font-bold text-emerald-400">
-            {savedCasesCount + savedCompaniesCount + savedExpertsCount}
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12 mb-10">
-        <div className="flex items-start justify-between gap-4 mb-6">
-          <div>
-            <p className="text-slate-500 text-sm">Current Plan</p>
-
-            <h2 className="text-3xl font-bold text-yellow-400 mt-2">
-              {user.planType}
-            </h2>
-          </div>
-
-          <Link
-            href="/subscription"
-            className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold"
-          >
-            Manage Plan
-          </Link>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <div className="flex justify-between text-sm text-slate-400 mb-2">
-              <span>Active Cases</span>
-
-              <span>
-                {currentCaseLimit === Number.MAX_SAFE_INTEGER
-                  ? `${activeCasesUsed} / Unlimited`
-                  : `${activeCasesUsed} / ${currentCaseLimit}`}
-              </span>
-            </div>
-
-            {currentCaseLimit !== Number.MAX_SAFE_INTEGER && (
-              <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-cyan-500 rounded-full"
-                  style={{
-                    width: `${Math.min(
-                      (activeCasesUsed / currentCaseLimit) * 100,
-                      100,
-                    )}%`,
-                  }}
-                />
-              </div>
-            )}
-          </div>
-
-          <div>
-            <div className="flex justify-between text-sm text-slate-400 mb-2">
-              <span>Proposals</span>
-
-              <span>
-                {currentProposalLimit === Number.MAX_SAFE_INTEGER
-                  ? `${proposalsUsed} / Unlimited`
-                  : `${proposalsUsed} / ${currentProposalLimit}`}
-              </span>
-            </div>
-
-            {currentProposalLimit !== Number.MAX_SAFE_INTEGER && (
-              <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-emerald-500 rounded-full"
-                  style={{
-                    width: `${Math.min(
-                      (proposalsUsed / currentProposalLimit) * 100,
-                      100,
-                    )}%`,
-                  }}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <DashboardAnalytics
+        openCasesCount={openCasesCount}
+        inProgressCasesCount={inProgressCasesCount}
+        completedCasesCount={completedCasesCount}
+        proposalSuccessRate={proposalSuccessRate}
+        acceptedProposalsCount={acceptedProposalsCount}
+        rejectedProposalsCount={rejectedProposalsCount}
+        unreadNotificationsCount={unreadNotificationsCount}
+        openTicketsCount={openTicketsCount}
+        totalReviewsCount={totalReviewsCount}
+        savedTotal={savedCasesCount + savedCompaniesCount + savedExpertsCount}
+      />
+      <DashboardSubscription
+        planType={user.planType}
+        currentCaseLimit={currentCaseLimit}
+        currentProposalLimit={currentProposalLimit}
+        activeCasesUsed={activeCasesUsed}
+        proposalsUsed={proposalsUsed}
+      />
       {user.role === "admin" && (
         <div className="mb-12 bg-slate-900 border border-blue-500 rounded-3xl p-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -834,7 +558,6 @@ export default async function DashboardPage() {
         </div>
       )}
       <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
-        
         <Link
           href="/dashboard/saved-cases"
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
@@ -874,7 +597,11 @@ export default async function DashboardPage() {
           <p className="text-slate-400 mt-3">Experts in your network</p>
         </Link>
         <Link
-         href={user.role === "admin" ? "/dashboard/experts" : "/dashboard/my-experts"}
+          href={
+            user.role === "admin"
+              ? "/dashboard/experts"
+              : "/dashboard/my-experts"
+          }
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
         >
           <h2 className="text-xl font-semibold mb-3">
@@ -892,7 +619,9 @@ export default async function DashboardPage() {
 
         <Link
           href={
-            user.role === "admin" ? "/companies" : "/dashboard/my-companies"
+            user.role === "admin"
+              ? "/dashboard/companies"
+              : "/dashboard/my-companies"
           }
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
         >
@@ -1003,7 +732,7 @@ export default async function DashboardPage() {
             {acceptedProposalsCount}
           </div>
         </div>
-        
+
         <Link
           href="/dashboard/notifications"
           className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
@@ -1220,7 +949,9 @@ export default async function DashboardPage() {
 
             <Link
               href={
-                user.role === "admin" ? "/companies" : "/dashboard/my-companies"
+                user.role === "admin"
+                  ? "/dashboard/companies"
+                  : "/dashboard/my-companies"
               }
               className="text-blue-400 text-sm hover:underline"
             >
@@ -1316,65 +1047,7 @@ export default async function DashboardPage() {
           </div>
         </div>
       )}
-      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">Recent Activity</h2>
-        </div>
-
-        {recentActivities.length === 0 ? (
-          <p className="text-slate-500">No activity found.</p>
-        ) : (
-          <div className="space-y-4">
-            {recentActivities.map((activity) => {
-              const badgeColor = activity.action.includes("MESSAGE")
-                ? "bg-blue-500/20 text-blue-300 border-blue-500/30"
-                : activity.action.includes("DOCUMENT")
-                  ? "bg-purple-500/20 text-purple-300 border-purple-500/30"
-                  : activity.action.includes("PROPOSAL")
-                    ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
-                    : activity.action.includes("CASE")
-                      ? "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"
-                      : "bg-slate-700 text-slate-300 border-slate-600";
-
-              return (
-                <div
-                  key={activity.id}
-                  className="border-b border-slate-800 pb-4 last:border-0"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="font-medium">
-                      {getActivityTitle(activity.action)}
-                    </p>
-
-                    <span
-                      className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${badgeColor}`}
-                    >
-                      {activity.action.replaceAll("_", " ")}
-                    </span>
-                  </div>
-
-                  {activity.details && (
-                    <p className="text-slate-400 text-sm mt-1">
-                      {activity.details}
-                    </p>
-                  )}
-
-                  <p className="text-xs text-slate-500 mt-2">
-                    {activity.user?.name || "System"} •{" "}
-                    <Link
-                      href={`/dashboard/cases/${activity.caseId}`}
-                      className="text-blue-400 hover:underline"
-                    >
-                      {activity.tradeCase.title}
-                    </Link>{" "}
-                    • {activity.createdAt.toLocaleString()}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <DashboardRecentActivity recentActivities={recentActivities} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { requireAdmin } from "../../../../lib/auth";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import crypto from "crypto";
+import { cloudinary } from "../../../../lib/cloudinary";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export async function POST(request: Request) {
   try {
@@ -24,38 +24,28 @@ export async function POST(request: Request) {
       );
     }
 
+    if (file.size > MAX_FILE_SIZE) {
+      return Response.json(
+        { message: "File is too large. Maximum size is 5MB." },
+        { status: 400 }
+      );
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const uploadDir = path.join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "companies"
-    );
+    const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-    await mkdir(uploadDir, { recursive: true });
-
-    const extension =
-      file.name.split(".").pop();
-
-    const fileName = `${Date.now()}-${crypto.randomUUID()}.${extension}`;
-
-    const filePath = path.join(
-      uploadDir,
-      fileName
-    );
-
-    await writeFile(filePath, buffer);
+    const result = await cloudinary.uploader.upload(base64, {
+      folder: "dasres/companies",
+      resource_type: "image",
+    });
 
     return Response.json({
-      url: `/uploads/companies/${fileName}`,
+      url: result.secure_url,
     });
   } catch (error) {
-    console.error(
-      "UPLOAD_COMPANY_LOGO_ERROR",
-      error
-    );
+    console.error("UPLOAD_COMPANY_LOGO_ERROR", error);
 
     return Response.json(
       { message: "Error uploading company logo." },

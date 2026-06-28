@@ -1,7 +1,9 @@
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
-import fs from "fs/promises";
-import path from "path";
+import {
+  cloudinary,
+  getCloudinaryPublicId,
+} from "../../../../lib/cloudinary";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -11,11 +13,7 @@ const ALLOWED_IMAGE_TYPES = [
   "image/webp",
 ];
 
-const extensionMap: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-};
+
 function canManageExpert(
   user: {
     id: number;
@@ -150,44 +148,24 @@ if (!canManageExpert(user, currentExpert.ownerId)) {
           { status: 400 }
         );
       }
+if (currentExpert.imageUrl) {
+  const publicId = getCloudinaryPublicId(currentExpert.imageUrl);
 
-      if (currentExpert.imageUrl) {
-        const oldImagePath = path.join(
-          process.cwd(),
-          "public",
-          currentExpert.imageUrl
-        );
-
-        try {
-          await fs.unlink(oldImagePath);
-        } catch {
-          // اگر عکس قبلی وجود نداشت، آپدیت متوقف نشود
-        }
-      }
-
+  if (publicId) {
+    await cloudinary.uploader.destroy(publicId).catch(() => {});
+  }
+}
       const bytes = await image.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+const buffer = Buffer.from(bytes);
 
-      const uploadDir = path.join(
-        process.cwd(),
-        "public",
-        "uploads",
-        "experts"
-      );
+const base64 = `data:${image.type};base64,${buffer.toString("base64")}`;
 
-      await fs.mkdir(uploadDir, { recursive: true });
+const result = await cloudinary.uploader.upload(base64, {
+  folder: "dasres/experts",
+  resource_type: "image",
+});
 
-      const fileExtension = extensionMap[image.type];
-
-      const fileName = `${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}.${fileExtension}`;
-
-      const filePath = path.join(uploadDir, fileName);
-
-      await fs.writeFile(filePath, buffer);
-
-      imageUrl = `/uploads/experts/${fileName}`;
+imageUrl = result.secure_url;
     }
 
     const expert = await prisma.expert.update({
@@ -252,19 +230,7 @@ if (!canManageExpert(user, expert.ownerId)) {
     { status: 403 }
   );
 }
-    if (expert.imageUrl) {
-      const filePath = path.join(
-        process.cwd(),
-        "public",
-        expert.imageUrl
-      );
-
-      try {
-        await fs.unlink(filePath);
-      } catch {
-        // اگر عکس قبلاً حذف شده بود، حذف رکورد متوقف نشود
-      }
-    }
+   
 
     await prisma.expert.delete({
       where: {
