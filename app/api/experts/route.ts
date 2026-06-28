@@ -1,7 +1,6 @@
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { cloudinary } from "../../../lib/cloudinary";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -66,34 +65,18 @@ export async function POST(request: Request) {
       }
 
       const bytes = await image.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+const buffer = Buffer.from(bytes);
 
-      const uploadDir = path.join(
-        process.cwd(),
-        "public",
-        "uploads",
-        "experts"
-      );
+const base64 = `data:${image.type};base64,${buffer.toString(
+  "base64"
+)}`;
 
-      await mkdir(uploadDir, { recursive: true });
+const result = await cloudinary.uploader.upload(base64, {
+  folder: "dasres/experts",
+  resource_type: "image",
+});
 
-      const extensionMap: Record<string, string> = {
-        "image/jpeg": "jpg",
-        "image/png": "png",
-        "image/webp": "webp",
-      };
-
-      const fileExtension = extensionMap[image.type];
-
-      const fileName = `${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}.${fileExtension}`;
-
-      const filePath = path.join(uploadDir, fileName);
-
-      await writeFile(filePath, buffer);
-
-      imageUrl = `/uploads/experts/${fileName}`;
+imageUrl = result.secure_url;
     }
 
     const expert = await prisma.expert.create({
