@@ -65,6 +65,12 @@ export default function DashboardSidebar({
           Dashboard
         </Link>
         <Link
+          href="/dashboard/search"
+          className={getLinkClass("/dashboard/search")}
+        >
+          Global Search
+        </Link>
+        <Link
           href="/dashboard/experts"
           className={getLinkClass("/dashboard/experts")}
         >
@@ -136,10 +142,10 @@ export default function DashboardSidebar({
         >
           Saved Cases
         </Link>
-       <Link
-  href="/dashboard/saved-companies"
-  className={getLinkClass("/dashboard/saved-companies")}
->
+        <Link
+          href="/dashboard/saved-companies"
+          className={getLinkClass("/dashboard/saved-companies")}
+        >
           Saved Companies
         </Link>
         <Link
