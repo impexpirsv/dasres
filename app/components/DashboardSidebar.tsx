@@ -136,10 +136,10 @@ export default function DashboardSidebar({
         >
           Saved Cases
         </Link>
-        <Link
-          href="/dashboard/saved-companies"
-          className={getLinkClass("/dashboard/saved-cases")}
-        >
+       <Link
+  href="/dashboard/saved-companies"
+  className={getLinkClass("/dashboard/saved-companies")}
+>
           Saved Companies
         </Link>
         <Link
@@ -226,6 +226,12 @@ export default function DashboardSidebar({
         </Link>
         <p className={sectionTitleClass}>Account</p>
         <div className="mt-6 border-t border-slate-800 pt-6">
+          <Link
+            href="/dashboard/settings"
+            className={getLinkClass("/dashboard/settings")}
+          >
+            Settings
+          </Link>
           <button
             onClick={handleLogout}
             className="w-full rounded-xl px-4 py-3 text-left text-sm text-red-400 hover:bg-red-950/40 hover:text-red-300 transition"
