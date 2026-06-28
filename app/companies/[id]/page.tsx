@@ -122,6 +122,16 @@ export default async function CompanyProfilePage({ params }: Props) {
       },
     },
   });
+  const relatedExperts = await prisma.expert.findMany({
+    where: {
+      verificationStatus: "VERIFIED",
+      country: company.country,
+    },
+    take: 3,
+    orderBy: {
+      verifiedAt: "desc",
+    },
+  });
   const companySchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -160,7 +170,7 @@ export default async function CompanyProfilePage({ params }: Props) {
 
       <div className="max-w-6xl mx-auto px-6 py-20">
         <Link
-          href="/dashboard/companies"
+          href="/companies"
           className="text-blue-400 hover:underline mb-8 inline-block"
         >
           ← Back to Companies
@@ -420,7 +430,33 @@ export default async function CompanyProfilePage({ params }: Props) {
                 </a>
               )}
             </div>
+            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold mb-4">Related Experts</h2>
 
+              {relatedExperts.length === 0 ? (
+                <p className="text-slate-500">No verified experts found.</p>
+              ) : (
+                <div className="space-y-3">
+                  {relatedExperts.map((expert) => (
+                    <Link
+                      key={expert.id}
+                      href={`/experts/${expert.id}`}
+                      className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 hover:border-cyan-500 transition"
+                    >
+                      <p className="font-semibold">{expert.name}</p>
+
+                      <p className="text-sm text-slate-400 mt-1">
+                        {expert.specialty}
+                      </p>
+
+                      <p className="text-xs text-emerald-400 mt-2">
+                        ✓ Verified
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
             {canManageCompany && (
               <div className="flex flex-col gap-3">
                 {isAdmin && (

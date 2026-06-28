@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: "The requested expert profile could not be found.",
     };
   }
- 
+
   const title = `${expert.name} | ${expert.specialty}`;
   const description = `${expert.name} is an expert in ${expert.specialty} from ${expert.country}. Discover this expert profile on Dasres.`;
 
@@ -112,7 +112,7 @@ export default async function ExpertProfilePage({ params }: Props) {
       </div>
     );
   }
- const user = await requireUser();
+  const user = await requireUser();
 
   const isAdmin = user.role === "admin";
 
@@ -158,7 +158,16 @@ export default async function ExpertProfilePage({ params }: Props) {
     planType: expert.planType,
   });
   const premiumBorder = getPremiumBorder(expert.planType);
-
+  const relatedCompanies = await prisma.company.findMany({
+    where: {
+      verificationStatus: "VERIFIED",
+      country: expert.country,
+    },
+    take: 3,
+    orderBy: {
+      verifiedAt: "desc",
+    },
+  });
   const expertSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -359,6 +368,33 @@ export default async function ExpertProfilePage({ params }: Props) {
                 >
                   Send Email
                 </a>
+              </div>
+              <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
+                <h2 className="text-2xl font-bold mb-4">Related Companies</h2>
+
+                {relatedCompanies.length === 0 ? (
+                  <p className="text-slate-500">No verified companies found.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {relatedCompanies.map((company) => (
+                      <Link
+                        key={company.id}
+                        href={`/companies/${company.id}`}
+                        className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 hover:border-blue-500 transition"
+                      >
+                        <p className="font-semibold">{company.name}</p>
+
+                        <p className="text-sm text-slate-400 mt-1">
+                          {company.category}
+                        </p>
+
+                        <p className="text-xs text-emerald-400 mt-2">
+                          ✓ Verified
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
               {canManageExpert && (
                 <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
