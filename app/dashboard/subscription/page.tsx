@@ -54,9 +54,6 @@ const plans = [
   },
 ];
 
-function formatLimit(limit: number) {
-  return limit === Number.MAX_SAFE_INTEGER ? "Unlimited" : String(limit);
-}
 
 function getPlanColor(planType: string) {
   switch (planType) {
@@ -88,13 +85,22 @@ export default async function SubscriptionPage() {
     },
   });
 
-  const proposalsUsed = await prisma.caseProposal.count({
-    where: {
-      company: {
-        ownerId: user.id,
+ const proposalsUsed = await prisma.caseProposal.count({
+  where: {
+    OR: [
+      {
+        company: {
+          ownerId: user.id,
+        },
       },
-    },
-  });
+      {
+        expert: {
+          ownerId: user.id,
+        },
+      },
+    ],
+  },
+});
   const currentPlanColor = getPlanColor(user.planType);
 
   return (

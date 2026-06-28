@@ -114,7 +114,7 @@ export default async function DashboardSearchPage({
         <div className="space-y-8">
           <p className="text-slate-400">
             Found {totalResults} result{totalResults === 1 ? "" : "s"} for{" "}
-            <span className="text-white font-semibold">"{q}"</span>
+            <span className="text-white font-semibold">&quot;{q}&quot;</span>
           </p>
 
           <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
