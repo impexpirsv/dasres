@@ -75,7 +75,28 @@ export default async function DashboardSearchPage({
 
   const totalResults =
     companies.length + experts.length + opportunities.length + cases.length;
-
+const sections = [
+  {
+    title: "Companies",
+    count: companies.length,
+    color: "text-blue-400",
+  },
+  {
+    title: "Experts",
+    count: experts.length,
+    color: "text-cyan-400",
+  },
+  {
+    title: "Opportunities",
+    count: opportunities.length,
+    color: "text-purple-400",
+  },
+  {
+    title: "Trade Cases",
+    count: cases.length,
+    color: "text-emerald-400",
+  },
+];
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <div className="mb-10">
@@ -116,7 +137,20 @@ export default async function DashboardSearchPage({
             Found {totalResults} result{totalResults === 1 ? "" : "s"} for{" "}
             <span className="text-white font-semibold">&quot;{q}&quot;</span>
           </p>
+<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+  {sections.map((section) => (
+    <div
+      key={section.title}
+      className="bg-slate-900 border border-slate-800 rounded-2xl p-5"
+    >
+      <p className="text-slate-500 text-sm">{section.title}</p>
 
+      <p className={`text-3xl font-bold mt-2 ${section.color}`}>
+        {section.count}
+      </p>
+    </div>
+  ))}
+</div>
           <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
             <h2 className="text-2xl font-bold mb-5">Companies</h2>
 
@@ -128,7 +162,7 @@ export default async function DashboardSearchPage({
                   <Link
                     key={company.id}
                     href={`/dashboard/companies/${company.id}`}
-                    className="rounded-2xl border border-slate-800 bg-slate-950 p-5 hover:border-blue-500 transition"
+                   className="rounded-2xl border border-slate-800 bg-slate-950 p-5 hover:border-blue-500 hover:-translate-y-1 transition-all duration-200"
                   >
                     <p className="font-bold text-lg">{company.name}</p>
                     <p className="text-blue-400 mt-1">{company.category}</p>
@@ -150,7 +184,7 @@ export default async function DashboardSearchPage({
                   <Link
                     key={expert.id}
                     href={`/dashboard/experts/${expert.id}`}
-                    className="rounded-2xl border border-slate-800 bg-slate-950 p-5 hover:border-cyan-500 transition"
+                    className="rounded-2xl border border-slate-800 bg-slate-950 p-5 hover:border-cyan-500 hover:-translate-y-1 transition-all duration-200"
                   >
                     <p className="font-bold text-lg">{expert.name}</p>
                     <p className="text-cyan-400 mt-1">{expert.specialty}</p>
@@ -172,7 +206,7 @@ export default async function DashboardSearchPage({
                   <Link
                     key={opportunity.id}
                     href={`/dashboard/opportunities/${opportunity.id}`}
-                    className="rounded-2xl border border-slate-800 bg-slate-950 p-5 hover:border-purple-500 transition"
+                   className="rounded-2xl border border-slate-800 bg-slate-950 p-5 hover:border-purple-500 hover:-translate-y-1 transition-all duration-200"
                   >
                     <p className="font-bold text-lg">{opportunity.title}</p>
                     <p className="text-purple-400 mt-1">
@@ -198,7 +232,7 @@ export default async function DashboardSearchPage({
                   <Link
                     key={tradeCase.id}
                     href={`/dashboard/cases/${tradeCase.id}`}
-                    className="rounded-2xl border border-slate-800 bg-slate-950 p-5 hover:border-emerald-500 transition"
+                   className="rounded-2xl border border-slate-800 bg-slate-950 p-5 hover:border-emerald-500 hover:-translate-y-1 transition-all duration-200"
                   >
                     <p className="font-bold text-lg">{tradeCase.title}</p>
                     <p className="text-emerald-400 mt-1">

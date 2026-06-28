@@ -1,6 +1,6 @@
 import { prisma } from "../../../../../../lib/prisma";
 import { requireUser } from "../../../../../../lib/auth";
-
+import { ProjectStatus } from "@prisma/client";
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -115,6 +115,21 @@ if (Number.isNaN(proposalId)) {
         status: "IN_PROGRESS",
       },
     });
+    await prisma.project.upsert({
+  where: {
+    tradeCaseId: tradeCase.id,
+  },
+  update: {},
+  create: {
+    tradeCaseId: tradeCase.id,
+    title: tradeCase.title,
+    description: tradeCase.description,
+    createdBy: tradeCase.customerId,
+    assignedTo: proposal.company?.ownerId ?? null,
+    status: ProjectStatus.ACTIVE,
+    progress: 0,
+  },
+});
     await prisma.caseActivity.create({
       data: {
         caseId: proposal.caseId,

@@ -109,6 +109,32 @@ model TradeCase {
   reviews            Review[]
   savedCases         SavedCase[]
   customer           User           @relation("CustomerCases", fields: [customerId], references: [id], onDelete: Cascade)
+  project            Project?
+}
+
+model Project {
+  id Int @id @default(autoincrement())
+
+  tradeCaseId Int @unique
+
+  tradeCase TradeCase @relation(fields: [tradeCaseId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+  createdBy   Int?
+  assignedTo  Int?
+
+  status ProjectStatus @default(ACTIVE)
+
+  progress Int @default(0)
+
+  startedAt DateTime @default(now())
+
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
 }
 
 model CaseProposal {
@@ -270,4 +296,11 @@ enum ProposalStatus {
   PENDING
   ACCEPTED
   REJECTED
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  CANCELLED
 }
