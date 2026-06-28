@@ -9,10 +9,17 @@ export async function PATCH(
     const user = await requireUser();
 
     const { id } = await params;
+const proposalId = Number(id);
 
+if (Number.isNaN(proposalId)) {
+  return Response.json(
+    { message: "Invalid proposal id" },
+    { status: 400 }
+  );
+}
     const proposal = await prisma.caseProposal.findUnique({
       where: {
-        id: Number(id),
+       id: proposalId,
       },
       include: {
         company: {

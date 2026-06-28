@@ -1,5 +1,5 @@
 import { prisma } from "../../../../lib/prisma";
-import { requireAdmin } from "../../../../lib/auth";
+import { requireUser } from "../../../../lib/auth";
 import fs from "fs/promises";
 import path from "path";
 
@@ -16,7 +16,15 @@ const extensionMap: Record<string, string> = {
   "image/png": "png",
   "image/webp": "webp",
 };
-
+function canManageExpert(
+  user: {
+    id: number;
+    role: string;
+  },
+  ownerId: number | null
+) {
+  return user.role === "admin" || ownerId === user.id;
+}
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -59,7 +67,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireAdmin();
+    const user = await requireUser();
 
     const { id } = await params;
     const expertId = Number(id);
@@ -77,6 +85,7 @@ export async function PUT(
       },
       select: {
         imageUrl: true,
+        ownerId: true,
       },
     });
 
@@ -86,7 +95,12 @@ export async function PUT(
         { status: 404 }
       );
     }
-
+if (!canManageExpert(user, currentExpert.ownerId)) {
+  return Response.json(
+    { message: "Unauthorized" },
+    { status: 403 }
+  );
+}
     const formData = await request.formData();
 
     const name = String(formData.get("name") || "").trim();
@@ -204,7 +218,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireAdmin();
+    const user = await requireUser();
 
     const { id } = await params;
     const expertId = Number(id);
@@ -222,6 +236,7 @@ export async function DELETE(
       },
       select: {
         imageUrl: true,
+        ownerId: true,
       },
     });
 
@@ -231,7 +246,12 @@ export async function DELETE(
         { status: 404 }
       );
     }
-
+if (!canManageExpert(user, expert.ownerId)) {
+  return Response.json(
+    { message: "Unauthorized" },
+    { status: 403 }
+  );
+}
     if (expert.imageUrl) {
       const filePath = path.join(
         process.cwd(),
