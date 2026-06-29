@@ -23,12 +23,12 @@ export async function POST(request: Request) {
       },
     });
 
-    if (!user) {
-      return Response.json(
-        { message: "User not found." },
-        { status: 404 }
-      );
-    }
+   if (!user) {
+  return Response.json(
+    { message: "Invalid email or password." },
+    { status: 401 },
+  );
+}
 
     const isValidPassword = await bcrypt.compare(
       password,
@@ -36,11 +36,11 @@ export async function POST(request: Request) {
     );
 
     if (!isValidPassword) {
-      return Response.json(
-        { message: "Invalid password." },
-        { status: 401 }
-      );
-    }
+  return Response.json(
+    { message: "Invalid email or password." },
+    { status: 401 },
+  );
+}
 
     const token = crypto.randomUUID();
 

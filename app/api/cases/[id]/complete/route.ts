@@ -1,97 +1,92 @@
 import { prisma } from "../../../../../lib/prisma";
 import { requireUser } from "../../../../../lib/auth";
-
 export async function PATCH(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const user = await requireUser();
 
     const { id } = await params;
-    const caseId = Number(id);
+    const stepId = Number(id);
 
-    if (!caseId || Number.isNaN(caseId)) {
+    if (Number.isNaN(stepId)) {
       return Response.json(
-        { message: "Invalid case id" },
-        { status: 400 }
+        { message: "Invalid step id" },
+        { status: 400 },
       );
     }
 
-    const tradeCase = await prisma.tradeCase.findUnique({
+    const step = await prisma.caseStep.findUnique({
       where: {
-        id: caseId,
+        id: stepId,
+      },
+      include: {
+        tradeCase: {
+          include: {
+            proposals: {
+              where: {
+                status: "ACCEPTED",
+              },
+              include: {
+                company: true,
+                expert: true,
+              },
+            },
+          },
+        },
       },
     });
 
-    if (!tradeCase) {
+    if (!step) {
       return Response.json(
-        { message: "Case not found" },
-        { status: 404 }
+        { message: "Step not found" },
+        { status: 404 },
       );
     }
 
-    const isAdmin = user.role === "admin";
-    const isCustomer = tradeCase.customerId === user.id;
+    const isCustomer = step.tradeCase.customerId === user.id;
 
-    if (!isAdmin && !isCustomer) {
+    const isAcceptedProvider = step.tradeCase.proposals.some(
+      (proposal) =>
+        proposal.company?.ownerId === user.id ||
+        proposal.expert?.ownerId === user.id,
+    );
+
+    if (user.role !== "admin" && !isCustomer && !isAcceptedProvider) {
       return Response.json(
-        {
-          message:
-            "You can only complete your own case.",
-        },
-        { status: 403 }
+        { message: "You are not allowed to update this step." },
+        { status: 403 },
       );
     }
 
-    if (tradeCase.status !== "IN_PROGRESS") {
-      return Response.json(
-        {
-          message:
-            "Only in-progress cases can be completed.",
-        },
-        { status: 400 }
-      );
-    }
+    const updatedStep = await prisma.caseStep.update({
+      where: {
+        id: stepId,
+      },
+      data: {
+        completed: true,
+        completedAt: new Date(),
+      },
+    });
 
-    await prisma.$transaction(async (tx) => {
-  await tx.tradeCase.update({
-    where: {
-      id: caseId,
-    },
-    data: {
-      status: "COMPLETED",
-    },
-  });
-
-  await tx.caseStep.updateMany({
-    where: {
-      caseId,
-    },
-    data: {
-      completed: true,
-    },
-  });
-
-  await tx.caseActivity.create({
-    data: {
-      caseId,
-      userId: user.id,
-      action: "CASE_COMPLETED",
-      details: `${user.name || user.email} completed this case`,
-    },
-  });
-});
+    await prisma.caseActivity.create({
+      data: {
+        caseId: step.tradeCase.id,
+        userId: user.id,
+        action: "STEP_COMPLETED",
+        details: `Step completed: ${step.title}`,
+      },
+    });
 
     return Response.json({
-      message: "Case completed",
+      message: "Step completed",
+      step: updatedStep,
     });
-  } catch (error) {
-    console.error(error);
-
+  } catch {
     return Response.json(
-      { message: "Failed to complete case" },
-      { status: 500 }
+      { message: "Failed to complete step" },
+      { status: 500 },
     );
   }
 }
