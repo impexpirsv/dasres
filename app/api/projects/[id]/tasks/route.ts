@@ -4,7 +4,7 @@ import { prisma } from "../../../../../lib/prisma";
 import { parseId } from "../../../../../lib/validation";
 import { requireUser } from "../../../../../lib/auth";
 
-export async function PATCH(
+export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -15,10 +15,17 @@ export async function PATCH(
     const projectId = parseId(id, "project id");
 
     const body = await request.json();
-    const progress = Number(body.progress);
 
-    if (Number.isNaN(progress) || progress < 0 || progress > 100) {
-      throw new AppError("Progress must be a number between 0 and 100.", 400);
+    const title = String(body.title || "").trim();
+    const description = String(body.description || "").trim();
+    const priority = String(body.priority || "MEDIUM").trim();
+
+    if (!title) {
+      throw new AppError("Task title is required.", 400);
+    }
+
+    if (!["LOW", "MEDIUM", "HIGH", "URGENT"].includes(priority)) {
+      throw new AppError("Invalid task priority.", 400);
     }
 
     const project = await prisma.project.findUnique({
@@ -35,21 +42,30 @@ export async function PATCH(
     const isProvider = project.assignedTo === user.id;
 
     if (user.role !== "admin" && !isCustomer && !isProvider) {
-      throw new AppError("You are not allowed to update this project.", 403);
+      throw new AppError("You are not allowed to add tasks to this project.", 403);
     }
 
-    const updatedProject = await prisma.project.update({
-      where: {
-        id: projectId,
-      },
+    const task = await prisma.projectTask.create({
       data: {
-        progress,
+        projectId,
+        title,
+        description: description || null,
+        priority: priority as "LOW" | "MEDIUM" | "HIGH" | "URGENT",
+      },
+    });
+
+    await prisma.caseActivity.create({
+      data: {
+        caseId: project.tradeCaseId,
+        userId: user.id,
+        action: "PROJECT_TASK_CREATED",
+        details: `Project task created: ${task.title}`,
       },
     });
 
     return Response.json({
-      message: "Project progress updated",
-      project: updatedProject,
+      message: "Task created",
+      task,
     });
   });
 }

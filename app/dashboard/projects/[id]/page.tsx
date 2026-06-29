@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
-import ProjectProgressForm from "../../../components/ProjectProgressForm";
+import CreateProjectTaskForm from "../../../components/CreateProjectTaskForm";
+import ProjectTaskStatusSelect from "../../../components/ProjectTaskStatusSelect";
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -22,6 +23,11 @@ export default async function ProjectDetailPage({
       id: projectId,
     },
     include: {
+      tasks: {
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
       tradeCase: {
         include: {
           customer: true,
@@ -120,15 +126,14 @@ export default async function ProjectDetailPage({
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
           <p className="text-slate-500 text-sm">Customer</p>
           <p className="text-xl font-bold mt-2">
-            {project.tradeCase.customer.name || project.tradeCase.customer.email}
+            {project.tradeCase.customer.name ||
+              project.tradeCase.customer.email}
           </p>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
           <p className="text-slate-500 text-sm">Category</p>
-          <p className="text-xl font-bold mt-2">
-            {project.tradeCase.category}
-          </p>
+          <p className="text-xl font-bold mt-2">{project.tradeCase.category}</p>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
@@ -138,13 +143,11 @@ export default async function ProjectDetailPage({
           </p>
         </div>
       </div>
+
       <div className="mb-8">
-        <ProjectProgressForm
-          projectId={project.id}
-          currentProgress={project.progress}
-        />
+        <CreateProjectTaskForm projectId={project.id} />
       </div>
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-3 gap-6">
         <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
           <h2 className="text-2xl font-bold mb-5">Timeline Steps</h2>
 
@@ -177,7 +180,48 @@ export default async function ProjectDetailPage({
             ))}
           </div>
         </section>
+        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+          <h2 className="text-2xl font-bold mb-5">Trade Tasks</h2>
 
+          <div className="space-y-4">
+            {project.tasks.map((task) => (
+              <div
+                key={task.id}
+                className="rounded-2xl border border-slate-800 bg-slate-950 p-4"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">{task.title}</h3>
+
+                  <span
+                    className={`text-xs px-3 py-1 rounded-full ${
+                      task.priority === "URGENT"
+                        ? "bg-red-600"
+                        : task.priority === "HIGH"
+                          ? "bg-orange-600"
+                          : task.priority === "MEDIUM"
+                            ? "bg-yellow-600"
+                            : "bg-slate-700"
+                    }`}
+                  >
+                    {task.priority}
+                  </span>
+                </div>
+
+                {task.description && (
+                  <p className="text-sm text-slate-400 mt-2">
+                    {task.description}
+                  </p>
+                )}
+
+                <div className="mt-3 text-xs text-slate-500">{task.status}</div>
+                <ProjectTaskStatusSelect
+                  taskId={task.id}
+                  currentStatus={task.status}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
         <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
           <h2 className="text-2xl font-bold mb-5">Recent Activity</h2>
 
