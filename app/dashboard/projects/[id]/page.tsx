@@ -25,6 +25,15 @@ export default async function ProjectDetailPage({
     },
     include: {
       tasks: {
+        include: {
+          assignedTo: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
         orderBy: {
           createdAt: "asc",
         },
@@ -74,7 +83,26 @@ export default async function ProjectDetailPage({
   if (user.role !== "admin" && !isCustomer && !isProvider) {
     notFound();
   }
-
+  const assignableUsers = await prisma.user.findMany({
+    where: {
+      OR: [
+        {
+          id: project.createdBy ?? -1,
+        },
+        {
+          id: project.assignedTo ?? -1,
+        },
+      ],
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
   const completedSteps = project.tradeCase.steps.filter(
     (step) => step.completed,
   ).length;
@@ -213,7 +241,33 @@ export default async function ProjectDetailPage({
                     {task.description}
                   </p>
                 )}
+                <div className="mt-3 space-y-1 text-xs text-slate-500">
+                  <p>
+                    Assignee:{" "}
+                    <span className="text-slate-300">
+                      {task.assignedTo
+                        ? task.assignedTo.name || task.assignedTo.email
+                        : "Unassigned"}
+                    </span>
+                  </p>
 
+                  <p>
+                    Due:{" "}
+                    <span
+                      className={
+                        task.dueDate &&
+                        task.status !== "COMPLETED" &&
+                        task.dueDate < new Date()
+                          ? "text-red-400"
+                          : "text-slate-300"
+                      }
+                    >
+                      {task.dueDate
+                        ? task.dueDate.toLocaleDateString()
+                        : "No due date"}
+                    </span>
+                  </p>
+                </div>
                 <div className="mt-3 text-xs text-slate-500">{task.status}</div>
                 <ProjectTaskStatusSelect
                   taskId={task.id}
@@ -225,6 +279,8 @@ export default async function ProjectDetailPage({
                   currentDescription={task.description}
                   currentPriority={task.priority}
                   currentDueDate={task.dueDate}
+                  currentAssignedToId={task.assignedToId}
+                  assignableUsers={assignableUsers}
                 />
               </div>
             ))}

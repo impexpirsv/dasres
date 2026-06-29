@@ -41,7 +41,16 @@ export async function PATCH(
     if (!ALLOWED_PRIORITIES.includes(priority)) {
       throw new AppError("Invalid task priority.", 400);
     }
+    const assignedToId =
+      body.assignedToId === "" ||
+      body.assignedToId === null ||
+      body.assignedToId === undefined
+        ? null
+        : Number(body.assignedToId);
 
+    if (assignedToId !== null && Number.isNaN(assignedToId)) {
+      throw new AppError("Invalid assignee.", 400);
+    }
     const task = await prisma.projectTask.findUnique({
       where: {
         id: taskId,
@@ -61,7 +70,20 @@ export async function PATCH(
     if (user.role !== "admin" && !isCustomer && !isProvider) {
       throw new AppError("You are not allowed to update this task.", 403);
     }
+    if (assignedToId !== null) {
+      const assignee = await prisma.user.findUnique({
+        where: {
+          id: assignedToId,
+        },
+        select: {
+          id: true,
+        },
+      });
 
+      if (!assignee) {
+        throw new AppError("Assigned user not found.", 404);
+      }
+    }
     const updatedTask = await prisma.projectTask.update({
       where: {
         id: taskId,
@@ -71,6 +93,7 @@ export async function PATCH(
         description: description || null,
         priority,
         dueDate,
+        assignedToId,
       },
     });
 

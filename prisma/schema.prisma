@@ -56,28 +56,29 @@ model Opportunity {
 }
 
 model User {
-  id              Int             @id @default(autoincrement())
-  name            String
-  email           String          @unique
-  password        String
-  role            String          @default("user")
-  createdAt       DateTime        @default(now())
-  planType        PlanType        @default(FREE)
-  caseActivities  CaseActivity[]
-  caseDocuments   CaseDocument[]
-  caseMessages    CaseMessage[]
-  companies       Company[]
-  experts         Expert[]
-  notifications   Notification[]
-  reviewsReceived Review[]        @relation("ReviewTarget")
-  reviewsGiven    Review[]        @relation("ReviewAuthor")
-  savedCases      SavedCase[]
-  savedCompanies  SavedCompany[]
-  savedExperts    SavedExpert[]
-  sessions        Session[]
-  tickets         Ticket[]
-  ticketMessages  TicketMessage[]
-  customerCases   TradeCase[]     @relation("CustomerCases")
+  id                   Int             @id @default(autoincrement())
+  name                 String
+  email                String          @unique
+  password             String
+  role                 String          @default("user")
+  createdAt            DateTime        @default(now())
+  planType             PlanType        @default(FREE)
+  caseActivities       CaseActivity[]
+  caseDocuments        CaseDocument[]
+  caseMessages         CaseMessage[]
+  companies            Company[]
+  experts              Expert[]
+  notifications        Notification[]
+  reviewsReceived      Review[]        @relation("ReviewTarget")
+  reviewsGiven         Review[]        @relation("ReviewAuthor")
+  savedCases           SavedCase[]
+  savedCompanies       SavedCompany[]
+  savedExperts         SavedExpert[]
+  sessions             Session[]
+  tickets              Ticket[]
+  ticketMessages       TicketMessage[]
+  customerCases        TradeCase[]     @relation("CustomerCases")
+  assignedProjectTasks ProjectTask[]   @relation("ProjectTaskAssignee")
 }
 
 model Session {
@@ -151,7 +152,9 @@ model ProjectTask {
   status   TaskStatus   @default(TODO)
   priority TaskPriority @default(MEDIUM)
 
-  assignedTo Int?
+  assignedToId Int?
+
+  assignedTo User? @relation("ProjectTaskAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
 
   dueDate DateTime?
 

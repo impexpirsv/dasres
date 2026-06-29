@@ -10,13 +10,22 @@ export default function EditProjectTaskForm({
   currentDescription,
   currentPriority,
   currentDueDate,
+  currentAssignedToId,
+assignableUsers,
 }: {
   taskId: number;
   currentTitle: string;
   currentDescription?: string | null;
   currentPriority: string;
   currentDueDate?: Date | string | null;
+  currentAssignedToId?: number | null;
+  assignableUsers: {
+    id: number;
+    name: string;
+    email: string;
+  }[];
 }) {
+    
   const [title, setTitle] = useState(currentTitle);
   const [description, setDescription] = useState(currentDescription || "");
   const [priority, setPriority] = useState(currentPriority);
@@ -25,6 +34,9 @@ export default function EditProjectTaskForm({
   const [dueDate, setDueDate] = useState(
     currentDueDate ? new Date(currentDueDate).toISOString().slice(0, 10) : "",
   );
+  const [assignedToId, setAssignedToId] = useState(
+  currentAssignedToId ? String(currentAssignedToId) : "",
+);
   async function updateTask() {
     if (!title.trim()) {
       alert("Task title is required.");
@@ -37,7 +49,7 @@ export default function EditProjectTaskForm({
       const response = await fetch(`/api/project-tasks/${taskId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, priority, dueDate }),
+        body: JSON.stringify({ title, description, priority, dueDate, assignedToId }),
       });
 
       const data = await response.json();
@@ -96,6 +108,19 @@ export default function EditProjectTaskForm({
         onChange={(e) => setDueDate(e.target.value)}
         className="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
       />
+      <select
+  value={assignedToId}
+  onChange={(e) => setAssignedToId(e.target.value)}
+  className="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+>
+  <option value="">Unassigned</option>
+
+  {assignableUsers.map((user) => (
+    <option key={user.id} value={user.id}>
+      {user.name || user.email}
+    </option>
+  ))}
+</select>
       <div className="flex gap-2">
         <button
           onClick={updateTask}
