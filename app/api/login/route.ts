@@ -1,20 +1,19 @@
-import { prisma } from "../../../lib/prisma";
-import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import { cookies } from "next/headers";
+import { apiHandler } from "../../../lib/api";
+import { AppError } from "../../../lib/errors";
+import { prisma } from "../../../lib/prisma";
 
 export async function POST(request: Request) {
-  try {
+  return apiHandler(async () => {
     const body = await request.json();
 
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
 
     if (!email || !password) {
-      return Response.json(
-        { message: "Email and password are required." },
-        { status: 400 }
-      );
+      throw new AppError("Email and password are required.", 400);
     }
 
     const user = await prisma.user.findUnique({
@@ -23,24 +22,15 @@ export async function POST(request: Request) {
       },
     });
 
-   if (!user) {
-  return Response.json(
-    { message: "Invalid email or password." },
-    { status: 401 },
-  );
-}
+    if (!user) {
+      throw new AppError("Invalid email or password.", 401);
+    }
 
-    const isValidPassword = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
-  return Response.json(
-    { message: "Invalid email or password." },
-    { status: 401 },
-  );
-}
+      throw new AppError("Invalid email or password.", 401);
+    }
 
     const token = crypto.randomUUID();
 
@@ -48,9 +38,7 @@ export async function POST(request: Request) {
       data: {
         token,
         userId: user.id,
-        expiresAt: new Date(
-          Date.now() + 1000 * 60 * 60 * 24 * 7
-        ),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
       },
     });
 
@@ -75,12 +63,5 @@ export async function POST(request: Request) {
         role: user.role,
       },
     });
-  } catch (error) {
-    console.error("LOGIN ERROR:", error);
-
-    return Response.json(
-      { message: "Server error." },
-      { status: 500 }
-    );
-  }
+  });
 }

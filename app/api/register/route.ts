@@ -1,53 +1,44 @@
-import { prisma } from "../../../lib/prisma";
 import bcrypt from "bcryptjs";
+import { apiHandler } from "../../../lib/api";
+import { AppError } from "../../../lib/errors";
+import { prisma } from "../../../lib/prisma";
 
 export async function POST(request: Request) {
-  try {
+  return apiHandler(async () => {
     const body = await request.json();
 
-    if (!body.name || !body.email || !body.password) {
-      return Response.json(
-        { message: "Name, email and password are required." },
-        { status: 400 }
-      );
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "").trim().toLowerCase();
+    const password = String(body.password || "");
+
+    if (!name || !email || !password) {
+      throw new AppError("Name, email and password are required.", 400);
     }
 
-    if (!body.email.includes("@")) {
-      return Response.json(
-        { message: "Please enter a valid email address." },
-        { status: 400 }
-      );
+    if (!email.includes("@")) {
+      throw new AppError("Please enter a valid email address.", 400);
     }
 
-    if (body.password.length < 6) {
-      return Response.json(
-        { message: "Password must be at least 6 characters." },
-        { status: 400 }
-      );
+    if (password.length < 6) {
+      throw new AppError("Password must be at least 6 characters.", 400);
     }
 
     const existingUser = await prisma.user.findUnique({
       where: {
-        email: body.email,
+        email,
       },
     });
 
     if (existingUser) {
-      return Response.json(
-        { message: "User with this email already exists." },
-        { status: 400 }
-      );
+      throw new AppError("User with this email already exists.", 400);
     }
 
-    const hashedPassword = await bcrypt.hash(
-      body.password,
-      10
-    );
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
       data: {
-        name: body.name,
-        email: body.email,
+        name,
+        email,
         password: hashedPassword,
         role: "user",
       },
@@ -62,12 +53,5 @@ export async function POST(request: Request) {
         role: user.role,
       },
     });
-  } catch (error) {
-    console.error("REGISTER_ERROR", error);
-
-    return Response.json(
-      { message: "Server error during registration." },
-      { status: 500 }
-    );
-  }
+  });
 }

@@ -1,21 +1,18 @@
+import { apiHandler } from "../../../../../lib/api";
+import { AppError } from "../../../../../lib/errors";
 import { prisma } from "../../../../../lib/prisma";
+import { parseId } from "../../../../../lib/validation";
 import { requireUser } from "../../../../../lib/auth";
+
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  try {
+  return apiHandler(async () => {
     const user = await requireUser();
 
     const { id } = await params;
-    const stepId = Number(id);
-
-    if (Number.isNaN(stepId)) {
-      return Response.json(
-        { message: "Invalid step id" },
-        { status: 400 },
-      );
-    }
+    const stepId = parseId(id, "step id");
 
     const step = await prisma.caseStep.findUnique({
       where: {
@@ -39,10 +36,7 @@ export async function PATCH(
     });
 
     if (!step) {
-      return Response.json(
-        { message: "Step not found" },
-        { status: 404 },
-      );
+      throw new AppError("Step not found.", 404);
     }
 
     const isCustomer = step.tradeCase.customerId === user.id;
@@ -54,10 +48,7 @@ export async function PATCH(
     );
 
     if (user.role !== "admin" && !isCustomer && !isAcceptedProvider) {
-      return Response.json(
-        { message: "You are not allowed to update this step." },
-        { status: 403 },
-      );
+      throw new AppError("You are not allowed to update this step.", 403);
     }
 
     const updatedStep = await prisma.caseStep.update({
@@ -83,10 +74,5 @@ export async function PATCH(
       message: "Step completed",
       step: updatedStep,
     });
-  } catch {
-    return Response.json(
-      { message: "Failed to complete step" },
-      { status: 500 },
-    );
-  }
+  });
 }

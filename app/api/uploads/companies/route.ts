@@ -2,7 +2,11 @@ import { requireAdmin } from "../../../../lib/auth";
 import { cloudinary } from "../../../../lib/cloudinary";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
-
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
 export async function POST(request: Request) {
   try {
     await requireAdmin();
@@ -17,7 +21,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!file.type.startsWith("image/")) {
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
       return Response.json(
         { message: "Only image files are allowed." },
         { status: 400 }
