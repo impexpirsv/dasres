@@ -4,6 +4,7 @@ import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
 import CreateProjectTaskForm from "../../../components/CreateProjectTaskForm";
 import ProjectTaskStatusSelect from "../../../components/ProjectTaskStatusSelect";
+import EditProjectTaskForm from "../../../components/EditProjectTaskForm";
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -217,6 +218,13 @@ export default async function ProjectDetailPage({
                 <ProjectTaskStatusSelect
                   taskId={task.id}
                   currentStatus={task.status}
+                />
+                <EditProjectTaskForm
+                  taskId={task.id}
+                  currentTitle={task.title}
+                  currentDescription={task.description}
+                  currentPriority={task.priority}
+                  currentDueDate={task.dueDate}
                 />
               </div>
             ))}
