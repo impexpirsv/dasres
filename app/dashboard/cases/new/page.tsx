@@ -72,7 +72,8 @@ async function createCase(
     };
   }
 
-  const tradeCase = await prisma.tradeCase.create({
+ await prisma.$transaction(async (tx) => {
+  const tradeCase = await tx.tradeCase.create({
     data: {
       title,
       category,
@@ -82,7 +83,7 @@ async function createCase(
     },
   });
 
-  await prisma.caseStep.createMany({
+  await tx.caseStep.createMany({
     data: [
       {
         caseId: tradeCase.id,
@@ -108,6 +109,7 @@ async function createCase(
       },
     ],
   });
+});
 
   redirect(`/dashboard/cases`);
 }
