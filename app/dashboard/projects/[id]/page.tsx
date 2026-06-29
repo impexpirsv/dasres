@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
-
+import ProjectProgressForm from "../../../components/ProjectProgressForm";
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -138,7 +138,12 @@ export default async function ProjectDetailPage({
           </p>
         </div>
       </div>
-
+      <div className="mb-8">
+        <ProjectProgressForm
+          projectId={project.id}
+          currentProgress={project.progress}
+        />
+      </div>
       <div className="grid lg:grid-cols-2 gap-6">
         <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
           <h2 className="text-2xl font-bold mb-5">Timeline Steps</h2>

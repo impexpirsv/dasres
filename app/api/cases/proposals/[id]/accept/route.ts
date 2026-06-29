@@ -113,21 +113,82 @@ export async function PATCH(
         },
       });
 
-      await tx.project.upsert({
-        where: {
-          tradeCaseId: tradeCase.id,
-        },
-        update: {},
-        create: {
-          tradeCaseId: tradeCase.id,
-          title: tradeCase.title,
-          description: tradeCase.description,
-          createdBy: tradeCase.customerId,
-          assignedTo: proposal.company?.ownerId ?? null,
-          status: ProjectStatus.ACTIVE,
-          progress: 0,
-        },
-      });
+     const project = await tx.project.upsert({
+  where: {
+    tradeCaseId: tradeCase.id,
+  },
+  update: {},
+  create: {
+    tradeCaseId: tradeCase.id,
+    title: tradeCase.title,
+    description: tradeCase.description,
+    createdBy: tradeCase.customerId,
+    assignedTo: proposal.company?.ownerId ?? null,
+    status: ProjectStatus.ACTIVE,
+    progress: 0,
+  },
+});
+
+const existingTasksCount = await tx.projectTask.count({
+  where: {
+    projectId: project.id,
+  },
+});
+
+if (existingTasksCount === 0) {
+  await tx.projectTask.createMany({
+    data: [
+      {
+        projectId: project.id,
+        title: "Supplier Confirmation",
+        description: "Confirm supplier details, availability and commercial terms.",
+        priority: "HIGH",
+      },
+      {
+        projectId: project.id,
+        title: "Proforma Invoice Review",
+        description: "Review PI details, pricing, payment terms and product specifications.",
+        priority: "HIGH",
+      },
+      {
+        projectId: project.id,
+        title: "Payment Coordination",
+        description: "Coordinate payment method, timing and confirmation documents.",
+        priority: "URGENT",
+      },
+      {
+        projectId: project.id,
+        title: "Shipping Booking",
+        description: "Arrange shipping method, carrier, route and booking confirmation.",
+        priority: "HIGH",
+      },
+      {
+        projectId: project.id,
+        title: "Inspection Arrangement",
+        description: "Coordinate inspection requirements, timing and inspection report.",
+        priority: "MEDIUM",
+      },
+      {
+        projectId: project.id,
+        title: "Customs Documentation",
+        description: "Prepare invoice, packing list, certificates and customs documents.",
+        priority: "HIGH",
+      },
+      {
+        projectId: project.id,
+        title: "Clearance Follow-up",
+        description: "Track customs clearance status and resolve documentation issues.",
+        priority: "HIGH",
+      },
+      {
+        projectId: project.id,
+        title: "Final Delivery",
+        description: "Coordinate final delivery, handover and project completion confirmation.",
+        priority: "MEDIUM",
+      },
+    ],
+  });
+}
 
       await tx.caseActivity.create({
         data: {
