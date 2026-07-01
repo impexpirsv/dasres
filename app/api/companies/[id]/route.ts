@@ -1,6 +1,8 @@
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
-import { cloudinary, getCloudinaryPublicId } from "../../../../lib/cloudinary";
+import { mkdir, unlink, writeFile } from "fs/promises";
+import path from "path";
+
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -11,14 +13,16 @@ const extensionMap: Record<string, string> = {
   "image/webp": "webp",
 };
 
-function canManageCompany(
-  user: {
-    id: number;
-    role: string;
-  },
-  ownerId: number | null,
-) {
+function canManageCompany(user: { id: number; role: string }, ownerId: number | null) {
   return user.role === "admin" || ownerId === user.id;
+}
+
+function getLocalUploadPath(fileUrl: string | null) {
+  if (!fileUrl || !fileUrl.startsWith("/uploads/companies/")) {
+    return null;
+  }
+
+  return path.join(process.cwd(), "public", fileUrl);
 }
 
 export async function GET(
@@ -34,9 +38,7 @@ export async function GET(
     }
 
     const company = await prisma.company.findUnique({
-      where: {
-        id: companyId,
-      },
+      where: { id: companyId },
     });
 
     if (!company) {
@@ -64,9 +66,7 @@ export async function DELETE(
     }
 
     const company = await prisma.company.findUnique({
-      where: {
-        id: companyId,
-      },
+      where: { id: companyId },
       select: {
         logoUrl: true,
         ownerId: true,
@@ -82,10 +82,13 @@ export async function DELETE(
     }
 
     await prisma.company.delete({
-      where: {
-        id: companyId,
-      },
+      where: { id: companyId },
     });
+
+    const oldFilePath = getLocalUploadPath(company.logoUrl);
+    if (oldFilePath) {
+      await unlink(oldFilePath).catch(() => {});
+    }
 
     return Response.json({
       message: "Company deleted",
@@ -113,9 +116,7 @@ export async function PUT(
     }
 
     const currentCompany = await prisma.company.findUnique({
-      where: {
-        id: companyId,
-      },
+      where: { id: companyId },
       select: {
         logoUrl: true,
         ownerId: true,
@@ -153,45 +154,49 @@ export async function PUT(
     if (logo && logo.size > 0) {
       if (!ALLOWED_IMAGE_TYPES.includes(logo.type)) {
         return Response.json(
-          {
-            message: "Invalid logo type. Only JPG, PNG and WEBP are allowed.",
-          },
+          { message: "Invalid logo type. Only JPG, PNG and WEBP are allowed." },
           { status: 400 },
         );
       }
 
       if (logo.size > MAX_FILE_SIZE) {
         return Response.json(
-          {
-            message: "Logo is too large. Maximum size is 5MB.",
-          },
+          { message: "Logo is too large. Maximum size is 5MB." },
           { status: 400 },
         );
       }
-      if (currentCompany.logoUrl) {
-        const publicId = getCloudinaryPublicId(currentCompany.logoUrl);
 
-        if (publicId) {
-          await cloudinary.uploader.destroy(publicId).catch(() => {});
-        }
-      }
       const bytes = await logo.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
-      const base64 = `data:${logo.type};base64,${buffer.toString("base64")}`;
+      const uploadDir = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        "companies",
+      );
 
-      const result = await cloudinary.uploader.upload(base64, {
-        folder: "dasres/companies",
-        resource_type: "image",
-      });
+      await mkdir(uploadDir, { recursive: true });
 
-      logoUrl = result.secure_url;
+      const fileExtension = extensionMap[logo.type];
+      const fileName = `${companyId}-${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2)}.${fileExtension}`;
+
+      const filePath = path.join(uploadDir, fileName);
+
+      await writeFile(filePath, buffer);
+
+      const oldFilePath = getLocalUploadPath(currentCompany.logoUrl);
+      if (oldFilePath) {
+        await unlink(oldFilePath).catch(() => {});
+      }
+
+      logoUrl = `/uploads/companies/${fileName}`;
     }
 
     const company = await prisma.company.update({
-      where: {
-        id: companyId,
-      },
+      where: { id: companyId },
       data: {
         name,
         country,

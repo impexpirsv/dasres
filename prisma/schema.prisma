@@ -56,29 +56,31 @@ model Opportunity {
 }
 
 model User {
-  id                   Int             @id @default(autoincrement())
-  name                 String
-  email                String          @unique
-  password             String
-  role                 String          @default("user")
-  createdAt            DateTime        @default(now())
-  planType             PlanType        @default(FREE)
-  caseActivities       CaseActivity[]
-  caseDocuments        CaseDocument[]
-  caseMessages         CaseMessage[]
-  companies            Company[]
-  experts              Expert[]
-  notifications        Notification[]
-  reviewsReceived      Review[]        @relation("ReviewTarget")
-  reviewsGiven         Review[]        @relation("ReviewAuthor")
-  savedCases           SavedCase[]
-  savedCompanies       SavedCompany[]
-  savedExperts         SavedExpert[]
-  sessions             Session[]
-  tickets              Ticket[]
-  ticketMessages       TicketMessage[]
-  customerCases        TradeCase[]     @relation("CustomerCases")
-  assignedProjectTasks ProjectTask[]   @relation("ProjectTaskAssignee")
+  id                     Int                     @id @default(autoincrement())
+  name                   String
+  email                  String                  @unique
+  password               String
+  role                   String                  @default("user")
+  createdAt              DateTime                @default(now())
+  planType               PlanType                @default(FREE)
+  caseActivities         CaseActivity[]
+  caseDocuments          CaseDocument[]
+  caseMessages           CaseMessage[]
+  companies              Company[]
+  experts                Expert[]
+  notifications          Notification[]
+  reviewsReceived        Review[]                @relation("ReviewTarget")
+  reviewsGiven           Review[]                @relation("ReviewAuthor")
+  savedCases             SavedCase[]
+  savedCompanies         SavedCompany[]
+  savedExperts           SavedExpert[]
+  sessions               Session[]
+  tickets                Ticket[]
+  ticketMessages         TicketMessage[]
+  customerCases          TradeCase[]             @relation("CustomerCases")
+  assignedProjectTasks   ProjectTask[]           @relation("ProjectTaskAssignee")
+  projectTaskAttachments ProjectTaskAttachment[]
+  projectTaskComments    ProjectTaskComment[]
 }
 
 model Session {
@@ -163,6 +165,52 @@ model ProjectTask {
   createdAt DateTime @default(now())
 
   updatedAt DateTime @updatedAt
+
+  attachments ProjectTaskAttachment[]
+  comments    ProjectTaskComment[]
+}
+
+model ProjectTaskAttachment {
+  id Int @id @default(autoincrement())
+
+  taskId Int
+
+  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  fileName        String
+  fileUrl         String
+  storageProvider String  @default("cloudinary")
+  mimeType        String?
+
+  fileSize Int?
+
+  uploadedById Int?
+
+  uploadedBy User? @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+}
+
+model ProjectTaskComment {
+  id Int @id @default(autoincrement())
+
+  taskId Int
+  task   ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  authorId Int?
+  author   User? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  parentId  Int?
+
+  parent ProjectTaskComment? @relation("TaskCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+
+  replies   ProjectTaskComment[] @relation("TaskCommentReplies")
+  editedAt  DateTime?
+  isDeleted Boolean              @default(false)
 }
 
 model CaseProposal {

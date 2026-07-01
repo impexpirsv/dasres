@@ -581,11 +581,12 @@ export default async function CaseDetailPage({ params }: Props) {
                           </p>
                         </div>
 
-                        {isCustomer && proposal.status === "PENDING" && (
-                          <div className="mt-5">
-                            <ProposalActionButtons proposalId={proposal.id} />
-                          </div>
-                        )}
+                        {(isCustomer || isAdmin) &&
+                          proposal.status === "PENDING" && (
+                            <div className="mt-5">
+                              <ProposalActionButtons proposalId={proposal.id} />
+                            </div>
+                          )}
                       </div>
                     );
                   })}

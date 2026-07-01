@@ -17,17 +17,14 @@ export default async function OpenCasesPage({
 
   const selectedCategory = params?.category || "ALL";
   const selectedSort = params?.sort || "newest";
-  const myCompanies = await prisma.company.findMany({
-    where: {
-      ownerId: user.id,
-    },
-    select: {
-      id: true,
-      name: true,
-      category: true,
-      ownerId: true,
-    },
-  });
+ const myCompanies =
+  user.role === "admin"
+    ? await prisma.company.findMany()
+    : await prisma.company.findMany({
+        where: {
+          ownerId: user.id,
+        },
+      });
 
   const categories = [
     ...new Set(myCompanies.map((company) => company.category).filter(Boolean)),
@@ -35,15 +32,20 @@ export default async function OpenCasesPage({
   const filteredCategories =
     selectedCategory === "ALL" ? categories : [selectedCategory];
   const openCases = await prisma.tradeCase.findMany({
-    where: {
-      status: "OPEN",
-      category: {
-        in: filteredCategories,
+   where:
+  user.role === "admin"
+    ? {
+        status: "OPEN",
+      }
+    : {
+        status: "OPEN",
+        category: {
+          in: filteredCategories,
+        },
+        NOT: {
+          customerId: user.id,
+        },
       },
-      NOT: {
-        customerId: user.id,
-      },
-    },
     orderBy: {
       createdAt: selectedSort === "oldest" ? "asc" : "desc",
     },
@@ -105,9 +107,11 @@ export default async function OpenCasesPage({
           <div>
             <h1 className="text-5xl font-bold mb-4">Open Cases</h1>
 
-            <p className="text-slate-400">
-              Cases matched to your company categories.
-            </p>
+           <p className="text-slate-400">
+  {user.role === "admin"
+    ? "All open trade cases."
+    : "Cases matched to your company categories."}
+</p>
           </div>
 
           <Link
