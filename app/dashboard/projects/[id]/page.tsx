@@ -35,6 +35,11 @@ export default async function ProjectDetailPage({
               email: true,
             },
           },
+          checklistItems: {
+            orderBy: {
+              sortOrder: "asc",
+            },
+          },
           attachments: {
             include: {
               uploadedBy: {
@@ -153,7 +158,14 @@ export default async function ProjectDetailPage({
         description={project.description || project.tradeCase.description}
         progress={project.progress}
       />
-
+      <div className="mt-6 mb-8">
+        <Link
+          href={`/dashboard/projects/${project.id}/board`}
+          className="inline-flex items-center rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
+        >
+          Open Kanban Board →
+        </Link>
+      </div>
       <ProjectOverviewCards
         customer={
           project.tradeCase.customer.name || project.tradeCase.customer.email
@@ -161,6 +173,7 @@ export default async function ProjectDetailPage({
         category={project.tradeCase.category}
         completedSteps={completedSteps}
         totalSteps={totalSteps}
+        tasks={project.tasks}
       />
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -169,6 +182,7 @@ export default async function ProjectDetailPage({
           projectId={project.id}
           tasks={project.tasks}
           assignableUsers={assignableUsers}
+          isAdmin={user.role === "admin"}
         />
         <ProjectActivitySection activities={project.tradeCase.activities} />
       </div>

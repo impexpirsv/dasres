@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
-
+import ProjectListProgress from "../../components/project/ProjectListProgress";
 export default async function ProjectsPage() {
   const user = await requireUser();
 
@@ -20,6 +20,11 @@ export default async function ProjectsPage() {
             ],
           },
     include: {
+      tasks: {
+        select: {
+          status: true,
+        },
+      },
       tradeCase: {
         include: {
           customer: {
@@ -90,23 +95,9 @@ export default async function ProjectsPage() {
                 {project.description || project.tradeCase.description}
               </p>
 
-              <div className="mb-4">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-slate-400">Progress</span>
-                  <span className="text-white font-semibold">
-                    {project.progress}%
-                  </span>
-                </div>
+              <ProjectListProgress tasks={project.tasks} />
 
-                <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-blue-500 rounded-full"
-                    style={{
-                      width: `${project.progress}%`,
-                    }}
-                  />
-                </div>
-              </div>
+              
 
               <p className="text-sm text-slate-500">
                 Customer:{" "}

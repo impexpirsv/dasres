@@ -82,7 +82,7 @@ export default function ProjectTaskComments({
             >
               <div className="text-xs text-slate-500">
                 {comment.author?.name || comment.author?.email || "Unknown"} ·{" "}
-                {new Date(comment.createdAt).toLocaleString()}
+                {new Date(comment.createdAt).toLocaleString("en-US")}
                 {comment.editedAt && " · edited"}
               </div>
 
@@ -103,7 +103,7 @@ export default function ProjectTaskComments({
                     >
                       <div className="text-xs text-slate-500">
                         {reply.author?.name || reply.author?.email || "Unknown"} ·{" "}
-                        {new Date(reply.createdAt).toLocaleString()}
+                        {new Date(reply.createdAt).toLocaleString("en-US")}
                         {reply.editedAt && " · edited"}
                       </div>
 

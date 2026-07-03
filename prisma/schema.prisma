@@ -166,8 +166,29 @@ model ProjectTask {
 
   updatedAt DateTime @updatedAt
 
-  attachments ProjectTaskAttachment[]
-  comments    ProjectTaskComment[]
+  attachments    ProjectTaskAttachment[]
+  comments       ProjectTaskComment[]
+  checklistItems ProjectTaskChecklist[]
+}
+
+model ProjectTaskChecklist {
+  id Int @id @default(autoincrement())
+
+  taskId Int
+
+  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  title String
+
+  completed Boolean @default(false)
+
+  completedAt DateTime?
+
+  sortOrder Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
 }
 
 model ProjectTaskAttachment {
@@ -179,7 +200,7 @@ model ProjectTaskAttachment {
 
   fileName        String
   fileUrl         String
-  storageProvider String  @default("cloudinary")
+  storageProvider String  @default("local")
   mimeType        String?
 
   fileSize Int?

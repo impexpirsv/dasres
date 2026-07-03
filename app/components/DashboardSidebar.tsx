@@ -115,12 +115,18 @@ export default function DashboardSidebar({
         >
           Active Workspaces
         </Link>
-<Link
-  href="/dashboard/projects"
-  className={getLinkClass("/dashboard/projects")}
->
-  Projects
-</Link>
+        <Link
+          href="/dashboard/projects"
+          className={getLinkClass("/dashboard/projects")}
+        >
+          Projects
+        </Link>
+        <Link
+          href="/dashboard/my-tasks"
+          className={getLinkClass("/dashboard/my-tasks")}
+        >
+          My Tasks
+        </Link>
         <Link
           href="/dashboard/my-proposals"
           className={getLinkClass("/dashboard/my-proposals")}

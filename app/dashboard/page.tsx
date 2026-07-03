@@ -11,7 +11,13 @@ import {
   getRecentActivities,
   getLatestDashboardItems,
 } from "../../lib/dashboard";
-
+import DashboardProfileCard from "../components/dashboard/DashboardProfileCard";
+import DashboardAttention from "../components/dashboard/DashboardAttention";
+import DashboardStatsGrid from "../components/dashboard/DashboardStatsGrid";
+import DashboardTopRated from "../components/dashboard/DashboardTopRated";
+import DashboardLatestItems from "../components/dashboard/DashboardLatestItems";
+import DashboardMyTasks from "../components/dashboard/DashboardMyTasks";
+import DashboardOverdueTasks from "../components/dashboard/DashboardOverdueTasks";
 export default async function DashboardPage() {
   const user = await requireUser();
   const pendingCompaniesCount =
@@ -129,7 +135,6 @@ export default async function DashboardPage() {
 
   const opportunitiesCount = await prisma.opportunity.count();
 
-  
   const myProposalsCount =
     user.role === "admin"
       ? await prisma.caseProposal.count()
@@ -159,7 +164,6 @@ export default async function DashboardPage() {
   });
   const proposalLimit = getProposalLimit(user.planType);
 
- 
   const acceptedProposalsCount =
     user.role === "admin"
       ? await prisma.caseProposal.count({
@@ -374,23 +378,62 @@ export default async function DashboardPage() {
       ? Math.round((acceptedProposalsCount / resolvedProposalsCount) * 100)
       : 0;
   const recentActivities = await getRecentActivities();
+  const dashboardTasks = await prisma.projectTask.findMany({
+    where: {
+      assignedToId: user.id,
+    },
+    select: {
+      id: true,
+      title: true,
+      status: true,
+      priority: true,
+      dueDate: true,
+      project: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+    },
+    orderBy: [
+      {
+        dueDate: "asc",
+      },
+      {
+        createdAt: "desc",
+      },
+    ],
+    take: 5,
+  });
+  const overdueTasks = await prisma.projectTask.findMany({
+    where: {
+      assignedToId: user.id,
+      status: {
+        not: "COMPLETED",
+      },
+      dueDate: {
+        lt: new Date(),
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      dueDate: true,
+      project: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+    },
+    orderBy: {
+      dueDate: "asc",
+    },
+    take: 5,
+  });
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
-      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mb-8">
-        <h2 className="text-2xl font-bold mb-4">User Profile</h2>
-
-        <p>
-          <strong>Name:</strong> {user.name}
-        </p>
-
-        <p>
-          <strong>Email:</strong> {user.email}
-        </p>
-
-        <p>
-          <strong>Role:</strong> {user.role}
-        </p>
-      </div>
+      <DashboardProfileCard user={user} />
 
       <h1 className="text-5xl font-bold mb-4">Dashboard</h1>
 
@@ -398,59 +441,13 @@ export default async function DashboardPage() {
         Manage your Dasres account, profiles and trade activities.
       </p>
       <DashboardQuickActions />
-      <section className="mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Needs Your Attention</h2>
-
-          <p className="text-slate-400 text-sm">Important items to review</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
-          <Link
-            href="/dashboard/notifications"
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-blue-500 transition-all"
-          >
-            <p className="text-slate-500 text-sm">Unread Notifications</p>
-
-            <p className="text-4xl font-bold text-blue-400 mt-3">
-              {unreadNotificationsCount}
-            </p>
-          </Link>
-
-          <Link
-            href="/dashboard/tickets"
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-purple-500 transition-all"
-          >
-            <p className="text-slate-500 text-sm">Open Tickets</p>
-
-            <p className="text-4xl font-bold text-purple-400 mt-3">
-              {openTicketsCount}
-            </p>
-          </Link>
-
-          <Link
-            href="/dashboard/open-cases"
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-emerald-500 transition-all"
-          >
-            <p className="text-slate-500 text-sm">Open Cases</p>
-
-            <p className="text-4xl font-bold text-emerald-400 mt-3">
-              {openCasesCount}
-            </p>
-          </Link>
-
-          <Link
-            href="/dashboard/my-proposals"
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-yellow-500 transition-all"
-          >
-            <p className="text-slate-500 text-sm">My Proposals</p>
-
-            <p className="text-4xl font-bold text-yellow-400 mt-3">
-              {myProposalsCount}
-            </p>
-          </Link>
-        </div>
-      </section>
+      <DashboardAttention
+        unreadNotificationsCount={unreadNotificationsCount}
+        openTicketsCount={openTicketsCount}
+        openCasesCount={openCasesCount}
+        myProposalsCount={myProposalsCount}
+      />
+      <DashboardOverdueTasks tasks={overdueTasks} />
       <DashboardAnalytics
         openCasesCount={openCasesCount}
         inProgressCasesCount={inProgressCasesCount}
@@ -524,298 +521,31 @@ export default async function DashboardPage() {
           </div>
         </div>
       )}
-      <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
-        <Link
-          href="/dashboard/saved-cases"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
-        >
-          <h2 className="text-xl font-semibold mb-3">Saved Cases</h2>
 
-          <div className="text-5xl font-bold text-blue-400">
-            {savedCasesCount}
-          </div>
-
-          <p className="text-slate-400 mt-3">Cases saved for later</p>
-        </Link>
-
-        <Link
-          href="/dashboard/saved-companies"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500 transition"
-        >
-          <h2 className="text-xl font-semibold mb-3">Saved Companies</h2>
-
-          <div className="text-5xl font-bold text-yellow-400">
-            {savedCompaniesCount}
-          </div>
-
-          <p className="text-slate-400 mt-3">Companies in your network</p>
-        </Link>
-
-        <Link
-          href="/dashboard/saved-experts"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500 transition"
-        >
-          <h2 className="text-xl font-semibold mb-3">Saved Experts</h2>
-
-          <div className="text-5xl font-bold text-emerald-400">
-            {savedExpertsCount}
-          </div>
-
-          <p className="text-slate-400 mt-3">Experts in your network</p>
-        </Link>
-        <Link
-          href={
-            user.role === "admin"
-              ? "/dashboard/experts"
-              : "/dashboard/my-experts"
-          }
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
-        >
-          <h2 className="text-xl font-semibold mb-3">
-            {user.role === "admin" ? "Experts" : "My Experts"}
-          </h2>
-
-          <div className="text-5xl font-bold text-blue-400">{expertsCount}</div>
-
-          <p className="text-slate-400 mt-3">
-            {user.role === "admin"
-              ? "Verified experts available"
-              : "Experts you own"}
-          </p>
-        </Link>
-
-        <Link
-          href={
-            user.role === "admin"
-              ? "/dashboard/companies"
-              : "/dashboard/my-companies"
-          }
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
-        >
-          <h2 className="text-xl font-semibold mb-3">
-            {user.role === "admin" ? "Companies" : "My Companies"}
-          </h2>
-
-          <div className="text-5xl font-bold text-blue-400">
-            {companiesCount}
-          </div>
-
-          <p className="text-slate-400 mt-3">
-            {user.role === "admin"
-              ? "Registered companies"
-              : "Companies you own"}
-          </p>
-        </Link>
-
-        <Link
-          href="/dashboard/opportunities"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
-        >
-          <h2 className="text-xl font-semibold mb-3">Opportunities</h2>
-
-          <div className="text-5xl font-bold text-blue-400">
-            {opportunitiesCount}
-          </div>
-
-          <p className="text-slate-400 mt-3">Active trade opportunities</p>
-        </Link>
-        <div className="bg-slate-900 p-6 rounded-2xl border border-emerald-500">
-          <h2 className="text-xl font-semibold mb-3">Case Success Rate</h2>
-
-          <div className="text-5xl font-bold text-emerald-400">
-            {successRate}%
-          </div>
-
-          <p className="text-slate-400 mt-3">
-            {completedUserCases} completed of {totalUserCases} cases
-          </p>
-        </div>
-        <Link
-          href="/dashboard/cases"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-cyan-500"
-        >
-          <h2 className="text-xl font-semibold mb-3">
-            {user.role === "admin" ? "Trade Cases" : "Trade Cases"}
-          </h2>
-
-          <div className="text-5xl font-bold text-cyan-400">
-            {totalUserCases}
-          </div>
-
-          <p className="text-slate-400 mt-3">
-            {user.role === "admin"
-              ? "All trade projects"
-              : "Submitted trade requests"}
-          </p>
-        </Link>
-
-        <Link
-          href="/dashboard/open-cases"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500"
-        >
-          <h2 className="text-xl font-semibold mb-3">Open Cases</h2>
-
-          <div className="text-5xl font-bold text-emerald-400">
-            {openCasesCount}
-          </div>
-
-          <p className="text-slate-400 mt-3">Available opportunities</p>
-        </Link>
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <h2 className="text-xl font-semibold mb-3">In Progress</h2>
-
-          <div className="text-5xl font-bold text-orange-400">
-            {inProgressCasesCount}
-          </div>
-
-          <p className="text-slate-400 mt-3">Active trade projects</p>
-        </div>
-
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <h2 className="text-xl font-semibold mb-3">Completed</h2>
-
-          <div className="text-5xl font-bold text-green-400">
-            {completedCasesCount}
-          </div>
-
-          <p className="text-slate-400 mt-3">Finished projects</p>
-        </div>
-
-        <Link
-          href="/dashboard/my-proposals"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500"
-        >
-          <h2 className="text-xl font-semibold mb-3">Proposals</h2>
-
-          <div className="text-5xl font-bold text-yellow-400">
-            {myProposalsCount}
-          </div>
-        </Link>
-
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <h2 className="text-xl font-semibold mb-3">Accepted</h2>
-
-          <div className="text-5xl font-bold text-green-400">
-            {acceptedProposalsCount}
-          </div>
-        </div>
-
-        <Link
-          href="/dashboard/notifications"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
-        >
-          <h2 className="text-xl font-semibold mb-3">Notifications</h2>
-
-          <div className="text-5xl font-bold text-blue-400">
-            {unreadNotificationsCount}
-          </div>
-        </Link>
-
-        <Link
-          href="/dashboard/tickets"
-          className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500"
-        >
-          <h2 className="text-xl font-semibold mb-3">Open Tickets</h2>
-
-          <div className="text-5xl font-bold text-purple-400">
-            {openTicketsCount}
-          </div>
-        </Link>
-      </div>
-
-      <div className="grid lg:grid-cols-2 gap-6 mt-12">
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">🏆 Top Rated Experts</h2>
-
-            <Link
-              href="/dashboard/experts"
-              className="text-blue-400 text-sm hover:underline"
-            >
-              View all
-            </Link>
-          </div>
-
-          <div className="space-y-4">
-            {topRatedExperts.length === 0 ? (
-              <p className="text-slate-500">No rated experts yet.</p>
-            ) : (
-              topRatedExperts.map((expert) => (
-                <Link
-                  key={expert.id}
-                  href={`/dashboard/experts/${expert.id}`}
-                  className="block bg-slate-950 border border-slate-800 rounded-xl p-4 hover:border-blue-500"
-                >
-                  <div className="flex justify-between gap-4">
-                    <div>
-                      <p className="font-semibold">{expert.name}</p>
-
-                      <p className="text-sm text-slate-400">
-                        {expert.country} · {expert.specialty}
-                      </p>
-                    </div>
-
-                    <div className="text-yellow-400 font-semibold whitespace-nowrap">
-                      ⭐ {expert.averageRating.toFixed(1)}
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-slate-500 mt-2">
-                    Based on {expert.reviewCount} review
-                    {expert.reviewCount > 1 ? "s" : ""}
-                  </p>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
-
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">🏆 Top Rated Companies</h2>
-
-            <Link
-              href="/dashboard/companies"
-              className="text-blue-400 text-sm hover:underline"
-            >
-              View all
-            </Link>
-          </div>
-
-          <div className="space-y-4">
-            {topRatedCompanies.length === 0 ? (
-              <p className="text-slate-500">No rated companies yet.</p>
-            ) : (
-              topRatedCompanies.map((company) => (
-                <Link
-                  key={company.id}
-                  href={`/dashboard/companies/${company.id}`}
-                  className="block bg-slate-950 border border-slate-800 rounded-xl p-4 hover:border-blue-500"
-                >
-                  <div className="flex justify-between gap-4">
-                    <div>
-                      <p className="font-semibold">{company.name}</p>
-
-                      <p className="text-sm text-slate-400">
-                        {company.country} · {company.category}
-                      </p>
-                    </div>
-
-                    <div className="text-yellow-400 font-semibold whitespace-nowrap">
-                      ⭐ {company.averageRating.toFixed(1)}
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-slate-500 mt-2">
-                    Based on {company.reviewCount} review
-                    {company.reviewCount > 1 ? "s" : ""}
-                  </p>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
+      <DashboardStatsGrid
+        userRole={user.role}
+        savedCasesCount={savedCasesCount}
+        savedCompaniesCount={savedCompaniesCount}
+        savedExpertsCount={savedExpertsCount}
+        expertsCount={expertsCount}
+        companiesCount={companiesCount}
+        opportunitiesCount={opportunitiesCount}
+        successRate={successRate}
+        completedUserCases={completedUserCases}
+        totalUserCases={totalUserCases}
+        openCasesCount={openCasesCount}
+        inProgressCasesCount={inProgressCasesCount}
+        completedCasesCount={completedCasesCount}
+        myProposalsCount={myProposalsCount}
+        acceptedProposalsCount={acceptedProposalsCount}
+        unreadNotificationsCount={unreadNotificationsCount}
+        openTicketsCount={openTicketsCount}
+      />
+      <DashboardMyTasks tasks={dashboardTasks} />
+      <DashboardTopRated
+        topRatedExperts={topRatedExperts}
+        topRatedCompanies={topRatedCompanies}
+      />
       {user.role === "admin" && (
         <div className="mt-12">
           <h2 className="text-3xl font-bold mb-6">Admin Panel</h2>
@@ -868,118 +598,12 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      <div className="grid lg:grid-cols-3 gap-6 mt-12">
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">
-              {user.role === "admin" ? "Latest Experts" : "My Latest Experts"}
-            </h2>
-
-            <Link
-              href={
-                user.role === "admin" ? "/experts" : "/dashboard/my-experts"
-              }
-              className="text-blue-400 text-sm hover:underline"
-            >
-              View all
-            </Link>
-          </div>
-
-          <div className="space-y-4">
-            {latestExperts.length === 0 ? (
-              <p className="text-slate-500">No experts found.</p>
-            ) : (
-              latestExperts.map((expert) => (
-                <Link
-                  key={expert.id}
-                  href={`/dashboard/experts/${expert.id}`}
-                  className="block border-b border-slate-800 pb-3 last:border-0"
-                >
-                  <p className="font-semibold">{expert.name}</p>
-
-                  <p className="text-sm text-slate-400">
-                    {expert.country} · {expert.specialty}
-                  </p>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
-
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">
-              {user.role === "admin"
-                ? "Latest Companies"
-                : "My Latest Companies"}
-            </h2>
-
-            <Link
-              href={
-                user.role === "admin"
-                  ? "/dashboard/companies"
-                  : "/dashboard/my-companies"
-              }
-              className="text-blue-400 text-sm hover:underline"
-            >
-              View all
-            </Link>
-          </div>
-
-          <div className="space-y-4">
-            {latestCompanies.length === 0 ? (
-              <p className="text-slate-500">No companies found.</p>
-            ) : (
-              latestCompanies.map((company) => (
-                <Link
-                  key={company.id}
-                  href={`/dashboard/companies/${company.id}`}
-                  className="block border-b border-slate-800 pb-3 last:border-0"
-                >
-                  <p className="font-semibold">{company.name}</p>
-
-                  <p className="text-sm text-slate-400">
-                    {company.country} · {company.category}
-                  </p>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
-
-        <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Latest Opportunities</h2>
-
-            <Link
-              href="/dashboard/opportunities"
-              className="text-blue-400 text-sm hover:underline"
-            >
-              View all
-            </Link>
-          </div>
-
-          <div className="space-y-4">
-            {latestOpportunities.length === 0 ? (
-              <p className="text-slate-500">No opportunities found.</p>
-            ) : (
-              latestOpportunities.map((opportunity) => (
-                <Link
-                  key={opportunity.id}
-                  href={`/dashboard/opportunities/${opportunity.id}`}
-                  className="block border-b border-slate-800 pb-3 last:border-0"
-                >
-                  <p className="font-semibold">{opportunity.title}</p>
-
-                  <p className="text-sm text-slate-400">
-                    {opportunity.country} · {opportunity.status}
-                  </p>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
+      <DashboardLatestItems
+        latestExperts={latestExperts}
+        latestCompanies={latestCompanies}
+        latestOpportunities={latestOpportunities}
+        userRole={user.role}
+      />
 
       {user.role === "admin" && (
         <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12">

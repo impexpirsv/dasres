@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
+const router = useRouter();
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
@@ -26,13 +26,9 @@ export default function RegisterPage() {
     const data = await response.json();
 
     if (response.ok) {
-      setMessage("Account created successfully.");
-      setName("");
-      setEmail("");
-      setPassword("");
-    } else {
-      setMessage(data.message || "Something went wrong.");
-    }
+  router.push("/login");
+  return;
+}
   }
 
   return (

@@ -20,10 +20,10 @@ assignableUsers,
   currentDueDate?: Date | string | null;
   currentAssignedToId?: number | null;
   assignableUsers: {
-    id: number;
-    name: string;
-    email: string;
-  }[];
+  id: number;
+  name: string | null;
+  email: string;
+}[];
 }) {
     
   const [title, setTitle] = useState(currentTitle);

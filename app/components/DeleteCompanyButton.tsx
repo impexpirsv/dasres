@@ -15,7 +15,7 @@ export default function DeleteCompanyButton({ id }: { id: number }) {
     });
 
     if (response.ok) {
-      router.push("/companies");
+      router.push("/dashboard/companies");
       router.refresh();
     }
   }

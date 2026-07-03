@@ -15,7 +15,7 @@ export default function DeleteExpertButton({ id }: { id: number }) {
     });
 
     if (response.ok) {
-      router.push("/experts");
+     router.push("/dashboard/experts");
       router.refresh();
     }
   }

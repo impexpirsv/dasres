@@ -28,19 +28,18 @@ export async function POST(request: Request) {
 
     const logo = formData.get("logo") as File | null;
 
-    if (
-      !name ||
-      !country ||
-      !category ||
-      !description ||
-      !email ||
-      !website
-    ) {
-      return Response.json(
-        { message: "All fields are required." },
-        { status: 400 }
-      );
-    }
+   if (
+  !name ||
+  !country ||
+  !category ||
+  !description ||
+  !email
+) {
+  return Response.json(
+    { message: "All required fields must be filled." },
+    { status: 400 }
+  );
+}
 
     let logoUrl: string | null = null;
 

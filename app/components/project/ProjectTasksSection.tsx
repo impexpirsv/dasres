@@ -3,10 +3,12 @@ import ProjectTaskStatusSelect from "./ProjectTaskStatusSelect";
 import EditProjectTaskForm from "./EditProjectTaskForm";
 import ProjectTaskAttachmentUpload from "./ProjectTaskAttachmentUpload";
 import ProjectTaskComments from "./ProjectTaskComments";
+import ProjectTaskChecklist from "./ProjectTaskChecklist";
+import AssignTaskSelect from "./AssignTaskSelect";
 
 type UserOption = {
   id: number;
-  name: string;
+  name: string | null;
   email: string;
 };
 
@@ -26,16 +28,23 @@ type Task = {
     uploadedBy: UserOption | null;
   }[];
   comments: Parameters<typeof ProjectTaskComments>[0]["comments"];
+  checklistItems: {
+    id: number;
+    title: string;
+    completed: boolean;
+  }[];
 };
 
 export default function ProjectTasksSection({
   projectId,
   tasks,
   assignableUsers,
+  isAdmin,
 }: {
   projectId: number;
   tasks: Task[];
   assignableUsers: UserOption[];
+  isAdmin: boolean;
 }) {
   return (
     <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
@@ -51,7 +60,7 @@ export default function ProjectTasksSection({
             key={task.id}
             className="rounded-2xl border border-slate-800 bg-slate-950 p-4"
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <h3 className="font-semibold">{task.title}</h3>
 
               <span
@@ -75,54 +84,70 @@ export default function ProjectTasksSection({
               </p>
             )}
 
-            <div className="mt-3 space-y-1 text-xs text-slate-500">
-              <p>
-                Assignee:{" "}
-                <span className="text-slate-300">
-                  {task.assignedTo
-                    ? task.assignedTo.name || task.assignedTo.email
-                    : "Unassigned"}
-                </span>
-              </p>
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div>
+                <p className="mb-1 text-xs font-medium text-slate-500">
+                  Assigned to
+                </p>
 
-              <p>
-                Due:{" "}
-                <span
-                  className={
+                {isAdmin ? (
+                  <AssignTaskSelect
+                    taskId={task.id}
+                    assignedToId={task.assignedToId}
+                    users={assignableUsers}
+                  />
+                ) : (
+                  <p className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-300">
+                    {task.assignedTo?.name ||
+                      task.assignedTo?.email ||
+                      "Unassigned"}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <p className="mb-1 text-xs font-medium text-slate-500">
+                  Due Date
+                </p>
+
+                <p
+                  className={`rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm ${
                     task.dueDate &&
                     task.status !== "COMPLETED" &&
                     task.dueDate < new Date()
                       ? "text-red-400"
                       : "text-slate-300"
-                  }
+                  }`}
                 >
                   {task.dueDate
-                    ? task.dueDate.toLocaleDateString()
+                    ? task.dueDate.toLocaleDateString("en-US")
                     : "No due date"}
-                </span>
-              </p>
+                </p>
+              </div>
             </div>
 
-            <div className="mt-3 text-xs text-slate-500">
-              {task.status}
+            <div className="mt-4">
+              <ProjectTaskStatusSelect
+                taskId={task.id}
+                currentStatus={task.status}
+              />
             </div>
 
-            <ProjectTaskStatusSelect
-              taskId={task.id}
-              currentStatus={task.status}
-            />
+            <div className="mt-4">
+              <EditProjectTaskForm
+                taskId={task.id}
+                currentTitle={task.title}
+                currentDescription={task.description}
+                currentPriority={task.priority}
+                currentDueDate={task.dueDate}
+                currentAssignedToId={task.assignedToId}
+                assignableUsers={assignableUsers}
+              />
+            </div>
 
-            <EditProjectTaskForm
-              taskId={task.id}
-              currentTitle={task.title}
-              currentDescription={task.description}
-              currentPriority={task.priority}
-              currentDueDate={task.dueDate}
-              currentAssignedToId={task.assignedToId}
-              assignableUsers={assignableUsers}
-            />
-
-            <ProjectTaskAttachmentUpload taskId={task.id} />
+            <div className="mt-4">
+              <ProjectTaskAttachmentUpload taskId={task.id} />
+            </div>
 
             {task.attachments.length > 0 && (
               <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-900 p-4">
@@ -158,6 +183,11 @@ export default function ProjectTasksSection({
             <ProjectTaskComments
               taskId={task.id}
               comments={task.comments}
+            />
+
+            <ProjectTaskChecklist
+              taskId={task.id}
+              items={task.checklistItems}
             />
           </div>
         ))}

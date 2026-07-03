@@ -24,7 +24,7 @@ export default function DeleteOpportunityButton({
     );
 
     if (response.ok) {
-      router.push("/opportunities");
+     router.push("/dashboard/opportunities");
       router.refresh();
     }
   }
