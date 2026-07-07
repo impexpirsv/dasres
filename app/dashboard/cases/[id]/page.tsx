@@ -9,6 +9,7 @@ import ProposalActionButtons from "../../../components/ProposalActionButtons";
 import CompleteCaseButton from "../../../components/CompleteCaseButton";
 import AddReviewForm from "../../../components/AddReviewForm";
 import EmptyState from "../../../components/EmptyState";
+import TradeWorkflowTimeline from "../../../components/trade/TradeWorkflowTimeline";
 function getActivityDisplay(action: string) {
   switch (action) {
     case "PROPOSAL_SUBMITTED":
@@ -242,6 +243,7 @@ export default async function CaseDetailPage({ params }: Props) {
       : 0;
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+    
       <div className="max-w-7xl mx-auto px-6 py-20">
         <Link
           href="/dashboard/cases"
@@ -252,6 +254,9 @@ export default async function CaseDetailPage({ params }: Props) {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <main className="lg:col-span-2 space-y-6">
+           <TradeWorkflowTimeline
+  currentStep={completedStepsCount}
+/>
             <section className="bg-slate-900 rounded-3xl border border-slate-800 p-8">
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <span className="bg-slate-800/80 border border-slate-700 px-4 py-2 rounded-full text-sm text-slate-300">

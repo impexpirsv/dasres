@@ -1,10 +1,11 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import CreateProjectTaskForm from "./CreateProjectTaskForm";
-import ProjectTaskStatusSelect from "./ProjectTaskStatusSelect";
-import EditProjectTaskForm from "./EditProjectTaskForm";
-import ProjectTaskAttachmentUpload from "./ProjectTaskAttachmentUpload";
 import ProjectTaskComments from "./ProjectTaskComments";
-import ProjectTaskChecklist from "./ProjectTaskChecklist";
-import AssignTaskSelect from "./AssignTaskSelect";
+import ProjectTaskList from "./ProjectTaskList";
+import ProjectTaskDetails from "./ProjectTaskDetails";
 
 type UserOption = {
   id: number;
@@ -18,9 +19,23 @@ type Task = {
   description: string | null;
   status: string;
   priority: string;
+  startDate: Date | null;
   dueDate: Date | null;
   assignedToId: number | null;
   assignedTo: UserOption | null;
+  progress: number;
+  estimatedHours: number | null;
+  loggedHours: number;
+  remainingHours: number;
+  dependsOn: {
+    id: number;
+    title: string;
+  } | null;
+
+  dependents: {
+    id: number;
+    title: string;
+  }[];
   attachments: {
     id: number;
     fileName: string;
@@ -46,151 +61,90 @@ export default function ProjectTasksSection({
   assignableUsers: UserOption[];
   isAdmin: boolean;
 }) {
-  return (
-    <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-      <h2 className="text-2xl font-bold mb-5">Trade Tasks</h2>
+  const searchParams = useSearchParams();
+  const taskFromUrl = Number(searchParams.get("task"));
 
-      <div className="mb-6">
+  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(
+    Number.isNaN(taskFromUrl) ? (tasks[0]?.id ?? null) : taskFromUrl,
+  );
+
+  const selectedTask = tasks.find((task) => task.id === selectedTaskId) ?? null;
+
+  const [search, setSearch] = useState("");
+
+  const filteredTasks = useMemo(() => {
+    const value = search.trim().toLowerCase();
+
+    if (!value) {
+      return tasks;
+    }
+
+    return tasks.filter((task) => task.title.toLowerCase().includes(value));
+  }, [search, tasks]);
+
+  const visibleSelectedTask =
+    filteredTasks.find((task) => task.id === selectedTaskId) ??
+    selectedTask ??
+    filteredTasks[0] ??
+    null;
+
+  return (
+    <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">
+            Project Tasks{" "}
+            <span className="text-blue-400">
+              (
+              {search
+                ? `${filteredTasks.length} of ${tasks.length}`
+                : tasks.length}
+              )
+            </span>
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-400">
+            Manage project tasks efficiently.
+          </p>
+        </div>
+
         <CreateProjectTaskForm projectId={projectId} />
       </div>
 
-      <div className="space-y-4">
-        {tasks.map((task) => (
-          <div
-            key={task.id}
-            className="rounded-2xl border border-slate-800 bg-slate-950 p-4"
-          >
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="font-semibold">{task.title}</h3>
+      <input
+        type="text"
+        placeholder="Search tasks..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-4 w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none"
+      />
 
-              <span
-                className={`text-xs px-3 py-1 rounded-full ${
-                  task.priority === "URGENT"
-                    ? "bg-red-600"
-                    : task.priority === "HIGH"
-                      ? "bg-orange-600"
-                      : task.priority === "MEDIUM"
-                        ? "bg-yellow-600"
-                        : "bg-slate-700"
-                }`}
-              >
-                {task.priority}
-              </span>
-            </div>
+      <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
+        <div className="max-h-[75vh] overflow-y-auto pr-1">
+          <ProjectTaskList
+            tasks={filteredTasks}
+            selectedTaskId={selectedTaskId}
+            onSelect={setSelectedTaskId}
+          />
+        </div>
 
-            {task.description && (
-              <p className="text-sm text-slate-400 mt-2">
-                {task.description}
-              </p>
-            )}
-
-            <div className="mt-4 grid gap-3 md:grid-cols-2">
-              <div>
-                <p className="mb-1 text-xs font-medium text-slate-500">
-                  Assigned to
-                </p>
-
-                {isAdmin ? (
-                  <AssignTaskSelect
-                    taskId={task.id}
-                    assignedToId={task.assignedToId}
-                    users={assignableUsers}
-                  />
-                ) : (
-                  <p className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-300">
-                    {task.assignedTo?.name ||
-                      task.assignedTo?.email ||
-                      "Unassigned"}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <p className="mb-1 text-xs font-medium text-slate-500">
-                  Due Date
-                </p>
-
-                <p
-                  className={`rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm ${
-                    task.dueDate &&
-                    task.status !== "COMPLETED" &&
-                    task.dueDate < new Date()
-                      ? "text-red-400"
-                      : "text-slate-300"
-                  }`}
-                >
-                  {task.dueDate
-                    ? task.dueDate.toLocaleDateString("en-US")
-                    : "No due date"}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <ProjectTaskStatusSelect
-                taskId={task.id}
-                currentStatus={task.status}
-              />
-            </div>
-
-            <div className="mt-4">
-              <EditProjectTaskForm
-                taskId={task.id}
-                currentTitle={task.title}
-                currentDescription={task.description}
-                currentPriority={task.priority}
-                currentDueDate={task.dueDate}
-                currentAssignedToId={task.assignedToId}
-                assignableUsers={assignableUsers}
-              />
-            </div>
-
-            <div className="mt-4">
-              <ProjectTaskAttachmentUpload taskId={task.id} />
-            </div>
-
-            {task.attachments.length > 0 && (
-              <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-900 p-4">
-                <p className="mb-3 text-sm font-semibold text-slate-300">
-                  Attachments
-                </p>
-
-                <div className="space-y-2">
-                  {task.attachments.map((attachment) => (
-                    <a
-                      key={attachment.id}
-                      href={attachment.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-blue-400 hover:border-blue-500"
-                    >
-                      <div className="font-semibold">
-                        {attachment.fileName}
-                      </div>
-
-                      <div className="mt-1 text-xs text-slate-500">
-                        Uploaded by{" "}
-                        {attachment.uploadedBy?.name ||
-                          attachment.uploadedBy?.email ||
-                          "Unknown"}
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <ProjectTaskComments
-              taskId={task.id}
-              comments={task.comments}
+        <div className="min-w-0">
+          {visibleSelectedTask ? (
+            <ProjectTaskDetails
+              task={visibleSelectedTask}
+              assignableUsers={assignableUsers}
+              availableTasks={tasks.map((task) => ({
+                id: task.id,
+                title: task.title,
+              }))}
+              isAdmin={isAdmin}
             />
-
-            <ProjectTaskChecklist
-              taskId={task.id}
-              items={task.checklistItems}
-            />
-          </div>
-        ))}
+          ) : (
+            <div className="rounded-2xl border border-slate-800 bg-slate-950 p-8 text-center text-slate-400">
+              Select a task to view details.
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

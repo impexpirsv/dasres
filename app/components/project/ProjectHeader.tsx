@@ -10,22 +10,22 @@ export default function ProjectHeader({
   progress: number;
 }) {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 mb-8">
+    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
         <div>
           <span className="inline-block bg-blue-600/20 text-blue-300 border border-blue-800 px-3 py-1 rounded-full text-xs font-semibold mb-4">
             {status}
           </span>
 
-          <h1 className="text-5xl font-bold mb-4">{title}</h1>
+         <h1 className="text-3xl font-bold mb-2">{title}</h1>
 
-          <p className="text-slate-400 max-w-3xl">{description}</p>
+          <p className="max-w-2xl text-sm text-slate-400">{description}</p>
         </div>
 
         <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 min-w-56">
           <p className="text-slate-500 text-sm">Progress</p>
 
-          <p className="text-4xl font-bold text-blue-400 mt-2">
+          <p className="mt-2 text-3xl font-bold text-blue-400">
             {progress}%
           </p>
 

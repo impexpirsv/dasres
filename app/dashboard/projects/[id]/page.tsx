@@ -7,14 +7,29 @@ import ProjectHeader from "../../../components/project/ProjectHeader";
 import ProjectOverviewCards from "../../../components/project/ProjectOverviewCards";
 import ProjectTimeline from "../../../components/project/ProjectTimeline";
 import ProjectActivitySection from "../../../components/project/ProjectActivitySection";
+import ProjectTabs from "../../../components/project/ProjectTabs";
+import ProjectBoard from "../../../components/project/ProjectBoard";
+import ProjectCalendarView from "../../../components/project/ProjectCalendarView";
+import ProjectGanttView from "../../../components/project/ProjectGanttView";
+import ProjectWorkloadView from "../../../components/project/ProjectWorkloadView";
+import ProjectTimeSummary from "../../../components/project/ProjectTimeSummary";
+import ProjectOverviewHeader from "../../../components/project/ProjectOverviewHeader";
+import ProjectHealthCard from "../../../components/project/ProjectHealthCard";
+import ProjectCriticalPathCard from "../../../components/project/ProjectCriticalPathCard";
+import ProjectPrintButton from "../../../components/project/ProjectPrintButton";
+import ProjectTasksExportButton from "../../../components/project/ProjectTasksExportButton";
+import ProjectAIAssistant from "../../../components/project/ProjectAIAssistant";
 export default async function ProjectDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ tab?: string }>;
 }) {
   const user = await requireUser();
 
   const { id } = await params;
+  const { tab } = await searchParams;
   const projectId = Number(id);
 
   if (Number.isNaN(projectId)) {
@@ -85,6 +100,20 @@ export default async function ProjectDetailPage({
               createdAt: "asc",
             },
           },
+          dependsOn: {
+            select: {
+              id: true,
+              title: true,
+              status: true,
+            },
+          },
+          dependents: {
+            select: {
+              id: true,
+              title: true,
+              status: true,
+            },
+          },
         },
         orderBy: {
           createdAt: "asc",
@@ -142,7 +171,20 @@ export default async function ProjectDetailPage({
   ).length;
 
   const totalSteps = project.tradeCase.steps.length;
+  const totalEstimatedHours = project.tasks.reduce(
+    (sum, task) => sum + (task.estimatedHours ?? 0),
+    0,
+  );
 
+  const totalLoggedHours = project.tasks.reduce(
+    (sum, task) => sum + task.loggedHours,
+    0,
+  );
+
+  const totalRemainingHours = project.tasks.reduce(
+    (sum, task) => sum + task.remainingHours,
+    0,
+  );
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <Link
@@ -152,40 +194,85 @@ export default async function ProjectDetailPage({
         ← Back to Projects
       </Link>
 
-      <ProjectHeader
-        status={project.status}
-        title={project.title}
-        description={project.description || project.tradeCase.description}
-        progress={project.progress}
-      />
-      <div className="mt-6 mb-8">
-        <Link
-          href={`/dashboard/projects/${project.id}/board`}
-          className="inline-flex items-center rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
-        >
-          Open Kanban Board →
-        </Link>
-      </div>
-      <ProjectOverviewCards
-        customer={
-          project.tradeCase.customer.name || project.tradeCase.customer.email
-        }
-        category={project.tradeCase.category}
-        completedSteps={completedSteps}
-        totalSteps={totalSteps}
-        tasks={project.tasks}
-      />
-
-      <div className="grid lg:grid-cols-3 gap-6">
-        <ProjectTimeline steps={project.tradeCase.steps} />
-        <ProjectTasksSection
-          projectId={project.id}
-          tasks={project.tasks}
-          assignableUsers={assignableUsers}
-          isAdmin={user.role === "admin"}
+      <div className="sticky top-0 z-30 -mx-6 mb-8 border-b border-slate-800 bg-slate-950/95 px-6 pb-4 pt-6 backdrop-blur">
+        <ProjectHeader
+          status={project.status}
+          title={project.title}
+          description={project.description || project.tradeCase.description}
+          progress={project.progress}
         />
-        <ProjectActivitySection activities={project.tradeCase.activities} />
+
+        <ProjectTabs projectId={project.id} />
       </div>
+
+      {(!tab || tab === "overview") && (
+        <>
+          <ProjectOverviewCards
+            customer={
+              project.tradeCase.customer.name ||
+              project.tradeCase.customer.email
+            }
+            category={project.tradeCase.category}
+            completedSteps={completedSteps}
+            totalSteps={totalSteps}
+            tasks={project.tasks}
+          />
+          <ProjectTimeSummary
+            estimated={totalEstimatedHours}
+            logged={totalLoggedHours}
+            remaining={totalRemainingHours}
+          />
+        </>
+      )}
+
+      {tab === "tasks" && (
+        <>
+          <div className="mb-4 flex justify-end gap-3 print:hidden">
+            <ProjectTasksExportButton
+              projectTitle={project.title}
+              tasks={project.tasks}
+            />
+
+            <ProjectPrintButton />
+          </div>
+          <ProjectOverviewHeader
+            project={{
+              id: project.id,
+              title: project.title,
+              status: project.status,
+            }}
+            tasks={project.tasks}
+          />
+
+          <ProjectHealthCard tasks={project.tasks} />
+          <ProjectCriticalPathCard tasks={project.tasks} />
+         <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+
+  <ProjectTasksSection
+    projectId={project.id}
+    tasks={project.tasks}
+    assignableUsers={assignableUsers}
+    isAdmin={user.role === "admin"}
+  />
+
+  <ProjectAIAssistant
+    tasks={project.tasks}
+  />
+
+</div>
+        </>
+      )}
+      {tab === "board" && <ProjectBoard tasks={project.tasks} />}
+      {tab === "calendar" && <ProjectCalendarView tasks={project.tasks} />}
+      {tab === "gantt" && <ProjectGanttView tasks={project.tasks} />}
+      {tab === "workload" && <ProjectWorkloadView tasks={project.tasks} />}
+      {tab === "activity" && (
+        <ProjectActivitySection activities={project.tradeCase.activities} />
+      )}
+
+      {tab === "timeline" && (
+        <ProjectTimeline steps={project.tradeCase.steps} />
+      )}
     </div>
   );
 }

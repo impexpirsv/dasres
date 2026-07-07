@@ -7,6 +7,7 @@ import Opportunities from "./components/Opportunities";
 import Footer from "./components/Footer";
 import LiveStats from "./components/LiveStats";
 import TopRatedShowcase from "./components/TopRatedShowcase";
+export const dynamic = "force-dynamic";
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">

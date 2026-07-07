@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Modal from "../ui/Modal";
+import { useRouter } from "next/navigation";
 
 const PRIORITIES = [
   "LOW",
@@ -14,13 +16,17 @@ export default function CreateProjectTaskForm({
 }: {
   projectId: number;
 }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
   const [title, setTitle] = useState("");
-  const [description, setDescription] =
-    useState("");
-  const [priority, setPriority] =
-    useState("MEDIUM");
-  const [loading, setLoading] =
-    useState(false);
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("MEDIUM");
+
+  const [startDate, setStartDate] = useState("");
+  const [dueDate, setDueDate] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   async function createTask() {
     if (!title.trim()) {
@@ -36,13 +42,14 @@ export default function CreateProjectTaskForm({
         {
           method: "POST",
           headers: {
-            "Content-Type":
-              "application/json",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             title,
             description,
             priority,
+            startDate: startDate || null,
+            dueDate: dueDate || null,
           }),
         },
       );
@@ -54,65 +61,97 @@ export default function CreateProjectTaskForm({
         return;
       }
 
-      window.location.reload();
+      setOpen(false);
+      setTitle("");
+      setDescription("");
+      setPriority("MEDIUM");
+      setStartDate("");
+      setDueDate("");
+
+      router.refresh();
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-      <h2 className="mb-5 text-2xl font-bold">
-        Add Task
-      </h2>
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
+      >
+        + New Task
+      </button>
 
-      <div className="space-y-4">
-        <input
-          value={title}
-          onChange={(e) =>
-            setTitle(e.target.value)
-          }
-          placeholder="Task title"
-          className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3"
-        />
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Create Task"
+      >
+        <div className="space-y-4">
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Task title"
+            className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white"
+          />
 
-        <textarea
-          value={description}
-          onChange={(e) =>
-            setDescription(e.target.value)
-          }
-          placeholder="Description (optional)"
-          rows={4}
-          className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3"
-        />
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description (optional)"
+            rows={4}
+            className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white"
+          />
 
-        <select
-          value={priority}
-          onChange={(e) =>
-            setPriority(e.target.value)
-          }
-          className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3"
-        >
-          {PRIORITIES.map((item) => (
-            <option
-              key={item}
-              value={item}
-            >
-              {item}
-            </option>
-          ))}
-        </select>
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white"
+          >
+            {PRIORITIES.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
 
-        <button
-          onClick={createTask}
-          disabled={loading}
-          className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading
-            ? "Creating..."
-            : "Create Task"}
-        </button>
-      </div>
-    </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-300">
+                Start Date
+              </label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-300">
+                Due Date
+              </label>
+              <input
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white"
+              />
+            </div>
+          </div>
+
+          <button
+            onClick={createTask}
+            disabled={loading}
+            className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50"
+          >
+            {loading ? "Creating..." : "Create Task"}
+          </button>
+        </div>
+      </Modal>
+    </>
   );
 }

@@ -1,3 +1,8 @@
+"use client";
+
+import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable";
+
 type Task = {
   id: number;
   title: string;
@@ -21,17 +26,39 @@ type Task = {
   }[];
 };
 
-export default function KanbanTaskCard({
-  task,
-}: {
-  task: Task;
-}) {
+export default function KanbanTaskCard({ task }: { task: Task }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    data: {
+      task,
+    },
+  });
+
   const completedChecklist = task.checklistItems.filter(
     (item) => item.completed,
   ).length;
 
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.45 : 1,
+  };
+
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 shadow-sm transition hover:border-blue-500 hover:shadow-lg hover:shadow-blue-900/20">
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="cursor-grab rounded-2xl border border-slate-800 bg-slate-950 p-4 shadow-sm transition hover:border-blue-500 hover:shadow-lg hover:shadow-blue-900/20 active:cursor-grabbing"
+    >
       <div className="mb-4 flex items-start justify-between gap-3">
         <h3 className="font-semibold leading-6 text-white">
           {task.title}
@@ -61,7 +88,6 @@ export default function KanbanTaskCard({
       <div className="space-y-2 text-xs">
         <div className="flex justify-between">
           <span className="text-slate-500">Assignee</span>
-
           <span className="text-slate-300">
             {task.assignedTo?.name ??
               task.assignedTo?.email ??
@@ -71,7 +97,6 @@ export default function KanbanTaskCard({
 
         <div className="flex justify-between">
           <span className="text-slate-500">Due</span>
-
           <span
             className={
               task.dueDate &&
@@ -82,7 +107,7 @@ export default function KanbanTaskCard({
             }
           >
             {task.dueDate
-              ? task.dueDate.toLocaleDateString()
+              ? task.dueDate.toLocaleDateString("en-US")
               : "-"}
           </span>
         </div>
@@ -94,30 +119,21 @@ export default function KanbanTaskCard({
             <p className="font-bold text-white">
               {completedChecklist}/{task.checklistItems.length}
             </p>
-
-            <p className="text-slate-500">
-              Checklist
-            </p>
+            <p className="text-slate-500">Checklist</p>
           </div>
 
           <div>
             <p className="font-bold text-white">
               {task.comments.length}
             </p>
-
-            <p className="text-slate-500">
-              Comments
-            </p>
+            <p className="text-slate-500">Comments</p>
           </div>
 
           <div>
             <p className="font-bold text-white">
               {task.attachments.length}
             </p>
-
-            <p className="text-slate-500">
-              Files
-            </p>
+            <p className="text-slate-500">Files</p>
           </div>
         </div>
       </div>

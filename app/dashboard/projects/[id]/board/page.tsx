@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "../../../../../lib/prisma";
 import { requireUser } from "../../../../../lib/auth";
 import KanbanTaskCard from "../../../../components/project/KanbanTaskCard";
+import ProjectBoard from "../../../../components/project/ProjectBoard";
 const columns = [
   {
     title: "Todo",
@@ -104,40 +105,7 @@ export default async function ProjectBoardPage({
         </p>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-4">
-        {columns.map((column) => {
-          const columnTasks = project.tasks.filter(
-            (task) => task.status === column.status,
-          );
-
-          return (
-            <section
-              key={column.status}
-              className="rounded-3xl border border-slate-800 bg-slate-900 p-5"
-            >
-              <div className="mb-5 flex items-center justify-between">
-                <h2 className="font-bold text-white">{column.title}</h2>
-
-                <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
-                  {columnTasks.length}
-                </span>
-              </div>
-
-              {columnTasks.length === 0 ? (
-                <p className="rounded-2xl border border-dashed border-slate-800 p-4 text-sm text-slate-500">
-                  No tasks
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {columnTasks.map((task) => (
-                    <KanbanTaskCard key={task.id} task={task} />
-                  ))}
-                </div>
-              )}
-            </section>
-          );
-        })}
-      </div>
+      <ProjectBoard tasks={project.tasks} />
     </div>
   );
 }

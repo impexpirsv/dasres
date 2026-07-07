@@ -69,6 +69,9 @@ model User {
   companies              Company[]
   experts                Expert[]
   notifications          Notification[]
+  assignedProjectTasks   ProjectTask[]           @relation("ProjectTaskAssignee")
+  projectTaskAttachments ProjectTaskAttachment[]
+  projectTaskComments    ProjectTaskComment[]
   reviewsReceived        Review[]                @relation("ReviewTarget")
   reviewsGiven           Review[]                @relation("ReviewAuthor")
   savedCases             SavedCase[]
@@ -78,9 +81,6 @@ model User {
   tickets                Ticket[]
   ticketMessages         TicketMessage[]
   customerCases          TradeCase[]             @relation("CustomerCases")
-  assignedProjectTasks   ProjectTask[]           @relation("ProjectTaskAssignee")
-  projectTaskAttachments ProjectTaskAttachment[]
-  projectTaskComments    ProjectTaskComment[]
 }
 
 model Session {
@@ -109,129 +109,98 @@ model TradeCase {
   messages           CaseMessage[]
   proposals          CaseProposal[]
   steps              CaseStep[]
+  project            Project?
   reviews            Review[]
   savedCases         SavedCase[]
   customer           User           @relation("CustomerCases", fields: [customerId], references: [id], onDelete: Cascade)
-  project            Project?
 }
 
 model Project {
-  id Int @id @default(autoincrement())
-
-  tradeCaseId Int @unique
-
-  tradeCase TradeCase @relation(fields: [tradeCaseId], references: [id], onDelete: Cascade)
-
+  id          Int           @id @default(autoincrement())
+  tradeCaseId Int           @unique
   title       String
   description String?
   createdBy   Int?
   assignedTo  Int?
-
-  status ProjectStatus @default(ACTIVE)
-
-  progress Int @default(0)
-
-  startedAt DateTime @default(now())
-
+  status      ProjectStatus @default(ACTIVE)
+  progress    Int           @default(0)
+  startedAt   DateTime      @default(now())
   completedAt DateTime?
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime      @updatedAt
-  tasks     ProjectTask[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  tradeCase   TradeCase     @relation(fields: [tradeCaseId], references: [id], onDelete: Cascade)
+  tasks       ProjectTask[]
 }
 
 model ProjectTask {
-  id Int @id @default(autoincrement())
-
-  projectId Int
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  title       String
-  description String?
-
-  status   TaskStatus   @default(TODO)
-  priority TaskPriority @default(MEDIUM)
-
-  assignedToId Int?
-
-  assignedTo User? @relation("ProjectTaskAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
-
-  dueDate DateTime?
-
-  completedAt DateTime?
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-
+  id             Int                     @id @default(autoincrement())
+  projectId      Int
+  title          String
+  description    String?
+  status         TaskStatus              @default(TODO)
+  priority       TaskPriority            @default(MEDIUM)
+  assignedToId   Int?
+  dueDate        DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  actualHours    Int?
+  estimatedHours Int?
+  sortOrder      Int                     @default(0)
+  startDate      DateTime?
+  progress       Int                     @default(0)
+  dependsOnId    Int?
+  loggedHours    Int                     @default(0)
+  remainingHours Int                     @default(0)
+  assignedTo     User?                   @relation("ProjectTaskAssignee", fields: [assignedToId], references: [id])
+  dependsOn      ProjectTask?            @relation("TaskDependencies", fields: [dependsOnId], references: [id])
+  dependents     ProjectTask[]           @relation("TaskDependencies")
+  project        Project                 @relation(fields: [projectId], references: [id], onDelete: Cascade)
   attachments    ProjectTaskAttachment[]
-  comments       ProjectTaskComment[]
   checklistItems ProjectTaskChecklist[]
+  comments       ProjectTaskComment[]
 }
 
 model ProjectTaskChecklist {
-  id Int @id @default(autoincrement())
-
-  taskId Int
-
-  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-
-  title String
-
-  completed Boolean @default(false)
-
+  id          Int         @id @default(autoincrement())
+  taskId      Int
+  title       String
+  completed   Boolean     @default(false)
   completedAt DateTime?
-
-  sortOrder Int @default(0)
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
+  sortOrder   Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  task        ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }
 
 model ProjectTaskAttachment {
-  id Int @id @default(autoincrement())
-
-  taskId Int
-
-  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-
+  id              Int         @id @default(autoincrement())
+  taskId          Int
   fileName        String
   fileUrl         String
-  storageProvider String  @default("local")
+  storageProvider String      @default("local")
   mimeType        String?
-
-  fileSize Int?
-
-  uploadedById Int?
-
-  uploadedBy User? @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now())
+  fileSize        Int?
+  uploadedById    Int?
+  createdAt       DateTime    @default(now())
+  task            ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedBy      User?       @relation(fields: [uploadedById], references: [id])
 }
 
 model ProjectTaskComment {
-  id Int @id @default(autoincrement())
-
-  taskId Int
-  task   ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-
-  authorId Int?
-  author   User? @relation(fields: [authorId], references: [id], onDelete: SetNull)
-
-  content String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int                  @id @default(autoincrement())
+  taskId    Int
+  authorId  Int?
+  content   String
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
   parentId  Int?
-
-  parent ProjectTaskComment? @relation("TaskCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-
-  replies   ProjectTaskComment[] @relation("TaskCommentReplies")
   editedAt  DateTime?
   isDeleted Boolean              @default(false)
+  author    User?                @relation(fields: [authorId], references: [id])
+  parent    ProjectTaskComment?  @relation("TaskCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   ProjectTaskComment[] @relation("TaskCommentReplies")
+  task      ProjectTask          @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }
 
 model CaseProposal {

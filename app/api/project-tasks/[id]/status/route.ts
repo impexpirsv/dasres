@@ -4,6 +4,7 @@ import { AppError } from "../../../../../lib/errors";
 import { prisma } from "../../../../../lib/prisma";
 import { parseId } from "../../../../../lib/validation";
 import { requireUser } from "../../../../../lib/auth";
+import { calculateTaskProgress } from "../../../../../lib/projectTaskProgress";
 
 const ALLOWED_STATUSES: TaskStatus[] = [
   TaskStatus.TODO,
@@ -31,7 +32,17 @@ export async function PATCH(
 
     const task = await prisma.projectTask.findUnique({
       where: { id: taskId },
-      include: { project: true },
+      include: {
+        project: true,
+        checklistItems: true,
+        dependsOn: {
+          select: {
+            id: true,
+            title: true,
+            status: true,
+          },
+        },
+      },
     });
 
     if (!task) {
@@ -45,40 +56,61 @@ export async function PATCH(
       throw new AppError("You are not allowed to update this task.", 403);
     }
 
+    const isTryingToStartOrComplete =
+      status === TaskStatus.IN_PROGRESS ||
+      status === TaskStatus.REVIEW ||
+      status === TaskStatus.COMPLETED;
+
+    if (
+      task.dependsOn &&
+      task.dependsOn.status !== TaskStatus.COMPLETED &&
+      isTryingToStartOrComplete
+    ) {
+      throw new AppError(
+        `This task is blocked by "${task.dependsOn.title}".`,
+        400,
+      );
+    }
+
+    const taskProgress = calculateTaskProgress({
+      ...task,
+      status,
+    });
+
     await prisma.$transaction(async (tx) => {
       await tx.projectTask.update({
         where: { id: taskId },
         data: {
           status,
+          progress: taskProgress,
           completedAt: status === TaskStatus.COMPLETED ? new Date() : null,
         },
       });
 
-      const totalTasks = await tx.projectTask.count({
+      const allTasks = await tx.projectTask.findMany({
         where: { projectId: task.projectId },
-      });
-
-      const completedTasks = await tx.projectTask.count({
-        where: {
-          projectId: task.projectId,
-          status: TaskStatus.COMPLETED,
+        select: {
+          progress: true,
         },
       });
 
-      const progress =
-        totalTasks === 0
+      const projectProgress =
+        allTasks.length === 0
           ? 0
-          : Math.round((completedTasks / totalTasks) * 100);
+          : Math.round(
+              allTasks.reduce((sum, item) => sum + item.progress, 0) /
+                allTasks.length,
+            );
 
       await tx.project.update({
         where: { id: task.projectId },
         data: {
-          progress,
+          progress: projectProgress,
           status:
-            progress === 100
+            projectProgress === 100
               ? ProjectStatus.COMPLETED
               : ProjectStatus.ACTIVE,
-          completedAt: progress === 100 ? new Date() : null,
+          completedAt: projectProgress === 100 ? new Date() : null,
         },
       });
 

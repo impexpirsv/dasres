@@ -20,12 +20,32 @@ export async function POST(
     const description = String(body.description || "").trim();
     const priority = String(body.priority || "MEDIUM").trim();
 
+    const startDate = body.startDate
+  ? new Date(`${body.startDate}T12:00:00`)
+  : null;
+
+const dueDate = body.dueDate
+  ? new Date(`${body.dueDate}T12:00:00`)
+  : null;
+
     if (!title) {
       throw new AppError("Task title is required.", 400);
     }
 
     if (!["LOW", "MEDIUM", "HIGH", "URGENT"].includes(priority)) {
       throw new AppError("Invalid task priority.", 400);
+    }
+
+    if (startDate && Number.isNaN(startDate.getTime())) {
+      throw new AppError("Invalid start date.", 400);
+    }
+
+    if (dueDate && Number.isNaN(dueDate.getTime())) {
+      throw new AppError("Invalid due date.", 400);
+    }
+
+    if (startDate && dueDate && startDate > dueDate) {
+      throw new AppError("Start date cannot be after due date.", 400);
     }
 
     const project = await prisma.project.findUnique({
@@ -42,7 +62,10 @@ export async function POST(
     const isProvider = project.assignedTo === user.id;
 
     if (user.role !== "admin" && !isCustomer && !isProvider) {
-      throw new AppError("You are not allowed to add tasks to this project.", 403);
+      throw new AppError(
+        "You are not allowed to add tasks to this project.",
+        403,
+      );
     }
 
     const task = await prisma.projectTask.create({
@@ -51,6 +74,8 @@ export async function POST(
         title,
         description: description || null,
         priority: priority as "LOW" | "MEDIUM" | "HIGH" | "URGENT",
+        startDate,
+        dueDate,
       },
     });
 
