@@ -103,7 +103,7 @@ export default function ProjectTaskList({
             </div>
 
             <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-              <StatusBadge status={status as Status} small />
+             <StatusBadge status={task.status as Status} />
 
               <span>
                 {task.dueDate

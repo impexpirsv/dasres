@@ -37,7 +37,11 @@ export default function StatCard({
       </p>
 
       <p
-        className={`mt-3 text-5xl font-black ${colors[color]}`}
+      className={`mt-3 break-words ${
+  typeof value === "number"
+    ? "text-5xl font-black"
+    : "text-2xl font-bold"
+} ${colors[color]}`}
       >
         {value}
       </p>

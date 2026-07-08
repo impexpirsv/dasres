@@ -267,18 +267,23 @@ export default async function ProjectDetailPage({
             <ProjectPrintButton />
           </div>
           <ProjectOverviewHeader
-            project={{
-              id: project.id,
-              title: project.title,
-              status: project.status,
-            }}
-            tasks={project.tasks}
-          />
+  project={{
+    id: project.id,
+    title: project.title,
+    status: project.status,
+  }}
+  tasks={project.tasks}
+/>
 
-          <ProjectHealthCard tasks={project.tasks} />
-          <ProjectCriticalPathCard tasks={project.tasks} />
-          <ProjectAIInsights tasks={project.tasks} />
-          <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+<div className="mt-8 space-y-6">
+  <ProjectHealthCard tasks={project.tasks} />
+
+            <ProjectCriticalPathCard tasks={project.tasks} />
+
+            <ProjectAIInsights tasks={project.tasks} />
+          </div>
+
+          <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_360px]">
             <ProjectTasksSection
               projectId={project.id}
               tasks={project.tasks}
@@ -287,7 +292,6 @@ export default async function ProjectDetailPage({
             />
 
             <ProjectAIAssistant tasks={project.tasks} />
-            <ProjectAIInsights tasks={project.tasks} />
           </div>
         </>
       )}

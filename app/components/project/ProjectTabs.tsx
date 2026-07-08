@@ -41,7 +41,8 @@ export default function ProjectTabs({ projectId }: { projectId: number }) {
       href: `/dashboard/projects/${projectId}?tab=workload`,
     },
     {
-      label: "Documents",
+      title: "Documents",
+      tab: "documents",
       href: `/dashboard/projects/${projectId}?tab=documents`,
     },
     {
@@ -50,7 +51,8 @@ export default function ProjectTabs({ projectId }: { projectId: number }) {
       href: `/dashboard/projects/${projectId}?tab=timeline`,
     },
     {
-      label: "Messages",
+      title: "Messages",
+      tab: "messages",
       href: `/dashboard/projects/${projectId}?tab=messages`,
     },
     {
@@ -69,7 +71,7 @@ export default function ProjectTabs({ projectId }: { projectId: number }) {
 
         return (
           <Link
-            key={tab.title}
+            key={tab.tab}
             href={tab.href}
             className={`rounded-xl px-5 py-3 text-sm font-semibold transition ${
               active

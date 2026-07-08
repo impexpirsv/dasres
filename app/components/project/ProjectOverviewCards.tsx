@@ -32,15 +32,25 @@ export default function ProjectOverviewCards({
       <ProjectProgressCard tasks={tasks} />
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
-        <StatCard
-          title="Customer"
-          value={customer}
-        />
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Customer
+          </p>
 
-        <StatCard
-          title="Category"
-          value={category}
-        />
+          <p className="mt-3 break-words text-2xl font-bold leading-tight text-white">
+            {customer}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Category
+          </p>
+
+          <p className="mt-3 break-words text-2xl font-bold leading-tight text-white">
+            {category}
+          </p>
+        </div>
 
         <StatCard
           title="Open Tasks"

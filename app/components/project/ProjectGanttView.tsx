@@ -179,7 +179,7 @@ function buildDependencyPath(
   toTask: GanttTask,
   dependencyType: DependencyType = "FS",
 ) {
-  const horizontalGap = 36;
+  const horizontalGap = 48;
   const verticalPadding = 32;
 
   const fromStartX = fromTask.x;
@@ -266,7 +266,7 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
   const rowHeight = 64;
   const barHeight = 30;
   const taskColumnWidth = 260;
-  const canvasPadding = 80;
+  const canvasPadding = 96;
   const [zoomLevel, setZoomLevel] = useState<ZoomLevel>("day");
 
   const columnWidth = getColumnWidth(zoomLevel);
@@ -304,8 +304,8 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
   const timelineEnd = getUnitStart(maxDate, zoomLevel);
 
   const totalUnits = getUnitsBetween(timelineStart, timelineEnd, zoomLevel);
- const timelineWidth = taskColumnWidth + totalUnits * columnWidth;
-const chartWidth = canvasPadding + timelineWidth + canvasPadding;
+  const timelineWidth = taskColumnWidth + totalUnits * columnWidth;
+  const chartWidth = canvasPadding + timelineWidth + canvasPadding;
   const chartHeight = datedTasksBase.length * rowHeight;
   const datedTaskById = new Map(datedTasksBase.map((task) => [task.id, task]));
 
@@ -645,8 +645,8 @@ const chartWidth = canvasPadding + timelineWidth + canvasPadding;
                         />
                       </div>
 
-                     <div className="absolute inset-0 flex items-center justify-between gap-2 px-3 text-xs font-semibold text-white">
-                        <span className="truncate">{task.title}</span>
+                      <div className="absolute inset-0 flex items-center justify-between gap-2 px-3 text-xs font-semibold text-white">
+                        <span className="max-w-[140px] truncate">{task.title}</span>
 
                         <span className="flex shrink-0 items-center gap-2">
                           {task.dependsOn && (
@@ -665,7 +665,9 @@ const chartWidth = canvasPadding + timelineWidth + canvasPadding;
                             </span>
                           )}
 
-                          <span>{task.progress ?? 0}%</span>
+                          <span className="shrink-0 rounded-full bg-slate-950/70 px-2 py-0.5 text-[10px] font-bold">
+                            {task.progress ?? 0}%
+                          </span>
                         </span>
                       </div>
                     </div>
