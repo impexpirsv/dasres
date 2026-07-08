@@ -111,7 +111,7 @@ export default async function MyExpertsPage() {
             title="No experts yet"
             description="Create your first expert profile to showcase your experience and receive trade requests."
             buttonText="Add Expert"
-            href="/dashboard/experts/new"
+            buttonHref="/dashboard/experts/new"
           />
         ) : (
           <div className="grid md:grid-cols-2 gap-6">

@@ -21,6 +21,7 @@ import ProjectTasksExportButton from "../../../components/project/ProjectTasksEx
 import ProjectAIAssistant from "../../../components/project/ProjectAIAssistant";
 import ProjectDocuments from "../../../components/project/ProjectDocuments";
 import ProjectAIInsights from "../../../components/project/ProjectAIInsights";
+import ProjectMessaging from "../../../components/project/ProjectMessaging";
 export default async function ProjectDetailPage({
   params,
   searchParams,
@@ -140,6 +141,27 @@ export default async function ProjectDetailPage({
             },
           },
           steps: true,
+        },
+      },
+      conversations: {
+        include: {
+          messages: {
+            include: {
+              sender: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
+              },
+            },
+            orderBy: {
+              createdAt: "asc",
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
         },
       },
     },
@@ -277,6 +299,13 @@ export default async function ProjectDetailPage({
         <ProjectDocuments
           tasks={project.tasks}
           isAdmin={user.role === "admin"}
+        />
+      )}
+      {tab === "messages" && (
+        <ProjectMessaging
+          projectId={project.id}
+          conversations={project.conversations}
+          currentUserId={user.id}
         />
       )}
       {tab === "activity" && (

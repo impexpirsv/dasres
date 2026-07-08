@@ -57,7 +57,7 @@ export default function KanbanTaskCard({ task }: { task: Task }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="cursor-grab rounded-2xl border border-slate-800 bg-slate-950 p-4 shadow-sm transition hover:border-blue-500 hover:shadow-lg hover:shadow-blue-900/20 active:cursor-grabbing"
+      className="cursor-grab rounded-2xl border border-slate-800 bg-slate-950 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/20 active:cursor-grabbing"
     >
       <div className="mb-4 flex items-start justify-between gap-3">
         <h3 className="font-semibold leading-6 text-white">
@@ -113,7 +113,7 @@ export default function KanbanTaskCard({ task }: { task: Task }) {
         </div>
       </div>
 
-      <div className="mt-5 border-t border-slate-800 pt-4">
+      <div className="mt-5 border-t border-slate-800 pt-4 text-slate-300">
         <div className="grid grid-cols-3 gap-3 text-center text-xs">
           <div>
             <p className="font-bold text-white">

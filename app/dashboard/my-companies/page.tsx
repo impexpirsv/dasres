@@ -128,7 +128,7 @@ export default async function MyCompaniesPage() {
             title="No companies yet"
             description="Create your first company profile to participate in trade opportunities and submit proposals."
             buttonText="Add Company"
-            href="/dashboard/companies/new"
+            buttonHref="/dashboard/companies/new"
           />
         ) : (
           <div className="grid md:grid-cols-2 gap-6">

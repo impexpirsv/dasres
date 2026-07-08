@@ -28,7 +28,7 @@ export default async function SavedExpertsPage() {
             title="No saved experts yet"
             description="Save experienced professionals to quickly contact them for future trade projects."
             buttonText="Browse Experts"
-            href="/dashboard/experts"
+            buttonHref="/dashboard/experts"
           />
         ) : (
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">

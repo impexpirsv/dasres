@@ -46,7 +46,7 @@ export default async function SavedCasesPage() {
             title="No saved cases yet"
             description="Save interesting trade cases to access them later."
             buttonText="Browse Open Cases"
-            href="/dashboard/open-cases"
+           buttonHref="/dashboard/open-cases"
           />
         ) : (
           <div className="grid lg:grid-cols-2 gap-6">

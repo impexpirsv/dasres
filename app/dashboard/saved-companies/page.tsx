@@ -28,7 +28,7 @@ export default async function SavedCompaniesPage() {
             title="No saved companies yet"
             description="Save trusted companies to build your trade network."
             buttonText="Browse Companies"
-            href="/dashboard/companies"
+           buttonHref="/dashboard/companies"
           />
         ) : (
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">

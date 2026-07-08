@@ -1,5 +1,5 @@
 "use client";
-
+import StatusBadge from "../StatusBadge";
 type UserOption = {
   id: number;
   name: string | null;
@@ -45,8 +45,7 @@ export default function ProjectTaskList({
 
         const total = task.checklistItems.length;
 
-        const percent =
-          total === 0 ? 0 : Math.round((completed / total) * 100);
+        const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
 
         const isSelected = selectedTaskId === task.id;
 
@@ -63,9 +62,7 @@ export default function ProjectTaskList({
           >
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="font-semibold text-white">
-                  {task.title}
-                </h3>
+                <h3 className="font-semibold text-white">{task.title}</h3>
 
                 <p className="mt-1 text-xs text-slate-500">
                   {task.assignedTo?.name ||
@@ -103,8 +100,9 @@ export default function ProjectTaskList({
               </div>
             </div>
 
-            <div className="mt-3 flex justify-between text-xs text-slate-500">
-              <span>{task.status}</span>
+            <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
+              <StatusBadge status={task.status as any} small />
+
               <span>
                 {task.dueDate
                   ? task.dueDate.toLocaleDateString("en-US")
