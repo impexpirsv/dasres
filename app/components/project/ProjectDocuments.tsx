@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import ApproveDocumentButtons from "./ApproveDocumentButtons";
 type UserOption = {
   id: number;
@@ -36,25 +39,26 @@ function formatFileSize(size: number | null) {
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function getDocumentStatus(taskStatus: string) {
-  if (taskStatus === "COMPLETED") {
-    return {
-      label: "Approved",
-      className: "bg-green-500/10 text-green-300 border-green-500/30",
-    };
-  }
+function getApprovalStatus(status: string) {
+  switch (status) {
+    case "APPROVED":
+      return {
+        label: "Approved",
+        className: "bg-green-500/10 text-green-300 border-green-500/30",
+      };
 
-  if (taskStatus === "REVIEW") {
-    return {
-      label: "Review",
-      className: "bg-amber-500/10 text-amber-300 border-amber-500/30",
-    };
-  }
+    case "REJECTED":
+      return {
+        label: "Rejected",
+        className: "bg-red-500/10 text-red-300 border-red-500/30",
+      };
 
-  return {
-    label: "Pending",
-    className: "bg-blue-500/10 text-blue-300 border-blue-500/30",
-  };
+    default:
+      return {
+        label: "Pending",
+        className: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+      };
+  }
 }
 
 export default function ProjectDocuments({
@@ -64,14 +68,30 @@ export default function ProjectDocuments({
   tasks: Task[];
   isAdmin: boolean;
 }) {
-  const documents = tasks.flatMap((task) =>
+  const initialDocuments = tasks.flatMap((task) =>
     task.attachments.map((attachment) => ({
       ...attachment,
       taskTitle: task.title,
       taskStatus: task.status,
     })),
   );
+  const [documents, setDocuments] = useState(initialDocuments);
 
+  function handleDocumentStatusChange(
+    documentId: number,
+    status: "APPROVED" | "REJECTED",
+  ) {
+    setDocuments((currentDocuments) =>
+      currentDocuments.map((document) =>
+        document.id === documentId
+          ? {
+              ...document,
+              approvalStatus: status,
+            }
+          : document,
+      ),
+    );
+  }
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -122,7 +142,7 @@ export default function ProjectDocuments({
       ) : (
         <div className="space-y-3">
           {documents.map((document) => {
-            const status = getDocumentStatus(document.taskStatus);
+            const status = getApprovalStatus(document.approvalStatus);
 
             return (
               <div
@@ -172,7 +192,10 @@ export default function ProjectDocuments({
                       Open
                     </a>
                     {isAdmin && document.approvalStatus === "PENDING" && (
-                      <ApproveDocumentButtons documentId={document.id} />
+                      <ApproveDocumentButtons
+                        documentId={document.id}
+                        onStatusChange={handleDocumentStatusChange}
+                      />
                     )}
                   </div>
                 </div>

@@ -1,13 +1,19 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import type { ProjectMessageItem } from "./ProjectMessaging";
 
 export default function AddProjectMessageForm({
   projectId,
   conversationId,
+  onMessageSent,
 }: {
   projectId: number;
   conversationId?: number;
+  onMessageSent: (
+    conversationId: number,
+    message: ProjectMessageItem,
+  ) => void;
 }) {
   const [message, setMessage] = useState("");
   const [loading, startTransition] = useTransition();
@@ -28,10 +34,15 @@ export default function AddProjectMessageForm({
         }),
       });
 
-      if (response.ok) {
-        setMessage("");
-        location.reload();
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Failed to send message.");
+        return;
       }
+
+      onMessageSent(data.conversationId, data.message);
+      setMessage("");
     });
   }
 

@@ -65,17 +65,27 @@ export async function POST(request: Request) {
       );
     }
 
-    await prisma.projectMessage.create({
-      data: {
-        conversationId: conversation.id,
-        senderId: user.id,
-        message,
+    const createdMessage = await prisma.projectMessage.create({
+  data: {
+    conversationId: conversation.id,
+    senderId: user.id,
+    message,
+  },
+  include: {
+    sender: {
+      select: {
+        id: true,
+        name: true,
+        email: true,
       },
-    });
+    },
+  },
+});
 
-    return Response.json({
-      message: "Message sent.",
-    });
+return Response.json({
+  conversationId: conversation.id,
+  message: createdMessage,
+});
   } catch {
     return Response.json(
       { message: "Failed to send message." },

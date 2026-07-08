@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import AddProjectMessageForm from "./AddProjectMessageForm";
 
 type UserOption = {
@@ -6,11 +9,11 @@ type UserOption = {
   email: string;
 };
 
-type Message = {
+export type ProjectMessageItem = {
   id: number;
   message: string;
   isRead: boolean;
-  createdAt: Date;
+  createdAt: Date | string;
   sender: UserOption;
 };
 
@@ -18,7 +21,7 @@ type Conversation = {
   id: number;
   title: string;
   createdAt: Date;
-  messages: Message[];
+  messages: ProjectMessageItem[];
 };
 
 export default function ProjectMessaging({
@@ -30,7 +33,40 @@ export default function ProjectMessaging({
   conversations: Conversation[];
   currentUserId: number;
 }) {
-  const activeConversation = conversations[0] ?? null;
+  const [localConversations, setLocalConversations] =
+    useState(conversations);
+
+  const activeConversation = localConversations[0] ?? null;
+
+  function handleMessageSent(
+    conversationId: number,
+    message: ProjectMessageItem,
+  ) {
+    setLocalConversations((current) => {
+      const exists = current.some((item) => item.id === conversationId);
+
+      if (!exists) {
+        return [
+          {
+            id: conversationId,
+            title: "Project Conversation",
+            createdAt: new Date(),
+            messages: [message],
+          },
+          ...current,
+        ];
+      }
+
+      return current.map((conversation) =>
+        conversation.id === conversationId
+          ? {
+              ...conversation,
+              messages: [...conversation.messages, message],
+            }
+          : conversation,
+      );
+    });
+  }
 
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
@@ -43,7 +79,7 @@ export default function ProjectMessaging({
         </div>
 
         <div className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2 text-sm font-semibold text-blue-300">
-          {conversations.length} Conversation(s)
+          {localConversations.length} Conversation(s)
         </div>
       </div>
 
@@ -58,13 +94,16 @@ export default function ProjectMessaging({
           </p>
 
           <div className="mt-6">
-            <AddProjectMessageForm projectId={projectId} />
+            <AddProjectMessageForm
+              projectId={projectId}
+              onMessageSent={handleMessageSent}
+            />
           </div>
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
           <aside className="rounded-2xl border border-slate-800 bg-slate-950 p-3">
-            {conversations.map((conversation) => (
+            {localConversations.map((conversation) => (
               <div
                 key={conversation.id}
                 className={`rounded-xl border p-4 ${
@@ -95,7 +134,9 @@ export default function ProjectMessaging({
                 return (
                   <div
                     key={message.id}
-                    className={`flex ${isMine ? "justify-end" : "justify-start"}`}
+                    className={`flex ${
+                      isMine ? "justify-end" : "justify-start"
+                    }`}
                   >
                     <div
                       className={`max-w-[75%] rounded-2xl p-4 ${
@@ -109,7 +150,7 @@ export default function ProjectMessaging({
                           {message.sender.name || message.sender.email}
                         </p>
                         <p className="text-[11px] opacity-70">
-                          {message.createdAt.toLocaleString()}
+                          {new Date(message.createdAt).toLocaleString()}
                         </p>
                       </div>
 
@@ -124,6 +165,7 @@ export default function ProjectMessaging({
               <AddProjectMessageForm
                 projectId={projectId}
                 conversationId={activeConversation.id}
+                onMessageSent={handleMessageSent}
               />
             </div>
           </div>
