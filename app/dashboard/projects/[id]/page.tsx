@@ -20,6 +20,7 @@ import ProjectPrintButton from "../../../components/project/ProjectPrintButton";
 import ProjectTasksExportButton from "../../../components/project/ProjectTasksExportButton";
 import ProjectAIAssistant from "../../../components/project/ProjectAIAssistant";
 import ProjectDocuments from "../../../components/project/ProjectDocuments";
+import ProjectAIInsights from "../../../components/project/ProjectAIInsights";
 export default async function ProjectDetailPage({
   params,
   searchParams,
@@ -254,6 +255,7 @@ export default async function ProjectDetailPage({
 
           <ProjectHealthCard tasks={project.tasks} />
           <ProjectCriticalPathCard tasks={project.tasks} />
+          <ProjectAIInsights tasks={project.tasks} />
           <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
             <ProjectTasksSection
               projectId={project.id}
@@ -263,6 +265,7 @@ export default async function ProjectDetailPage({
             />
 
             <ProjectAIAssistant tasks={project.tasks} />
+            <ProjectAIInsights tasks={project.tasks} />
           </div>
         </>
       )}
