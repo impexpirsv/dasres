@@ -218,13 +218,9 @@ model ProjectTaskAttachment {
   task            ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
   uploadedBy      User?       @relation(fields: [uploadedById], references: [id])
 approvalStatus ApprovalStatus @default(PENDING)
-
 approvedById Int?
-
 approvedAt DateTime?
-
 rejectionReason String?
-
 approvedBy User? @relation("AttachmentApprover",fields: [approvedById],references: [id])
 }
 

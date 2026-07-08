@@ -1,4 +1,6 @@
-import StatusBadge from "../StatusBadge";
+import StatusBadge, {
+  type Status,
+} from "../StatusBadge";
 export default function ProjectHeader({
   status,
   title,
@@ -15,7 +17,7 @@ export default function ProjectHeader({
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
         <div>
          <div className="mb-4">
-  <StatusBadge status={status as any} />
+  <StatusBadge status={status as Status} />
 </div>
 
          <h1 className="mb-2 text-3xl font-bold tracking-tight text-white">{title}</h1>

@@ -1,5 +1,7 @@
 "use client";
-import StatusBadge from "../StatusBadge";
+import StatusBadge, {
+  type Status,
+} from "../StatusBadge";
 type UserOption = {
   id: number;
   name: string | null;
@@ -101,7 +103,7 @@ export default function ProjectTaskList({
             </div>
 
             <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-              <StatusBadge status={task.status as any} small />
+              <StatusBadge status={status as Status} small />
 
               <span>
                 {task.dueDate

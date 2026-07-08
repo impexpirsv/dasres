@@ -56,16 +56,7 @@ function getDocumentStatus(taskStatus: string) {
     className: "bg-blue-500/10 text-blue-300 border-blue-500/30",
   };
 }
-function getApprovalStatusStyle(status: string) {
-  switch (status) {
-    case "APPROVED":
-      return "bg-green-500/10 text-green-300 border-green-500/30";
-    case "REJECTED":
-      return "bg-red-500/10 text-red-300 border-red-500/30";
-    default:
-      return "bg-amber-500/10 text-amber-300 border-amber-500/30";
-  }
-}
+
 export default function ProjectDocuments({
   tasks,
   isAdmin,

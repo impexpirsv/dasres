@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
-import SaveCaseButton from "../../components/SaveCaseButton";
 import EmptyState from "../../components/EmptyState";
 export default async function SavedCasesPage() {
   const user = await requireUser();

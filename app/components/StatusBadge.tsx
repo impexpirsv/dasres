@@ -1,4 +1,4 @@
-type Status =
+export type Status =
   | "PENDING"
   | "OPEN"
   | "IN_PROGRESS"
