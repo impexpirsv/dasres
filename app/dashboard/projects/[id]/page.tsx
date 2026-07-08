@@ -19,6 +19,7 @@ import ProjectCriticalPathCard from "../../../components/project/ProjectCritical
 import ProjectPrintButton from "../../../components/project/ProjectPrintButton";
 import ProjectTasksExportButton from "../../../components/project/ProjectTasksExportButton";
 import ProjectAIAssistant from "../../../components/project/ProjectAIAssistant";
+import ProjectDocuments from "../../../components/project/ProjectDocuments";
 export default async function ProjectDetailPage({
   params,
   searchParams,
@@ -58,6 +59,13 @@ export default async function ProjectDetailPage({
           attachments: {
             include: {
               uploadedBy: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
+              },
+              approvedBy: {
                 select: {
                   id: true,
                   name: true,
@@ -246,26 +254,28 @@ export default async function ProjectDetailPage({
 
           <ProjectHealthCard tasks={project.tasks} />
           <ProjectCriticalPathCard tasks={project.tasks} />
-         <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+          <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+            <ProjectTasksSection
+              projectId={project.id}
+              tasks={project.tasks}
+              assignableUsers={assignableUsers}
+              isAdmin={user.role === "admin"}
+            />
 
-  <ProjectTasksSection
-    projectId={project.id}
-    tasks={project.tasks}
-    assignableUsers={assignableUsers}
-    isAdmin={user.role === "admin"}
-  />
-
-  <ProjectAIAssistant
-    tasks={project.tasks}
-  />
-
-</div>
+            <ProjectAIAssistant tasks={project.tasks} />
+          </div>
         </>
       )}
       {tab === "board" && <ProjectBoard tasks={project.tasks} />}
       {tab === "calendar" && <ProjectCalendarView tasks={project.tasks} />}
       {tab === "gantt" && <ProjectGanttView tasks={project.tasks} />}
       {tab === "workload" && <ProjectWorkloadView tasks={project.tasks} />}
+      {tab === "documents" && (
+        <ProjectDocuments
+          tasks={project.tasks}
+          isAdmin={user.role === "admin"}
+        />
+      )}
       {tab === "activity" && (
         <ProjectActivitySection activities={project.tradeCase.activities} />
       )}

@@ -41,6 +41,10 @@ export default function ProjectTabs({ projectId }: { projectId: number }) {
       href: `/dashboard/projects/${projectId}?tab=workload`,
     },
     {
+      label: "Documents",
+      href: `/dashboard/projects/${projectId}?tab=documents`,
+    },
+    {
       title: "Timeline",
       tab: "timeline",
       href: `/dashboard/projects/${projectId}?tab=timeline`,

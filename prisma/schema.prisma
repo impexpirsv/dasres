@@ -81,6 +81,7 @@ model User {
   tickets                Ticket[]
   ticketMessages         TicketMessage[]
   customerCases          TradeCase[]             @relation("CustomerCases")
+approvedAttachments ProjectTaskAttachment[] @relation("AttachmentApprover")
 }
 
 model Session {
@@ -185,6 +186,15 @@ model ProjectTaskAttachment {
   createdAt       DateTime    @default(now())
   task            ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
   uploadedBy      User?       @relation(fields: [uploadedById], references: [id])
+approvalStatus ApprovalStatus @default(PENDING)
+
+approvedById Int?
+
+approvedAt DateTime?
+
+rejectionReason String?
+
+approvedBy User? @relation("AttachmentApprover",fields: [approvedById],references: [id])
 }
 
 model ProjectTaskComment {
@@ -383,4 +393,10 @@ enum TaskPriority {
   MEDIUM
   HIGH
   URGENT
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
