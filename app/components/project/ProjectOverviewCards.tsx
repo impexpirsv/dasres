@@ -1,4 +1,5 @@
 import ProjectProgressCard from "./ProjectProgressCard";
+import StatCard from "../StatCard";
 
 type ProjectTask = {
   id: number;
@@ -31,49 +32,33 @@ export default function ProjectOverviewCards({
       <ProjectProgressCard tasks={tasks} />
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Customer
-          </p>
-          <p className="mt-2 text-2xl font-bold text-white">{customer}</p>
-        </div>
+        <StatCard
+          title="Customer"
+          value={customer}
+        />
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Category
-          </p>
-          <p className="mt-2 text-2xl font-bold text-white">{category}</p>
-        </div>
+        <StatCard
+          title="Category"
+          value={category}
+        />
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Open Tasks
-          </p>
-          <p className="mt-2 text-5xl font-black text-yellow-400">
-            {openTasks}
-          </p>
-        </div>
+        <StatCard
+          title="Open Tasks"
+          value={openTasks}
+          color="yellow"
+        />
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Completed Tasks
-          </p>
-          <p className="mt-2 text-5xl font-black text-green-400">
-            {completedTasks}
-          </p>
-        </div>
+        <StatCard
+          title="Completed Tasks"
+          value={completedTasks}
+          color="green"
+        />
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Steps
-          </p>
-          <p className="mt-2 text-2xl font-bold text-white">
-            {completedSteps} / {totalSteps}
-          </p>
-          <p className="mt-2 text-xs uppercase tracking-wide text-slate-500">
-            Completed
-          </p>
-        </div>
+        <StatCard
+          title="Steps"
+          value={`${completedSteps} / ${totalSteps}`}
+          subtitle="Completed"
+        />
       </div>
     </section>
   );
