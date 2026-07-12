@@ -1,7 +1,10 @@
 "use client";
+
+import { useLocale, useTranslations } from "next-intl";
 import StatusBadge, {
   type Status,
 } from "../StatusBadge";
+
 type UserOption = {
   id: number;
   name: string | null;
@@ -21,6 +24,13 @@ type Task = {
   }[];
 };
 
+const priorityClasses: Record<string, string> = {
+  URGENT: "bg-red-600 text-white",
+  HIGH: "bg-orange-600 text-white",
+  MEDIUM: "bg-yellow-600 text-white",
+  LOW: "bg-slate-700 text-white",
+};
+
 export default function ProjectTaskList({
   tasks,
   selectedTaskId,
@@ -30,10 +40,13 @@ export default function ProjectTaskList({
   selectedTaskId: number | null;
   onSelect: (taskId: number) => void;
 }) {
+  const t = useTranslations("projectTaskList");
+  const locale = useLocale();
+
   if (tasks.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-6 text-center text-slate-500">
-        No tasks yet.
+        {t("empty")}
       </div>
     );
   }
@@ -47,54 +60,72 @@ export default function ProjectTaskList({
 
         const total = task.checklistItems.length;
 
-        const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+        const percent =
+          total === 0
+            ? 0
+            : Math.round((completed / total) * 100);
 
         const isSelected = selectedTaskId === task.id;
+
+        const priorityKey = task.priority.toLowerCase();
+
+        const priorityClass =
+          priorityClasses[task.priority] ??
+          priorityClasses.LOW;
 
         return (
           <button
             key={task.id}
             type="button"
             onClick={() => onSelect(task.id)}
-            className={`w-full rounded-2xl border p-4 text-left transition ${
+            aria-pressed={isSelected}
+            className={`w-full rounded-2xl border p-4 text-start transition ${
               isSelected
                 ? "border-blue-500 bg-blue-950/30"
                 : "border-slate-800 bg-slate-950 hover:border-blue-500"
             }`}
           >
             <div className="flex items-start justify-between gap-3">
-              <div>
-                <h3 className="font-semibold text-white">{task.title}</h3>
+              <div className="min-w-0">
+                <h3 className="truncate font-semibold text-white">
+                  {task.title}
+                </h3>
 
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 truncate text-xs text-slate-500">
                   {task.assignedTo?.name ||
                     task.assignedTo?.email ||
-                    "Unassigned"}
+                    t("unassigned")}
                 </p>
               </div>
 
               <span
-                className={`rounded-full px-2 py-1 text-[11px] font-semibold ${
-                  task.priority === "URGENT"
-                    ? "bg-red-600 text-white"
-                    : task.priority === "HIGH"
-                      ? "bg-orange-600 text-white"
-                      : task.priority === "MEDIUM"
-                        ? "bg-yellow-600 text-white"
-                        : "bg-slate-700 text-white"
-                }`}
+                className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-semibold ${priorityClass}`}
               >
-                {task.priority}
+                {t(`priorities.${priorityKey}`)}
               </span>
             </div>
 
             <div className="mt-4">
               <div className="mb-1 flex justify-between text-xs">
-                <span className="text-slate-500">Progress</span>
-                <span className="text-slate-300">{percent}%</span>
+                <span className="text-slate-500">
+                  {t("progress")}
+                </span>
+
+                <span className="text-slate-300">
+                  {percent}%
+                </span>
               </div>
 
-              <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+              <div
+                className="h-2 overflow-hidden rounded-full bg-slate-800"
+                role="progressbar"
+                aria-label={t("progressLabel", {
+                  title: task.title,
+                })}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={percent}
+              >
                 <div
                   className="h-full rounded-full bg-blue-500"
                   style={{ width: `${percent}%` }}
@@ -102,13 +133,19 @@ export default function ProjectTaskList({
               </div>
             </div>
 
-            <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-             <StatusBadge status={task.status as Status} />
+            <div className="mt-3 flex items-center justify-between gap-3 text-xs text-slate-500">
+              <StatusBadge
+                status={task.status as Status}
+              />
 
-              <span>
+              <span className="shrink-0">
                 {task.dueDate
-                  ? task.dueDate.toLocaleDateString("en-US")
-                  : "No due date"}
+                  ? new Intl.DateTimeFormat(locale, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    }).format(new Date(task.dueDate))
+                  : t("noDueDate")}
               </span>
             </div>
           </button>

@@ -1,0 +1,9 @@
+{
+  "common": {
+    "appName": "Dasres",
+    "dashboard": "Panel",
+    "notifications": "Notificaciones",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión"
+  }
+}

@@ -1,0 +1,1013 @@
+{
+  "common": {
+    "appName": "دَسرِس",
+    "dashboard": "لوحة التحكم",
+    "notifications": "الإشعارات",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "navbar": {
+    "home": "الرئيسية",
+    "experts": "الخبراء",
+    "companies": "الشركات",
+    "opportunities": "الفرص",
+    "topExperts": "أفضل الخبراء",
+    "topCompanies": "أفضل الشركات",
+    "dashboard": "لوحة التحكم",
+    "login": "تسجيل الدخول",
+    "join": "انضم",
+    "joinDasres": "انضم إلى دسترس",
+    "tagline": "منظومة الثقة للتجارة العالمية",
+    "toggleMenu": "فتح أو إغلاق القائمة"
+  },
+  "hero": {
+  "eyebrow": "شبكة تجارة موثقة لخدمات الأعمال العالمية",
+  "titleLine1": "ابنِ الثقة في",
+  "titleLine2": "التجارة العالمية",
+  "description": "تربط دسترس الشركات الموثقة والخبراء الموثوقين والفرص التجارية عبر منصة واحدة قائمة على إدارة الحالات للأعمال الدولية.",
+  "join": "انضم إلى دسترس",
+  "exploreExperts": "استكشف الخبراء",
+  "browseCompanies": "تصفح الشركات",
+  "liveCaseLabel": "حالة تجارية مباشرة",
+  "liveCaseTitle": "التخليص الجمركي في الإمارات",
+  "verified": "موثق",
+  "proposals": "العروض",
+  "trust": "الثقة",
+  "status": "الحالة",
+  "inProgress": "قيد التنفيذ",
+  "topCompany": "أفضل شركة",
+  "topExpert": "أفضل خبير",
+  "customsClearance": "التخليص الجمركي",
+  "tradeConsultant": "مستشار تجاري",
+  "rating": "تقييم {value}"
+},
+"liveStats": {
+  "eyebrow": "إحصائيات المنصة المباشرة",
+  "title": "نشاط دسترس في الوقت الفعلي",
+  "verifiedCompanies": "الشركات الموثقة",
+  "trustedExperts": "الخبراء الموثوقون",
+  "tradeOpportunities": "الفرص التجارية",
+  "tradeCases": "الحالات التجارية",
+  "caseSuccessRate": "معدل نجاح الحالات"
+},
+"topRatedShowcase": {
+  "eyebrow": "شبكة الثقة",
+  "titleLine1": "مزودون موثقون،",
+  "titleLine2": "مصنفون حسب الثقة",
+  "description": "تسلط دسترس الضوء على الشركات والخبراء استناداً إلى التوثيق والتقييمات والمراجعات ودرجة الثقة، لتمكين فرق التجارة من مقارنة مقدمي الخدمات بثقة.",
+  "verifiedProfiles": "ملفات موثقة",
+  "reviewHistory": "سجل المراجعات",
+  "trustScoring": "درجة الثقة",
+  "topCompany": "أفضل شركة",
+  "topExpert": "أفضل خبير",
+  "verified": "موثق",
+  "trust": "الثقة",
+  "rating": "التقييم",
+  "reviews": "المراجعات",
+  "noReviews": "لا توجد مراجعات",
+  "viewCompany": "عرض الشركة",
+  "viewExpert": "عرض الخبير"
+},
+"services": {
+  "eyebrow": "سير عمل المنصة",
+  "titleLine1": "من الطلب إلى",
+  "titleLine2": "التنفيذ الموثوق",
+  "description": "دسترس ليست مجرد دليل، بل هي طبقة تشغيل قائمة على إدارة الحالات لخدمات التجارة الدولية والعروض والمستندات والتواصل والسمعة.",
+  "unifiedWorkflow": "سير عمل موحد",
+  "caseVisibility": "رؤية شاملة للحالة",
+  "steps": {
+    "createCase": {
+      "title": "إنشاء حالة تجارية",
+      "description": "أرسل طلبك التجاري مع الفئة والنطاق وتفاصيل الخدمة."
+    },
+    "matchProviders": {
+      "title": "مطابقة مقدمي الخدمات",
+      "description": "تربط دسترس الحالة بالشركات والخبراء الموثقين حسب الفئة."
+    },
+    "receiveProposals": {
+      "title": "استلام العروض",
+      "description": "قارن السعر والرسالة وملف مقدم الخدمة والتوثيق والسمعة."
+    },
+    "assignWinner": {
+      "title": "اختيار العرض الفائز",
+      "description": "اقبل عرضاً واحداً وارفض البقية وابدأ سير عمل الحالة النشطة."
+    },
+    "manageDelivery": {
+      "title": "إدارة التنفيذ",
+      "description": "احتفظ بالرسائل والمستندات وخطوات الجدول الزمني وسجلات النشاط في مكان واحد."
+    },
+    "completeReview": {
+      "title": "الإكمال والتقييم",
+      "description": "أغلق الحالة وأرسل التقييمات وابنِ الثقة للمشروعات المستقبلية."
+    }
+  }
+},
+"expertsSection": {
+  "eyebrow": "شبكة الخبراء",
+  "title": "خبراء مميزون",
+  "description": "تواصل مع متخصصين موثقين في التجارة الدولية ضمن مجالات الجمارك والتوريد والخدمات اللوجستية والتفتيش والاستشارات التجارية.",
+  "viewAll": "عرض الكل",
+  "verified": "موثق",
+  "available": "متاح",
+  "viewProfile": "عرض الملف"
+},
+"companiesSection": {
+  "eyebrow": "شبكة الشركات",
+  "title": "شركات مميزة",
+  "description": "اكتشف شركات تجارية موثقة في مجالات التخليص الجمركي والشحن والتوريد والتفتيش والخدمات اللوجستية الدولية.",
+  "viewAll": "عرض الكل",
+  "verified": "موثق",
+  "acceptingProjects": "تستقبل مشروعات",
+  "viewProfile": "عرض الملف"
+},
+"opportunitiesSection": {
+  "eyebrow": "السوق العالمي",
+  "title": "أحدث الفرص التجارية",
+  "description": "تصفح طلبات التجارة الدولية، واكتشف فرص أعمال جديدة، وتواصل مع مقدمي خدمات موثقين حول العالم.",
+  "viewAll": "عرض الكل",
+  "statusOpen": "مفتوح",
+  "openOpportunity": "فرصة متاحة",
+  "viewDetails": "عرض التفاصيل"
+},
+"footer": {
+  "ctaEyebrow": "هل أنت مستعد لإدارة التجارة بثقة؟",
+  "ctaTitle": "ابدأ أول حالة تجارية لك في دسترس.",
+  "ctaDescription": "أنشئ حالة، وقارن مقدمي الخدمات الموثقين، وأدر العروض والمستندات والتواصل ضمن سير عمل موثوق واحد.",
+  "createCase": "إنشاء حالة",
+  "exploreNetwork": "استكشاف الشبكة",
+  "description": "منظومة ثقة قائمة على إدارة الحالات لخدمات التجارة الدولية ومقدمي الخدمات الموثقين والعروض والمستندات والسمعة.",
+  "platformTitle": "المنصة",
+  "networkTitle": "الشبكة",
+  "trustSignalsTitle": "مؤشرات الثقة",
+  "companies": "الشركات",
+  "experts": "الخبراء",
+  "opportunities": "الفرص",
+  "dashboard": "لوحة التحكم",
+  "topCompanies": "أفضل الشركات",
+  "topExperts": "أفضل الخبراء",
+  "openCases": "الحالات المفتوحة",
+  "supportTickets": "تذاكر الدعم",
+  "verifiedCompanies": "شركات موثقة",
+  "trustedExperts": "خبراء موثوقون",
+  "proposalWorkflow": "سير عمل العروض",
+  "reviewsReputation": "المراجعات والسمعة",
+  "copyright": "© {year} دسترس. جميع الحقوق محفوظة.",
+  "languagesAvailable": "متاح بـ 12 لغة"
+},
+"dashboardSidebar": {
+  "tagline": "منظومة الثقة للتجارة العالمية",
+   "menu": "القائمة",
+  "sections": {
+    "main": "الرئيسية",
+    "tradeManagement": "إدارة التجارة",
+    "ownership": "ملكيتي",
+    "admin": "الإدارة",
+    "communication": "التواصل",
+    "subscription": "الاشتراك",
+   
+    "account": "الحساب"
+  },
+  "links": {
+    "dashboard": "لوحة التحكم",
+    "globalSearch": "البحث الشامل",
+    "experts": "الخبراء",
+    "topExperts": "أفضل الخبراء",
+    "companies": "الشركات",
+    "topCompanies": "أفضل الشركات",
+    "opportunities": "الفرص",
+    "submittedCases": "الحالات المقدمة",
+    "activeWorkspaces": "مساحات العمل النشطة",
+    "projects": "المشروعات",
+    "myTasks": "مهامي",
+    "myProposals": "عروضي",
+    "myReviews": "مراجعاتي",
+    "openCases": "الحالات المفتوحة",
+    "savedCases": "الحالات المحفوظة",
+    "savedCompanies": "الشركات المحفوظة",
+    "savedExperts": "الخبراء المحفوظون",
+    "tickets": "التذاكر",
+    "myCompanies": "شركاتي",
+    "myExperts": "خبرائي",
+    "users": "المستخدمون",
+    "verifications": "طلبات التوثيق",
+    "notifications": "الإشعارات",
+    "subscription": "الاشتراك",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "premium": {
+    "title": "الميزات المميزة",
+    "description": "الخطط والحدود ومستوى الظهور"
+  }
+},
+"dashboardQuickActions": {
+  "title": "إجراءات سريعة",
+  "description": "الاختصارات المستخدمة بشكل متكرر",
+  "createCase": {
+    "title": "إنشاء ملف",
+    "description": "ابدأ مشروعاً جديداً للتجارة الدولية."
+  },
+  "openCases": {
+    "title": "الملفات المفتوحة",
+    "description": "تصفح الطلبات التجارية المتاحة."
+  },
+  "myCompanies": {
+    "title": "شركاتي",
+    "description": "قم بإدارة ملفات شركاتك."
+  },
+  "myExperts": {
+    "title": "خبرائي",
+    "description": "قم بإدارة ملفات خبرائك."
+  }
+},
+"dashboardAttention": {
+  "title": "يتطلب انتباهك",
+  "description": "عناصر مهمة للمراجعة",
+  "unreadNotifications": "الإشعارات غير المقروءة",
+  "openTickets": "التذاكر المفتوحة",
+  "openCases": "الملفات المفتوحة",
+  "myProposals": "عروضي"
+},
+"dashboardAnalytics": {
+  "title": "نظرة عامة على التحليلات",
+  "description": "ملخص الأداء التشغيلي",
+  "casePipeline": {
+    "title": "مسار الملفات",
+    "open": "مفتوحة",
+    "inProgress": "قيد التنفيذ",
+    "completed": "مكتملة"
+  },
+  "proposalPerformance": {
+    "title": "أداء العروض",
+    "description": "معدل القبول بناءً على العروض المقبولة والمرفوضة.",
+    "accepted": "مقبولة",
+    "rejected": "مرفوضة"
+  },
+  "platformAttention": {
+    "title": "حالة المنصة",
+    "notifications": "الإشعارات",
+    "tickets": "التذاكر",
+    "reviews": "التقييمات",
+    "saved": "العناصر المحفوظة"
+  }
+},
+"dashboardOverdueTasks": {
+  "title": "المهام المتأخرة",
+  "empty": {
+    "title": "لا توجد مهام متأخرة",
+    "description": "كل شيء يسير وفق الجدول."
+  },
+  "dueDate": "تاريخ الاستحقاق: {date}"
+},
+"dashboardSubscription": {
+  "currentPlan": "الخطة الحالية",
+  "managePlan": "إدارة الخطة",
+  "activeCases": "الملفات النشطة",
+  "proposals": "العروض",
+  "usageLimited": "{used} من {limit}",
+  "usageUnlimited": "{used} من غير محدود"
+},
+"dashboardStatsGrid": {
+  "savedCases": {
+    "title": "الملفات المحفوظة",
+    "description": "ملفات محفوظة لوقت لاحق"
+  },
+  "savedCompanies": {
+    "title": "الشركات المحفوظة",
+    "description": "الشركات الموجودة في شبكتك"
+  },
+  "savedExperts": {
+    "title": "الخبراء المحفوظون",
+    "description": "الخبراء الموجودون في شبكتك"
+  },
+  "experts": {
+    "adminTitle": "الخبراء",
+    "userTitle": "خبرائي",
+    "adminDescription": "الخبراء المعتمدون المتاحون",
+    "userDescription": "الخبراء التابعون لك"
+  },
+  "companies": {
+    "adminTitle": "الشركات",
+    "userTitle": "شركاتي",
+    "adminDescription": "الشركات المسجلة",
+    "userDescription": "الشركات التابعة لك"
+  },
+  "opportunities": {
+    "title": "الفرص",
+    "description": "الفرص التجارية النشطة"
+  },
+  "successRate": {
+    "title": "معدل نجاح الملفات",
+    "description": "تم إكمال {completed} من أصل {total} ملفات"
+  },
+  "tradeCases": {
+    "title": "الملفات التجارية",
+    "adminDescription": "جميع المشاريع التجارية",
+    "userDescription": "الطلبات التجارية المقدمة"
+  },
+  "openCases": {
+    "title": "الملفات المفتوحة",
+    "description": "الفرص المتاحة"
+  },
+  "inProgress": {
+    "title": "قيد التنفيذ",
+    "description": "المشاريع التجارية النشطة"
+  },
+  "completed": {
+    "title": "مكتملة",
+    "description": "المشاريع المنتهية"
+  },
+  "proposals": "العروض",
+  "accepted": "المقبولة",
+  "notifications": "الإشعارات",
+  "openTickets": "التذاكر المفتوحة"
+},
+"dashboardMyTasks": {
+  "title": "المهام الموكلة إلي",
+  "viewAll": "عرض الكل",
+  "empty": "لا توجد مهام مخصصة لك.",
+  "status": {
+    "TODO": "للقيام",
+    "IN_PROGRESS": "قيد التنفيذ",
+    "REVIEW": "قيد المراجعة",
+    "COMPLETED": "مكتملة"
+  }
+},
+"dashboardTopRated": {
+  "viewAll": "عرض الكل",
+  "reviewCount": "بناءً على {count} تقييم",
+  "experts": {
+    "title": "الخبراء الأعلى تقييماً",
+    "empty": "لا يوجد خبراء حاصلون على تقييم بعد."
+  },
+  "companies": {
+    "title": "الشركات الأعلى تقييماً",
+    "empty": "لا توجد شركات حاصلة على تقييم بعد."
+  }
+},
+"dashboardLatestItems": {
+  "viewAll": "عرض الكل",
+  "experts": {
+    "adminTitle": "أحدث الخبراء",
+    "userTitle": "آخر خبرائي",
+    "empty": "لم يتم العثور على خبراء."
+  },
+  "companies": {
+    "adminTitle": "أحدث الشركات",
+    "userTitle": "آخر شركاتي",
+    "empty": "لم يتم العثور على شركات."
+  },
+  "opportunities": {
+    "title": "أحدث الفرص",
+    "empty": "لم يتم العثور على فرص."
+  }
+},
+"dashboardRecentActivity": {
+  "title": "النشاطات الأخيرة",
+  "empty": "لم يتم العثور على أي نشاط.",
+  "system": "النظام",
+  "actions": {
+    "proposalSubmitted": "تم إرسال العرض",
+    "proposalAccepted": "تم قبول العرض",
+    "proposalRejected": "تم رفض العرض",
+    "caseCompleted": "تم إكمال الملف",
+    "projectCompleted": "تم إكمال المشروع",
+    "documentUploaded": "تم رفع المستند",
+    "projectTaskAttachmentUploaded": "تم رفع مرفق مهمة المشروع",
+    "documentApproved": "تم اعتماد المستند",
+    "documentRejected": "تم رفض المستند",
+    "messageSent": "تم إرسال الرسالة",
+    "projectMessageSent": "تم إرسال رسالة المشروع",
+    "taskCommentAdded": "تمت إضافة تعليق إلى المهمة",
+    "taskAssigned": "تم تعيين المهمة",
+    "taskCompleted": "تم إكمال المهمة",
+    "ticketUpdated": "تم تحديث التذكرة",
+    "companyVerified": "تم اعتماد الشركة",
+    "companyRejected": "تم رفض الشركة",
+    "projectTaskUpdated": "تم تحديث مهمة المشروع",
+"projectTaskChecklistToggled": "تم تحديث قائمة مهام المشروع"
+  }
+},
+"dashboardProfileCard": {
+  "title": "الملف الشخصي",
+  "name": "الاسم",
+  "email": "البريد الإلكتروني",
+  "role": "الدور",
+  "roles": {
+    "admin": "المدير",
+    "user": "المستخدم"
+  }
+},
+"dashboardPage": {
+  "title": "لوحة التحكم",
+  "description": "قم بإدارة حسابك في Dasres وملفاتك الشخصية وأنشطة التجارة.",
+  "roles": {
+    "admin": "المدير",
+    "user": "المستخدم"
+  },
+  "admin": {
+    "commandCenter": "مركز قيادة المدير",
+    "description": "نظرة عامة على الحالة التشغيلية لمنصة Dasres.",
+    "reviewVerifications": "مراجعة طلبات التحقق",
+    "pendingVerifications": "طلبات التحقق المعلقة",
+    "totalReviews": "إجمالي التقييمات",
+    "premiumUsers": "المستخدمون المميزون",
+    "openTickets": "التذاكر المفتوحة",
+    "panel": "لوحة الإدارة",
+    "users": "المستخدمون",
+    "experts": "الخبراء",
+    "companies": "الشركات",
+    "opportunities": "الفرص",
+    "latestUsers": "أحدث المستخدمين",
+    "manageUsers": "إدارة المستخدمين"
+  }
+},
+"loginPage": {
+  "title": "مرحباً بعودتك",
+  "description": "سجل الدخول إلى حساب Dasres الخاص بك",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "login": "تسجيل الدخول",
+  "loginFailed": "فشل تسجيل الدخول."
+},
+"registerPage": {
+  "title": "انضم إلى Dasres",
+  "description": "أنشئ حسابك",
+  "name": {
+    "label": "الاسم الكامل",
+    "placeholder": "أدخل اسمك الكامل"
+  },
+  "email": {
+    "label": "البريد الإلكتروني",
+    "placeholder": "أدخل بريدك الإلكتروني"
+  },
+  "password": {
+    "label": "كلمة المرور",
+    "placeholder": "أدخل كلمة المرور",
+    "hint": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل."
+  },
+  "submit": "إنشاء حساب",
+  "submitting": "جارٍ إنشاء الحساب...",
+  "registrationFailed": "فشل إنشاء الحساب.",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟",
+  "login": "تسجيل الدخول"
+},
+"projectDetailPage": {
+  "backToProjects": "العودة إلى المشاريع"
+},
+"projectHeader": {
+  "progress": "التقدم"
+},
+"projectTabs": {
+  "overview": "نظرة عامة",
+  "tasks": "المهام",
+  "board": "لوحة كانبان",
+  "calendar": "التقويم",
+  "gantt": "مخطط جانت",
+  "workload": "عبء العمل",
+  "documents": "المستندات",
+  "timeline": "الجدول الزمني",
+  "messages": "الرسائل",
+  "activity": "النشاط"
+},
+"projectOverviewCards": {
+  "customer": "العميل",
+  "category": "الفئة",
+  "openTasks": "المهام المفتوحة",
+  "completedTasks": "المهام المكتملة",
+  "steps": "المراحل",
+  "completed": "مكتمل"
+},
+"projectTimeSummary": {
+  "title": "تتبع الوقت",
+  "description": "ملخص الوقت الإجمالي للمشروع.",
+  "estimated": "المقدر",
+  "logged": "المسجل",
+  "remaining": "المتبقي",
+  "distribution": "توزيع الوقت"
+},
+"projectOverviewHeader": {
+  "description": "مركز إدارة المشروع لمتابعة المهام وعبء العمل والجدول الزمني ومخطط جانت والتنفيذ.",
+  "overallProgress": "التقدم الإجمالي",
+  "status": {
+    "todo": "للقيام",
+    "inProgress": "قيد التنفيذ",
+    "review": "قيد المراجعة",
+    "completed": "مكتمل",
+    "cancelled": "ملغي"
+  },
+  "metrics": {
+    "tasks": "المهام",
+    "completed": "المكتملة",
+    "inProgress": "قيد التنفيذ",
+    "review": "قيد المراجعة",
+    "blocked": "المحظورة",
+    "remaining": "المتبقية"
+  },
+  "hours": {
+    "estimated": "الساعات المقدرة",
+    "logged": "الساعات المسجلة",
+    "value": "{hours} ساعة"
+  },
+  "features": {
+    "tasks": "المهام",
+    "kanban": "كانبان",
+    "calendar": "التقويم",
+    "timeline": "الجدول الزمني",
+    "gantt": "مخطط جانت",
+    "workload": "عبء العمل"
+  }
+},
+"projectHealthCard": {
+  "title": "صحة المشروع",
+  "progress": "التقدم",
+  "hoursUsed": "الساعات المستخدمة",
+  "utilization": "معدل الاستخدام",
+  "overdue": "المهام المتأخرة",
+  "noEstimate": "لا يوجد تقدير",
+  "noOverdueTasks": "لا توجد مهام متأخرة",
+  "overdueTasks": "{count} مهمة"
+},
+"projectCriticalPathCard": {
+  "title": "المسار الحرج",
+  "description": "المهام التي قد تؤخر الجدول الزمني للمشروع بشكل مباشر.",
+  "criticalTasks": "المهام الحرجة",
+  "criticalDuration": "مدة المسار الحرج",
+  "duration": "{count} يوم",
+  "empty": "لم يتم اكتشاف أي تبعية حرجة.",
+  "dependsOn": "يعتمد على: {task}",
+  "critical": "حرج"
+},
+"projectAIInsights": {
+  "title": "رؤى المساعد الذكي",
+  "description": "تحليل قائم على القواعد ومجهز للتكامل المستقبلي مع GPT.",
+  "healthScore": "درجة صحة المشروع بالذكاء الاصطناعي",
+  "progressLabel": "التقدم:",
+  "health": {
+    "excellent": "ممتاز",
+    "stable": "مستقر",
+    "atRisk": "معرض للخطر",
+    "critical": "حرج"
+  },
+  "risks": {
+    "title": "المخاطر",
+    "overdueTasks": "{count} مهمة متأخرة",
+    "blockedTasks": "{count} مهمة محظورة",
+    "pendingApprovals": "{count} موافقة معلقة"
+  },
+  "nextAction": "الإجراء التالي",
+  "recommendation": "التوصية",
+  "nextActions": {
+    "approveDocument": "اعتمد المستند {fileName}",
+    "resolveDependency": "عالج تبعية المهمة {taskTitle}",
+    "reviewOverdueTask": "راجع المهمة المتأخرة: {taskTitle}",
+    "continueExecution": "واصل التنفيذ وأغلق المهمة التالية",
+    "completionReview": "المشروع جاهز لمراجعة الإكمال"
+  },
+  "recommendations": {
+    "pendingApprovals": "اعتماد المستندات هو العائق الرئيسي. راجع المستندات المعلقة قبل الانتقال إلى الشحن أو التسليم.",
+    "blockedTasks": "عالج تبعيات المهام قبل بدء مراحل التنفيذ اللاحقة.",
+    "overdueTasks": "مخاطر الجدول الزمني في ازدياد. راجع المواعيد النهائية وأعد توزيع المهام المتأخرة.",
+    "normalProgress": "يتقدم المشروع بشكل طبيعي. واصل مراقبة المستندات ومراحل سير العمل."
+  }
+},
+"projectAIAssistant": {
+  "title": "مساعد Dasres الذكي",
+  "subtitle": "تحليل ذكي للمشروع",
+  "risk": "المخاطر",
+  "progress": "التقدم",
+  "aiSuggestions": "اقتراحات الذكاء الاصطناعي",
+  "riskLevels": {
+    "low": "منخفض",
+    "medium": "متوسط",
+    "high": "مرتفع"
+  },
+  "suggestions": {
+    "resolveBlocked": "عالج المهام المحظورة.",
+    "reviewOverdue": "راجع المهام المتأخرة.",
+    "increasePace": "زد من وتيرة تنفيذ المشروع.",
+    "normal": "المشروع يتقدم بشكل طبيعي."
+  }
+},
+"projectTasksSection": {
+  "title": "مهام المشروع",
+  "description": "أدر مهام المشروع بكفاءة.",
+  "searchPlaceholder": "البحث في المهام...",
+  "searchLabel": "البحث في مهام المشروع",
+  "filteredCount": "{filtered} من {total}",
+  "emptyState": "اختر مهمة لعرض التفاصيل.",
+  "noSearchResults": "لا توجد مهام مطابقة لبحثك."
+},
+"projectTaskList": {
+  "empty": "لم يتم العثور على مهام.",
+  "unassigned": "غير مُعيّنة",
+  "progress": "التقدم",
+  "progressLabel": "تقدم المهمة {title}",
+  "noDueDate": "بدون موعد نهائي",
+  "priorities": {
+    "urgent": "عاجلة",
+    "high": "عالية",
+    "medium": "متوسطة",
+    "low": "منخفضة"
+  }
+},
+"projectTaskDetails": {
+  "emptyState": "اختر مهمة لعرض التفاصيل.",
+  "assignedTo": "مُعيّنة إلى",
+  "unassigned": "غير مُعيّنة",
+  "startDate": "تاريخ البدء",
+  "dueDate": "الموعد النهائي",
+  "noStartDate": "بدون تاريخ بدء",
+  "noDueDate": "بدون موعد نهائي",
+  "progress": "التقدم",
+  "estimated": "الوقت المقدر",
+  "logged": "الوقت المسجل",
+  "remaining": "الوقت المتبقي",
+  "hours": "{count} ساعة",
+  "notSet": "غير محدد",
+  "dependsOn": "تعتمد على",
+  "blocks": "تمنع",
+  "attachments": "المرفقات",
+  "uploadedBy": "تم الرفع بواسطة {name}",
+  "unknown": "غير معروف",
+  "priorities": {
+    "urgent": "عاجلة",
+    "high": "عالية",
+    "medium": "متوسطة",
+    "low": "منخفضة"
+  },
+  "statuses": {
+    "todo": "قيد الانتظار",
+    "in_progress": "قيد التنفيذ",
+    "review": "قيد المراجعة",
+    "completed": "مكتملة"
+  }
+},
+"projectTaskStatusSelect": {
+  "label": "حالة المهمة",
+  "updating": "جارٍ تحديث الحالة...",
+  "updateError": "تعذر تحديث حالة المهمة.",
+  "networkError": "حدث خطأ في الشبكة أثناء تحديث الحالة.",
+  "statuses": {
+    "todo": "قيد الانتظار",
+    "in_progress": "قيد التنفيذ",
+    "review": "قيد المراجعة",
+    "completed": "مكتملة"
+  }
+},
+"assignTaskSelect": {
+  "label": "تعيين المهمة",
+  "unassigned": "غير مُعيّنة",
+  "updating": "جارٍ التحديث...",
+  "updateError": "تعذر تعيين المهمة.",
+  "networkError": "حدث خطأ في الشبكة أثناء تعيين المهمة."
+},
+"editProjectTaskForm": {
+  "edit": "تعديل",
+  "title": "تعديل المهمة",
+  "taskTitle": "عنوان المهمة",
+  "titleRequired": "عنوان المهمة مطلوب.",
+  "description": "الوصف",
+  "descriptionPlaceholder": "أضف وصفًا للمهمة...",
+  "priority": "الأولوية",
+  "startDate": "تاريخ البدء",
+  "dueDate": "الموعد النهائي",
+  "estimatedHours": "الساعات المقدرة",
+  "estimatedHoursPlaceholder": "الساعات المقدرة",
+  "loggedHours": "الساعات المسجلة",
+  "loggedHoursPlaceholder": "الساعات المسجلة",
+  "assignedTo": "مُعيّنة إلى",
+  "unassigned": "غير مُعيّنة",
+  "dependsOn": "تعتمد على",
+  "noDependency": "بدون تبعية",
+  "save": "حفظ",
+  "saving": "جارٍ الحفظ...",
+  "cancel": "إلغاء",
+  "updateError": "تعذر تحديث المهمة.",
+  "networkError": "حدث خطأ في الشبكة أثناء تحديث المهمة.",
+  "invalidEstimatedHours": "يجب أن تكون الساعات المقدرة صفرًا أو أكثر.",
+  "invalidLoggedHours": "يجب أن تكون الساعات المسجلة صفرًا أو أكثر.",
+  "priorities": {
+    "low": "منخفضة",
+    "medium": "متوسطة",
+    "high": "عالية",
+    "urgent": "عاجلة"
+  }
+},
+"projectTaskChecklist": {
+  "title": "قائمة التحقق",
+  "empty": "لم تتم إضافة عناصر إلى قائمة التحقق بعد.",
+  "updating": "جارٍ التحديث...",
+  "toggleError": "تعذر تحديث عنصر قائمة التحقق.",
+  "networkError": "حدث خطأ في الشبكة أثناء تحديث عنصر قائمة التحقق.",
+  "markComplete": "وضع علامة على {title} كمكتمل",
+  "markIncomplete": "وضع علامة على {title} كغير مكتمل"
+},
+"createChecklistItemForm": {
+  "label": "عنوان عنصر قائمة التحقق",
+  "placeholder": "إضافة عنصر إلى قائمة التحقق...",
+  "add": "إضافة",
+  "adding": "جارٍ الإضافة...",
+  "titleRequired": "عنوان عنصر قائمة التحقق مطلوب.",
+  "createError": "تعذر إضافة عنصر قائمة التحقق.",
+  "invalidResponse": "تم إنشاء عنصر قائمة التحقق، لكن استجابة الخادم غير صالحة.",
+  "networkError": "حدث خطأ في الشبكة أثناء إضافة عنصر قائمة التحقق."
+},
+"taskProgressBar": {
+  "title": "تقدم المهمة",
+  "ariaLabel": "تقدم المهمة",
+  "summary": "تم إكمال {completed} من أصل {total} عنصر في قائمة التحقق"
+},
+"projectTaskComments": {
+  "title": "التعليقات",
+  "empty": "لا توجد تعليقات بعد.",
+  "commentLabel": "التعليق",
+  "placeholder": "اكتب تعليقًا...",
+  "postComment": "نشر التعليق",
+  "posting": "جارٍ النشر...",
+  "edited": "تم التعديل",
+  "deletedComment": "تم حذف هذا التعليق.",
+  "unknownAuthor": "غير معروف",
+  "unknownDate": "تاريخ غير معروف",
+  "commentRequired": "نص التعليق مطلوب.",
+  "createError": "تعذر نشر التعليق.",
+  "networkError": "حدث خطأ في الشبكة أثناء نشر التعليق."
+},
+"projectTaskAttachmentUpload": {
+  "title": "إرفاق ملف",
+  "fileLabel": "اختيار ملف",
+  "helpText": "الصيغ المدعومة: JPG وPNG وWEBP وPDF وDOCX وXLSX. الحد الأقصى للحجم: 10 ميغابايت.",
+  "fileSize": "{size} ميغابايت",
+  "upload": "رفع",
+  "uploading": "جارٍ الرفع...",
+  "clear": "مسح",
+  "selectFile": "يرجى اختيار ملف.",
+  "invalidType": "نوع الملف هذا غير مدعوم.",
+  "fileTooLarge": "يجب ألا يتجاوز حجم الملف المحدد 10 ميغابايت.",
+  "uploadError": "تعذر رفع الملف.",
+  "networkError": "حدث خطأ في الشبكة أثناء رفع الملف."
+},
+"createProjectTaskForm": {
+  "newTask": "+ مهمة جديدة",
+  "modalTitle": "إنشاء مهمة",
+  "taskTitle": "عنوان المهمة",
+  "taskTitlePlaceholder": "أدخل عنوان المهمة",
+  "description": "الوصف",
+  "descriptionPlaceholder": "الوصف اختياري",
+  "priority": "الأولوية",
+  "startDate": "تاريخ البدء",
+  "dueDate": "الموعد النهائي",
+  "createTask": "إنشاء المهمة",
+  "creating": "جارٍ الإنشاء...",
+  "cancel": "إلغاء",
+  "titleRequired": "عنوان المهمة مطلوب.",
+  "invalidDateRange": "لا يمكن أن يكون الموعد النهائي قبل تاريخ البدء.",
+  "createError": "تعذر إنشاء المهمة.",
+  "networkError": "حدث خطأ في الشبكة أثناء إنشاء المهمة.",
+  "priorities": {
+    "low": "منخفضة",
+    "medium": "متوسطة",
+    "high": "عالية",
+    "urgent": "عاجلة"
+  }
+},
+"projectBoard": {
+  "columns": {
+    "todo": "قيد الانتظار",
+    "inProgress": "قيد التنفيذ",
+    "review": "قيد المراجعة",
+    "completed": "مكتملة"
+  },
+  "emptyColumn": "لا توجد مهام",
+  "updateError": "تعذر تحديث حالة المهمة."
+},
+"kanbanColumn": {
+  "ariaLabel": "عمود {title} ويحتوي على {count} مهمة",
+  "taskCount": "{count} مهمة"
+},
+"kanbanTaskCard": {
+  "assignee": "المسؤول",
+  "unassigned": "غير مُعيّنة",
+  "due": "الموعد النهائي",
+  "noDueDate": "بدون موعد نهائي",
+  "checklist": "قائمة التحقق",
+  "comments": "التعليقات",
+  "files": "الملفات",
+  "dragLabel": "سحب المهمة {title}",
+  "priorities": {
+    "low": "منخفضة",
+    "medium": "متوسطة",
+    "high": "عالية",
+    "urgent": "عاجلة"
+  }
+},
+"projectCalendarView": {
+  "title": "تقويم المشروع",
+  "description": "اعرض المواعيد النهائية للمهام وانقل المهام لتحديث تواريخ استحقاقها.",
+  "noEvents": "لا توجد مهام مجدولة.",
+  "updateError": "تعذر تحديث تاريخ المهمة.",
+  "invalidTaskDate": "المهمة أو التاريخ المحدد غير صالح.",
+  "buttons": {
+    "today": "اليوم",
+    "month": "الشهر",
+    "week": "الأسبوع"
+  }
+},
+"projectGanttView": {
+  "title": "مخطط جانت",
+  "description": "عرض مرئي للجدول الزمني لمهام المشروع وتبعياتها.",
+  "emptyState": "لا توجد مهام مؤرخة لعرضها في مخطط جانت.",
+  "taskColumn": "المهمة",
+  "timeline": "الخط الزمني",
+  "week": "الأسبوع",
+  "taskCount": "{count} مهمة",
+  "critical": "حرجة",
+  "blocked": "محظورة",
+  "dateRange": "{start} إلى {end}",
+  "zoom": {
+    "day": "يوم",
+    "week": "أسبوع",
+    "month": "شهر"
+  },
+  "statuses": {
+    "todo": "قيد الانتظار",
+    "in_progress": "قيد التنفيذ",
+    "review": "قيد المراجعة",
+    "completed": "مكتملة",
+    "unknown": "غير معروف"
+  },
+  "duration": {
+  "day": "{title} • {duration} يوم",
+  "week": "{title} • {duration} أسبوع",
+  "month": "{title} • {duration} شهر"
+}
+},
+"projectWorkloadView": {
+  "title": "عبء عمل الفريق",
+  "description": "توزيع المهام والتقدم والمهام المتأخرة حسب كل عضو في الفريق.",
+  "emptyState": "لا توجد مهام متاحة لتحليل عبء العمل.",
+  "unassigned": "غير مُعيّنة",
+  "totalTasks": "إجمالي {count} مهمة",
+  "workload": "عبء العمل",
+  "active": "نشطة",
+  "done": "مكتملة",
+  "overdue": "متأخرة",
+  "progressLabel": "متوسط تقدم مهام {name}",
+  "capacities": {
+    "high": "مرتفع",
+    "medium": "متوسط",
+    "low": "منخفض"
+  },
+  "workloadStates": {
+    "needsAttention": "تحتاج إلى اهتمام",
+    "highLoad": "عبء مرتفع",
+    "balanced": "متوازن",
+    "available": "متاح"
+  }
+},
+"projectTimeline": {
+  "title": "مراحل الخط الزمني",
+  "completed": "مكتملة",
+  "pending": "قيد الانتظار",
+  "notCompletedYet": "لم تكتمل بعد",
+  "unknownDate": "تاريخ غير معروف",
+  "emptyState": "لا توجد مراحل متاحة للخط الزمني."
+},
+"projectDocuments": {
+  "title": "مركز المستندات",
+  "description": "مساحة مركزية لإدارة مستندات المشروع والتجارة.",
+  "documentCount": "{count} مستند",
+  "required": "مطلوب",
+  "optional": "اختياري",
+  "open": "فتح",
+  "linkedTask": "المهمة المرتبطة: {title}",
+  "uploadedBy": "تم الرفع بواسطة {name}",
+  "unknownUser": "مستخدم غير معروف",
+  "unknownSize": "حجم غير معروف",
+  "unknownDate": "تاريخ غير معروف",
+  "rejectionReason": "سبب الرفض",
+  "approvalStatuses": {
+    "approved": "تمت الموافقة",
+    "rejected": "مرفوض",
+    "pending": "قيد المراجعة"
+  },
+  "requirements": {
+    "commercialInvoice": "الفاتورة التجارية",
+    "packingList": "قائمة التعبئة",
+    "billOfLading": "بوليصة الشحن",
+    "insuranceCertificate": "شهادة التأمين"
+  },
+  "fileSize": {
+    "bytes": "{size} بايت",
+    "kilobytes": "{size} كيلوبايت",
+    "megabytes": "{size} ميغابايت"
+  },
+  "emptyState": {
+    "title": "لم يتم رفع أي مستندات بعد",
+    "description": "ستظهر هنا المستندات التي يتم رفعها داخل مهام المشروع."
+  }
+},
+"approveDocumentButtons": {
+  "approve": "✓ موافقة",
+  "approving": "جارٍ الموافقة...",
+  "reject": "✕ رفض",
+  "rejecting": "جارٍ الرفض...",
+  "updateError": "تعذر تحديث حالة المستند.",
+  "networkError": "حدث خطأ في الشبكة أثناء تحديث المستند."
+},
+"addProjectMessageForm": {
+  "label": "رسالة المشروع",
+  "placeholder": "اكتب رسالة للمشروع...",
+  "send": "إرسال الرسالة",
+  "sending": "جارٍ الإرسال...",
+  "shortcutHint": "اضغط Ctrl أو Command مع Enter للإرسال.",
+  "sendError": "تعذر إرسال الرسالة.",
+  "networkError": "حدث خطأ في الشبكة أثناء إرسال الرسالة.",
+  "invalidResponse": "تم إرسال الرسالة، لكن استجابة الخادم غير صالحة."
+},
+"projectMessaging": {
+  "title": "مراسلات المشروع",
+  "description": "التواصل الداخلي بين العميل ومقدم الخدمة وفريق المشروع.",
+  "conversationCount": "{count} محادثة",
+  "messageCount": "{count} رسالة",
+  "defaultConversationTitle": "محادثة المشروع",
+  "conversationListLabel": "محادثات المشروع",
+  "noMessages": "لم يتم إرسال أي رسائل في هذه المحادثة بعد.",
+  "unknownSender": "مرسل غير معروف",
+  "unknownDate": "تاريخ غير معروف",
+  "you": "أنت",
+  "emptyState": {
+    "title": "لا توجد محادثة بعد",
+    "description": "أرسل الرسالة الأولى لبدء محادثة المشروع."
+  }
+},
+"projectActivitySection": {
+  "title": "النشاطات الأخيرة",
+  "emptyState": "لا توجد نشاطات بعد.",
+  "unknownDate": "تاريخ غير معروف",
+  "actions": {
+    "project_created": "تم إنشاء المشروع",
+    "project_updated": "تم تحديث المشروع",
+    "task_created": "تم إنشاء المهمة",
+    "task_updated": "تم تحديث المهمة",
+    "task_assigned": "تم تعيين المهمة",
+    "task_completed": "تم إكمال المهمة",
+    "task_status_updated": "تم تحديث حالة المهمة",
+    "comment_added": "تمت إضافة تعليق",
+    "document_uploaded": "تم رفع المستند",
+    "document_approved": "تمت الموافقة على المستند",
+    "document_rejected": "تم رفض المستند",
+    "message_sent": "تم إرسال الرسالة"
+  }
+},
+"projectListProgress": {
+  "progress": "التقدم",
+  "progressLabel": "تقدم مهام المشروع",
+  "summary": "تم إكمال {completed} من أصل {total} مهمة"
+},
+"projectPrintButton": {
+  "button": "تصدير / طباعة PDF",
+  "tooltip": "اطبع هذه الصفحة أو احفظها كملف PDF",
+  "ariaLabel": "تصدير أو طباعة المشروع بصيغة PDF"
+},
+"projectProgressCard": {
+  "title": "تقدم المشروع",
+  "progressLabel": "تقدم المشروع",
+  "summary": "تم إكمال {completed} من أصل {total} مهمة"
+},
+"projectTasksExportButton": {
+  "button": "تصدير إلى Excel",
+  "ariaLabel": "تصدير مهام المشروع كملف CSV متوافق مع Excel",
+  "tooltip": "تنزيل مهام المشروع كملف CSV متوافق مع Excel",
+  "emptyTooltip": "لا توجد مهام للتصدير",
+  "unknown": "غير معروف",
+  "unknownDate": "تاريخ غير معروف",
+  "headers": {
+    "id": "المعرف",
+    "title": "العنوان",
+    "status": "الحالة",
+    "priority": "الأولوية",
+    "progress": "التقدم",
+    "startDate": "تاريخ البدء",
+    "dueDate": "الموعد النهائي",
+    "estimatedHours": "الساعات المقدرة",
+    "loggedHours": "الساعات المسجلة",
+    "assignedTo": "مُعيّنة إلى",
+    "assignedEmail": "بريد المسؤول",
+    "dependsOn": "تعتمد على",
+    "dependencyStatus": "حالة التبعية"
+  },
+  "statuses": {
+    "todo": "قيد الانتظار",
+    "inProgress": "قيد التنفيذ",
+    "review": "قيد المراجعة",
+    "completed": "مكتملة"
+  },
+  "priorities": {
+    "low": "منخفضة",
+    "medium": "متوسطة",
+    "high": "عالية",
+    "urgent": "عاجلة"
+  }
+}
+}

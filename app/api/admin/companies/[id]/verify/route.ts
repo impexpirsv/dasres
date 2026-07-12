@@ -1,6 +1,6 @@
 import { prisma } from "../../../../../../lib/prisma";
 import { requireAdmin } from "../../../../../../lib/auth";
-
+import { notifyCompanyVerification } from "../../../../../../lib/notificationEvents";
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -23,16 +23,11 @@ export async function PATCH(
   });
 
 if (company.ownerId) {
-  await prisma.notification.create({
-    data: {
-      userId: company.ownerId,
-      title: "Company Verified",
-      message:
-        "Your company has been successfully verified.",
-      type: "COMPANY_VERIFIED",
-      link: `/companies/${company.id}`,
-    },
-  });
+  await notifyCompanyVerification({
+  userId: company.ownerId,
+  approved: true,
+  companyId: company.id,
+});
 }
 
     return Response.json({

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 type Props = {
   latestExperts: {
@@ -22,33 +23,45 @@ type Props = {
   userRole: string;
 };
 
-export default function DashboardLatestItems({
+export default async function DashboardLatestItems({
   latestExperts,
   latestCompanies,
   latestOpportunities,
   userRole,
 }: Props) {
+  const t = await getTranslations("dashboardLatestItems");
+
+  const isAdmin = userRole === "admin";
+
   return (
     <div className="grid lg:grid-cols-3 gap-6 mt-12">
+      {/* Experts */}
+
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center gap-4 mb-4">
           <h2 className="text-xl font-bold">
-            {userRole === "admin" ? "Latest Experts" : "My Latest Experts"}
+            {isAdmin
+              ? t("experts.adminTitle")
+              : t("experts.userTitle")}
           </h2>
 
           <Link
             href={
-              userRole === "admin" ? "/experts" : "/dashboard/my-experts"
+              isAdmin
+                ? "/dashboard/experts"
+                : "/dashboard/my-experts"
             }
             className="text-blue-400 text-sm hover:underline"
           >
-            View all
+            {t("viewAll")}
           </Link>
         </div>
 
         <div className="space-y-4">
           {latestExperts.length === 0 ? (
-            <p className="text-slate-500">No experts found.</p>
+            <p className="text-slate-500">
+              {t("experts.empty")}
+            </p>
           ) : (
             latestExperts.map((expert) => (
               <Link
@@ -56,7 +69,9 @@ export default function DashboardLatestItems({
                 href={`/dashboard/experts/${expert.id}`}
                 className="block border-b border-slate-800 pb-3 last:border-0"
               >
-                <p className="font-semibold">{expert.name}</p>
+                <p className="font-semibold">
+                  {expert.name}
+                </p>
 
                 <p className="text-sm text-slate-400">
                   {expert.country} · {expert.specialty}
@@ -67,29 +82,33 @@ export default function DashboardLatestItems({
         </div>
       </div>
 
+      {/* Companies */}
+
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center gap-4 mb-4">
           <h2 className="text-xl font-bold">
-            {userRole === "admin"
-              ? "Latest Companies"
-              : "My Latest Companies"}
+            {isAdmin
+              ? t("companies.adminTitle")
+              : t("companies.userTitle")}
           </h2>
 
           <Link
             href={
-              userRole === "admin"
+              isAdmin
                 ? "/dashboard/companies"
                 : "/dashboard/my-companies"
             }
             className="text-blue-400 text-sm hover:underline"
           >
-            View all
+            {t("viewAll")}
           </Link>
         </div>
 
         <div className="space-y-4">
           {latestCompanies.length === 0 ? (
-            <p className="text-slate-500">No companies found.</p>
+            <p className="text-slate-500">
+              {t("companies.empty")}
+            </p>
           ) : (
             latestCompanies.map((company) => (
               <Link
@@ -97,7 +116,9 @@ export default function DashboardLatestItems({
                 href={`/dashboard/companies/${company.id}`}
                 className="block border-b border-slate-800 pb-3 last:border-0"
               >
-                <p className="font-semibold">{company.name}</p>
+                <p className="font-semibold">
+                  {company.name}
+                </p>
 
                 <p className="text-sm text-slate-400">
                   {company.country} · {company.category}
@@ -108,21 +129,27 @@ export default function DashboardLatestItems({
         </div>
       </div>
 
+      {/* Opportunities */}
+
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Latest Opportunities</h2>
+        <div className="flex justify-between items-center gap-4 mb-4">
+          <h2 className="text-xl font-bold">
+            {t("opportunities.title")}
+          </h2>
 
           <Link
             href="/dashboard/opportunities"
             className="text-blue-400 text-sm hover:underline"
           >
-            View all
+            {t("viewAll")}
           </Link>
         </div>
 
         <div className="space-y-4">
           {latestOpportunities.length === 0 ? (
-            <p className="text-slate-500">No opportunities found.</p>
+            <p className="text-slate-500">
+              {t("opportunities.empty")}
+            </p>
           ) : (
             latestOpportunities.map((opportunity) => (
               <Link
@@ -130,7 +157,9 @@ export default function DashboardLatestItems({
                 href={`/dashboard/opportunities/${opportunity.id}`}
                 className="block border-b border-slate-800 pb-3 last:border-0"
               >
-                <p className="font-semibold">{opportunity.title}</p>
+                <p className="font-semibold">
+                  {opportunity.title}
+                </p>
 
                 <p className="text-sm text-slate-400">
                   {opportunity.country} · {opportunity.status}

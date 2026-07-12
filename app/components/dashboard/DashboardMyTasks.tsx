@@ -1,4 +1,8 @@
 import Link from "next/link";
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
 
 type Task = {
   id: number;
@@ -16,22 +20,39 @@ type Props = {
   tasks: Task[];
 };
 
-export default function DashboardMyTasks({ tasks }: Props) {
+const localeMap: Record<string, string> = {
+  fa: "fa-IR",
+  ar: "ar",
+  en: "en-US",
+};
+
+export default async function DashboardMyTasks({
+  tasks,
+}: Props) {
+  const t = await getTranslations("dashboardMyTasks");
+  const locale = await getLocale();
+
+  const dateLocale = localeMap[locale] ?? locale;
+
   return (
     <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 mt-12">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">My Assigned Tasks</h2>
+        <h2 className="text-2xl font-bold">
+          {t("title")}
+        </h2>
 
         <Link
           href="/dashboard/my-tasks"
           className="text-blue-400 hover:underline text-sm"
         >
-          View all
+          {t("viewAll")}
         </Link>
       </div>
 
       {tasks.length === 0 ? (
-        <p className="text-slate-500">No assigned tasks.</p>
+        <p className="text-slate-500">
+          {t("empty")}
+        </p>
       ) : (
         <div className="space-y-3">
           {tasks.slice(0, 5).map((task) => (
@@ -42,7 +63,9 @@ export default function DashboardMyTasks({ tasks }: Props) {
             >
               <div className="flex justify-between gap-4">
                 <div>
-                  <p className="font-semibold">{task.title}</p>
+                  <p className="font-semibold">
+                    {task.title}
+                  </p>
 
                   <p className="text-sm text-slate-400 mt-1">
                     {task.project.title}
@@ -61,18 +84,21 @@ export default function DashboardMyTasks({ tasks }: Props) {
                             : "bg-blue-600 text-white"
                     }`}
                   >
-                    {task.status}
+                    {t(`status.${task.status}`)}
                   </span>
 
                   {task.dueDate && (
                     <span
                       className={`text-xs ${
-                        task.status !== "COMPLETED" && task.dueDate < new Date()
+                        task.status !== "COMPLETED" &&
+                        task.dueDate < new Date()
                           ? "text-red-400"
                           : "text-slate-400"
                       }`}
                     >
-                      {task.dueDate.toLocaleDateString("en-US")}
+                      {task.dueDate.toLocaleDateString(
+                        dateLocale,
+                      )}
                     </span>
                   )}
                 </div>

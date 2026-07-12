@@ -1,6 +1,6 @@
 import { prisma } from "../../../../../lib/prisma";
 import { requireAdmin } from "../../../../../lib/auth";
-
+import { notifyCompanyVerification } from "../../../../../lib/notificationEvents";
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -24,16 +24,11 @@ export async function PATCH(
     
 
     if (company.ownerId) {
-      await prisma.notification.create({
-        data: {
-          userId: company.ownerId,
-          title: "Company Verification Rejected",
-          message:
-            "Your company verification request was rejected.",
-          type: "COMPANY_REJECTED",
-          link: `/companies/${company.id}`,
-        },
-      });
+      await notifyCompanyVerification({
+  userId: company.ownerId,
+  approved: false,
+  companyId: company.id,
+});
     }
 
     return Response.json({

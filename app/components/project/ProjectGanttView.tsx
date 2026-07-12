@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 type Task = {
   id: number;
   title: string;
@@ -45,7 +46,13 @@ type DependencyLine = {
 
 function getDateOnly(date: Date | string) {
   const value = new Date(date);
+
+  if (Number.isNaN(value.getTime())) {
+    return null;
+  }
+
   value.setHours(0, 0, 0, 0);
+
   return value;
 }
 
@@ -73,12 +80,6 @@ function getStatusColor(status: string) {
   }
 }
 
-function getMonthTitle(date: Date) {
-  return date.toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
-}
 function getColumnWidth(zoomLevel: ZoomLevel) {
   switch (zoomLevel) {
     case "week":
@@ -90,12 +91,20 @@ function getColumnWidth(zoomLevel: ZoomLevel) {
   }
 }
 
-function getUnitStart(date: Date, zoomLevel: ZoomLevel) {
+function getUnitStart(
+  date: Date,
+  zoomLevel: ZoomLevel,
+) {
   const value = getDateOnly(date);
+
+  if (!value) {
+    return new Date(date);
+  }
 
   if (zoomLevel === "week") {
     const day = value.getDay();
     const diff = day === 0 ? -6 : 1 - day;
+
     value.setDate(value.getDate() + diff);
   }
 
@@ -150,11 +159,20 @@ function getOffsetBetween(start: Date, target: Date, zoomLevel: ZoomLevel) {
   return Math.max(0, offset);
 }
 
-function getUnitLabel(date: Date, zoomLevel: ZoomLevel) {
+function getUnitLabel(
+  date: Date,
+  zoomLevel: ZoomLevel,
+  locale: string,
+  weekLabel: string,
+) {
   if (zoomLevel === "month") {
     return {
-      top: date.toLocaleDateString("en-US", { month: "short" }),
-      bottom: String(date.getFullYear()),
+      top: new Intl.DateTimeFormat(locale, {
+        month: "short",
+      }).format(date),
+      bottom: new Intl.NumberFormat(locale, {
+        useGrouping: false,
+      }).format(date.getFullYear()),
     };
   }
 
@@ -162,16 +180,18 @@ function getUnitLabel(date: Date, zoomLevel: ZoomLevel) {
     const weekEnd = addUnit(date, "day", 6);
 
     return {
-      top: "Week",
-      bottom: `${date.getDate()}-${weekEnd.getDate()}`,
+      top: weekLabel,
+      bottom: `${new Intl.NumberFormat(locale).format(
+        date.getDate(),
+      )}-${new Intl.NumberFormat(locale).format(weekEnd.getDate())}`,
     };
   }
 
   return {
-    top: date.toLocaleDateString("en-US", {
+    top: new Intl.DateTimeFormat(locale, {
       weekday: "short",
-    }),
-    bottom: String(date.getDate()),
+    }).format(date),
+    bottom: new Intl.NumberFormat(locale).format(date.getDate()),
   };
 }
 function buildDependencyPath(
@@ -263,6 +283,9 @@ function buildDependencyLines(ganttTasks: GanttTask[]) {
 }
 
 export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
+  const t = useTranslations("projectGanttView");
+  const locale = useLocale();
+  const isRtl = locale.startsWith("fa") || locale.startsWith("ar");
   const rowHeight = 64;
   const barHeight = 30;
   const taskColumnWidth = 260;
@@ -274,20 +297,37 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
   const datedTasksBase = tasks
     .filter((task) => task.startDate || task.dueDate)
     .map((task) => {
-      const start = getDateOnly(task.startDate || task.dueDate!);
-      const end = getDateOnly(task.dueDate || task.startDate!);
+      const start = getDateOnly(task.startDate ?? task.dueDate!);
+
+      const end = getDateOnly(task.dueDate ?? task.startDate!);
+
+      if (!start || !end) {
+        return null;
+      }
+
+      const normalizedStart = start.getTime() <= end.getTime() ? start : end;
+
+      const normalizedEnd = end.getTime() >= start.getTime() ? end : start;
 
       return {
         ...task,
-        start,
-        end,
+        start: normalizedStart,
+        end: normalizedEnd,
       };
-    });
+    })
+    .filter(
+      (
+        task,
+      ): task is Task & {
+        start: Date;
+        end: Date;
+      } => task !== null,
+    );
 
   if (datedTasksBase.length === 0) {
     return (
       <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 text-slate-400">
-        No dated tasks to display in Gantt view.
+        {t("emptyState")}
       </div>
     );
   }
@@ -334,9 +374,16 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
       canvasPadding + taskColumnWidth + offset * columnWidth + 8;
     const baselineY =
       index * rowHeight + (rowHeight - barHeight) / 2 + barHeight + 6;
-    const baselineWidth = isMilestone ? 24 : duration * columnWidth - 16;
+    const baselineWidth = isMilestone
+      ? 24
+      : Math.max(24, duration * columnWidth - 16);
+    const normalizedProgress = Math.min(
+      100,
+      Math.max(0, Number(task.progress)),
+    );
     return {
       ...task,
+      progress: normalizedProgress,
       dependencyType: "FS",
       isMilestone,
       isCritical: criticalTaskIds.has(task.id),
@@ -348,35 +395,57 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
       duration,
       x: canvasPadding + taskColumnWidth + offset * columnWidth + 8,
       y: index * rowHeight + (rowHeight - barHeight) / 2,
-      width: isMilestone ? 24 : duration * columnWidth - 16,
+      width: isMilestone ? 24 : Math.max(24, duration * columnWidth - 16),
       height: barHeight,
     };
   });
 
   const dependencyLines = buildDependencyLines(ganttTasks);
 
-  const today = getDateOnly(new Date());
+  const today = getDateOnly(new Date()) ?? new Date();
   const todayOffset = getOffsetBetween(timelineStart, today, zoomLevel);
-  const showTodayLine =
-    today >= minDate && today <= maxDate && zoomLevel === "day";
+  const timelineLastDate = addUnit(timelineEnd, zoomLevel, 1);
 
+  const showTodayLine =
+    zoomLevel === "day" && today >= timelineStart && today < timelineLastDate;
+
+  function getTranslatedStatus(status: string) {
+    switch (status) {
+      case "TODO":
+        return t("statuses.todo");
+
+      case "IN_PROGRESS":
+        return t("statuses.in_progress");
+
+      case "REVIEW":
+        return t("statuses.review");
+
+      case "COMPLETED":
+        return t("statuses.completed");
+
+      default:
+        return t("statuses.unknown");
+    }
+  }
   return (
     <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-      <div className="mb-6 flex items-center justify-between gap-4">
+      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-white">Gantt Chart</h2>
-          <p className="mt-1 text-sm text-slate-400">
-            Visual timeline of project tasks and dependencies.
-          </p>
+          <h2 className="text-xl font-bold text-white">{t("title")}</h2>
+
+          <p className="mt-1 text-sm text-slate-400">{t("description")}</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div
+          dir={isRtl ? "rtl" : "ltr"}
+          className="flex flex-wrap items-center gap-2"
+        >
           {(["day", "week", "month"] as ZoomLevel[]).map((level) => (
             <button
-              key={level}
+              key={t(`zoom.${level}`)}
               type="button"
               onClick={() => setZoomLevel(level)}
-              className={`rounded-xl border px-3 py-2 text-xs font-bold uppercase transition ${
+              className={`rounded-xl border px-3 py-2 text-xs font-bold transition ${
                 zoomLevel === level
                   ? "border-blue-500 bg-blue-500/10 text-blue-300"
                   : "border-slate-800 bg-slate-950 text-slate-400 hover:text-white"
@@ -387,13 +456,19 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
           ))}
 
           <div className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2 text-sm font-semibold text-blue-300">
-            {ganttTasks.length} Tasks
+            {t("taskCount", {
+              count: ganttTasks.length,
+            })}
           </div>
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950">
+      <div
+        dir={isRtl ? "rtl" : "ltr"}
+        className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950"
+      >
         <div
+          dir="ltr"
           className="relative"
           style={{
             width: `${chartWidth}px`,
@@ -406,17 +481,39 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
               gridTemplateColumns: `${canvasPadding}px ${taskColumnWidth}px repeat(${totalUnits}, ${columnWidth}px)`,
             }}
           >
-            <div className="border-r border-slate-800 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Task
+            <div
+              dir={isRtl ? "rtl" : "ltr"}
+              className={`px-4 py-3 text-start text-xs font-semibold tracking-wide text-slate-500 ${
+                isRtl
+                  ? "border-l border-slate-800"
+                  : "border-r border-slate-800"
+              }`}
+            >
+              {t("taskColumn")}
             </div>
-            <div className="border-r border-slate-800" />
+            <div
+              className={
+                isRtl
+                  ? "border-l border-slate-800"
+                  : "border-r border-slate-800"
+              }
+            />
             <div
               className="flex items-center justify-center py-3 text-sm font-bold text-white"
               style={{
                 gridColumn: `3 / span ${totalUnits}`,
               }}
             >
-              {getMonthTitle(minDate)}
+              {t("dateRange", {
+                start: new Intl.DateTimeFormat(locale, {
+                  month: "long",
+                  year: "numeric",
+                }).format(minDate),
+                end: new Intl.DateTimeFormat(locale, {
+                  month: "long",
+                  year: "numeric",
+                }).format(maxDate),
+              })}
             </div>
           </div>
 
@@ -426,14 +523,27 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
               gridTemplateColumns: `${canvasPadding}px ${taskColumnWidth}px repeat(${totalUnits}, ${columnWidth}px)`,
             }}
           >
-            <div className="border-r border-slate-800" />
-            <div className="border-r border-slate-800 px-4 py-2 text-xs text-slate-500">
-              Timeline
+            <div
+              className={
+                isRtl
+                  ? "border-l border-slate-800"
+                  : "border-r border-slate-800"
+              }
+            />
+            <div
+              dir={isRtl ? "rtl" : "ltr"}
+              className={`px-4 py-2 text-start text-xs text-slate-500 ${
+                isRtl
+                  ? "border-l border-slate-800"
+                  : "border-r border-slate-800"
+              }`}
+            >
+              {t("timeline")}
             </div>
 
             {Array.from({ length: totalUnits }).map((_, index) => {
               const day = addUnit(timelineStart, zoomLevel, index);
-              const label = getUnitLabel(day, zoomLevel);
+              const label = getUnitLabel(day, zoomLevel, locale, t("week"));
 
               const isToday =
                 zoomLevel === "day" && day.getTime() === today.getTime();
@@ -527,7 +637,9 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
 
             {ganttTasks.map((task) => {
               const isBlocked =
-                task.dependsOn?.status && task.dependsOn.status !== "COMPLETED";
+                Boolean(task.dependsOn) &&
+                task.dependsOn?.status !== "COMPLETED" &&
+                task.status !== "COMPLETED";
               const hasOutgoingDependency = ganttTasks.some(
                 (item) => item.dependsOn?.id === task.id,
               );
@@ -542,19 +654,23 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
                   }}
                 >
                   <div
-                    className="absolute top-0 flex items-center border-r border-slate-800 px-4"
+                    className={`absolute top-0 flex items-center px-4 ${
+                      isRtl
+                        ? "border-l border-slate-800 text-right"
+                        : "border-r border-slate-800 text-left"
+                    }`}
                     style={{
                       left: `${canvasPadding}px`,
                       width: `${taskColumnWidth}px`,
                       height: `${rowHeight}px`,
                     }}
                   >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-white">
+                    <div dir={isRtl ? "rtl" : "ltr"} className="min-w-0 w-full">
+                      <p className="truncate text-start text-sm font-semibold text-white">
                         {task.title}
                       </p>
-                      <p className="mt-1 text-xs text-slate-500">
-                        {task.status}
+                      <p className="mt-1 text-start text-xs text-slate-500">
+                        {getTranslatedStatus(task.status)}
                       </p>
                     </div>
                   </div>
@@ -578,7 +694,9 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
                         top: `${task.baselineY - task.rowIndex * rowHeight}px`,
                         width: `${task.baselineWidth}px`,
                       }}
-                      title={`${task.title} • Baseline`}
+                      title={t("tooltips.baseline", {
+                        title: task.title,
+                      })}
                     />
                   )}
                   {task.dependsOn && (
@@ -588,7 +706,7 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
                         left: `${task.x - 6}px`,
                         top: `${task.y - task.rowIndex * rowHeight + task.height / 2 - 6}px`,
                       }}
-                      title="Dependency input"
+                      title={t("tooltips.dependencyInput")}
                     />
                   )}
 
@@ -599,7 +717,7 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
                         left: `${task.x + task.width - 6}px`,
                         top: `${task.y - task.rowIndex * rowHeight + task.height / 2 - 6}px`,
                       }}
-                      title="Dependency output"
+                      title={t("tooltips.dependencyOutput")}
                     />
                   )}
                   {task.isMilestone ? (
@@ -611,7 +729,9 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
                         width: `${task.width}px`,
                         height: `${task.width}px`,
                       }}
-                      title={`${task.title} • Milestone`}
+                      title={t("tooltips.milestone", {
+                        title: task.title,
+                      })}
                     >
                       <div
                         className={`h-5 w-5 rotate-45 shadow-lg ${
@@ -634,39 +754,50 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
                         width: `${task.width}px`,
                         height: `${task.height}px`,
                       }}
-                      title={`${task.title} • ${task.duration} day(s)`}
+                      title={t(`tooltips.duration.${zoomLevel}`, {
+                        title: task.title,
+                        duration: task.duration,
+                      })}
                     >
                       <div className="absolute inset-0 overflow-hidden rounded-xl">
                         <div
                           className="h-full bg-white/20"
                           style={{
-                            width: `${task.progress ?? 0}%`,
+                            width: `${task.progress}%`,
                           }}
                         />
                       </div>
 
-                      <div className="absolute inset-0 flex items-center justify-between gap-2 px-3 text-xs font-semibold text-white">
-                        <span className="max-w-[140px] truncate">{task.title}</span>
+                      <div
+                        dir={isRtl ? "rtl" : "ltr"}
+                        className="absolute inset-0 flex items-center justify-between gap-2 px-3 text-xs font-semibold text-white"
+                      >
+                        <span className="max-w-[140px] truncate text-start">
+                          {task.title}
+                        </span>
 
-                        <span className="flex shrink-0 items-center gap-2">
+                        <span
+                          className="flex shrink-0 items-center gap-2"
+                          dir="ltr"
+                        >
                           {task.dependsOn && (
                             <span className="rounded-full bg-slate-950/70 px-2 py-0.5 text-[10px] font-bold uppercase text-white ring-1 ring-white/20">
                               {task.dependencyType}
                             </span>
                           )}
                           {task.isCritical && (
-                            <span className="rounded-full bg-red-950/80 px-2 py-0.5 text-[10px] font-bold uppercase text-red-100 ring-1 ring-red-300/50">
-                              Critical
+                            <span className="rounded-full bg-red-950/80 px-2 py-0.5 text-[10px] font-bold text-red-100 ring-1 ring-red-300/50">
+                              {t("critical")}
                             </span>
                           )}
                           {isBlocked && (
                             <span className="rounded-full bg-red-500/90 px-2 py-0.5 text-[10px] font-bold uppercase text-white">
-                              Blocked
+                              {t("blocked")}
                             </span>
                           )}
 
                           <span className="shrink-0 rounded-full bg-slate-950/70 px-2 py-0.5 text-[10px] font-bold">
-                            {task.progress ?? 0}%
+                            {task.progress}%
                           </span>
                         </span>
                       </div>

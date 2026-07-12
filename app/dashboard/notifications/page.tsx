@@ -6,41 +6,43 @@ import MarkAllNotificationsReadButton from "../../components/MarkAllNotification
 function getNotificationBadge(type: string) {
   switch (type) {
     case "PROPOSAL_SUBMITTED":
-      return {
-        label: "Proposal",
-        className: "bg-yellow-600 text-black",
-      };
+      return { label: "Proposal", className: "bg-yellow-600 text-black" };
 
     case "PROPOSAL_ACCEPTED":
-      return {
-        label: "Accepted",
-        className: "bg-green-600 text-white",
-      };
+      return { label: "Accepted", className: "bg-green-600 text-white" };
 
-    case "MESSAGE_SENT":
-      return {
-        label: "Message",
-        className: "bg-blue-600 text-white",
-      };
+    case "PROPOSAL_REJECTED":
+      return { label: "Rejected", className: "bg-red-600 text-white" };
+
+    case "PROJECT_MESSAGE":
+      return { label: "Message", className: "bg-blue-600 text-white" };
 
     case "DOCUMENT_UPLOADED":
-      return {
-        label: "Document",
-        className: "bg-purple-600 text-white",
-      };
+      return { label: "Document", className: "bg-purple-600 text-white" };
 
-    case "TICKET_CREATED":
+    case "DOCUMENT_APPROVED":
+      return { label: "Approved", className: "bg-emerald-600 text-white" };
+
+    case "TASK_ASSIGNED":
+      return { label: "Assigned", className: "bg-indigo-600 text-white" };
+
+    case "TASK_COMPLETED":
+      return { label: "Completed", className: "bg-green-700 text-white" };
+
+    case "TASK_COMMENT":
+      return { label: "Comment", className: "bg-sky-600 text-white" };
+
     case "TICKET_UPDATED":
-      return {
-        label: "Ticket",
-        className: "bg-cyan-600 text-black",
-      };
+      return { label: "Ticket", className: "bg-cyan-600 text-black" };
+
+    case "DEADLINE_REMINDER":
+      return { label: "Deadline", className: "bg-orange-600 text-white" };
+
+    case "PROJECT_COMPLETED":
+      return { label: "Project Done", className: "bg-green-500 text-black" };
 
     default:
-      return {
-        label: "System",
-        className: "bg-slate-700 text-slate-200",
-      };
+      return { label: "System", className: "bg-slate-700 text-slate-200" };
   }
 }
 

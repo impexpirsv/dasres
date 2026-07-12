@@ -2,8 +2,15 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
-export default function ProjectTabs({ projectId }: { projectId: number }) {
+export default function ProjectTabs({
+  projectId,
+}: {
+  projectId: number;
+}) {
+  const t = useTranslations("projectTabs");
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -11,63 +18,65 @@ export default function ProjectTabs({ projectId }: { projectId: number }) {
 
   const tabs = [
     {
-      title: "Overview",
+      title: t("overview"),
       tab: "overview",
       href: `/dashboard/projects/${projectId}`,
     },
     {
-      title: "Tasks",
+      title: t("tasks"),
       tab: "tasks",
       href: `/dashboard/projects/${projectId}?tab=tasks`,
     },
     {
-      title: "Board",
+      title: t("board"),
       tab: "board",
       href: `/dashboard/projects/${projectId}?tab=board`,
     },
     {
-      title: "Calendar",
+      title: t("calendar"),
       tab: "calendar",
       href: `/dashboard/projects/${projectId}?tab=calendar`,
     },
     {
-      title: "Gantt",
+      title: t("gantt"),
       tab: "gantt",
       href: `/dashboard/projects/${projectId}?tab=gantt`,
     },
     {
-      title: "Workload",
+      title: t("workload"),
       tab: "workload",
       href: `/dashboard/projects/${projectId}?tab=workload`,
     },
     {
-      title: "Documents",
+      title: t("documents"),
       tab: "documents",
       href: `/dashboard/projects/${projectId}?tab=documents`,
     },
     {
-      title: "Timeline",
+      title: t("timeline"),
       tab: "timeline",
       href: `/dashboard/projects/${projectId}?tab=timeline`,
     },
     {
-      title: "Messages",
+      title: t("messages"),
       tab: "messages",
       href: `/dashboard/projects/${projectId}?tab=messages`,
     },
     {
-      title: "Activity",
+      title: t("activity"),
       tab: "activity",
       href: `/dashboard/projects/${projectId}?tab=activity`,
     },
   ];
 
-  const isProjectPage = pathname === `/dashboard/projects/${projectId}`;
+  const isProjectPage =
+    pathname === `/dashboard/projects/${projectId}`;
 
   return (
     <div className="flex flex-wrap gap-2 pt-4">
       {tabs.map((tab) => {
-        const active = isProjectPage && currentTab === tab.tab;
+        const active =
+          isProjectPage && currentTab === tab.tab;
 
         return (
           <Link

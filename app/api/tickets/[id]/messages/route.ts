@@ -1,6 +1,6 @@
 import { prisma } from "../../../../../lib/prisma";
 import { requireUser } from "../../../../../lib/auth";
-
+import { notifyTicketUpdated } from "../../../../../lib/notificationEvents";
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -85,21 +85,12 @@ export async function POST(
         });
       }
 
-      await Promise.all(
-        Array.from(receiverIds).map((receiverId) =>
-          tx.notification.create({
-            data: {
-              userId: receiverId,
-              title: "New ticket reply",
-              message: `${
-                user.name || user.email
-              } replied to ticket: ${ticket.subject}`,
-              type: "TICKET_REPLY",
-              link: `/dashboard/tickets/${ticket.id}`,
-            },
-          }),
-        ),
-      );
+      await notifyTicketUpdated({
+        userIds: Array.from(receiverIds),
+        title: "New ticket reply",
+        message: `${user.name || user.email} replied to ticket: ${ticket.subject}`,
+        ticketId: ticket.id,
+      });
     });
 
     return Response.json({

@@ -1,9 +1,11 @@
+import { getTranslations } from "next-intl/server";
+
 type Task = {
   id: number;
   title: string;
   status: string;
   progress: number;
-  dueDate: Date | null;
+  dueDate: Date | string | null;
   dependsOn?: {
     id: number;
     title: string;
@@ -17,30 +19,44 @@ type Task = {
 };
 
 function isOverdue(task: Task) {
-  if (!task.dueDate || task.status === "COMPLETED") return false;
+  if (!task.dueDate || task.status === "COMPLETED") {
+    return false;
+  }
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const dueDate = new Date(task.dueDate);
+
+  if (Number.isNaN(dueDate.getTime())) {
+    return false;
+  }
+
   dueDate.setHours(0, 0, 0, 0);
 
   return dueDate < today;
 }
 
-export default function ProjectAIInsights({ tasks }: { tasks: Task[] }) {
+export default async function ProjectAIInsights({
+  tasks,
+}: {
+  tasks: Task[];
+}) {
+  const t = await getTranslations("projectAIInsights");
+
   const overdueTasks = tasks.filter(isOverdue);
 
   const blockedTasks = tasks.filter(
     (task) =>
-      task.dependsOn &&
-      task.dependsOn.status !== "COMPLETED" &&
+      Boolean(task.dependsOn) &&
+      task.dependsOn?.status !== "COMPLETED" &&
       task.status !== "COMPLETED",
   );
 
   const pendingApprovals = tasks.flatMap((task) =>
     task.attachments.filter(
-      (attachment) => attachment.approvalStatus !== "APPROVED",
+      (attachment) =>
+        attachment.approvalStatus !== "APPROVED",
     ),
   );
 
@@ -51,7 +67,9 @@ export default function ProjectAIInsights({ tasks }: { tasks: Task[] }) {
   const progress =
     tasks.length === 0
       ? 0
-      : Math.round((completedTasks / tasks.length) * 100);
+      : Math.round(
+          (completedTasks / tasks.length) * 100,
+        );
 
   const healthScore = Math.max(
     0,
@@ -66,93 +84,146 @@ export default function ProjectAIInsights({ tasks }: { tasks: Task[] }) {
 
   const healthLabel =
     healthScore >= 85
-      ? "Excellent"
+      ? t("health.excellent")
       : healthScore >= 65
-        ? "Stable"
+        ? t("health.stable")
         : healthScore >= 45
-          ? "At Risk"
-          : "Critical";
+          ? t("health.atRisk")
+          : t("health.critical");
 
   const nextAction =
     pendingApprovals.length > 0
-      ? `Approve ${pendingApprovals[0].fileName}`
+      ? t("nextActions.approveDocument", {
+          fileName: pendingApprovals[0].fileName,
+        })
       : blockedTasks.length > 0
-        ? `Resolve dependency for ${blockedTasks[0].title}`
+        ? t("nextActions.resolveDependency", {
+            taskTitle: blockedTasks[0].title,
+          })
         : overdueTasks.length > 0
-          ? `Review overdue task: ${overdueTasks[0].title}`
+          ? t("nextActions.reviewOverdueTask", {
+              taskTitle: overdueTasks[0].title,
+            })
           : progress < 100
-            ? "Continue execution and close the next task"
-            : "Project is ready for completion review";
+            ? t("nextActions.continueExecution")
+            : t("nextActions.completionReview");
 
   const recommendation =
     pendingApprovals.length > 0
-      ? "Document approval is the main bottleneck. Review pending documents before moving to shipping or delivery."
+      ? t("recommendations.pendingApprovals")
       : blockedTasks.length > 0
-        ? "Resolve task dependencies before starting downstream execution."
+        ? t("recommendations.blockedTasks")
         : overdueTasks.length > 0
-          ? "Schedule risk is increasing. Review deadlines and reassign delayed tasks."
-          : "Project is progressing normally. Keep monitoring documents and workflow milestones.";
+          ? t("recommendations.overdueTasks")
+          : t("recommendations.normalProgress");
 
   return (
-    <div className="rounded-3xl border border-cyan-500/20 bg-slate-900 p-6">
+    <section className="rounded-3xl border border-cyan-500/20 bg-slate-900 p-6">
       <div className="mb-6">
         <h3 className="text-lg font-bold text-white">
-          🤖 AI Copilot Insights
+          <span aria-hidden="true">🤖</span>{" "}
+          {t("title")}
         </h3>
+
         <p className="mt-1 text-sm text-slate-400">
-          Rule-based analysis prepared for future GPT integration.
+          {t("description")}
         </p>
       </div>
 
       <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-          AI Health Score
+        <p className="text-xs font-semibold tracking-wide text-slate-500">
+          {t("healthScore")}
         </p>
 
-        <div className="mt-3 flex items-end justify-between gap-4">
+        <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-4xl font-black text-white">
               {healthScore}
-              <span className="text-lg text-slate-500">/100</span>
+              <span className="text-lg text-slate-500">
+                /100
+              </span>
             </p>
+
             <p className="mt-1 text-sm font-semibold text-cyan-300">
               {healthLabel}
             </p>
           </div>
 
-          <p className="text-right text-sm text-slate-400">
-            Progress:{" "}
-            <span className="font-bold text-blue-300">{progress}%</span>
+          <p className="text-start text-sm text-slate-400">
+            {t("progressLabel")}{" "}
+            <span className="font-bold text-blue-300">
+              {progress}%
+            </span>
           </p>
+        </div>
+
+        <div
+          className="mt-4 h-2 overflow-hidden rounded-full bg-slate-800"
+          role="progressbar"
+          aria-label={t("healthScore")}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={healthScore}
+        >
+          <div
+            className="h-full rounded-full bg-cyan-500"
+            style={{
+              width: `${healthScore}%`,
+            }}
+          />
         </div>
       </div>
 
       <div className="mt-5 grid gap-4 lg:grid-cols-3">
         <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-4">
-          <p className="text-sm font-bold text-red-200">⚠ Risks</p>
+          <p className="text-sm font-bold text-red-200">
+            <span aria-hidden="true">⚠</span>{" "}
+            {t("risks.title")}
+          </p>
+
           <div className="mt-3 space-y-2 text-sm text-red-100">
-            <p>{overdueTasks.length} overdue task(s)</p>
-            <p>{blockedTasks.length} blocked task(s)</p>
-            <p>{pendingApprovals.length} pending approval(s)</p>
+            <p>
+              {t("risks.overdueTasks", {
+                count: overdueTasks.length,
+              })}
+            </p>
+
+            <p>
+              {t("risks.blockedTasks", {
+                count: blockedTasks.length,
+              })}
+            </p>
+
+            <p>
+              {t("risks.pendingApprovals", {
+                count: pendingApprovals.length,
+              })}
+            </p>
           </div>
         </div>
 
         <div className="rounded-2xl border border-blue-500/20 bg-blue-500/10 p-4">
-          <p className="text-sm font-bold text-blue-200">🎯 Next Action</p>
-          <p className="mt-3 text-sm leading-6 text-blue-100">
+          <p className="text-sm font-bold text-blue-200">
+            <span aria-hidden="true">🎯</span>{" "}
+            {t("nextAction")}
+          </p>
+
+          <p className="mt-3 break-words text-sm leading-6 text-blue-100">
             {nextAction}
           </p>
         </div>
 
         <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4">
           <p className="text-sm font-bold text-emerald-200">
-            💡 Recommendation
+            <span aria-hidden="true">💡</span>{" "}
+            {t("recommendation")}
           </p>
-          <p className="mt-3 text-sm leading-6 text-emerald-100">
+
+          <p className="mt-3 break-words text-sm leading-6 text-emerald-100">
             {recommendation}
           </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

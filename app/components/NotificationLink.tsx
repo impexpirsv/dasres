@@ -13,21 +13,19 @@ export default function NotificationLink({
 }) {
   const router = useRouter();
 
-  async function handleClick(
-    e: React.MouseEvent<HTMLAnchorElement>
-  ) {
+  async function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
 
     await fetch(`/api/notifications/${id}/read`, {
       method: "POST",
     });
 
-    router.refresh();
     router.push(href);
+    router.refresh();
   }
 
   return (
-    <a href={href} onClick={handleClick}>
+    <a href={href} onClick={handleClick} className="block">
       {children}
     </a>
   );

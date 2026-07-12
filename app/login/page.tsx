@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-
+import { useTranslations } from "next-intl";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
+const t = useTranslations("loginPage");
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
@@ -26,7 +26,7 @@ export default function LoginPage() {
     if (response.ok) {
       window.location.href = "/dashboard";
     } else {
-      setMessage(data.message || "Login failed.");
+      setMessage(data.message || t("loginFailed"));
     }
   }
 
@@ -34,17 +34,17 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-6">
       <div className="w-full max-w-md bg-slate-900 p-8 rounded-2xl border border-slate-800">
         <h1 className="text-3xl font-bold text-white mb-2">
-          Welcome Back
+          {t("title")}
         </h1>
 
         <p className="text-slate-400 mb-8">
-          Sign in to your Dasres account
+          {t("description")}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
-            placeholder="Email"
+           placeholder={t("email")}
             value={email}
             onChange={(e) =>
               setEmail(e.target.value)
@@ -54,7 +54,7 @@ export default function LoginPage() {
 
           <input
             type="password"
-            placeholder="Password"
+           placeholder={t("password")}
             value={password}
             onChange={(e) =>
               setPassword(e.target.value)
@@ -63,7 +63,7 @@ export default function LoginPage() {
           />
 
           <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg">
-            Login
+            {t("login")}
           </button>
         </form>
 

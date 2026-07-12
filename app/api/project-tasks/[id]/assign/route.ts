@@ -1,6 +1,6 @@
 import { prisma } from "../../../../../lib/prisma";
 import { requireAdmin } from "../../../../../lib/auth";
-
+import { notifyTaskAssigned } from "../../../../../lib/notificationEvents";
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -90,14 +90,10 @@ export async function PATCH(
       },
     });
     if (updatedTask.assignedToId) {
-      await prisma.notification.create({
-        data: {
-          userId: updatedTask.assignedToId,
-          title: "New Task Assigned",
-          message: `You have been assigned to "${task.title}".`,
-          type: "TASK_ASSIGNMENT",
-          link: `/dashboard/projects/${task.projectId}`,
-        },
+      await notifyTaskAssigned({
+        userId: updatedTask.assignedToId,
+        taskTitle: task.title,
+        projectId: task.projectId,
       });
     }
     return Response.json({

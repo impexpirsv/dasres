@@ -1,7 +1,10 @@
 import { ProjectStatus } from "@prisma/client";
 import { prisma } from "../../../../../../lib/prisma";
 import { requireUser } from "../../../../../../lib/auth";
-
+import {
+  notifyProposalAccepted,
+  notifyProposalRejected,
+} from "../../../../../../lib/notificationEvents";
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -13,10 +16,7 @@ export async function PATCH(
     const proposalId = Number(id);
 
     if (Number.isNaN(proposalId)) {
-      return Response.json(
-        { message: "Invalid proposal id" },
-        { status: 400 },
-      );
+      return Response.json({ message: "Invalid proposal id" }, { status: 400 });
     }
 
     const proposal = await prisma.caseProposal.findUnique({
@@ -113,82 +113,90 @@ export async function PATCH(
         },
       });
 
-     const project = await tx.project.upsert({
-  where: {
-    tradeCaseId: tradeCase.id,
-  },
-  update: {},
-  create: {
-    tradeCaseId: tradeCase.id,
-    title: tradeCase.title,
-    description: tradeCase.description,
-    createdBy: tradeCase.customerId,
-    assignedTo: proposal.company?.ownerId ?? null,
-    status: ProjectStatus.ACTIVE,
-    progress: 0,
-  },
-});
+      const project = await tx.project.upsert({
+        where: {
+          tradeCaseId: tradeCase.id,
+        },
+        update: {},
+        create: {
+          tradeCaseId: tradeCase.id,
+          title: tradeCase.title,
+          description: tradeCase.description,
+          createdBy: tradeCase.customerId,
+          assignedTo: proposal.company?.ownerId ?? null,
+          status: ProjectStatus.ACTIVE,
+          progress: 0,
+        },
+      });
 
-const existingTasksCount = await tx.projectTask.count({
-  where: {
-    projectId: project.id,
-  },
-});
+      const existingTasksCount = await tx.projectTask.count({
+        where: {
+          projectId: project.id,
+        },
+      });
 
-if (existingTasksCount === 0) {
-  await tx.projectTask.createMany({
-    data: [
-      {
-        projectId: project.id,
-        title: "Supplier Confirmation",
-        description: "Confirm supplier details, availability and commercial terms.",
-        priority: "HIGH",
-      },
-      {
-        projectId: project.id,
-        title: "Proforma Invoice Review",
-        description: "Review PI details, pricing, payment terms and product specifications.",
-        priority: "HIGH",
-      },
-      {
-        projectId: project.id,
-        title: "Payment Coordination",
-        description: "Coordinate payment method, timing and confirmation documents.",
-        priority: "URGENT",
-      },
-      {
-        projectId: project.id,
-        title: "Shipping Booking",
-        description: "Arrange shipping method, carrier, route and booking confirmation.",
-        priority: "HIGH",
-      },
-      {
-        projectId: project.id,
-        title: "Inspection Arrangement",
-        description: "Coordinate inspection requirements, timing and inspection report.",
-        priority: "MEDIUM",
-      },
-      {
-        projectId: project.id,
-        title: "Customs Documentation",
-        description: "Prepare invoice, packing list, certificates and customs documents.",
-        priority: "HIGH",
-      },
-      {
-        projectId: project.id,
-        title: "Clearance Follow-up",
-        description: "Track customs clearance status and resolve documentation issues.",
-        priority: "HIGH",
-      },
-      {
-        projectId: project.id,
-        title: "Final Delivery",
-        description: "Coordinate final delivery, handover and project completion confirmation.",
-        priority: "MEDIUM",
-      },
-    ],
-  });
-}
+      if (existingTasksCount === 0) {
+        await tx.projectTask.createMany({
+          data: [
+            {
+              projectId: project.id,
+              title: "Supplier Confirmation",
+              description:
+                "Confirm supplier details, availability and commercial terms.",
+              priority: "HIGH",
+            },
+            {
+              projectId: project.id,
+              title: "Proforma Invoice Review",
+              description:
+                "Review PI details, pricing, payment terms and product specifications.",
+              priority: "HIGH",
+            },
+            {
+              projectId: project.id,
+              title: "Payment Coordination",
+              description:
+                "Coordinate payment method, timing and confirmation documents.",
+              priority: "URGENT",
+            },
+            {
+              projectId: project.id,
+              title: "Shipping Booking",
+              description:
+                "Arrange shipping method, carrier, route and booking confirmation.",
+              priority: "HIGH",
+            },
+            {
+              projectId: project.id,
+              title: "Inspection Arrangement",
+              description:
+                "Coordinate inspection requirements, timing and inspection report.",
+              priority: "MEDIUM",
+            },
+            {
+              projectId: project.id,
+              title: "Customs Documentation",
+              description:
+                "Prepare invoice, packing list, certificates and customs documents.",
+              priority: "HIGH",
+            },
+            {
+              projectId: project.id,
+              title: "Clearance Follow-up",
+              description:
+                "Track customs clearance status and resolve documentation issues.",
+              priority: "HIGH",
+            },
+            {
+              projectId: project.id,
+              title: "Final Delivery",
+              description:
+                "Coordinate final delivery, handover and project completion confirmation.",
+              priority: "MEDIUM",
+            },
+          ],
+        });
+      }
 
       await tx.caseActivity.create({
         data: {
@@ -202,27 +210,17 @@ if (existingTasksCount === 0) {
       });
 
       if (proposal.company?.ownerId) {
-        await tx.notification.create({
-          data: {
-            userId: proposal.company.ownerId,
-            title: "Proposal Accepted",
-            message: "Your proposal has been accepted.",
-            type: "PROPOSAL_ACCEPTED",
-            link: `/dashboard/cases/${tradeCase.id}`,
-          },
+        await notifyProposalAccepted({
+          userId: proposal.company.ownerId,
+          caseId: tradeCase.id,
         });
       }
 
       for (const rejectedProposal of rejectedProposals) {
         if (rejectedProposal.company?.ownerId) {
-          await tx.notification.create({
-            data: {
-              userId: rejectedProposal.company.ownerId,
-              title: "Proposal Rejected",
-              message: "Your proposal was not selected.",
-              type: "PROPOSAL_REJECTED",
-              link: `/dashboard/cases/${tradeCase.id}`,
-            },
+          await notifyProposalRejected({
+            userId: rejectedProposal.company.ownerId,
+            caseId: tradeCase.id,
           });
         }
       }

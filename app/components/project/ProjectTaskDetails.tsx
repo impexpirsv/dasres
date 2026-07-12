@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import ProjectTaskStatusSelect from "./ProjectTaskStatusSelect";
 import EditProjectTaskForm from "./EditProjectTaskForm";
 import ProjectTaskAttachmentUpload from "./ProjectTaskAttachmentUpload";
@@ -19,8 +20,8 @@ type Task = {
   description: string | null;
   status: string;
   priority: string;
-  startDate: Date | null;
-  dueDate: Date | null;
+  startDate: Date | string | null;
+  dueDate: Date | string | null;
   assignedToId: number | null;
   assignedTo: UserOption | null;
   progress: number;
@@ -33,23 +34,44 @@ type Task = {
     fileUrl: string;
     uploadedBy: UserOption | null;
   }[];
-  comments: Parameters<typeof ProjectTaskComments>[0]["comments"];
+  comments: Parameters<
+    typeof ProjectTaskComments
+  >[0]["comments"];
   checklistItems: {
     id: number;
     title: string;
     completed: boolean;
   }[];
- dependsOn?: {
-  id: number;
-  title: string;
-  status?: string;
-} | null;
-
+  dependsOn?: {
+    id: number;
+    title: string;
+    status?: string;
+  } | null;
   dependents?: {
-  id: number;
-  title: string;
-  status?: string;
-}[];
+    id: number;
+    title: string;
+    status?: string;
+  }[];
+};
+
+const priorityClasses: Record<string, string> = {
+  URGENT: "bg-red-600 text-white",
+  HIGH: "bg-orange-600 text-white",
+  MEDIUM: "bg-yellow-600 text-white",
+  LOW: "bg-slate-700 text-white",
+};
+
+const dependentStatusClasses: Record<
+  string,
+  string
+> = {
+  COMPLETED:
+    "bg-green-600/20 text-green-300",
+  IN_PROGRESS:
+    "bg-blue-600/20 text-blue-300",
+  REVIEW:
+    "bg-yellow-600/20 text-yellow-300",
+  TODO: "bg-slate-700 text-slate-300",
 };
 
 export default function ProjectTaskDetails({
@@ -66,217 +88,361 @@ export default function ProjectTaskDetails({
   }[];
   isAdmin: boolean;
 }) {
+  const t = useTranslations(
+    "projectTaskDetails",
+  );
+  const locale = useLocale();
+
   if (!task) {
     return (
       <div className="rounded-3xl border border-slate-800 bg-slate-950 p-8 text-center text-slate-500">
-        Select a task to view details.
+        {t("emptyState")}
       </div>
     );
   }
 
+  const priorityKey =
+    task.priority.toLowerCase();
+
+  const priorityClass =
+    priorityClasses[task.priority] ??
+    priorityClasses.LOW;
+
+  const startDate = task.startDate
+    ? new Date(task.startDate)
+    : null;
+
+  const dueDate = task.dueDate
+    ? new Date(task.dueDate)
+    : null;
+
+  const validStartDate =
+    startDate !== null &&
+    !Number.isNaN(startDate.getTime());
+
+  const validDueDate =
+    dueDate !== null &&
+    !Number.isNaN(dueDate.getTime());
+
+  const isOverdue =
+    validDueDate &&
+    task.status !== "COMPLETED" &&
+    dueDate.getTime() < Date.now();
+
+  const formatDate = (date: Date) =>
+    new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }).format(date);
+
+  const normalizedProgress = Math.min(
+    100,
+    Math.max(
+      0,
+      Number.isFinite(Number(task.progress))
+        ? Number(task.progress)
+        : 0,
+    ),
+  );
+
   return (
     <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6">
       <div className="mb-6 flex items-start justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-white">{task.title}</h2>
+        <div className="min-w-0">
+          <h2 className="break-words text-2xl font-bold text-white">
+            {task.title}
+          </h2>
 
           {task.description && (
-            <p className="mt-2 text-sm text-slate-400">{task.description}</p>
+            <p className="mt-2 whitespace-pre-wrap break-words text-sm text-slate-400">
+              {task.description}
+            </p>
           )}
         </div>
 
         <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${
-            task.priority === "URGENT"
-              ? "bg-red-600 text-white"
-              : task.priority === "HIGH"
-                ? "bg-orange-600 text-white"
-                : task.priority === "MEDIUM"
-                  ? "bg-yellow-600 text-white"
-                  : "bg-slate-700 text-white"
-          }`}
+          className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${priorityClass}`}
         >
-          {task.priority}
+          {t(
+            `priorities.${priorityKey}`,
+          )}
         </span>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <div>
-          <p className="mb-1 text-xs font-medium text-slate-500">Assigned to</p>
+          <p className="mb-1 text-xs font-medium text-slate-500">
+            {t("assignedTo")}
+          </p>
 
           {isAdmin ? (
             <AssignTaskSelect
               taskId={task.id}
-              assignedToId={task.assignedToId}
+              assignedToId={
+                task.assignedToId
+              }
               users={assignableUsers}
             />
           ) : (
             <p className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-300">
-              {task.assignedTo?.name || task.assignedTo?.email || "Unassigned"}
+              {task.assignedTo?.name ||
+                task.assignedTo?.email ||
+                t("unassigned")}
             </p>
           )}
         </div>
 
         <div>
-          <p className="mb-1 text-xs font-medium text-slate-500">Start Date</p>
+          <p className="mb-1 text-xs font-medium text-slate-500">
+            {t("startDate")}
+          </p>
 
           <p className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-300">
-            {task.startDate
-              ? task.startDate.toLocaleDateString("en-US")
-              : "No start date"}
+            {validStartDate && startDate
+              ? formatDate(startDate)
+              : t("noStartDate")}
           </p>
         </div>
 
         <div>
-          <p className="mb-1 text-xs font-medium text-slate-500">Due Date</p>
+          <p className="mb-1 text-xs font-medium text-slate-500">
+            {t("dueDate")}
+          </p>
 
           <p
             className={`rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm ${
-              task.dueDate &&
-              task.status !== "COMPLETED" &&
-              task.dueDate < new Date()
+              isOverdue
                 ? "text-red-400"
                 : "text-slate-300"
             }`}
           >
-            {task.dueDate
-              ? task.dueDate.toLocaleDateString("en-US")
-              : "No due date"}
+            {validDueDate && dueDate
+              ? formatDate(dueDate)
+              : t("noDueDate")}
           </p>
         </div>
       </div>
-      <div className="mt-5 grid gap-4 md:grid-cols-4">
+
+      <div className="mt-5 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
         <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
-          <p className="text-xs text-slate-500">Progress</p>
+          <p className="text-xs text-slate-500">
+            {t("progress")}
+          </p>
+
           <p className="mt-2 text-2xl font-bold text-blue-400">
-            {task.progress}%
+            {normalizedProgress}%
           </p>
         </div>
 
         <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
-          <p className="text-xs text-slate-500">Estimated</p>
+          <p className="text-xs text-slate-500">
+            {t("estimated")}
+          </p>
+
           <p className="mt-2 text-2xl font-bold text-white">
-            {task.estimatedHours}h
+            {task.estimatedHours !== null
+              ? t("hours", {
+                  count:
+                    task.estimatedHours,
+                })
+              : t("notSet")}
           </p>
         </div>
 
         <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
-          <p className="text-xs text-slate-500">Logged</p>
+          <p className="text-xs text-slate-500">
+            {t("logged")}
+          </p>
+
           <p className="mt-2 text-2xl font-bold text-green-400">
-            {task.loggedHours}h
+            {t("hours", {
+              count: task.loggedHours,
+            })}
           </p>
         </div>
 
         <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
-          <p className="text-xs text-slate-500">Remaining</p>
+          <p className="text-xs text-slate-500">
+            {t("remaining")}
+          </p>
+
           <p className="mt-2 text-2xl font-bold text-yellow-400">
-            {task.remainingHours}h
+            {t("hours", {
+              count:
+                task.remainingHours,
+            })}
           </p>
         </div>
       </div>
+
       {task.dependsOn && (
         <div className="mt-5 rounded-2xl border border-slate-800 bg-slate-900 p-4">
-          <p className="text-xs font-medium text-slate-500">Depends On</p>
+          <p className="text-xs font-medium text-slate-500">
+            {t("dependsOn")}
+          </p>
 
-          <p className="mt-2 text-sm font-semibold text-white">
+          <p className="mt-2 break-words text-sm font-semibold text-white">
             {task.dependsOn.title}
           </p>
         </div>
       )}
-     {(task.dependents?.length ?? 0) > 0 && (
-  <div className="mt-5 rounded-2xl border border-slate-800 bg-slate-900 p-4">
-    <p className="text-xs font-medium text-slate-500">
-      Blocks
-    </p>
 
-    <div className="mt-3 space-y-2">
-     {task.dependents?.map((dependent) => (
-        <div
-          key={dependent.id}
-          className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950 px-3 py-2"
-        >
-          <span className="text-sm font-medium text-white">
-            {dependent.title}
-          </span>
+      {(task.dependents?.length ?? 0) >
+        0 && (
+        <div className="mt-5 rounded-2xl border border-slate-800 bg-slate-900 p-4">
+          <p className="text-xs font-medium text-slate-500">
+            {t("blocks")}
+          </p>
 
-          <span
-            className={`rounded-full px-2 py-1 text-xs font-semibold ${
-              dependent.status === "COMPLETED"
-                ? "bg-green-600/20 text-green-300"
-                : dependent.status === "IN_PROGRESS"
-                  ? "bg-blue-600/20 text-blue-300"
-                  : dependent.status === "REVIEW"
-                    ? "bg-yellow-600/20 text-yellow-300"
-                    : "bg-slate-700 text-slate-300"
-            }`}
-          >
-            {dependent.status}
-          </span>
+          <div className="mt-3 space-y-2">
+            {task.dependents?.map(
+              (dependent) => {
+                const status =
+                  dependent.status ??
+                  "TODO";
+
+                const statusKey =
+                  status.toLowerCase();
+
+                const statusClass =
+                  dependentStatusClasses[
+                    status
+                  ] ??
+                  dependentStatusClasses.TODO;
+
+                return (
+                  <div
+                    key={dependent.id}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-slate-800 bg-slate-950 px-3 py-2"
+                  >
+                    <span className="min-w-0 break-words text-sm font-medium text-white">
+                      {
+                        dependent.title
+                      }
+                    </span>
+
+                    <span
+                      className={`shrink-0 rounded-full px-2 py-1 text-xs font-semibold ${statusClass}`}
+                    >
+                      {t(
+                        `statuses.${statusKey}`,
+                      )}
+                    </span>
+                  </div>
+                );
+              },
+            )}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-)}
+      )}
+
       <div className="mt-5">
-        <ProjectTaskStatusSelect taskId={task.id} currentStatus={task.status} />
+        <ProjectTaskStatusSelect
+          taskId={task.id}
+          currentStatus={task.status}
+        />
       </div>
 
       <div className="mt-5">
         <EditProjectTaskForm
           taskId={task.id}
           currentTitle={task.title}
-          currentDescription={task.description}
-          currentPriority={task.priority}
-          currentStartDate={task.startDate}
+          currentDescription={
+            task.description
+          }
+          currentPriority={
+            task.priority
+          }
+          currentStartDate={
+            task.startDate
+          }
           currentDueDate={task.dueDate}
-          currentAssignedToId={task.assignedToId}
-          assignableUsers={assignableUsers}
-         currentEstimatedHours={task.estimatedHours ?? undefined}
-         currentLoggedHours={task.loggedHours ?? undefined}
-          currentDependsOnId={task.dependsOn?.id}
-          availableTasks={availableTasks}
+          currentAssignedToId={
+            task.assignedToId
+          }
+          assignableUsers={
+            assignableUsers
+          }
+          currentEstimatedHours={
+            task.estimatedHours ??
+            undefined
+          }
+          currentLoggedHours={
+            task.loggedHours
+          }
+          currentDependsOnId={
+            task.dependsOn?.id
+          }
+          availableTasks={
+            availableTasks
+          }
         />
       </div>
 
       <div className="mt-5">
-        <ProjectTaskAttachmentUpload taskId={task.id} />
+        <ProjectTaskAttachmentUpload
+          taskId={task.id}
+        />
       </div>
 
       {task.attachments.length > 0 && (
         <div className="mt-5 rounded-2xl border border-slate-800 bg-slate-900 p-4">
           <p className="mb-3 text-sm font-semibold text-slate-300">
-            Attachments
+            {t("attachments")}
           </p>
 
           <div className="space-y-2">
-            {task.attachments.map((attachment) => (
-              <a
-                key={attachment.id}
-                href={attachment.fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-blue-400 hover:border-blue-500"
-              >
-                <div className="font-semibold">{attachment.fileName}</div>
+            {task.attachments.map(
+              (attachment) => {
+                const uploader =
+                  attachment.uploadedBy
+                    ?.name ||
+                  attachment.uploadedBy
+                    ?.email ||
+                  t("unknown");
 
-                <div className="mt-1 text-xs text-slate-500">
-                  Uploaded by{" "}
-                  {attachment.uploadedBy?.name ||
-                    attachment.uploadedBy?.email ||
-                    "Unknown"}
-                </div>
-              </a>
-            ))}
+                return (
+                  <a
+                    key={attachment.id}
+                    href={
+                      attachment.fileUrl
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-blue-400 transition hover:border-blue-500"
+                  >
+                    <div className="break-all font-semibold">
+                      {
+                        attachment.fileName
+                      }
+                    </div>
+
+                    <div className="mt-1 text-xs text-slate-500">
+                      {t("uploadedBy", {
+                        name: uploader,
+                      })}
+                    </div>
+                  </a>
+                );
+              },
+            )}
           </div>
         </div>
       )}
 
       <div className="mt-5">
-        <ProjectTaskChecklist taskId={task.id} items={task.checklistItems} />
+        <ProjectTaskChecklist
+          taskId={task.id}
+          items={task.checklistItems}
+        />
       </div>
 
       <div className="mt-5">
-        <ProjectTaskComments taskId={task.id} comments={task.comments} />
+        <ProjectTaskComments
+          taskId={task.id}
+          comments={task.comments}
+        />
       </div>
     </div>
   );

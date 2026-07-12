@@ -1,0 +1,9 @@
+{
+  "common": {
+    "appName": "Dasres",
+    "dashboard": "Dashboard",
+    "notifications": "Notifiche",
+    "settings": "Impostazioni",
+    "logout": "Esci"
+  }
+}

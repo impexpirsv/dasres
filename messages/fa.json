@@ -1,0 +1,1013 @@
+{
+  "common": {
+    "appName": "دسترس",
+    "dashboard": "داشبورد",
+    "notifications": "اعلان‌ها",
+    "settings": "تنظیمات",
+    "logout": "خروج"
+  },
+  "navbar": {
+    "home": "خانه",
+    "experts": "متخصصان",
+    "companies": "شرکت‌ها",
+    "opportunities": "فرصت‌ها",
+    "topExperts": "برترین متخصصان",
+    "topCompanies": "برترین شرکت‌ها",
+    "dashboard": "داشبورد",
+    "login": "ورود",
+    "join": "عضویت",
+    "joinDasres": "عضویت در دسترس",
+    "tagline": "اکوسیستم اعتماد برای تجارت جهانی",
+    "toggleMenu": "باز و بسته کردن منو"
+  },
+  "hero": {
+  "eyebrow": "شبکه تأییدشده تجارت برای خدمات جهانی B2B",
+  "titleLine1": "اعتماد را در",
+  "titleLine2": "تجارت جهانی بسازید",
+  "description": "دسترس شرکت‌های تأییدشده، متخصصان قابل اعتماد و فرصت‌های تجاری را در یک پلتفرم پرونده‌محور برای کسب‌وکار بین‌المللی به هم متصل می‌کند.",
+  "join": "عضویت در دسترس",
+  "exploreExperts": "مشاهده متخصصان",
+  "browseCompanies": "مشاهده شرکت‌ها",
+  "liveCaseLabel": "پرونده تجاری فعال",
+  "liveCaseTitle": "ترخیص گمرکی امارات",
+  "verified": "تأییدشده",
+  "proposals": "پیشنهادها",
+  "trust": "اعتماد",
+  "status": "وضعیت",
+  "inProgress": "در حال انجام",
+  "topCompany": "شرکت برتر",
+  "topExpert": "متخصص برتر",
+  "customsClearance": "ترخیص گمرکی",
+  "tradeConsultant": "مشاور تجارت",
+  "rating": "امتیاز {value}"
+},
+"liveStats": {
+  "eyebrow": "آمار زنده پلتفرم",
+  "title": "فعالیت دسترس در لحظه",
+  "verifiedCompanies": "شرکت‌های تأییدشده",
+  "trustedExperts": "متخصصان قابل اعتماد",
+  "tradeOpportunities": "فرصت‌های تجاری",
+  "tradeCases": "پرونده‌های تجاری",
+  "caseSuccessRate": "نرخ موفقیت پرونده‌ها"
+},
+"topRatedShowcase": {
+  "eyebrow": "شبکه اعتماد",
+  "titleLine1": "ارائه‌دهندگان تأییدشده،",
+  "titleLine2": "رتبه‌بندی‌شده بر پایه اعتماد",
+  "description": "دسترس شرکت‌ها و متخصصان را بر اساس تأیید هویت، امتیازها، نظرها و شاخص اعتماد رتبه‌بندی می‌کند تا تیم‌های تجاری بتوانند با اطمینان بیشتری ارائه‌دهندگان را مقایسه کنند.",
+  "verifiedProfiles": "پروفایل‌های تأییدشده",
+  "reviewHistory": "سابقه نظرها",
+  "trustScoring": "امتیاز اعتماد",
+  "topCompany": "شرکت برتر",
+  "topExpert": "متخصص برتر",
+  "verified": "تأییدشده",
+  "trust": "اعتماد",
+  "rating": "امتیاز",
+  "reviews": "نظرها",
+  "noReviews": "بدون نظر",
+  "viewCompany": "مشاهده شرکت",
+  "viewExpert": "مشاهده متخصص"
+},
+"services": {
+  "eyebrow": "فرآیند پلتفرم",
+  "titleLine1": "از ثبت درخواست تا",
+  "titleLine2": "تحویل قابل اعتماد",
+  "description": "دسترس فقط یک دایرکتوری نیست؛ بلکه یک بستر پرونده‌محور برای مدیریت خدمات تجارت بین‌المللی، پیشنهادها، اسناد، ارتباطات و اعتبار است.",
+  "unifiedWorkflow": "فرآیند یکپارچه",
+  "caseVisibility": "نمای کامل پرونده",
+  "steps": {
+    "createCase": {
+      "title": "ایجاد پرونده تجاری",
+      "description": "درخواست تجاری خود را همراه با دسته‌بندی، محدوده و جزئیات خدمات ثبت کنید."
+    },
+    "matchProviders": {
+      "title": "اتصال به ارائه‌دهندگان",
+      "description": "دسترس پرونده را بر اساس دسته‌بندی به شرکت‌ها و متخصصان تأییدشده متصل می‌کند."
+    },
+    "receiveProposals": {
+      "title": "دریافت پیشنهادها",
+      "description": "قیمت، پیام، پروفایل ارائه‌دهنده، وضعیت تأیید و اعتبار را مقایسه کنید."
+    },
+    "assignWinner": {
+      "title": "انتخاب برنده",
+      "description": "یک پیشنهاد را بپذیرید، بقیه را رد کنید و فرآیند فعال پرونده را آغاز کنید."
+    },
+    "manageDelivery": {
+      "title": "مدیریت اجرای خدمات",
+      "description": "پیام‌ها، اسناد، مراحل زمانی و گزارش فعالیت‌ها را در یک محل مدیریت کنید."
+    },
+    "completeReview": {
+      "title": "تکمیل و ثبت نظر",
+      "description": "پرونده را ببندید، نظر خود را ثبت کنید و برای پروژه‌های آینده اعتماد بسازید."
+    }
+  }
+},
+"expertsSection": {
+  "eyebrow": "شبکه متخصصان",
+  "title": "متخصصان منتخب",
+  "description": "با متخصصان تأییدشده تجارت بین‌المللی در حوزه‌های گمرک، تأمین، لجستیک، بازرسی و مشاوره تجاری ارتباط برقرار کنید.",
+  "viewAll": "مشاهده همه",
+  "verified": "تأییدشده",
+  "available": "آماده همکاری",
+  "viewProfile": "مشاهده پروفایل"
+},
+"companiesSection": {
+  "eyebrow": "شبکه شرکت‌ها",
+  "title": "شرکت‌های منتخب",
+  "description": "شرکت‌های تأییدشده فعال در حوزه‌های ترخیص گمرکی، حمل‌ونقل، تأمین، بازرسی و لجستیک بین‌المللی را پیدا کنید.",
+  "viewAll": "مشاهده همه",
+  "verified": "تأییدشده",
+  "acceptingProjects": "پذیرش پروژه",
+  "viewProfile": "مشاهده پروفایل"
+},
+"opportunitiesSection": {
+  "eyebrow": "بازار جهانی",
+  "title": "جدیدترین فرصت‌های تجاری",
+  "description": "درخواست‌های تجارت بین‌المللی را بررسی کنید، فرصت‌های تازه کسب‌وکار را پیدا کنید و با ارائه‌دهندگان تأییدشده در سراسر جهان ارتباط بگیرید.",
+  "viewAll": "مشاهده همه",
+  "statusOpen": "باز",
+  "openOpportunity": "فرصت فعال",
+  "viewDetails": "مشاهده جزئیات"
+},
+"footer": {
+  "ctaEyebrow": "آماده‌اید تجارت را با اطمینان مدیریت کنید؟",
+  "ctaTitle": "اولین پرونده تجاری خود را در دسترس آغاز کنید.",
+  "ctaDescription": "یک پرونده ایجاد کنید، ارائه‌دهندگان تأییدشده را مقایسه کنید و پیشنهادها، اسناد و ارتباطات را در یک فرآیند قابل اعتماد مدیریت کنید.",
+  "createCase": "ایجاد پرونده",
+  "exploreNetwork": "مشاهده شبکه",
+  "description": "اکوسیستم اعتماد پرونده‌محور برای خدمات تجارت بین‌المللی، ارائه‌دهندگان تأییدشده، پیشنهادها، اسناد و اعتبار.",
+  "platformTitle": "پلتفرم",
+  "networkTitle": "شبکه",
+  "trustSignalsTitle": "نشانه‌های اعتماد",
+  "companies": "شرکت‌ها",
+  "experts": "متخصصان",
+  "opportunities": "فرصت‌ها",
+  "dashboard": "داشبورد",
+  "topCompanies": "برترین شرکت‌ها",
+  "topExperts": "برترین متخصصان",
+  "openCases": "پرونده‌های باز",
+  "supportTickets": "تیکت‌های پشتیبانی",
+  "verifiedCompanies": "شرکت‌های تأییدشده",
+  "trustedExperts": "متخصصان قابل اعتماد",
+  "proposalWorkflow": "فرآیند پیشنهادها",
+  "reviewsReputation": "نظرها و اعتبار",
+  "copyright": "© {year} دسترس. تمامی حقوق محفوظ است.",
+  "languagesAvailable": "در دسترس به ۱۲ زبان"
+},
+"dashboardSidebar": {
+  "tagline": "اکوسیستم اعتماد برای تجارت جهانی",
+  "menu": "منو",
+  "sections": {
+    "main": "اصلی",
+    "tradeManagement": "مدیریت تجارت",
+    "ownership": "دارایی‌های من",
+    "admin": "مدیریت سیستم",
+    "communication": "ارتباطات",
+    "subscription": "اشتراک",
+    
+    "account": "حساب کاربری"
+  },
+  "links": {
+    "dashboard": "داشبورد",
+    "globalSearch": "جست‌وجوی سراسری",
+    "experts": "متخصصان",
+    "topExperts": "برترین متخصصان",
+    "companies": "شرکت‌ها",
+    "topCompanies": "برترین شرکت‌ها",
+    "opportunities": "فرصت‌ها",
+    "submittedCases": "پرونده‌های ثبت‌شده",
+    "activeWorkspaces": "فضاهای کاری فعال",
+    "projects": "پروژه‌ها",
+    "myTasks": "وظایف من",
+    "myProposals": "پیشنهادهای من",
+    "myReviews": "نظرهای من",
+    "openCases": "پرونده‌های باز",
+    "savedCases": "پرونده‌های ذخیره‌شده",
+    "savedCompanies": "شرکت‌های ذخیره‌شده",
+    "savedExperts": "متخصصان ذخیره‌شده",
+    "tickets": "تیکت‌ها",
+    "myCompanies": "شرکت‌های من",
+    "myExperts": "متخصصان من",
+    "users": "کاربران",
+    "verifications": "درخواست‌های تأیید",
+    "notifications": "اعلان‌ها",
+    "subscription": "اشتراک",
+    "settings": "تنظیمات",
+    "logout": "خروج"
+  },
+  "premium": {
+    "title": "قابلیت‌های ویژه",
+    "description": "پلن‌ها، محدودیت‌ها و سطح نمایش"
+  }
+},
+"dashboardQuickActions": {
+  "title": "دسترسی سریع",
+  "description": "میان‌برهای پرکاربرد",
+  "createCase": {
+    "title": "ایجاد پرونده",
+    "description": "یک پروژه جدید تجارت بین‌المللی ایجاد کنید."
+  },
+  "openCases": {
+    "title": "پرونده‌های باز",
+    "description": "درخواست‌های تجاری موجود را مشاهده کنید."
+  },
+  "myCompanies": {
+    "title": "شرکت‌های من",
+    "description": "پروفایل شرکت‌های خود را مدیریت کنید."
+  },
+  "myExperts": {
+    "title": "متخصصان من",
+    "description": "پروفایل متخصصان خود را مدیریت کنید."
+  }
+},
+"dashboardAttention": {
+  "title": "نیازمند توجه شما",
+  "description": "موارد مهم برای بررسی",
+  "unreadNotifications": "اعلان‌های خوانده‌نشده",
+  "openTickets": "تیکت‌های باز",
+  "openCases": "پرونده‌های باز",
+  "myProposals": "پیشنهادهای من"
+},
+"dashboardAnalytics": {
+  "title": "نمای کلی تحلیل‌ها",
+  "description": "خلاصه عملکرد عملیاتی",
+  "casePipeline": {
+    "title": "روند پرونده‌ها",
+    "open": "باز",
+    "inProgress": "در حال انجام",
+    "completed": "تکمیل‌شده"
+  },
+  "proposalPerformance": {
+    "title": "عملکرد پیشنهادها",
+    "description": "نرخ پذیرش بر اساس پیشنهادهای پذیرفته‌شده و ردشده.",
+    "accepted": "پذیرفته‌شده",
+    "rejected": "ردشده"
+  },
+  "platformAttention": {
+    "title": "وضعیت پلتفرم",
+    "notifications": "اعلان‌ها",
+    "tickets": "تیکت‌ها",
+    "reviews": "نظرات",
+    "saved": "ذخیره‌شده‌ها"
+  }
+},
+"dashboardOverdueTasks": {
+  "title": "وظایف عقب‌افتاده",
+  "empty": {
+    "title": "هیچ وظیفه عقب‌افتاده‌ای ندارید",
+    "description": "همه‌چیز طبق برنامه پیش می‌رود."
+  },
+  "dueDate": "مهلت انجام: {date}"
+},
+"dashboardSubscription": {
+  "currentPlan": "پلن فعلی",
+  "managePlan": "مدیریت پلن",
+  "activeCases": "پرونده‌های فعال",
+  "proposals": "پیشنهادها",
+  "usageLimited": "{used} از {limit}",
+  "usageUnlimited": "{used} از نامحدود"
+},
+"dashboardStatsGrid": {
+  "savedCases": {
+    "title": "پرونده‌های ذخیره‌شده",
+    "description": "پرونده‌هایی که برای بعد ذخیره کرده‌اید"
+  },
+  "savedCompanies": {
+    "title": "شرکت‌های ذخیره‌شده",
+    "description": "شرکت‌های موجود در شبکه شما"
+  },
+  "savedExperts": {
+    "title": "متخصصان ذخیره‌شده",
+    "description": "متخصصان موجود در شبکه شما"
+  },
+  "experts": {
+    "adminTitle": "متخصصان",
+    "userTitle": "متخصصان من",
+    "adminDescription": "متخصصان تأییدشده موجود",
+    "userDescription": "متخصصان متعلق به شما"
+  },
+  "companies": {
+    "adminTitle": "شرکت‌ها",
+    "userTitle": "شرکت‌های من",
+    "adminDescription": "شرکت‌های ثبت‌شده",
+    "userDescription": "شرکت‌های متعلق به شما"
+  },
+  "opportunities": {
+    "title": "فرصت‌ها",
+    "description": "فرصت‌های تجاری فعال"
+  },
+  "successRate": {
+    "title": "نرخ موفقیت پرونده‌ها",
+    "description": "{completed} پرونده از مجموع {total} پرونده تکمیل شده است"
+  },
+  "tradeCases": {
+    "title": "پرونده‌های تجاری",
+    "adminDescription": "تمام پروژه‌های تجاری",
+    "userDescription": "درخواست‌های تجاری ثبت‌شده"
+  },
+  "openCases": {
+    "title": "پرونده‌های باز",
+    "description": "فرصت‌های موجود"
+  },
+  "inProgress": {
+    "title": "در حال انجام",
+    "description": "پروژه‌های تجاری فعال"
+  },
+  "completed": {
+    "title": "تکمیل‌شده",
+    "description": "پروژه‌های پایان‌یافته"
+  },
+  "proposals": "پیشنهادها",
+  "accepted": "پذیرفته‌شده",
+  "notifications": "اعلان‌ها",
+  "openTickets": "تیکت‌های باز"
+},
+"dashboardMyTasks": {
+  "title": "وظایف محول‌شده به من",
+  "viewAll": "مشاهده همه",
+  "empty": "هیچ وظیفه‌ای به شما اختصاص داده نشده است.",
+  "status": {
+    "TODO": "برای انجام",
+    "IN_PROGRESS": "در حال انجام",
+    "REVIEW": "در انتظار بررسی",
+    "COMPLETED": "تکمیل‌شده"
+  }
+},
+"dashboardTopRated": {
+  "viewAll": "مشاهده همه",
+  "reviewCount": "بر اساس {count} نظر",
+  "experts": {
+    "title": "متخصصان برتر",
+    "empty": "هنوز متخصصی امتیاز دریافت نکرده است."
+  },
+  "companies": {
+    "title": "شرکت‌های برتر",
+    "empty": "هنوز شرکتی امتیاز دریافت نکرده است."
+  }
+},
+"dashboardLatestItems": {
+  "viewAll": "مشاهده همه",
+  "experts": {
+    "adminTitle": "آخرین متخصصان",
+    "userTitle": "آخرین متخصصان من",
+    "empty": "متخصصی یافت نشد."
+  },
+  "companies": {
+    "adminTitle": "آخرین شرکت‌ها",
+    "userTitle": "آخرین شرکت‌های من",
+    "empty": "شرکتی یافت نشد."
+  },
+  "opportunities": {
+    "title": "آخرین فرصت‌ها",
+    "empty": "فرصتی یافت نشد."
+  }
+},
+"dashboardRecentActivity": {
+  "title": "فعالیت‌های اخیر",
+  "empty": "هیچ فعالیتی یافت نشد.",
+  "system": "سیستم",
+  "actions": {
+    "proposalSubmitted": "پیشنهاد ارسال شد",
+    "proposalAccepted": "پیشنهاد پذیرفته شد",
+    "proposalRejected": "پیشنهاد رد شد",
+    "caseCompleted": "پرونده تکمیل شد",
+    "projectCompleted": "پروژه تکمیل شد",
+    "documentUploaded": "سند بارگذاری شد",
+    "projectTaskAttachmentUploaded": "پیوست وظیفه پروژه بارگذاری شد",
+    "documentApproved": "سند تأیید شد",
+    "documentRejected": "سند رد شد",
+    "messageSent": "پیام ارسال شد",
+    "projectMessageSent": "پیام پروژه ارسال شد",
+    "taskCommentAdded": "نظر جدیدی برای وظیفه ثبت شد",
+    "taskAssigned": "وظیفه اختصاص داده شد",
+    "taskCompleted": "وظیفه تکمیل شد",
+    "ticketUpdated": "تیکت به‌روزرسانی شد",
+    "companyVerified": "شرکت تأیید شد",
+    "companyRejected": "شرکت رد شد",
+    "projectTaskUpdated": "وظیفه پروژه به‌روزرسانی شد",
+"projectTaskChecklistToggled": "وضعیت چک‌لیست وظیفه تغییر کرد"
+  }
+},
+"dashboardProfileCard": {
+  "title": "پروفایل کاربر",
+  "name": "نام",
+  "email": "ایمیل",
+  "role": "نقش",
+  "roles": {
+    "admin": "مدیر",
+    "user": "کاربر"
+  }
+},
+"dashboardPage": {
+  "title": "داشبورد",
+  "description": "حساب کاربری، پروفایل‌ها و فعالیت‌های تجاری خود را مدیریت کنید.",
+  "roles": {
+    "admin": "مدیر",
+    "user": "کاربر"
+  },
+  "admin": {
+    "commandCenter": "مرکز فرماندهی مدیر",
+    "description": "نمای کلی از وضعیت عملیاتی پلتفرم Dasres",
+    "reviewVerifications": "بررسی تأییدیه‌ها",
+    "pendingVerifications": "تأییدیه‌های در انتظار",
+    "totalReviews": "مجموع نظرات",
+    "premiumUsers": "کاربران ویژه",
+    "openTickets": "تیکت‌های باز",
+    "panel": "پنل مدیریت",
+    "users": "کاربران",
+    "experts": "متخصصان",
+    "companies": "شرکت‌ها",
+    "opportunities": "فرصت‌ها",
+    "latestUsers": "آخرین کاربران",
+    "manageUsers": "مدیریت کاربران"
+  }
+},
+"loginPage": {
+  "title": "خوش آمدید",
+  "description": "به حساب Dasres خود وارد شوید",
+  "email": "ایمیل",
+  "password": "رمز عبور",
+  "login": "ورود",
+  "loginFailed": "ورود ناموفق بود."
+},
+"registerPage": {
+  "title": "به Dasres بپیوندید",
+  "description": "حساب کاربری خود را ایجاد کنید",
+  "name": {
+    "label": "نام کامل",
+    "placeholder": "نام کامل خود را وارد کنید"
+  },
+  "email": {
+    "label": "ایمیل",
+    "placeholder": "ایمیل خود را وارد کنید"
+  },
+  "password": {
+    "label": "رمز عبور",
+    "placeholder": "رمز عبور خود را وارد کنید",
+    "hint": "رمز عبور باید حداقل ۶ کاراکتر داشته باشد."
+  },
+  "submit": "ایجاد حساب",
+  "submitting": "در حال ایجاد حساب...",
+  "registrationFailed": "ایجاد حساب ناموفق بود.",
+  "alreadyHaveAccount": "قبلاً حساب کاربری دارید؟",
+  "login": "ورود"
+},
+"projectDetailPage": {
+  "backToProjects": "بازگشت به پروژه‌ها"
+},
+"projectHeader": {
+  "progress": "پیشرفت"
+},
+"projectTabs": {
+  "overview": "نمای کلی",
+  "tasks": "وظایف",
+  "board": "کانبان",
+  "calendar": "تقویم",
+  "gantt": "گانت",
+  "workload": "بار کاری",
+  "documents": "اسناد",
+  "timeline": "تایم‌لاین",
+  "messages": "پیام‌ها",
+  "activity": "فعالیت‌ها"
+},
+"projectOverviewCards": {
+  "customer": "مشتری",
+  "category": "دسته‌بندی",
+  "openTasks": "وظایف باز",
+  "completedTasks": "وظایف تکمیل‌شده",
+  "steps": "مراحل",
+  "completed": "تکمیل‌شده"
+},
+"projectTimeSummary": {
+  "title": "ثبت زمان",
+  "description": "خلاصه زمان صرف‌شده در پروژه",
+  "estimated": "زمان تخمینی",
+  "logged": "ثبت‌شده",
+  "remaining": "باقی‌مانده",
+  "distribution": "توزیع زمان"
+},
+"projectOverviewHeader": {
+  "description": "مرکز مدیریت پروژه برای کنترل وظایف، بار کاری، تایم‌لاین، گانت و روند اجرا.",
+  "overallProgress": "پیشرفت کلی",
+  "status": {
+    "todo": "برای انجام",
+    "inProgress": "در حال انجام",
+    "review": "در حال بررسی",
+    "completed": "تکمیل‌شده",
+    "cancelled": "لغوشده"
+  },
+  "metrics": {
+    "tasks": "وظایف",
+    "completed": "تکمیل‌شده",
+    "inProgress": "در حال انجام",
+    "review": "در حال بررسی",
+    "blocked": "مسدودشده",
+    "remaining": "باقی‌مانده"
+  },
+  "hours": {
+    "estimated": "ساعات تخمینی",
+    "logged": "ساعات ثبت‌شده",
+    "value": "{hours} ساعت"
+  },
+  "features": {
+    "tasks": "وظایف",
+    "kanban": "کانبان",
+    "calendar": "تقویم",
+    "timeline": "تایم‌لاین",
+    "gantt": "گانت",
+    "workload": "بار کاری"
+  }
+},
+"projectHealthCard": {
+  "title": "سلامت پروژه",
+  "progress": "پیشرفت",
+  "hoursUsed": "ساعات استفاده‌شده",
+  "utilization": "نرخ استفاده",
+  "overdue": "وظایف معوق",
+  "noEstimate": "بدون برآورد",
+  "noOverdueTasks": "هیچ وظیفه معوقی وجود ندارد",
+  "overdueTasks": "{count} وظیفه"
+},
+"projectCriticalPathCard": {
+  "title": "مسیر بحرانی",
+  "description": "وظایفی که ممکن است مستقیماً باعث تأخیر در برنامه پروژه شوند.",
+  "criticalTasks": "وظایف بحرانی",
+  "criticalDuration": "مدت مسیر بحرانی",
+  "duration": "{count} روز",
+  "empty": "هیچ وابستگی بحرانی شناسایی نشد.",
+  "dependsOn": "وابسته به: {task}",
+  "critical": "بحرانی"
+},
+"projectAIInsights": {
+  "title": "تحلیل دستیار هوشمند",
+  "description": "تحلیل قانون‌محور آماده برای اتصال آینده به GPT.",
+  "healthScore": "امتیاز سلامت هوشمند",
+  "progressLabel": "پیشرفت:",
+  "health": {
+    "excellent": "عالی",
+    "stable": "پایدار",
+    "atRisk": "در معرض خطر",
+    "critical": "بحرانی"
+  },
+  "risks": {
+    "title": "ریسک‌ها",
+    "overdueTasks": "{count} وظیفه عقب‌افتاده",
+    "blockedTasks": "{count} وظیفه مسدودشده",
+    "pendingApprovals": "{count} تأییدیه در انتظار"
+  },
+  "nextAction": "اقدام بعدی",
+  "recommendation": "پیشنهاد",
+  "nextActions": {
+    "approveDocument": "سند {fileName} را تأیید کنید",
+    "resolveDependency": "وابستگی وظیفه {taskTitle} را برطرف کنید",
+    "reviewOverdueTask": "وظیفه عقب‌افتاده را بررسی کنید: {taskTitle}",
+    "continueExecution": "روند اجرا را ادامه دهید و وظیفه بعدی را ببندید",
+    "completionReview": "پروژه آماده بررسی نهایی برای تکمیل است"
+  },
+  "recommendations": {
+    "pendingApprovals": "تأیید اسناد گلوگاه اصلی است. پیش از ادامه ارسال یا تحویل، اسناد در انتظار را بررسی کنید.",
+    "blockedTasks": "پیش از آغاز مراحل بعدی اجرا، وابستگی‌های وظایف را برطرف کنید.",
+    "overdueTasks": "ریسک زمانی در حال افزایش است. مهلت‌ها را بررسی کرده و وظایف تأخیردار را دوباره تخصیص دهید.",
+    "normalProgress": "پروژه به‌صورت عادی در حال پیشرفت است. اسناد و نقاط عطف گردش کار را همچنان پایش کنید."
+  }
+},
+"projectAIAssistant": {
+  "title": "دستیار هوشمند Dasres",
+  "subtitle": "تحلیل هوشمند پروژه",
+  "risk": "ریسک",
+  "progress": "پیشرفت",
+  "aiSuggestions": "پیشنهادهای هوش مصنوعی",
+  "riskLevels": {
+    "low": "کم",
+    "medium": "متوسط",
+    "high": "زیاد"
+  },
+  "suggestions": {
+    "resolveBlocked": "وظایف مسدودشده را برطرف کنید.",
+    "reviewOverdue": "وظایف عقب‌افتاده را بررسی کنید.",
+    "increasePace": "سرعت اجرای پروژه را افزایش دهید.",
+    "normal": "پروژه به‌صورت عادی در حال پیشرفت است."
+  }
+},
+"projectTasksSection": {
+  "title": "وظایف پروژه",
+  "description": "وظایف پروژه را به‌صورت مؤثر مدیریت کنید.",
+  "searchPlaceholder": "جستجوی وظایف...",
+  "searchLabel": "جستجو در وظایف پروژه",
+  "filteredCount": "{filtered} از {total}",
+  "emptyState": "برای مشاهده جزئیات، یک وظیفه را انتخاب کنید.",
+  "noSearchResults": "هیچ وظیفه‌ای با جستجوی شما مطابقت ندارد."
+},
+"projectTaskList": {
+  "empty": "هیچ وظیفه‌ای یافت نشد.",
+  "unassigned": "تخصیص داده نشده",
+  "progress": "پیشرفت",
+  "progressLabel": "میزان پیشرفت وظیفه {title}",
+  "noDueDate": "بدون مهلت",
+  "priorities": {
+    "urgent": "فوری",
+    "high": "زیاد",
+    "medium": "متوسط",
+    "low": "کم"
+  }
+},
+"projectTaskDetails": {
+  "emptyState": "برای مشاهده جزئیات، یک وظیفه را انتخاب کنید.",
+  "assignedTo": "تخصیص‌یافته به",
+  "unassigned": "تخصیص داده نشده",
+  "startDate": "تاریخ شروع",
+  "dueDate": "مهلت انجام",
+  "noStartDate": "بدون تاریخ شروع",
+  "noDueDate": "بدون مهلت",
+  "progress": "پیشرفت",
+  "estimated": "زمان تخمینی",
+  "logged": "زمان ثبت‌شده",
+  "remaining": "زمان باقی‌مانده",
+  "hours": "{count} ساعت",
+  "notSet": "تعیین نشده",
+  "dependsOn": "وابسته به",
+  "blocks": "مسدودکننده وظایف",
+  "attachments": "پیوست‌ها",
+  "uploadedBy": "بارگذاری‌شده توسط {name}",
+  "unknown": "نامشخص",
+  "priorities": {
+    "urgent": "فوری",
+    "high": "زیاد",
+    "medium": "متوسط",
+    "low": "کم"
+  },
+  "statuses": {
+    "todo": "برای انجام",
+    "in_progress": "در حال انجام",
+    "review": "در حال بررسی",
+    "completed": "تکمیل‌شده"
+  }
+},
+"projectTaskStatusSelect": {
+  "label": "وضعیت وظیفه",
+  "updating": "در حال به‌روزرسانی وضعیت...",
+  "updateError": "به‌روزرسانی وضعیت وظیفه انجام نشد.",
+  "networkError": "هنگام به‌روزرسانی وضعیت، خطای شبکه رخ داد.",
+  "statuses": {
+    "todo": "برای انجام",
+    "in_progress": "در حال انجام",
+    "review": "در حال بررسی",
+    "completed": "تکمیل‌شده"
+  }
+},
+"assignTaskSelect": {
+  "label": "تخصیص وظیفه",
+  "unassigned": "تخصیص داده نشده",
+  "updating": "در حال به‌روزرسانی...",
+  "updateError": "تخصیص وظیفه انجام نشد.",
+  "networkError": "هنگام تخصیص وظیفه، خطای شبکه رخ داد."
+},
+"editProjectTaskForm": {
+  "edit": "ویرایش",
+  "title": "ویرایش وظیفه",
+  "taskTitle": "عنوان وظیفه",
+  "titleRequired": "عنوان وظیفه الزامی است.",
+  "description": "توضیحات",
+  "descriptionPlaceholder": "توضیحات وظیفه را وارد کنید...",
+  "priority": "اولویت",
+  "startDate": "تاریخ شروع",
+  "dueDate": "مهلت انجام",
+  "estimatedHours": "ساعات تخمینی",
+  "estimatedHoursPlaceholder": "ساعات تخمینی",
+  "loggedHours": "ساعات ثبت‌شده",
+  "loggedHoursPlaceholder": "ساعات ثبت‌شده",
+  "assignedTo": "تخصیص‌یافته به",
+  "unassigned": "تخصیص داده نشده",
+  "dependsOn": "وابسته به",
+  "noDependency": "بدون وابستگی",
+  "save": "ذخیره",
+  "saving": "در حال ذخیره...",
+  "cancel": "انصراف",
+  "updateError": "به‌روزرسانی وظیفه انجام نشد.",
+  "networkError": "هنگام به‌روزرسانی وظیفه، خطای شبکه رخ داد.",
+  "invalidEstimatedHours": "ساعات تخمینی باید صفر یا بیشتر باشد.",
+  "invalidLoggedHours": "ساعات ثبت‌شده باید صفر یا بیشتر باشد.",
+  "priorities": {
+    "low": "کم",
+    "medium": "متوسط",
+    "high": "زیاد",
+    "urgent": "فوری"
+  }
+},
+"projectTaskChecklist": {
+  "title": "چک‌لیست",
+  "empty": "هنوز موردی به چک‌لیست اضافه نشده است.",
+  "updating": "در حال به‌روزرسانی...",
+  "toggleError": "به‌روزرسانی مورد چک‌لیست انجام نشد.",
+  "networkError": "هنگام به‌روزرسانی مورد چک‌لیست، خطای شبکه رخ داد.",
+  "markComplete": "علامت‌گذاری {title} به‌عنوان انجام‌شده",
+  "markIncomplete": "علامت‌گذاری {title} به‌عنوان انجام‌نشده"
+},
+"createChecklistItemForm": {
+  "label": "عنوان مورد چک‌لیست",
+  "placeholder": "افزودن مورد به چک‌لیست...",
+  "add": "افزودن",
+  "adding": "در حال افزودن...",
+  "titleRequired": "عنوان مورد چک‌لیست الزامی است.",
+  "createError": "افزودن مورد چک‌لیست انجام نشد.",
+  "invalidResponse": "مورد چک‌لیست ساخته شد، اما پاسخ سرور معتبر نبود.",
+  "networkError": "هنگام افزودن مورد چک‌لیست، خطای شبکه رخ داد."
+},
+"taskProgressBar": {
+  "title": "پیشرفت وظیفه",
+  "ariaLabel": "پیشرفت وظیفه",
+  "summary": "{completed} از {total} مورد چک‌لیست تکمیل شده است"
+},
+"projectTaskComments": {
+  "title": "نظرات",
+  "empty": "هنوز نظری ثبت نشده است.",
+  "commentLabel": "نظر",
+  "placeholder": "نظر خود را بنویسید...",
+  "postComment": "ارسال نظر",
+  "posting": "در حال ارسال...",
+  "edited": "ویرایش‌شده",
+  "deletedComment": "این نظر حذف شده است.",
+  "unknownAuthor": "نامشخص",
+  "unknownDate": "تاریخ نامشخص",
+  "commentRequired": "متن نظر الزامی است.",
+  "createError": "ارسال نظر انجام نشد.",
+  "networkError": "هنگام ارسال نظر، خطای شبکه رخ داد."
+},
+"projectTaskAttachmentUpload": {
+  "title": "پیوست فایل",
+  "fileLabel": "انتخاب فایل",
+  "helpText": "فرمت‌های مجاز: JPG، PNG، WEBP، PDF، DOCX و XLSX. حداکثر حجم: ۱۰ مگابایت.",
+  "fileSize": "{size} مگابایت",
+  "upload": "بارگذاری",
+  "uploading": "در حال بارگذاری...",
+  "clear": "پاک کردن",
+  "selectFile": "لطفاً یک فایل انتخاب کنید.",
+  "invalidType": "این نوع فایل پشتیبانی نمی‌شود.",
+  "fileTooLarge": "حجم فایل انتخاب‌شده باید ۱۰ مگابایت یا کمتر باشد.",
+  "uploadError": "بارگذاری فایل انجام نشد.",
+  "networkError": "هنگام بارگذاری فایل، خطای شبکه رخ داد."
+},
+"createProjectTaskForm": {
+  "newTask": "+ وظیفه جدید",
+  "modalTitle": "ایجاد وظیفه",
+  "taskTitle": "عنوان وظیفه",
+  "taskTitlePlaceholder": "عنوان وظیفه را وارد کنید",
+  "description": "توضیحات",
+  "descriptionPlaceholder": "توضیحات اختیاری",
+  "priority": "اولویت",
+  "startDate": "تاریخ شروع",
+  "dueDate": "مهلت انجام",
+  "createTask": "ایجاد وظیفه",
+  "creating": "در حال ایجاد...",
+  "cancel": "انصراف",
+  "titleRequired": "عنوان وظیفه الزامی است.",
+  "invalidDateRange": "مهلت انجام نمی‌تواند قبل از تاریخ شروع باشد.",
+  "createError": "ایجاد وظیفه انجام نشد.",
+  "networkError": "هنگام ایجاد وظیفه، خطای شبکه رخ داد.",
+  "priorities": {
+    "low": "کم",
+    "medium": "متوسط",
+    "high": "زیاد",
+    "urgent": "فوری"
+  }
+},
+"projectBoard": {
+  "columns": {
+    "todo": "برای انجام",
+    "inProgress": "در حال انجام",
+    "review": "در حال بررسی",
+    "completed": "تکمیل‌شده"
+  },
+  "emptyColumn": "وظیفه‌ای وجود ندارد",
+  "updateError": "به‌روزرسانی وضعیت وظیفه انجام نشد."
+},
+"kanbanColumn": {
+  "ariaLabel": "ستون {title} با {count} وظیفه",
+  "taskCount": "{count} وظیفه"
+},
+"kanbanTaskCard": {
+  "assignee": "مسئول",
+  "unassigned": "تخصیص داده نشده",
+  "due": "مهلت",
+  "noDueDate": "بدون مهلت",
+  "checklist": "چک‌لیست",
+  "comments": "نظرات",
+  "files": "فایل‌ها",
+  "dragLabel": "جابجایی وظیفه {title}",
+  "priorities": {
+    "low": "کم",
+    "medium": "متوسط",
+    "high": "زیاد",
+    "urgent": "فوری"
+  }
+},
+"projectCalendarView": {
+  "title": "تقویم پروژه",
+  "description": "مهلت وظایف را مشاهده کنید و با جابه‌جایی آن‌ها، تاریخ سررسید را تغییر دهید.",
+  "noEvents": "هیچ وظیفه زمان‌بندی‌شده‌ای وجود ندارد.",
+  "updateError": "به‌روزرسانی تاریخ وظیفه انجام نشد.",
+  "invalidTaskDate": "وظیفه یا تاریخ انتخاب‌شده معتبر نیست.",
+  "buttons": {
+    "today": "امروز",
+    "month": "ماه",
+    "week": "هفته"
+  }
+},
+"projectGanttView": {
+  "title": "نمودار گانت",
+  "description": "نمایش بصری زمان‌بندی وظایف پروژه و وابستگی‌های آن‌ها.",
+  "emptyState": "هیچ وظیفه تاریخ‌داری برای نمایش در نمودار گانت وجود ندارد.",
+  "taskColumn": "وظیفه",
+  "timeline": "خط زمانی",
+  "week": "هفته",
+  "taskCount": "{count} وظیفه",
+  "critical": "بحرانی",
+  "blocked": "مسدود",
+  "dateRange": "{start} تا {end}",
+  "zoom": {
+    "day": "روز",
+    "week": "هفته",
+    "month": "ماه"
+  },
+  "statuses": {
+    "todo": "برای انجام",
+    "in_progress": "در حال انجام",
+    "review": "در حال بررسی",
+    "completed": "تکمیل‌شده",
+     "unknown": "نامشخص"
+  },
+  "duration": {
+  "day": "{title} • {duration} روز",
+  "week": "{title} • {duration} هفته",
+  "month": "{title} • {duration} ماه"
+}
+},
+"projectWorkloadView": {
+  "title": "حجم کاری تیم",
+  "description": "توزیع وظایف، میزان پیشرفت و وظایف عقب‌افتاده هر عضو تیم.",
+  "emptyState": "وظیفه‌ای برای تحلیل حجم کاری وجود ندارد.",
+  "unassigned": "تخصیص داده نشده",
+  "totalTasks": "مجموع {count} وظیفه",
+  "workload": "حجم کاری",
+  "active": "فعال",
+  "done": "انجام‌شده",
+  "overdue": "عقب‌افتاده",
+  "progressLabel": "میانگین پیشرفت وظایف {name}",
+  "capacities": {
+    "high": "زیاد",
+    "medium": "متوسط",
+    "low": "کم"
+  },
+  "workloadStates": {
+    "needsAttention": "نیازمند توجه",
+    "highLoad": "حجم کاری زیاد",
+    "balanced": "متعادل",
+    "available": "ظرفیت آزاد"
+  }
+},
+"projectTimeline": {
+  "title": "مراحل خط زمانی",
+  "completed": "تکمیل‌شده",
+  "pending": "در انتظار",
+  "notCompletedYet": "هنوز تکمیل نشده است",
+  "unknownDate": "تاریخ نامشخص",
+  "emptyState": "هیچ مرحله‌ای برای خط زمانی وجود ندارد."
+},
+"projectDocuments": {
+  "title": "مرکز اسناد",
+  "description": "فضای متمرکز مدیریت اسناد پروژه و تجارت.",
+  "documentCount": "{count} سند",
+  "required": "الزامی",
+  "optional": "اختیاری",
+  "open": "باز کردن",
+  "linkedTask": "وظیفه مرتبط: {title}",
+  "uploadedBy": "بارگذاری‌شده توسط {name}",
+  "unknownUser": "کاربر نامشخص",
+  "unknownSize": "حجم نامشخص",
+  "unknownDate": "تاریخ نامشخص",
+  "rejectionReason": "دلیل رد سند",
+  "approvalStatuses": {
+    "approved": "تأییدشده",
+    "rejected": "ردشده",
+    "pending": "در انتظار بررسی"
+  },
+  "requirements": {
+    "commercialInvoice": "فاکتور تجاری",
+    "packingList": "فهرست بسته‌بندی",
+    "billOfLading": "بارنامه",
+    "insuranceCertificate": "گواهی بیمه"
+  },
+  "fileSize": {
+    "bytes": "{size} بایت",
+    "kilobytes": "{size} کیلوبایت",
+    "megabytes": "{size} مگابایت"
+  },
+  "emptyState": {
+    "title": "هنوز سندی بارگذاری نشده است",
+    "description": "اسناد بارگذاری‌شده در وظایف پروژه در این بخش نمایش داده می‌شوند."
+  }
+},
+"approveDocumentButtons": {
+  "approve": "✓ تأیید",
+  "approving": "در حال تأیید...",
+  "reject": "✕ رد",
+  "rejecting": "در حال رد...",
+  "updateError": "به‌روزرسانی وضعیت سند انجام نشد.",
+  "networkError": "هنگام به‌روزرسانی سند، خطای شبکه رخ داد."
+},
+"addProjectMessageForm": {
+  "label": "پیام پروژه",
+  "placeholder": "پیام پروژه را بنویسید...",
+  "send": "ارسال پیام",
+  "sending": "در حال ارسال...",
+  "shortcutHint": "برای ارسال، Ctrl یا Command همراه Enter را فشار دهید.",
+  "sendError": "ارسال پیام انجام نشد.",
+  "networkError": "هنگام ارسال پیام، خطای شبکه رخ داد.",
+  "invalidResponse": "پیام ارسال شد، اما پاسخ سرور معتبر نبود."
+},
+"projectMessaging": {
+  "title": "پیام‌رسانی پروژه",
+  "description": "ارتباط داخلی میان مشتری، ارائه‌دهنده خدمات و اعضای تیم پروژه.",
+  "conversationCount": "{count} گفتگو",
+  "messageCount": "{count} پیام",
+  "defaultConversationTitle": "گفتگوی پروژه",
+  "conversationListLabel": "گفتگوهای پروژه",
+  "noMessages": "هنوز پیامی در این گفتگو ارسال نشده است.",
+  "unknownSender": "فرستنده نامشخص",
+  "unknownDate": "تاریخ نامشخص",
+  "you": "شما",
+  "emptyState": {
+    "title": "هنوز گفتگویی وجود ندارد",
+    "description": "برای آغاز گفتگوی پروژه، اولین پیام را ارسال کنید."
+  }
+},
+"projectActivitySection": {
+  "title": "فعالیت‌های اخیر",
+  "emptyState": "هنوز فعالیتی ثبت نشده است.",
+  "unknownDate": "تاریخ نامشخص",
+  "actions": {
+    "project_created": "پروژه ایجاد شد",
+    "project_updated": "پروژه به‌روزرسانی شد",
+    "task_created": "وظیفه ایجاد شد",
+    "task_updated": "وظیفه به‌روزرسانی شد",
+    "task_assigned": "وظیفه تخصیص داده شد",
+    "task_completed": "وظیفه تکمیل شد",
+    "task_status_updated": "وضعیت وظیفه به‌روزرسانی شد",
+    "comment_added": "نظر اضافه شد",
+    "document_uploaded": "سند بارگذاری شد",
+    "document_approved": "سند تأیید شد",
+    "document_rejected": "سند رد شد",
+    "message_sent": "پیام ارسال شد"
+  }
+},
+"projectListProgress": {
+  "progress": "پیشرفت",
+  "progressLabel": "پیشرفت وظایف پروژه",
+  "summary": "{completed} از {total} وظیفه تکمیل شده است"
+},
+"projectPrintButton": {
+  "button": "خروجی / چاپ PDF",
+  "tooltip": "این صفحه را چاپ یا به صورت PDF ذخیره کنید",
+  "ariaLabel": "خروجی یا چاپ پروژه به صورت PDF"
+},
+"projectProgressCard": {
+  "title": "پیشرفت پروژه",
+  "progressLabel": "پیشرفت پروژه",
+  "summary": "{completed} از {total} وظیفه تکمیل شده است"
+},
+"projectTasksExportButton": {
+  "button": "خروجی اکسل",
+  "ariaLabel": "خروجی وظایف پروژه به صورت فایل CSV سازگار با اکسل",
+  "tooltip": "دانلود وظایف پروژه به صورت فایل CSV سازگار با اکسل",
+  "emptyTooltip": "وظیفه‌ای برای خروجی گرفتن وجود ندارد",
+  "unknown": "نامشخص",
+  "unknownDate": "تاریخ نامشخص",
+  "headers": {
+    "id": "شناسه",
+    "title": "عنوان",
+    "status": "وضعیت",
+    "priority": "اولویت",
+    "progress": "پیشرفت",
+    "startDate": "تاریخ شروع",
+    "dueDate": "مهلت انجام",
+    "estimatedHours": "ساعات تخمینی",
+    "loggedHours": "ساعات ثبت‌شده",
+    "assignedTo": "تخصیص‌یافته به",
+    "assignedEmail": "ایمیل مسئول",
+    "dependsOn": "وابسته به",
+    "dependencyStatus": "وضعیت وابستگی"
+  },
+  "statuses": {
+    "todo": "برای انجام",
+    "inProgress": "در حال انجام",
+    "review": "در حال بررسی",
+    "completed": "تکمیل‌شده"
+  },
+  "priorities": {
+    "low": "کم",
+    "medium": "متوسط",
+    "high": "زیاد",
+    "urgent": "فوری"
+  }
+}
+}

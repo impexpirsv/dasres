@@ -1,18 +1,32 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+
+type DocumentStatus = "APPROVED" | "REJECTED";
+type DocumentAction = "approve" | "reject";
 
 export default function ApproveDocumentButtons({
   documentId,
   onStatusChange,
 }: {
   documentId: number;
-  onStatusChange: (documentId: number, status: "APPROVED" | "REJECTED") => void;
+  onStatusChange: (
+    documentId: number,
+    status: DocumentStatus,
+  ) => void;
 }) {
-  const [loading, startTransition] = useTransition();
+  const t = useTranslations("approveDocumentButtons");
 
-  function updateDocument(action: "approve" | "reject") {
-    startTransition(async () => {
+  const [loadingAction, setLoadingAction] =
+    useState<DocumentAction | null>(null);
+
+  async function updateDocument(
+    action: DocumentAction,
+  ) {
+    try {
+      setLoadingAction(action);
+
       const response = await fetch(
         `/api/project-documents/${documentId}/${action}`,
         {
@@ -20,36 +34,64 @@ export default function ApproveDocumentButtons({
         },
       );
 
+      let data: {
+        message?: string;
+      } = {};
+
+      try {
+        data = await response.json();
+      } catch {
+        // API may return an empty or non-JSON response.
+      }
+
       if (!response.ok) {
-        alert("Failed to update document.");
+        alert(data.message || t("updateError"));
         return;
       }
 
       onStatusChange(
         documentId,
-        action === "approve" ? "APPROVED" : "REJECTED",
+        action === "approve"
+          ? "APPROVED"
+          : "REJECTED",
       );
-    });
+    } catch {
+      alert(t("networkError"));
+    } finally {
+      setLoadingAction(null);
+    }
   }
 
+  const loading = loadingAction !== null;
+
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap gap-2">
       <button
         type="button"
-        onClick={() => updateDocument("approve")}
+        onClick={() =>
+          void updateDocument("approve")
+        }
         disabled={loading}
-        className="rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white hover:bg-green-700 disabled:opacity-50"
+        aria-busy={loadingAction === "approve"}
+        className="rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        ✓ Approve
+        {loadingAction === "approve"
+          ? t("approving")
+          : t("approve")}
       </button>
 
       <button
         type="button"
-        onClick={() => updateDocument("reject")}
+        onClick={() =>
+          void updateDocument("reject")
+        }
         disabled={loading}
-        className="rounded-lg bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+        aria-busy={loadingAction === "reject"}
+        className="rounded-lg bg-red-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        ✕ Reject
+        {loadingAction === "reject"
+          ? t("rejecting")
+          : t("reject")}
       </button>
     </div>
   );

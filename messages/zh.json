@@ -1,0 +1,9 @@
+{
+  "common": {
+    "appName": "Dasres",
+    "dashboard": "控制面板",
+    "notifications": "通知",
+    "settings": "设置",
+    "logout": "退出登录"
+  }
+}

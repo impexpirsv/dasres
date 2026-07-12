@@ -1,0 +1,9 @@
+{
+  "common": {
+    "appName": "Dasres",
+    "dashboard": "Painel",
+    "notifications": "Notificações",
+    "settings": "Configurações",
+    "logout": "Sair"
+  }
+}

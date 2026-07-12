@@ -1,3 +1,8 @@
+"use client";
+
+import { useMemo } from "react";
+import { useTranslations } from "next-intl";
+
 type UserOption = {
   id: number;
   name: string | null;
@@ -9,191 +14,323 @@ type Task = {
   title: string;
   status: string;
   progress: number;
-  dueDate: Date | null;
+  dueDate: Date | string | null;
   assignedToId: number | null;
   assignedTo: UserOption | null;
 };
 
-export default function ProjectWorkloadView({ tasks }: { tasks: Task[] }) {
-  const grouped = new Map<
-    string,
-    {
-      name: string;
-      tasks: Task[];
+type Capacity = "HIGH" | "MEDIUM" | "LOW";
+
+export default function ProjectWorkloadView({
+  tasks,
+}: {
+  tasks: Task[];
+}) {
+  const t = useTranslations("projectWorkloadView");
+
+  const rows = useMemo(() => {
+    const grouped = new Map<
+      string,
+      {
+        key: string;
+        name: string;
+        tasks: Task[];
+      }
+    >();
+
+    for (const task of tasks) {
+      const key =
+        task.assignedToId !== null
+          ? String(task.assignedToId)
+          : "unassigned";
+
+      const name =
+        task.assignedTo?.name ||
+        task.assignedTo?.email ||
+        t("unassigned");
+
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          key,
+          name,
+          tasks: [],
+        });
+      }
+
+      grouped.get(key)?.tasks.push(task);
     }
-  >();
 
-  for (const task of tasks) {
-    const key = task.assignedToId ? String(task.assignedToId) : "unassigned";
+    const now = Date.now();
 
-    const name =
-      task.assignedTo?.name || task.assignedTo?.email || "Unassigned";
+    return Array.from(grouped.values())
+      .map((group) => {
+        const total = group.tasks.length;
 
-    if (!grouped.has(key)) {
-      grouped.set(key, {
-        name,
-        tasks: [],
+        const completed = group.tasks.filter(
+          (task) => task.status === "COMPLETED",
+        ).length;
+
+        const active = group.tasks.filter(
+          (task) => task.status !== "COMPLETED",
+        ).length;
+
+        const overdue = group.tasks.filter((task) => {
+          if (!task.dueDate || task.status === "COMPLETED") {
+            return false;
+          }
+
+          const dueDate = new Date(task.dueDate);
+
+          return (
+            !Number.isNaN(dueDate.getTime()) &&
+            dueDate.getTime() < now
+          );
+        }).length;
+
+        const averageProgress =
+          total === 0
+            ? 0
+            : Math.round(
+                group.tasks.reduce((sum, task) => {
+                  const progress = Number(task.progress);
+
+                  const normalizedProgress =
+                    Number.isFinite(progress)
+                      ? Math.min(100, Math.max(0, progress))
+                      : 0;
+
+                  return sum + normalizedProgress;
+                }, 0) / total,
+              );
+
+        const capacity: Capacity =
+          active >= 10
+            ? "HIGH"
+            : active >= 6
+              ? "MEDIUM"
+              : "LOW";
+
+        return {
+          ...group,
+          total,
+          completed,
+          active,
+          overdue,
+          averageProgress,
+          capacity,
+        };
+      })
+      .sort((first, second) => {
+        if (first.overdue !== second.overdue) {
+          return second.overdue - first.overdue;
+        }
+
+        if (first.active !== second.active) {
+          return second.active - first.active;
+        }
+
+        return first.name.localeCompare(second.name);
       });
-    }
+  }, [tasks, t]);
 
-    grouped.get(key)!.tasks.push(task);
+  if (rows.length === 0) {
+    return (
+      <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+        <h2 className="text-2xl font-bold text-white">
+          {t("title")}
+        </h2>
+
+        <p className="mt-1 text-sm text-slate-400">
+          {t("description")}
+        </p>
+
+        <div className="mt-6 rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-8 text-center text-sm text-slate-500">
+          {t("emptyState")}
+        </div>
+      </section>
+    );
   }
 
-  const rows = Array.from(grouped.values()).map((group) => {
-    const total = group.tasks.length;
+  function getCapacityLabel(capacity: Capacity) {
+    switch (capacity) {
+      case "HIGH":
+        return t("capacities.high");
 
-    const completed = group.tasks.filter(
-      (task) => task.status === "COMPLETED",
-    ).length;
+      case "MEDIUM":
+        return t("capacities.medium");
 
-    const active = group.tasks.filter(
-      (task) => task.status !== "COMPLETED",
-    ).length;
+      default:
+        return t("capacities.low");
+    }
+  }
 
-    const overdue = group.tasks.filter(
-      (task) =>
-        task.dueDate &&
-        task.status !== "COMPLETED" &&
-        task.dueDate < new Date(),
-    ).length;
+  function getWorkloadLabel(
+    capacity: Capacity,
+    overdue: number,
+  ) {
+    if (overdue > 0) {
+      return t("workloadStates.needsAttention");
+    }
 
-    const averageProgress =
-      total === 0
-        ? 0
-        : Math.round(
-            group.tasks.reduce((sum, task) => sum + task.progress, 0) / total,
-          );
+    if (capacity === "HIGH") {
+      return t("workloadStates.highLoad");
+    }
 
-    const capacity = active >= 10 ? "HIGH" : active >= 6 ? "MEDIUM" : "LOW";
+    if (capacity === "MEDIUM") {
+      return t("workloadStates.balanced");
+    }
 
-    return {
-      ...group,
-      total,
-      completed,
-      active,
-      overdue,
-      averageProgress,
-      capacity,
-    };
-  });
+    return t("workloadStates.available");
+  }
 
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-      <h2 className="text-2xl font-bold text-white">Team Workload</h2>
+      <h2 className="text-2xl font-bold text-white">
+        {t("title")}
+      </h2>
 
       <p className="mt-1 text-sm text-slate-400">
-        Task distribution, progress, and overdue workload by team member.
+        {t("description")}
       </p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {rows.map((row) => (
-          <div
-            key={row.name}
-            className={`rounded-2xl border p-5 transition-all ${
-              row.overdue > 0
-                ? "border-red-700 bg-red-950/10"
-                : row.capacity === "HIGH"
-                  ? "border-orange-600 bg-orange-950/10"
-                  : row.capacity === "MEDIUM"
-                    ? "border-yellow-600 bg-yellow-950/10"
-                    : "border-green-700 bg-green-950/10"
-            }`}
-          >
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div>
-                <h3 className="font-bold text-white">{row.name}</h3>
+        {rows.map((row) => {
+          const workloadLabel = getWorkloadLabel(
+            row.capacity,
+            row.overdue,
+          );
 
-                <p className="mt-1 text-xs text-slate-500">
-                  {row.total} total tasks
-                </p>
+          return (
+            <article
+              key={row.key}
+              className={`rounded-2xl border p-5 transition-all ${
+                row.overdue > 0
+                  ? "border-red-700 bg-red-950/10"
+                  : row.capacity === "HIGH"
+                    ? "border-orange-600 bg-orange-950/10"
+                    : row.capacity === "MEDIUM"
+                      ? "border-yellow-600 bg-yellow-950/10"
+                      : "border-green-700 bg-green-950/10"
+              }`}
+            >
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h3 className="break-words font-bold text-white">
+                    {row.name}
+                  </h3>
+
+                  <p className="mt-1 text-xs text-slate-500">
+                    {t("totalTasks", {
+                      count: row.total,
+                    })}
+                  </p>
+                </div>
+
+                <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+                  <span className="rounded-full bg-blue-600/20 px-3 py-1 text-xs font-semibold text-blue-300">
+                    {row.averageProgress}%
+                  </span>
+
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      row.capacity === "HIGH"
+                        ? "bg-red-600/20 text-red-300"
+                        : row.capacity === "MEDIUM"
+                          ? "bg-yellow-600/20 text-yellow-300"
+                          : "bg-green-600/20 text-green-300"
+                    }`}
+                  >
+                    {getCapacityLabel(row.capacity)}
+                  </span>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="rounded-full bg-blue-600/20 px-3 py-1 text-xs font-semibold text-blue-300">
-                  {row.averageProgress}%
+              <div
+                className="h-3 overflow-hidden rounded-full bg-slate-800"
+                role="progressbar"
+                aria-label={t("progressLabel", {
+                  name: row.name,
+                })}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={row.averageProgress}
+              >
+                <div
+                  className={`h-full rounded-full transition-all duration-300 ${
+                    row.overdue > 0
+                      ? "bg-red-500"
+                      : row.capacity === "HIGH"
+                        ? "bg-orange-500"
+                        : row.capacity === "MEDIUM"
+                          ? "bg-yellow-500"
+                          : "bg-green-500"
+                  }`}
+                  style={{
+                    width: `${row.averageProgress}%`,
+                  }}
+                />
+              </div>
+
+              <div className="mt-3 flex items-center justify-between gap-3 text-xs">
+                <span className="text-slate-400">
+                  {t("workload")}
                 </span>
 
                 <span
-                  className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                    row.capacity === "HIGH"
-                      ? "bg-red-600/20 text-red-300"
-                      : row.capacity === "MEDIUM"
-                        ? "bg-yellow-600/20 text-yellow-300"
-                        : "bg-green-600/20 text-green-300"
-                  }`}
-                >
-                  {row.capacity}
-                </span>
-              </div>
-            </div>
-
-            <div className="h-3 overflow-hidden rounded-full bg-slate-800">
-              <div
-                className={`h-full rounded-full ${
-                  row.overdue > 0
-                    ? "bg-red-500"
-                    : row.capacity === "HIGH"
-                      ? "bg-orange-500"
-                      : row.capacity === "MEDIUM"
-                        ? "bg-yellow-500"
-                        : "bg-green-500"
-                }`}
-                style={{
-                  width: `${row.averageProgress}%`,
-                }}
-              />
-            </div>
-
-            <div className="mt-3 flex items-center justify-between text-xs">
-              <span className="text-slate-400">Workload</span>
-
-              <span
-                className={
-                  row.overdue > 0
-                    ? "font-semibold text-red-400"
-                    : row.capacity === "HIGH"
-                      ? "font-semibold text-orange-400"
-                      : row.capacity === "MEDIUM"
-                        ? "font-semibold text-yellow-400"
-                        : "font-semibold text-green-400"
-                }
-              >
-                {row.overdue > 0
-                  ? "Needs Attention"
-                  : row.capacity === "HIGH"
-                    ? "High Load"
-                    : row.capacity === "MEDIUM"
-                      ? "Balanced"
-                      : "Available"}
-              </span>
-            </div>
-
-            <div className="mt-5 grid grid-cols-3 gap-3 text-center text-xs">
-              <div>
-                <p className="font-bold text-white">{row.active}</p>
-                <p className="text-slate-500">Active</p>
-              </div>
-
-              <div>
-                <p className="font-bold text-white">{row.completed}</p>
-                <p className="text-slate-500">Done</p>
-              </div>
-
-              <div>
-                <p
                   className={
                     row.overdue > 0
-                      ? "font-bold text-red-400"
-                      : "font-bold text-white"
+                      ? "text-end font-semibold text-red-400"
+                      : row.capacity === "HIGH"
+                        ? "text-end font-semibold text-orange-400"
+                        : row.capacity === "MEDIUM"
+                          ? "text-end font-semibold text-yellow-400"
+                          : "text-end font-semibold text-green-400"
                   }
                 >
-                  {row.overdue}
-                </p>
-                <p className="text-slate-500">Overdue</p>
+                  {workloadLabel}
+                </span>
               </div>
-            </div>
-          </div>
-        ))}
+
+              <div className="mt-5 grid grid-cols-3 gap-3 text-center text-xs">
+                <div>
+                  <p className="font-bold text-white">
+                    {row.active}
+                  </p>
+
+                  <p className="text-slate-500">
+                    {t("active")}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-bold text-white">
+                    {row.completed}
+                  </p>
+
+                  <p className="text-slate-500">
+                    {t("done")}
+                  </p>
+                </div>
+
+                <div>
+                  <p
+                    className={
+                      row.overdue > 0
+                        ? "font-bold text-red-400"
+                        : "font-bold text-white"
+                    }
+                  >
+                    {row.overdue}
+                  </p>
+
+                  <p className="text-slate-500">
+                    {t("overdue")}
+                  </p>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

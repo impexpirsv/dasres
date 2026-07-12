@@ -1,13 +1,18 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
-export default function DashboardQuickActions() {
+export default async function DashboardQuickActions() {
+  const t = await getTranslations("dashboardQuickActions");
+
   return (
     <section className="mb-12">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Quick Actions</h2>
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <h2 className="text-2xl font-bold">
+          {t("title")}
+        </h2>
 
         <p className="text-slate-400 text-sm">
-          Frequently used shortcuts
+          {t("description")}
         </p>
       </div>
 
@@ -19,11 +24,11 @@ export default function DashboardQuickActions() {
           <div className="text-4xl mb-4">➕</div>
 
           <h3 className="text-xl font-bold">
-            Create Case
+            {t("createCase.title")}
           </h3>
 
           <p className="text-slate-400 mt-2">
-            Start a new international trade project.
+            {t("createCase.description")}
           </p>
         </Link>
 
@@ -34,11 +39,11 @@ export default function DashboardQuickActions() {
           <div className="text-4xl mb-4">📂</div>
 
           <h3 className="text-xl font-bold">
-            Open Cases
+            {t("openCases.title")}
           </h3>
 
           <p className="text-slate-400 mt-2">
-            Browse available trade requests.
+            {t("openCases.description")}
           </p>
         </Link>
 
@@ -49,11 +54,11 @@ export default function DashboardQuickActions() {
           <div className="text-4xl mb-4">🏢</div>
 
           <h3 className="text-xl font-bold">
-            My Companies
+            {t("myCompanies.title")}
           </h3>
 
           <p className="text-slate-400 mt-2">
-            Manage your company profiles.
+            {t("myCompanies.description")}
           </p>
         </Link>
 
@@ -64,11 +69,11 @@ export default function DashboardQuickActions() {
           <div className="text-4xl mb-4">👨‍💼</div>
 
           <h3 className="text-xl font-bold">
-            My Experts
+            {t("myExperts.title")}
           </h3>
 
           <p className="text-slate-400 mt-2">
-            Manage your expert profiles.
+            {t("myExperts.description")}
           </p>
         </Link>
       </div>

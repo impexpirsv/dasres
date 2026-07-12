@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { prisma } from "../../lib/prisma";
 
 export default async function Opportunities() {
+  const t = await getTranslations("opportunitiesSection");
+
   const opportunities = await prisma.opportunity.findMany({
     take: 6,
     orderBy: {
@@ -11,70 +14,70 @@ export default async function Opportunities() {
 
   return (
     <section className="bg-slate-950 py-24">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-blue-400 font-semibold mb-3">
-              Global Marketplace
+            <p className="mb-3 font-semibold text-blue-400">
+              {t("eyebrow")}
             </p>
 
-            <h2 className="text-4xl md:text-5xl font-bold mb-3">
-              Latest Trade Opportunities
+            <h2 className="mb-3 text-4xl font-bold md:text-5xl">
+              {t("title")}
             </h2>
 
-            <p className="text-slate-400 max-w-2xl">
-              Browse international trade requests, discover new business
-              opportunities and connect with verified providers around the
-              world.
+            <p className="max-w-2xl text-slate-400">
+              {t("description")}
             </p>
           </div>
 
           <Link
             href="/opportunities"
-            className="text-blue-400 hover:text-blue-300 font-semibold"
+            className="font-semibold text-blue-400 hover:text-blue-300"
           >
-            View All →
+            {t("viewAll")} <span aria-hidden>→</span>
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-7">
+        <div className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
           {opportunities.map((opportunity) => (
             <div
               key={opportunity.id}
-              className="bg-slate-900/80 rounded-3xl p-6 border border-slate-800 hover:border-blue-500/50 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300"
+              className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/10"
             >
-              <div className="flex items-center justify-between mb-5">
-                <span className="bg-blue-500/15 border border-blue-500/30 text-blue-300 text-xs px-3 py-1 rounded-full">
+              <div className="mb-5 flex items-center justify-between">
+                <span className="rounded-full border border-blue-500/30 bg-blue-500/15 px-3 py-1 text-xs text-blue-300">
                   {opportunity.country}
                 </span>
 
-                <span className="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs px-3 py-1 rounded-full">
-                  {opportunity.status}
+                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs text-emerald-300">
+                  {opportunity.status === "OPEN"
+                    ? t("statusOpen")
+                    : opportunity.status}
                 </span>
               </div>
 
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-3xl mb-5">
+              <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 text-3xl">
                 🌍
               </div>
 
-              <h3 className="text-2xl font-bold mb-4 line-clamp-2">
+              <h3 className="mb-4 line-clamp-2 text-2xl font-bold">
                 {opportunity.title}
               </h3>
 
-              <p className="text-slate-400 leading-7 line-clamp-3">
+              <p className="line-clamp-3 leading-7 text-slate-400">
                 {opportunity.description}
               </p>
 
-              <div className="flex items-center justify-between mt-6 pt-5 border-t border-slate-800">
-                <span className="text-emerald-400 text-sm">
-                  ● Open Opportunity
+              <div className="mt-6 flex items-center justify-between border-t border-slate-800 pt-5">
+                <span className="text-sm text-emerald-400">
+                  ● {t("openOpportunity")}
                 </span>
 
                 <Link
                   href={`/opportunities/${opportunity.id}`}
-                  className="text-blue-400 hover:text-blue-300 font-medium"
+                  className="font-medium text-blue-400 hover:text-blue-300"
                 >
-                  View Details →
+                  {t("viewDetails")} <span aria-hidden>→</span>
                 </Link>
               </div>
             </div>

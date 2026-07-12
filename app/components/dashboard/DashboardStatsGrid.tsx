@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 type Props = {
   userRole: string;
@@ -20,7 +21,7 @@ type Props = {
   openTicketsCount: number;
 };
 
-export default function DashboardStatsGrid({
+export default async function DashboardStatsGrid({
   userRole,
   savedCasesCount,
   savedCompaniesCount,
@@ -39,51 +40,75 @@ export default function DashboardStatsGrid({
   unreadNotificationsCount,
   openTicketsCount,
 }: Props) {
+  const t = await getTranslations("dashboardStatsGrid");
+
+  const isAdmin = userRole === "admin";
+
   return (
     <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
       <Link
         href="/dashboard/saved-cases"
         className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
       >
-        <h2 className="text-xl font-semibold mb-3">Saved Cases</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("savedCases.title")}
+        </h2>
+
         <div className="text-5xl font-bold text-blue-400">
           {savedCasesCount}
         </div>
-        <p className="text-slate-400 mt-3">Cases saved for later</p>
+
+        <p className="text-slate-400 mt-3">
+          {t("savedCases.description")}
+        </p>
       </Link>
 
       <Link
         href="/dashboard/saved-companies"
         className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500 transition"
       >
-        <h2 className="text-xl font-semibold mb-3">Saved Companies</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("savedCompanies.title")}
+        </h2>
+
         <div className="text-5xl font-bold text-yellow-400">
           {savedCompaniesCount}
         </div>
-        <p className="text-slate-400 mt-3">Companies in your network</p>
+
+        <p className="text-slate-400 mt-3">
+          {t("savedCompanies.description")}
+        </p>
       </Link>
 
       <Link
         href="/dashboard/saved-experts"
         className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500 transition"
       >
-        <h2 className="text-xl font-semibold mb-3">Saved Experts</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("savedExperts.title")}
+        </h2>
+
         <div className="text-5xl font-bold text-emerald-400">
           {savedExpertsCount}
         </div>
-        <p className="text-slate-400 mt-3">Experts in your network</p>
+
+        <p className="text-slate-400 mt-3">
+          {t("savedExperts.description")}
+        </p>
       </Link>
 
       <Link
         href={
-          userRole === "admin"
+          isAdmin
             ? "/dashboard/experts"
             : "/dashboard/my-experts"
         }
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
+        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
       >
         <h2 className="text-xl font-semibold mb-3">
-          {userRole === "admin" ? "Experts" : "My Experts"}
+          {isAdmin
+            ? t("experts.adminTitle")
+            : t("experts.userTitle")}
         </h2>
 
         <div className="text-5xl font-bold text-blue-400">
@@ -91,22 +116,24 @@ export default function DashboardStatsGrid({
         </div>
 
         <p className="text-slate-400 mt-3">
-          {userRole === "admin"
-            ? "Verified experts available"
-            : "Experts you own"}
+          {isAdmin
+            ? t("experts.adminDescription")
+            : t("experts.userDescription")}
         </p>
       </Link>
 
       <Link
         href={
-          userRole === "admin"
+          isAdmin
             ? "/dashboard/companies"
             : "/dashboard/my-companies"
         }
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
+        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
       >
         <h2 className="text-xl font-semibold mb-3">
-          {userRole === "admin" ? "Companies" : "My Companies"}
+          {isAdmin
+            ? t("companies.adminTitle")
+            : t("companies.userTitle")}
         </h2>
 
         <div className="text-5xl font-bold text-blue-400">
@@ -114,30 +141,32 @@ export default function DashboardStatsGrid({
         </div>
 
         <p className="text-slate-400 mt-3">
-          {userRole === "admin"
-            ? "Registered companies"
-            : "Companies you own"}
+          {isAdmin
+            ? t("companies.adminDescription")
+            : t("companies.userDescription")}
         </p>
       </Link>
 
       <Link
         href="/dashboard/opportunities"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
+        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
       >
-        <h2 className="text-xl font-semibold mb-3">Opportunities</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("opportunities.title")}
+        </h2>
 
         <div className="text-5xl font-bold text-blue-400">
           {opportunitiesCount}
         </div>
 
         <p className="text-slate-400 mt-3">
-          Active trade opportunities
+          {t("opportunities.description")}
         </p>
       </Link>
 
       <div className="bg-slate-900 p-6 rounded-2xl border border-emerald-500">
         <h2 className="text-xl font-semibold mb-3">
-          Case Success Rate
+          {t("successRate.title")}
         </h2>
 
         <div className="text-5xl font-bold text-emerald-400">
@@ -145,16 +174,19 @@ export default function DashboardStatsGrid({
         </div>
 
         <p className="text-slate-400 mt-3">
-          {completedUserCases} completed of {totalUserCases} cases
+          {t("successRate.description", {
+            completed: completedUserCases,
+            total: totalUserCases,
+          })}
         </p>
       </div>
 
       <Link
         href="/dashboard/cases"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-cyan-500"
+        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-cyan-500 transition"
       >
         <h2 className="text-xl font-semibold mb-3">
-          Trade Cases
+          {t("tradeCases.title")}
         </h2>
 
         <div className="text-5xl font-bold text-cyan-400">
@@ -162,50 +194,64 @@ export default function DashboardStatsGrid({
         </div>
 
         <p className="text-slate-400 mt-3">
-          {userRole === "admin"
-            ? "All trade projects"
-            : "Submitted trade requests"}
+          {isAdmin
+            ? t("tradeCases.adminDescription")
+            : t("tradeCases.userDescription")}
         </p>
       </Link>
 
       <Link
         href="/dashboard/open-cases"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500"
+        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500 transition"
       >
-        <h2 className="text-xl font-semibold mb-3">Open Cases</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("openCases.title")}
+        </h2>
 
         <div className="text-5xl font-bold text-emerald-400">
           {openCasesCount}
         </div>
 
-        <p className="text-slate-400 mt-3">Available opportunities</p>
+        <p className="text-slate-400 mt-3">
+          {t("openCases.description")}
+        </p>
       </Link>
 
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <h2 className="text-xl font-semibold mb-3">In Progress</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("inProgress.title")}
+        </h2>
 
         <div className="text-5xl font-bold text-orange-400">
           {inProgressCasesCount}
         </div>
 
-        <p className="text-slate-400 mt-3">Active trade projects</p>
+        <p className="text-slate-400 mt-3">
+          {t("inProgress.description")}
+        </p>
       </div>
 
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <h2 className="text-xl font-semibold mb-3">Completed</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("completed.title")}
+        </h2>
 
         <div className="text-5xl font-bold text-green-400">
           {completedCasesCount}
         </div>
 
-        <p className="text-slate-400 mt-3">Finished projects</p>
+        <p className="text-slate-400 mt-3">
+          {t("completed.description")}
+        </p>
       </div>
 
       <Link
         href="/dashboard/my-proposals"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500"
+        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500 transition"
       >
-        <h2 className="text-xl font-semibold mb-3">Proposals</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("proposals")}
+        </h2>
 
         <div className="text-5xl font-bold text-yellow-400">
           {myProposalsCount}
@@ -213,7 +259,9 @@ export default function DashboardStatsGrid({
       </Link>
 
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <h2 className="text-xl font-semibold mb-3">Accepted</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("accepted")}
+        </h2>
 
         <div className="text-5xl font-bold text-green-400">
           {acceptedProposalsCount}
@@ -222,9 +270,11 @@ export default function DashboardStatsGrid({
 
       <Link
         href="/dashboard/notifications"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
+        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
       >
-        <h2 className="text-xl font-semibold mb-3">Notifications</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("notifications")}
+        </h2>
 
         <div className="text-5xl font-bold text-blue-400">
           {unreadNotificationsCount}
@@ -233,9 +283,11 @@ export default function DashboardStatsGrid({
 
       <Link
         href="/dashboard/tickets"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500"
+        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500 transition"
       >
-        <h2 className="text-xl font-semibold mb-3">Open Tickets</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {t("openTickets")}
+        </h2>
 
         <div className="text-5xl font-bold text-purple-400">
           {openTicketsCount}

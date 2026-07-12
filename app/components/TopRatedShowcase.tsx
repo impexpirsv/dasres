@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { prisma } from "../../lib/prisma";
 import { calculateTrustScore } from "../../lib/ranking";
 
@@ -11,44 +12,44 @@ function getAverageRating(reviews: { rating: number }[]) {
   );
 }
 
-function ratingText(value: number) {
-  return value > 0 ? value.toFixed(1) : "No reviews";
-}
-
 export default async function TopRatedShowcase() {
-  const companies = await prisma.company.findMany({
-    where: {
-      verificationStatus: "VERIFIED",
-    },
-    include: {
-      owner: {
-        include: {
-          reviewsReceived: {
-            select: {
-              rating: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const t = await getTranslations("topRatedShowcase");
 
-  const experts = await prisma.expert.findMany({
-    where: {
-      verificationStatus: "VERIFIED",
-    },
-    include: {
-      owner: {
-        include: {
-          reviewsReceived: {
-            select: {
-              rating: true,
+  const [companies, experts] = await Promise.all([
+    prisma.company.findMany({
+      where: {
+        verificationStatus: "VERIFIED",
+      },
+      include: {
+        owner: {
+          include: {
+            reviewsReceived: {
+              select: {
+                rating: true,
+              },
             },
           },
         },
       },
-    },
-  });
+    }),
+
+    prisma.expert.findMany({
+      where: {
+        verificationStatus: "VERIFIED",
+      },
+      include: {
+        owner: {
+          include: {
+            reviewsReceived: {
+              select: {
+                rating: true,
+              },
+            },
+          },
+        },
+      },
+    }),
+  ]);
 
   const topCompany = companies
     .map((company) => {
@@ -106,161 +107,194 @@ export default async function TopRatedShowcase() {
     return null;
   }
 
+  function ratingText(value: number) {
+    return value > 0 ? value.toFixed(1) : t("noReviews");
+  }
+
   return (
-    <section className="relative overflow-hidden bg-slate-950 py-28 border-b border-slate-800">
+    <section className="relative overflow-hidden border-b border-slate-800 bg-slate-950 py-28">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,_rgba(37,99,235,0.18),_transparent_28%),radial-gradient(circle_at_80%_70%,_rgba(6,182,212,0.12),_transparent_30%)]" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-14 items-center">
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="grid items-center gap-14 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm mb-6">
-              Trust Network
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300">
+              {t("eyebrow")}
             </div>
 
-            <h2 className="text-4xl md:text-6xl font-black leading-tight mb-6">
-              Verified providers.
+            <h2 className="mb-6 text-4xl font-black leading-tight md:text-6xl">
+              {t("titleLine1")}
+
               <span className="block bg-gradient-to-r from-emerald-300 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
-                Ranked by trust.
+                {t("titleLine2")}
               </span>
             </h2>
 
-            <p className="text-slate-400 text-lg leading-8 mb-8">
-              Dasres highlights companies and experts using verification,
-              ratings, reviews and trust scoring so trade teams can compare
-              providers with confidence.
+            <p className="mb-8 text-lg leading-8 text-slate-400">
+              {t("description")}
             </p>
 
-            <div className="grid sm:grid-cols-3 gap-4">
+            <div className="grid gap-4 sm:grid-cols-3">
               <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5">
                 <p className="text-3xl font-bold text-emerald-400">✓</p>
-                <p className="text-slate-400 mt-2">Verified profiles</p>
+                <p className="mt-2 text-slate-400">
+                  {t("verifiedProfiles")}
+                </p>
               </div>
 
               <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5">
                 <p className="text-3xl font-bold text-yellow-400">★</p>
-                <p className="text-slate-400 mt-2">Review history</p>
+                <p className="mt-2 text-slate-400">
+                  {t("reviewHistory")}
+                </p>
               </div>
 
               <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5">
-                <p className="text-3xl font-bold text-blue-400">100</p>
-                <p className="text-slate-400 mt-2">Trust scoring</p>
+                <p dir="ltr" className="text-3xl font-bold text-blue-400">
+                  100
+                </p>
+                <p className="mt-2 text-slate-400">
+                  {t("trustScoring")}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 md:grid-cols-2">
             {topCompany && (
               <div className="group rounded-[2rem] border border-slate-800 bg-slate-900/85 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/60 hover:shadow-2xl hover:shadow-blue-500/10">
-                <div className="flex items-start justify-between gap-4 mb-7">
+                <div className="mb-7 flex items-start justify-between gap-4">
                   <div>
-                    <div className="text-5xl mb-5">🏆</div>
+                    <div className="mb-5 text-5xl">🏆</div>
 
-                    <p className="text-blue-400 font-semibold mb-2">
-                      Top Company
+                    <p className="mb-2 font-semibold text-blue-400">
+                      {t("topCompany")}
                     </p>
 
-                    <h3 className="text-3xl font-bold mb-2">
+                    <h3 className="mb-2 text-3xl font-bold">
                       {topCompany.name}
                     </h3>
 
-                    <p className="text-slate-400">{topCompany.category}</p>
+                    <p className="text-slate-400">
+                      {topCompany.category}
+                    </p>
 
-                    <p className="text-slate-500 mt-1">
+                    <p className="mt-1 text-slate-500">
                       {topCompany.country}
                     </p>
                   </div>
 
-                  <span className="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs px-3 py-1 rounded-full">
-                    ✓ Verified
+                  <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs text-emerald-300">
+                    ✓ {t("verified")}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 mb-7">
+                <div className="mb-7 grid grid-cols-3 gap-3">
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-2xl font-bold text-emerald-400">
+                    <p
+                      dir="ltr"
+                      className="text-2xl font-bold text-emerald-400"
+                    >
                       {topCompany.trustScore}
                     </p>
-                    <p className="text-xs text-slate-500">Trust</p>
+                    <p className="text-xs text-slate-500">{t("trust")}</p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-xl font-bold text-yellow-400">
+                    <p
+                      dir="ltr"
+                      className="text-xl font-bold text-yellow-400"
+                    >
                       {ratingText(topCompany.averageRating)}
                     </p>
-                    <p className="text-xs text-slate-500">Rating</p>
+                    <p className="text-xs text-slate-500">{t("rating")}</p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-2xl font-bold text-blue-400">
+                    <p
+                      dir="ltr"
+                      className="text-2xl font-bold text-blue-400"
+                    >
                       {topCompany.reviewCount}
                     </p>
-                    <p className="text-xs text-slate-500">Reviews</p>
+                    <p className="text-xs text-slate-500">{t("reviews")}</p>
                   </div>
                 </div>
 
                 <Link
                   href={`/companies/${topCompany.id}`}
-                  className="inline-flex w-full justify-center bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl font-semibold"
+                  className="inline-flex w-full justify-center rounded-xl bg-blue-600 px-5 py-3 font-semibold hover:bg-blue-700"
                 >
-                  View Company
+                  {t("viewCompany")}
                 </Link>
               </div>
             )}
 
             {topExpert && (
               <div className="group rounded-[2rem] border border-slate-800 bg-slate-900/85 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/60 hover:shadow-2xl hover:shadow-cyan-500/10">
-                <div className="flex items-start justify-between gap-4 mb-7">
+                <div className="mb-7 flex items-start justify-between gap-4">
                   <div>
-                    <div className="text-5xl mb-5">⭐</div>
+                    <div className="mb-5 text-5xl">⭐</div>
 
-                    <p className="text-cyan-400 font-semibold mb-2">
-                      Top Expert
+                    <p className="mb-2 font-semibold text-cyan-400">
+                      {t("topExpert")}
                     </p>
 
-                    <h3 className="text-3xl font-bold mb-2">
+                    <h3 className="mb-2 text-3xl font-bold">
                       {topExpert.name}
                     </h3>
 
-                    <p className="text-slate-400">{topExpert.specialty}</p>
+                    <p className="text-slate-400">
+                      {topExpert.specialty}
+                    </p>
 
-                    <p className="text-slate-500 mt-1">
+                    <p className="mt-1 text-slate-500">
                       {topExpert.country}
                     </p>
                   </div>
 
-                  <span className="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs px-3 py-1 rounded-full">
-                    ✓ Verified
+                  <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs text-emerald-300">
+                    ✓ {t("verified")}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 mb-7">
+                <div className="mb-7 grid grid-cols-3 gap-3">
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-2xl font-bold text-emerald-400">
+                    <p
+                      dir="ltr"
+                      className="text-2xl font-bold text-emerald-400"
+                    >
                       {topExpert.trustScore}
                     </p>
-                    <p className="text-xs text-slate-500">Trust</p>
+                    <p className="text-xs text-slate-500">{t("trust")}</p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-xl font-bold text-yellow-400">
+                    <p
+                      dir="ltr"
+                      className="text-xl font-bold text-yellow-400"
+                    >
                       {ratingText(topExpert.averageRating)}
                     </p>
-                    <p className="text-xs text-slate-500">Rating</p>
+                    <p className="text-xs text-slate-500">{t("rating")}</p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-2xl font-bold text-blue-400">
+                    <p
+                      dir="ltr"
+                      className="text-2xl font-bold text-blue-400"
+                    >
                       {topExpert.reviewCount}
                     </p>
-                    <p className="text-xs text-slate-500">Reviews</p>
+                    <p className="text-xs text-slate-500">{t("reviews")}</p>
                   </div>
                 </div>
 
                 <Link
                   href={`/experts/${topExpert.id}`}
-                  className="inline-flex w-full justify-center bg-cyan-600 hover:bg-cyan-700 px-5 py-3 rounded-xl font-semibold"
+                  className="inline-flex w-full justify-center rounded-xl bg-cyan-600 px-5 py-3 font-semibold hover:bg-cyan-700"
                 >
-                  View Expert
+                  {t("viewExpert")}
                 </Link>
               </div>
             )}

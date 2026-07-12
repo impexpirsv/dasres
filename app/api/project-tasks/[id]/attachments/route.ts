@@ -6,7 +6,7 @@ import { AppError } from "../../../../../lib/errors";
 import { prisma } from "../../../../../lib/prisma";
 import { parseId } from "../../../../../lib/validation";
 import { requireUser } from "../../../../../lib/auth";
-
+import { notifyDocumentUploaded } from "../../../../../lib/notificationEvents";
 export const runtime = "nodejs";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -43,7 +43,10 @@ export async function POST(
     const isProvider = task.project.assignedTo === user.id;
 
     if (user.role !== "admin" && !isCustomer && !isProvider) {
-      throw new AppError("You are not allowed to upload files to this task.", 403);
+      throw new AppError(
+        "You are not allowed to upload files to this task.",
+        403,
+      );
     }
 
     const formData = await request.formData();
@@ -92,6 +95,15 @@ export async function POST(
           fileSize: file.size,
           uploadedById: user.id,
         },
+        include: {
+          uploadedBy: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
       });
 
       await tx.caseActivity.create({
@@ -102,7 +114,18 @@ export async function POST(
           details: `Attachment uploaded: ${originalFileName}`,
         },
       });
+      const receiverId =
+        task.project.createdBy === user.id
+          ? task.project.assignedTo
+          : task.project.createdBy;
 
+      if (receiverId && receiverId !== user.id) {
+       await notifyDocumentUploaded({
+  userId: receiverId,
+  fileName: originalFileName,
+  projectId: task.project.id,
+});
+      }
       return createdAttachment;
     });
 

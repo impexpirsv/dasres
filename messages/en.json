@@ -1,0 +1,1013 @@
+{
+  "common": {
+    "appName": "Dasres",
+    "dashboard": "Dashboard",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "navbar": {
+    "home": "Home",
+    "experts": "Experts",
+    "companies": "Companies",
+    "opportunities": "Opportunities",
+    "topExperts": "Top Experts",
+    "topCompanies": "Top Companies",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "join": "Join",
+    "joinDasres": "Join Dasres",
+    "tagline": "Trust Ecosystem for Global Trade",
+    "toggleMenu": "Toggle menu"
+  },
+  "hero": {
+  "eyebrow": "Verified trade network for global B2B services",
+  "titleLine1": "Build trust in",
+  "titleLine2": "global trade",
+  "description": "Dasres connects verified companies, trusted experts and trade opportunities through one case-based platform for international business.",
+  "join": "Join Dasres",
+  "exploreExperts": "Explore Experts",
+  "browseCompanies": "Browse Companies",
+  "liveCaseLabel": "Live trade case",
+  "liveCaseTitle": "Customs Clearance UAE",
+  "verified": "Verified",
+  "proposals": "Proposals",
+  "trust": "Trust",
+  "status": "Status",
+  "inProgress": "In Progress",
+  "topCompany": "Top company",
+  "topExpert": "Top expert",
+  "customsClearance": "Customs Clearance",
+  "tradeConsultant": "Trade Consultant",
+  "rating": "{value} Rating"
+},
+"liveStats": {
+  "eyebrow": "Live Platform Metrics",
+  "title": "Dasres activity in real time",
+  "verifiedCompanies": "Verified Companies",
+  "trustedExperts": "Trusted Experts",
+  "tradeOpportunities": "Trade Opportunities",
+  "tradeCases": "Trade Cases",
+  "caseSuccessRate": "Case Success Rate"
+},
+"topRatedShowcase": {
+  "eyebrow": "Trust Network",
+  "titleLine1": "Verified providers.",
+  "titleLine2": "Ranked by trust.",
+  "description": "Dasres highlights companies and experts using verification, ratings, reviews and trust scoring so trade teams can compare providers with confidence.",
+  "verifiedProfiles": "Verified profiles",
+  "reviewHistory": "Review history",
+  "trustScoring": "Trust scoring",
+  "topCompany": "Top Company",
+  "topExpert": "Top Expert",
+  "verified": "Verified",
+  "trust": "Trust",
+  "rating": "Rating",
+  "reviews": "Reviews",
+  "noReviews": "No reviews",
+  "viewCompany": "View Company",
+  "viewExpert": "View Expert"
+},
+"services": {
+  "eyebrow": "Platform Workflow",
+  "titleLine1": "From request to",
+  "titleLine2": "trusted delivery.",
+  "description": "Dasres is not just a directory. It is a case-based operating layer for international trade services, proposals, documents, communication and reputation.",
+  "unifiedWorkflow": "Unified workflow",
+  "caseVisibility": "Case visibility",
+  "steps": {
+    "createCase": {
+      "title": "Create a trade case",
+      "description": "Submit your trade request with category, scope and service details."
+    },
+    "matchProviders": {
+      "title": "Match with providers",
+      "description": "Dasres connects the case to verified companies and experts by category."
+    },
+    "receiveProposals": {
+      "title": "Receive proposals",
+      "description": "Compare price, message, provider profile, verification and reputation."
+    },
+    "assignWinner": {
+      "title": "Assign the winner",
+      "description": "Accept one proposal, reject the rest and start the active case workflow."
+    },
+    "manageDelivery": {
+      "title": "Manage delivery",
+      "description": "Keep messages, documents, timeline steps and activity logs in one place."
+    },
+    "completeReview": {
+      "title": "Complete and review",
+      "description": "Close the case, submit reviews and build trust for future projects."
+    }
+  }
+},
+"expertsSection": {
+  "eyebrow": "Expert Network",
+  "title": "Featured Experts",
+  "description": "Connect with verified international trade professionals across customs, sourcing, logistics, inspection and trade consulting.",
+  "viewAll": "View All",
+  "verified": "Verified",
+  "available": "Available",
+  "viewProfile": "View Profile"
+},
+"companiesSection": {
+  "eyebrow": "Company Network",
+  "title": "Featured Companies",
+  "description": "Discover verified trade companies across customs clearance, shipping, sourcing, inspection and international logistics.",
+  "viewAll": "View All",
+  "verified": "Verified",
+  "acceptingProjects": "Accepting Projects",
+  "viewProfile": "View Profile"
+},
+"opportunitiesSection": {
+  "eyebrow": "Global Marketplace",
+  "title": "Latest Trade Opportunities",
+  "description": "Browse international trade requests, discover new business opportunities and connect with verified providers around the world.",
+  "viewAll": "View All",
+  "statusOpen": "Open",
+  "openOpportunity": "Open Opportunity",
+  "viewDetails": "View Details"
+},
+"footer": {
+  "ctaEyebrow": "Ready to manage trade with confidence?",
+  "ctaTitle": "Start your first Dasres trade case.",
+  "ctaDescription": "Create a case, compare verified providers and manage proposals, documents and communication in one trusted workflow.",
+  "createCase": "Create Case",
+  "exploreNetwork": "Explore Network",
+  "description": "Case-based trust ecosystem for international trade services, verified providers, proposals, documents and reputation.",
+  "platformTitle": "Platform",
+  "networkTitle": "Network",
+  "trustSignalsTitle": "Trust Signals",
+  "companies": "Companies",
+  "experts": "Experts",
+  "opportunities": "Opportunities",
+  "dashboard": "Dashboard",
+  "topCompanies": "Top Companies",
+  "topExperts": "Top Experts",
+  "openCases": "Open Cases",
+  "supportTickets": "Support Tickets",
+  "verifiedCompanies": "Verified companies",
+  "trustedExperts": "Trusted experts",
+  "proposalWorkflow": "Proposal workflow",
+  "reviewsReputation": "Reviews and reputation",
+  "copyright": "© {year} Dasres. All rights reserved.",
+  "languagesAvailable": "Available in 12 languages"
+},
+"dashboardSidebar": {
+  "tagline": "Trust Ecosystem for Global Trade",
+  "menu": "Menu",
+  "sections": {
+    "main": "Main",
+    "tradeManagement": "Trade Management",
+    "ownership": "Ownership",
+    "admin": "Admin",
+    "communication": "Communication",
+    "subscription": "Subscription",
+    
+    "account": "Account"
+  },
+  "links": {
+    "dashboard": "Dashboard",
+    "globalSearch": "Global Search",
+    "experts": "Experts",
+    "topExperts": "Top Experts",
+    "companies": "Companies",
+    "topCompanies": "Top Companies",
+    "opportunities": "Opportunities",
+    "submittedCases": "Submitted Cases",
+    "activeWorkspaces": "Active Workspaces",
+    "projects": "Projects",
+    "myTasks": "My Tasks",
+    "myProposals": "My Proposals",
+    "myReviews": "My Reviews",
+    "openCases": "Open Cases",
+    "savedCases": "Saved Cases",
+    "savedCompanies": "Saved Companies",
+    "savedExperts": "Saved Experts",
+    "tickets": "Tickets",
+    "myCompanies": "My Companies",
+    "myExperts": "My Experts",
+    "users": "Users",
+    "verifications": "Verifications",
+    "notifications": "Notifications",
+    "subscription": "Subscription",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "premium": {
+    "title": "PREMIUM FEATURES",
+    "description": "Plans, limits and visibility"
+  }
+},
+"dashboardQuickActions": {
+  "title": "Quick Actions",
+  "description": "Frequently used shortcuts",
+  "createCase": {
+    "title": "Create Case",
+    "description": "Start a new international trade project."
+  },
+  "openCases": {
+    "title": "Open Cases",
+    "description": "Browse available trade requests."
+  },
+  "myCompanies": {
+    "title": "My Companies",
+    "description": "Manage your company profiles."
+  },
+  "myExperts": {
+    "title": "My Experts",
+    "description": "Manage your expert profiles."
+  }
+},
+"dashboardAttention": {
+  "title": "Needs Your Attention",
+  "description": "Important items to review",
+  "unreadNotifications": "Unread Notifications",
+  "openTickets": "Open Tickets",
+  "openCases": "Open Cases",
+  "myProposals": "My Proposals"
+},
+"dashboardAnalytics": {
+  "title": "Analytics Overview",
+  "description": "Operational performance summary",
+  "casePipeline": {
+    "title": "Case Pipeline",
+    "open": "Open",
+    "inProgress": "In Progress",
+    "completed": "Completed"
+  },
+  "proposalPerformance": {
+    "title": "Proposal Performance",
+    "description": "Acceptance rate based on accepted and rejected proposals.",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
+  },
+  "platformAttention": {
+    "title": "Platform Attention",
+    "notifications": "Notifications",
+    "tickets": "Tickets",
+    "reviews": "Reviews",
+    "saved": "Saved"
+  }
+},
+"dashboardOverdueTasks": {
+  "title": "Overdue Tasks",
+  "empty": {
+    "title": "No Overdue Tasks",
+    "description": "Everything is on schedule."
+  },
+  "dueDate": "Due: {date}"
+},
+"dashboardSubscription": {
+  "currentPlan": "Current Plan",
+  "managePlan": "Manage Plan",
+  "activeCases": "Active Cases",
+  "proposals": "Proposals",
+  "usageLimited": "{used} / {limit}",
+  "usageUnlimited": "{used} / Unlimited"
+},
+"dashboardStatsGrid": {
+  "savedCases": {
+    "title": "Saved Cases",
+    "description": "Cases saved for later"
+  },
+  "savedCompanies": {
+    "title": "Saved Companies",
+    "description": "Companies in your network"
+  },
+  "savedExperts": {
+    "title": "Saved Experts",
+    "description": "Experts in your network"
+  },
+  "experts": {
+    "adminTitle": "Experts",
+    "userTitle": "My Experts",
+    "adminDescription": "Verified experts available",
+    "userDescription": "Experts you own"
+  },
+  "companies": {
+    "adminTitle": "Companies",
+    "userTitle": "My Companies",
+    "adminDescription": "Registered companies",
+    "userDescription": "Companies you own"
+  },
+  "opportunities": {
+    "title": "Opportunities",
+    "description": "Active trade opportunities"
+  },
+  "successRate": {
+    "title": "Case Success Rate",
+    "description": "{completed} completed of {total} cases"
+  },
+  "tradeCases": {
+    "title": "Trade Cases",
+    "adminDescription": "All trade projects",
+    "userDescription": "Submitted trade requests"
+  },
+  "openCases": {
+    "title": "Open Cases",
+    "description": "Available opportunities"
+  },
+  "inProgress": {
+    "title": "In Progress",
+    "description": "Active trade projects"
+  },
+  "completed": {
+    "title": "Completed",
+    "description": "Finished projects"
+  },
+  "proposals": "Proposals",
+  "accepted": "Accepted",
+  "notifications": "Notifications",
+  "openTickets": "Open Tickets"
+},
+"dashboardMyTasks": {
+  "title": "My Assigned Tasks",
+  "viewAll": "View all",
+  "empty": "No assigned tasks.",
+  "status": {
+    "TODO": "To Do",
+    "IN_PROGRESS": "In Progress",
+    "REVIEW": "Review",
+    "COMPLETED": "Completed"
+  }
+},
+"dashboardTopRated": {
+  "viewAll": "View all",
+  "reviewCount": "Based on {count, plural, one {# review} other {# reviews}}",
+  "experts": {
+    "title": "Top Rated Experts",
+    "empty": "No rated experts yet."
+  },
+  "companies": {
+    "title": "Top Rated Companies",
+    "empty": "No rated companies yet."
+  }
+},
+"dashboardLatestItems": {
+  "viewAll": "View all",
+  "experts": {
+    "adminTitle": "Latest Experts",
+    "userTitle": "My Latest Experts",
+    "empty": "No experts found."
+  },
+  "companies": {
+    "adminTitle": "Latest Companies",
+    "userTitle": "My Latest Companies",
+    "empty": "No companies found."
+  },
+  "opportunities": {
+    "title": "Latest Opportunities",
+    "empty": "No opportunities found."
+  }
+},
+"dashboardRecentActivity": {
+  "title": "Recent Activity",
+  "empty": "No activity found.",
+  "system": "System",
+  "actions": {
+    "proposalSubmitted": "Proposal Submitted",
+    "proposalAccepted": "Proposal Accepted",
+    "proposalRejected": "Proposal Rejected",
+    "caseCompleted": "Case Completed",
+    "projectCompleted": "Project Completed",
+    "documentUploaded": "Document Uploaded",
+    "projectTaskAttachmentUploaded": "Project Task Attachment Uploaded",
+    "documentApproved": "Document Approved",
+    "documentRejected": "Document Rejected",
+    "messageSent": "Message Sent",
+    "projectMessageSent": "Project Message Sent",
+    "taskCommentAdded": "Task Comment Added",
+    "taskAssigned": "Task Assigned",
+    "taskCompleted": "Task Completed",
+    "ticketUpdated": "Ticket Updated",
+    "companyVerified": "Company Verified",
+    "companyRejected": "Company Rejected",
+    "projectTaskUpdated": "Project Task Updated",
+"projectTaskChecklistToggled": "Project Task Checklist Updated"
+  }
+},
+"dashboardProfileCard": {
+  "title": "User Profile",
+  "name": "Name",
+  "email": "Email",
+  "role": "Role",
+  "roles": {
+    "admin": "Admin",
+    "user": "User"
+  }
+},
+"dashboardPage": {
+  "title": "Dashboard",
+  "description": "Manage your Dasres account, profiles and trade activities.",
+  "roles": {
+    "admin": "Admin",
+    "user": "User"
+  },
+  "admin": {
+    "commandCenter": "Admin Command Center",
+    "description": "High-level operational overview of Dasres.",
+    "reviewVerifications": "Review Verifications",
+    "pendingVerifications": "Pending Verifications",
+    "totalReviews": "Total Reviews",
+    "premiumUsers": "Premium Users",
+    "openTickets": "Open Tickets",
+    "panel": "Admin Panel",
+    "users": "Users",
+    "experts": "Experts",
+    "companies": "Companies",
+    "opportunities": "Opportunities",
+    "latestUsers": "Latest Users",
+    "manageUsers": "Manage Users"
+  }
+},
+"loginPage": {
+  "title": "Welcome Back",
+  "description": "Sign in to your Dasres account",
+  "email": "Email",
+  "password": "Password",
+  "login": "Login",
+  "loginFailed": "Login failed."
+},
+"registerPage": {
+  "title": "Join Dasres",
+  "description": "Create your account",
+  "name": {
+    "label": "Full Name",
+    "placeholder": "Enter your full name"
+  },
+  "email": {
+    "label": "Email",
+    "placeholder": "Enter your email address"
+  },
+  "password": {
+    "label": "Password",
+    "placeholder": "Enter your password",
+    "hint": "Your password must be at least 6 characters."
+  },
+  "submit": "Create Account",
+  "submitting": "Creating account...",
+  "registrationFailed": "Account creation failed.",
+  "alreadyHaveAccount": "Already have an account?",
+  "login": "Login"
+},
+"projectDetailPage": {
+  "backToProjects": "Back to Projects"
+},
+"projectHeader": {
+  "progress": "Progress"
+},
+"projectTabs": {
+  "overview": "Overview",
+  "tasks": "Tasks",
+  "board": "Board",
+  "calendar": "Calendar",
+  "gantt": "Gantt",
+  "workload": "Workload",
+  "documents": "Documents",
+  "timeline": "Timeline",
+  "messages": "Messages",
+  "activity": "Activity"
+},
+"projectOverviewCards": {
+  "customer": "Customer",
+  "category": "Category",
+  "openTasks": "Open Tasks",
+  "completedTasks": "Completed Tasks",
+  "steps": "Steps",
+  "completed": "Completed"
+},
+"projectTimeSummary": {
+  "title": "Time Tracking",
+  "description": "Overall project time summary.",
+  "estimated": "Estimated",
+  "logged": "Logged",
+  "remaining": "Remaining",
+  "distribution": "Time Distribution"
+},
+"projectOverviewHeader": {
+  "description": "Project command center with tasks, workload, timeline, Gantt and execution tracking.",
+  "overallProgress": "Overall Progress",
+  "status": {
+    "todo": "To Do",
+    "inProgress": "In Progress",
+    "review": "Review",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "metrics": {
+    "tasks": "Tasks",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "review": "Review",
+    "blocked": "Blocked",
+    "remaining": "Remaining"
+  },
+  "hours": {
+    "estimated": "Estimated Hours",
+    "logged": "Logged Hours",
+    "value": "{hours}h"
+  },
+  "features": {
+    "tasks": "Tasks",
+    "kanban": "Kanban",
+    "calendar": "Calendar",
+    "timeline": "Timeline",
+    "gantt": "Gantt",
+    "workload": "Workload"
+  }
+},
+"projectHealthCard": {
+  "title": "Project Health",
+  "progress": "Progress",
+  "hoursUsed": "Hours Used",
+  "utilization": "Utilization",
+  "overdue": "Overdue",
+  "noEstimate": "No estimate",
+  "noOverdueTasks": "No overdue tasks",
+  "overdueTasks": "{count} task(s)"
+},
+"projectCriticalPathCard": {
+  "title": "Critical Path",
+  "description": "Tasks that may directly delay the project schedule.",
+  "criticalTasks": "Critical Tasks",
+  "criticalDuration": "Critical Duration",
+  "duration": "{count, plural, one {# day} other {# days}}",
+  "empty": "No critical dependency detected.",
+  "dependsOn": "Depends on: {task}",
+  "critical": "Critical"
+},
+"projectAIInsights": {
+  "title": "AI Copilot Insights",
+  "description": "Rule-based analysis prepared for future GPT integration.",
+  "healthScore": "AI Health Score",
+  "progressLabel": "Progress:",
+  "health": {
+    "excellent": "Excellent",
+    "stable": "Stable",
+    "atRisk": "At Risk",
+    "critical": "Critical"
+  },
+  "risks": {
+    "title": "Risks",
+    "overdueTasks": "{count, plural, one {# overdue task} other {# overdue tasks}}",
+    "blockedTasks": "{count, plural, one {# blocked task} other {# blocked tasks}}",
+    "pendingApprovals": "{count, plural, one {# pending approval} other {# pending approvals}}"
+  },
+  "nextAction": "Next Action",
+  "recommendation": "Recommendation",
+  "nextActions": {
+    "approveDocument": "Approve {fileName}",
+    "resolveDependency": "Resolve dependency for {taskTitle}",
+    "reviewOverdueTask": "Review overdue task: {taskTitle}",
+    "continueExecution": "Continue execution and close the next task",
+    "completionReview": "Project is ready for completion review"
+  },
+  "recommendations": {
+    "pendingApprovals": "Document approval is the main bottleneck. Review pending documents before moving to shipping or delivery.",
+    "blockedTasks": "Resolve task dependencies before starting downstream execution.",
+    "overdueTasks": "Schedule risk is increasing. Review deadlines and reassign delayed tasks.",
+    "normalProgress": "Project is progressing normally. Keep monitoring documents and workflow milestones."
+  }
+},
+"projectAIAssistant": {
+  "title": "Dasres AI",
+  "subtitle": "Smart Project Analysis",
+  "risk": "Risk",
+  "progress": "Progress",
+  "aiSuggestions": "AI Suggestions",
+  "riskLevels": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+  "suggestions": {
+    "resolveBlocked": "Resolve blocked tasks.",
+    "reviewOverdue": "Review overdue tasks.",
+    "increasePace": "Increase execution pace.",
+    "normal": "Project is progressing normally."
+  }
+},
+"projectTasksSection": {
+  "title": "Project Tasks",
+  "description": "Manage project tasks efficiently.",
+  "searchPlaceholder": "Search tasks...",
+  "searchLabel": "Search project tasks",
+  "filteredCount": "{filtered} of {total}",
+  "emptyState": "Select a task to view details.",
+  "noSearchResults": "No tasks match your search."
+},
+"projectTaskList": {
+  "empty": "No tasks found.",
+  "unassigned": "Unassigned",
+  "progress": "Progress",
+  "progressLabel": "Progress for {title}",
+  "noDueDate": "No due date",
+  "priorities": {
+    "urgent": "Urgent",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  }
+},
+"projectTaskDetails": {
+  "emptyState": "Select a task to view details.",
+  "assignedTo": "Assigned to",
+  "unassigned": "Unassigned",
+  "startDate": "Start Date",
+  "dueDate": "Due Date",
+  "noStartDate": "No start date",
+  "noDueDate": "No due date",
+  "progress": "Progress",
+  "estimated": "Estimated",
+  "logged": "Logged",
+  "remaining": "Remaining",
+  "hours": "{count}h",
+  "notSet": "Not set",
+  "dependsOn": "Depends On",
+  "blocks": "Blocks",
+  "attachments": "Attachments",
+  "uploadedBy": "Uploaded by {name}",
+  "unknown": "Unknown",
+  "priorities": {
+    "urgent": "Urgent",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "statuses": {
+    "todo": "Todo",
+    "in_progress": "In Progress",
+    "review": "Review",
+    "completed": "Completed"
+  }
+},
+"projectTaskStatusSelect": {
+  "label": "Task Status",
+  "updating": "Updating status...",
+  "updateError": "Could not update the task status.",
+  "networkError": "A network error occurred while updating the status.",
+  "statuses": {
+    "todo": "Todo",
+    "in_progress": "In Progress",
+    "review": "Review",
+    "completed": "Completed"
+  }
+},
+"assignTaskSelect": {
+  "label": "Assign task",
+  "unassigned": "Unassigned",
+  "updating": "Updating...",
+  "updateError": "Failed to assign the task.",
+  "networkError": "A network error occurred while assigning the task."
+},
+"editProjectTaskForm": {
+  "edit": "Edit",
+  "title": "Edit Task",
+  "taskTitle": "Task Title",
+  "titleRequired": "Task title is required.",
+  "description": "Description",
+  "descriptionPlaceholder": "Add a task description...",
+  "priority": "Priority",
+  "startDate": "Start Date",
+  "dueDate": "Due Date",
+  "estimatedHours": "Estimated Hours",
+  "estimatedHoursPlaceholder": "Estimated hours",
+  "loggedHours": "Logged Hours",
+  "loggedHoursPlaceholder": "Logged hours",
+  "assignedTo": "Assigned to",
+  "unassigned": "Unassigned",
+  "dependsOn": "Depends On",
+  "noDependency": "No Dependency",
+  "save": "Save",
+  "saving": "Saving...",
+  "cancel": "Cancel",
+  "updateError": "Could not update the task.",
+  "networkError": "A network error occurred while updating the task.",
+  "invalidEstimatedHours": "Estimated hours must be zero or greater.",
+  "invalidLoggedHours": "Logged hours must be zero or greater.",
+  "priorities": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  }
+},
+"projectTaskChecklist": {
+  "title": "Checklist",
+  "empty": "No checklist items yet.",
+  "updating": "Updating...",
+  "toggleError": "Could not update the checklist item.",
+  "networkError": "A network error occurred while updating the checklist item.",
+  "markComplete": "Mark {title} as complete",
+  "markIncomplete": "Mark {title} as incomplete"
+},
+"createChecklistItemForm": {
+  "label": "Checklist item title",
+  "placeholder": "Add checklist item...",
+  "add": "Add",
+  "adding": "Adding...",
+  "titleRequired": "Checklist item title is required.",
+  "createError": "Could not add the checklist item.",
+  "invalidResponse": "The checklist item was created, but the server response was invalid.",
+  "networkError": "A network error occurred while adding the checklist item."
+},
+"taskProgressBar": {
+  "title": "Task Progress",
+  "ariaLabel": "Task progress",
+  "summary": "{completed} of {total} checklist items completed"
+},
+"projectTaskComments": {
+  "title": "Comments",
+  "empty": "No comments yet.",
+  "commentLabel": "Comment",
+  "placeholder": "Write a comment...",
+  "postComment": "Post Comment",
+  "posting": "Posting...",
+  "edited": "edited",
+  "deletedComment": "This comment has been deleted.",
+  "unknownAuthor": "Unknown",
+  "unknownDate": "Unknown date",
+  "commentRequired": "Comment is required.",
+  "createError": "Could not post the comment.",
+  "networkError": "A network error occurred while posting the comment."
+},
+"projectTaskAttachmentUpload": {
+  "title": "Attach File",
+  "fileLabel": "Select a file",
+  "helpText": "Supported formats: JPG, PNG, WEBP, PDF, DOCX and XLSX. Maximum size: 10 MB.",
+  "fileSize": "{size} MB",
+  "upload": "Upload",
+  "uploading": "Uploading...",
+  "clear": "Clear",
+  "selectFile": "Please select a file.",
+  "invalidType": "This file type is not supported.",
+  "fileTooLarge": "The selected file must be 10 MB or smaller.",
+  "uploadError": "Could not upload the file.",
+  "networkError": "A network error occurred while uploading the file."
+},
+"createProjectTaskForm": {
+  "newTask": "+ New Task",
+  "modalTitle": "Create Task",
+  "taskTitle": "Task Title",
+  "taskTitlePlaceholder": "Enter task title",
+  "description": "Description",
+  "descriptionPlaceholder": "Description (optional)",
+  "priority": "Priority",
+  "startDate": "Start Date",
+  "dueDate": "Due Date",
+  "createTask": "Create Task",
+  "creating": "Creating...",
+  "cancel": "Cancel",
+  "titleRequired": "Task title is required.",
+  "invalidDateRange": "Due date cannot be earlier than start date.",
+  "createError": "Could not create the task.",
+  "networkError": "A network error occurred while creating the task.",
+  "priorities": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  }
+},
+"projectBoard": {
+  "columns": {
+    "todo": "Todo",
+    "inProgress": "In Progress",
+    "review": "Review",
+    "completed": "Completed"
+  },
+  "emptyColumn": "No tasks",
+  "updateError": "Failed to update the task status."
+},
+"kanbanColumn": {
+  "ariaLabel": "{title} column with {count} tasks",
+  "taskCount": "{count} tasks"
+},
+"kanbanTaskCard": {
+  "assignee": "Assignee",
+  "unassigned": "Unassigned",
+  "due": "Due",
+  "noDueDate": "No due date",
+  "checklist": "Checklist",
+  "comments": "Comments",
+  "files": "Files",
+  "dragLabel": "Drag task {title}",
+  "priorities": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  }
+},
+"projectCalendarView": {
+  "title": "Project Calendar",
+  "description": "View task deadlines and move tasks to update their due dates.",
+  "noEvents": "No scheduled tasks.",
+  "updateError": "Could not update the task date.",
+  "invalidTaskDate": "The selected task or date is invalid.",
+  "buttons": {
+    "today": "Today",
+    "month": "Month",
+    "week": "Week"
+  }
+},
+"projectGanttView": {
+  "title": "Gantt Chart",
+  "description": "Visual timeline of project tasks and dependencies.",
+  "emptyState": "No dated tasks to display in Gantt view.",
+  "taskColumn": "Task",
+  "timeline": "Timeline",
+  "week": "Week",
+  "taskCount": "{count} tasks",
+  "critical": "Critical",
+  "blocked": "Blocked",
+  "dateRange": "{start} – {end}",
+  "zoom": {
+    "day": "Day",
+    "week": "Week",
+    "month": "Month"
+  },
+  "statuses": {
+    "todo": "Todo",
+    "in_progress": "In Progress",
+    "review": "Review",
+    "completed": "Completed",
+    "unknown": "Unknown"
+  },
+  "duration": {
+  "day": "{title} • {duration} day(s)",
+  "week": "{title} • {duration} week(s)",
+  "month": "{title} • {duration} month(s)"
+}
+},
+"projectWorkloadView": {
+  "title": "Team Workload",
+  "description": "Task distribution, progress, and overdue workload by team member.",
+  "emptyState": "No tasks are available for workload analysis.",
+  "unassigned": "Unassigned",
+  "totalTasks": "{count} total tasks",
+  "workload": "Workload",
+  "active": "Active",
+  "done": "Done",
+  "overdue": "Overdue",
+  "progressLabel": "Average task progress for {name}",
+  "capacities": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "workloadStates": {
+    "needsAttention": "Needs Attention",
+    "highLoad": "High Load",
+    "balanced": "Balanced",
+    "available": "Available"
+  }
+},
+"projectTimeline": {
+  "title": "Timeline Steps",
+  "completed": "Completed",
+  "pending": "Pending",
+  "notCompletedYet": "Not completed yet",
+  "unknownDate": "Unknown date",
+  "emptyState": "No timeline steps are available."
+},
+"projectDocuments": {
+  "title": "Document Center",
+  "description": "Centralized project and trade document workspace.",
+  "documentCount": "{count} documents",
+  "required": "Required",
+  "optional": "Optional",
+  "open": "Open",
+  "linkedTask": "Linked task: {title}",
+  "uploadedBy": "Uploaded by {name}",
+  "unknownUser": "Unknown user",
+  "unknownSize": "Unknown size",
+  "unknownDate": "Unknown date",
+  "rejectionReason": "Rejection reason",
+  "approvalStatuses": {
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "pending": "Pending"
+  },
+  "requirements": {
+    "commercialInvoice": "Commercial Invoice",
+    "packingList": "Packing List",
+    "billOfLading": "Bill of Lading",
+    "insuranceCertificate": "Insurance Certificate"
+  },
+  "fileSize": {
+    "bytes": "{size} B",
+    "kilobytes": "{size} KB",
+    "megabytes": "{size} MB"
+  },
+  "emptyState": {
+    "title": "No documents uploaded yet",
+    "description": "Documents uploaded inside project tasks will appear here."
+  }
+},
+"approveDocumentButtons": {
+  "approve": "✓ Approve",
+  "approving": "Approving...",
+  "reject": "✕ Reject",
+  "rejecting": "Rejecting...",
+  "updateError": "Failed to update the document.",
+  "networkError": "A network error occurred while updating the document."
+},
+"addProjectMessageForm": {
+  "label": "Project message",
+  "placeholder": "Write a project message...",
+  "send": "Send Message",
+  "sending": "Sending...",
+  "shortcutHint": "Press Ctrl or Command + Enter to send.",
+  "sendError": "Failed to send the message.",
+  "networkError": "A network error occurred while sending the message.",
+  "invalidResponse": "The message was sent, but the server response was invalid."
+},
+"projectMessaging": {
+  "title": "Project Messaging",
+  "description": "Internal communication between the customer, provider, and project team.",
+  "conversationCount": "{count} conversations",
+  "messageCount": "{count} messages",
+  "defaultConversationTitle": "Project Conversation",
+  "conversationListLabel": "Project conversations",
+  "noMessages": "No messages have been sent in this conversation yet.",
+  "unknownSender": "Unknown sender",
+  "unknownDate": "Unknown date",
+  "you": "You",
+  "emptyState": {
+    "title": "No conversation yet",
+    "description": "Send the first message to start the project conversation."
+  }
+},
+"projectActivitySection": {
+  "title": "Recent Activity",
+  "emptyState": "No activity yet.",
+  "unknownDate": "Unknown date",
+  "actions": {
+    "project_created": "Project Created",
+    "project_updated": "Project Updated",
+    "task_created": "Task Created",
+    "task_updated": "Task Updated",
+    "task_assigned": "Task Assigned",
+    "task_completed": "Task Completed",
+    "task_status_updated": "Task Status Updated",
+    "comment_added": "Comment Added",
+    "document_uploaded": "Document Uploaded",
+    "document_approved": "Document Approved",
+    "document_rejected": "Document Rejected",
+    "message_sent": "Message Sent"
+  }
+},
+"projectListProgress": {
+  "progress": "Progress",
+  "progressLabel": "Project task progress",
+  "summary": "{completed} of {total} tasks completed"
+},
+"projectPrintButton": {
+  "button": "Export / Print PDF",
+  "tooltip": "Print or save this page as a PDF",
+  "ariaLabel": "Export or print project as PDF"
+},
+"projectProgressCard": {
+  "title": "Project Progress",
+  "progressLabel": "Project progress",
+  "summary": "{completed} of {total} tasks completed"
+},
+"projectTasksExportButton": {
+  "button": "Export to Excel",
+  "ariaLabel": "Export project tasks as an Excel-compatible CSV file",
+  "tooltip": "Download project tasks as a CSV file compatible with Excel",
+  "emptyTooltip": "There are no tasks to export",
+  "unknown": "Unknown",
+  "unknownDate": "Unknown date",
+  "headers": {
+    "id": "ID",
+    "title": "Title",
+    "status": "Status",
+    "priority": "Priority",
+    "progress": "Progress",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "estimatedHours": "Estimated Hours",
+    "loggedHours": "Logged Hours",
+    "assignedTo": "Assigned To",
+    "assignedEmail": "Assigned Email",
+    "dependsOn": "Depends On",
+    "dependencyStatus": "Dependency Status"
+  },
+  "statuses": {
+    "todo": "Todo",
+    "inProgress": "In Progress",
+    "review": "Review",
+    "completed": "Completed"
+  },
+  "priorities": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  }
+}
+}

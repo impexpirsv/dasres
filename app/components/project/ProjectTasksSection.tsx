@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import CreateProjectTaskForm from "./CreateProjectTaskForm";
 import ProjectTaskComments from "./ProjectTaskComments";
 import ProjectTaskList from "./ProjectTaskList";
@@ -31,7 +32,6 @@ type Task = {
     id: number;
     title: string;
   } | null;
-
   dependents: {
     id: number;
     title: string;
@@ -61,30 +61,40 @@ export default function ProjectTasksSection({
   assignableUsers: UserOption[];
   isAdmin: boolean;
 }) {
+  const t = useTranslations("projectTasksSection");
   const searchParams = useSearchParams();
   const taskFromUrl = Number(searchParams.get("task"));
 
-  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(
-    Number.isNaN(taskFromUrl) ? (tasks[0]?.id ?? null) : taskFromUrl,
-  );
+  const initialTaskId =
+    searchParams.get("task") !== null &&
+    !Number.isNaN(taskFromUrl) &&
+    tasks.some((task) => task.id === taskFromUrl)
+      ? taskFromUrl
+      : (tasks[0]?.id ?? null);
 
-  const selectedTask = tasks.find((task) => task.id === selectedTaskId) ?? null;
+  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(
+    initialTaskId,
+  );
 
   const [search, setSearch] = useState("");
 
+  const selectedTask =
+    tasks.find((task) => task.id === selectedTaskId) ?? null;
+
   const filteredTasks = useMemo(() => {
-    const value = search.trim().toLowerCase();
+    const value = search.trim().toLocaleLowerCase();
 
     if (!value) {
       return tasks;
     }
 
-    return tasks.filter((task) => task.title.toLowerCase().includes(value));
+    return tasks.filter((task) =>
+      task.title.toLocaleLowerCase().includes(value),
+    );
   }, [search, tasks]);
 
   const visibleSelectedTask =
     filteredTasks.find((task) => task.id === selectedTaskId) ??
-    selectedTask ??
     filteredTasks[0] ??
     null;
 
@@ -93,18 +103,21 @@ export default function ProjectTasksSection({
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-2xl font-bold">
-            Project Tasks{" "}
+            {t("title")}{" "}
             <span className="text-blue-400">
               (
-              {search
-                ? `${filteredTasks.length} of ${tasks.length}`
+              {search.trim()
+                ? t("filteredCount", {
+                    filtered: filteredTasks.length,
+                    total: tasks.length,
+                  })
                 : tasks.length}
               )
             </span>
           </h2>
 
           <p className="mt-1 text-sm text-slate-400">
-            Manage project tasks efficiently.
+            {t("description")}
           </p>
         </div>
 
@@ -112,10 +125,11 @@ export default function ProjectTasksSection({
       </div>
 
       <input
-        type="text"
-        placeholder="Search tasks..."
+        type="search"
+        placeholder={t("searchPlaceholder")}
+        aria-label={t("searchLabel")}
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(event) => setSearch(event.target.value)}
         className="mb-4 w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none"
       />
 
@@ -123,7 +137,7 @@ export default function ProjectTasksSection({
         <div className="max-h-[75vh] overflow-y-auto pr-1">
           <ProjectTaskList
             tasks={filteredTasks}
-            selectedTaskId={selectedTaskId}
+            selectedTaskId={visibleSelectedTask?.id ?? null}
             onSelect={setSelectedTaskId}
           />
         </div>
@@ -141,7 +155,7 @@ export default function ProjectTasksSection({
             />
           ) : (
             <div className="rounded-2xl border border-slate-800 bg-slate-950 p-8 text-center text-slate-400">
-              Select a task to view details.
+              {search.trim() ? t("noSearchResults") : t("emptyState")}
             </div>
           )}
         </div>

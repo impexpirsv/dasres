@@ -1,49 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
+import { languageOptions, type Locale } from "../../lib/locale";
+
+const COOKIE_NAME = "NEXT_LOCALE";
 
 export default function LanguageSwitcher() {
-  const [language, setLanguage] = useState("en");
+  const locale = useLocale();
+  const router = useRouter();
 
-  useEffect(() => {
-    const saved =
-      localStorage.getItem("dasres_lang") || "en";
+  function changeLanguage(value: Locale) {
+    document.cookie = `${COOKIE_NAME}=${value}; path=/; max-age=31536000; samesite=lax`;
 
-    setLanguage(saved);
-  }, []);
-
-  function changeLanguage(lang: string) {
-    localStorage.setItem("dasres_lang", lang);
-    setLanguage(lang);
-
-    window.location.reload();
+    router.refresh();
   }
 
   return (
-    <div className="flex items-center gap-2 text-sm">
-      <button
-        onClick={() => changeLanguage("en")}
-        className={
-          language === "en"
-            ? "text-blue-400"
-            : "text-slate-400"
-        }
-      >
-        EN
-      </button>
-
-      <span>|</span>
-
-      <button
-        onClick={() => changeLanguage("fa")}
-        className={
-          language === "fa"
-            ? "text-blue-400"
-            : "text-slate-400"
-        }
-      >
-        FA
-      </button>
-    </div>
+    <select
+      value={locale}
+      onChange={(e) =>
+        changeLanguage(e.target.value as Locale)
+      }
+      className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+    >
+      {languageOptions.map((language) => (
+        <option
+          key={language.code}
+          value={language.code}
+        >
+          {language.flag} {language.nativeName}
+        </option>
+      ))}
+    </select>
   );
 }

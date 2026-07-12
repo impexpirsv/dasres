@@ -1,0 +1,9 @@
+{
+  "common": {
+    "appName": "Dasres",
+    "dashboard": "Tableau de bord",
+    "notifications": "Notifications",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "common": {
+    "appName": "Dasres",
+    "dashboard": "Панель управления",
+    "notifications": "Уведомления",
+    "settings": "Настройки",
+    "logout": "Выйти"
+  }
+}

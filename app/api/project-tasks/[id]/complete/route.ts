@@ -4,7 +4,7 @@ import { AppError } from "../../../../../lib/errors";
 import { prisma } from "../../../../../lib/prisma";
 import { parseId } from "../../../../../lib/validation";
 import { requireUser } from "../../../../../lib/auth";
-
+import { notifyTaskCompleted } from "../../../../../lib/notificationEvents";
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -60,9 +60,7 @@ export async function PATCH(
       });
 
       const progress =
-        totalTasks === 0
-          ? 0
-          : Math.round((completedTasks / totalTasks) * 100);
+        totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
       await tx.project.update({
         where: {
@@ -71,9 +69,7 @@ export async function PATCH(
         data: {
           progress,
           status:
-            progress === 100
-              ? ProjectStatus.COMPLETED
-              : ProjectStatus.ACTIVE,
+            progress === 100 ? ProjectStatus.COMPLETED : ProjectStatus.ACTIVE,
           completedAt: progress === 100 ? new Date() : null,
         },
       });
@@ -86,6 +82,18 @@ export async function PATCH(
           details: `Project task completed: ${task.title}`,
         },
       });
+      const receiverId =
+        task.project.createdBy === user.id
+          ? task.project.assignedTo
+          : task.project.createdBy;
+
+      if (receiverId && receiverId !== user.id) {
+        await notifyTaskCompleted({
+  userId: receiverId,
+  taskTitle: task.title,
+  projectId: task.projectId,
+});
+      }
     });
 
     return Response.json({

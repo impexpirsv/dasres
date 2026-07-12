@@ -1,0 +1,9 @@
+{
+  "common": {
+    "appName": "Dasres",
+    "dashboard": "Kontrol Paneli",
+    "notifications": "Bildirimler",
+    "settings": "Ayarlar",
+    "logout": "Çıkış"
+  }
+}

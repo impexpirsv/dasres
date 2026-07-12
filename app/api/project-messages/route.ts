@@ -1,6 +1,6 @@
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
-
+import { notifyProjectMessage } from "../../../lib/notificationEvents";
 export async function POST(request: Request) {
   try {
     const user = await requireUser();
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const createdMessage = await prisma.projectMessage.create({
+   const createdMessage = await prisma.projectMessage.create({
   data: {
     conversationId: conversation.id,
     senderId: user.id,
@@ -82,10 +82,24 @@ export async function POST(request: Request) {
   },
 });
 
+const receiverId =
+  project.createdBy === user.id
+    ? project.assignedTo
+    : project.createdBy;
+
+if (receiverId && receiverId !== user.id) {
+  await notifyProjectMessage({
+  userId: receiverId,
+  projectId: project.id,
+});
+}
+
 return Response.json({
   conversationId: conversation.id,
   message: createdMessage,
 });
+
+
   } catch {
     return Response.json(
       { message: "Failed to send message." },

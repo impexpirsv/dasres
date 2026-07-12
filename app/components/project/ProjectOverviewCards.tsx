@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import ProjectProgressCard from "./ProjectProgressCard";
 import StatCard from "../StatCard";
 
@@ -6,7 +7,7 @@ type ProjectTask = {
   status: string;
 };
 
-export default function ProjectOverviewCards({
+export default async function ProjectOverviewCards({
   customer,
   category,
   completedSteps,
@@ -19,6 +20,8 @@ export default function ProjectOverviewCards({
   totalSteps: number;
   tasks: ProjectTask[];
 }) {
+  const t = await getTranslations("projectOverviewCards");
+
   const totalTasks = tasks.length;
 
   const completedTasks = tasks.filter(
@@ -34,7 +37,7 @@ export default function ProjectOverviewCards({
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Customer
+            {t("customer")}
           </p>
 
           <p className="mt-3 break-words text-2xl font-bold leading-tight text-white">
@@ -44,7 +47,7 @@ export default function ProjectOverviewCards({
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Category
+            {t("category")}
           </p>
 
           <p className="mt-3 break-words text-2xl font-bold leading-tight text-white">
@@ -53,21 +56,21 @@ export default function ProjectOverviewCards({
         </div>
 
         <StatCard
-          title="Open Tasks"
+          title={t("openTasks")}
           value={openTasks}
           color="yellow"
         />
 
         <StatCard
-          title="Completed Tasks"
+          title={t("completedTasks")}
           value={completedTasks}
           color="green"
         />
 
         <StatCard
-          title="Steps"
+          title={t("steps")}
           value={`${completedSteps} / ${totalSteps}`}
-          subtitle="Completed"
+          subtitle={t("completed")}
         />
       </div>
     </section>

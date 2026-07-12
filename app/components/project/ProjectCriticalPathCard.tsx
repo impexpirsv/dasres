@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 type Task = {
   id: number;
   title: string;
@@ -26,11 +28,13 @@ function getDaysBetween(start: Date, end: Date) {
   );
 }
 
-export default function ProjectCriticalPathCard({
+export default async function ProjectCriticalPathCard({
   tasks,
 }: {
   tasks: Task[];
 }) {
+  const t = await getTranslations("projectCriticalPathCard");
+
   const datedTasks = tasks
     .filter((task) => task.startDate || task.dueDate)
     .map((task) => {
@@ -45,7 +49,9 @@ export default function ProjectCriticalPathCard({
       };
     });
 
-  const taskById = new Map(datedTasks.map((task) => [task.id, task]));
+  const taskById = new Map(
+    datedTasks.map((task) => [task.id, task]),
+  );
 
   const criticalTasks = datedTasks.filter((task) => {
     if (!task.dependsOn) return false;
@@ -70,17 +76,19 @@ export default function ProjectCriticalPathCard({
       <div className="flex items-center justify-between gap-4">
         <div>
           <h3 className="text-lg font-bold text-white">
-            Critical Path
+            {t("title")}
           </h3>
+
           <p className="mt-1 text-sm text-slate-400">
-            Tasks that may directly delay the project schedule.
+            {t("description")}
           </p>
         </div>
 
-        <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-right">
+        <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-start">
           <p className="text-xs font-medium text-red-300">
-            Critical Tasks
+            {t("criticalTasks")}
           </p>
+
           <p className="text-2xl font-black text-red-200">
             {criticalTasks.length}
           </p>
@@ -88,12 +96,15 @@ export default function ProjectCriticalPathCard({
       </div>
 
       <div className="mt-5 rounded-2xl border border-slate-800 bg-slate-950 p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <p className="text-sm text-slate-400">
-            Critical Duration
+            {t("criticalDuration")}
           </p>
+
           <p className="font-bold text-white">
-            {totalCriticalDays} day(s)
+            {t("duration", {
+              count: totalCriticalDays,
+            })}
           </p>
         </div>
       </div>
@@ -101,7 +112,7 @@ export default function ProjectCriticalPathCard({
       <div className="mt-5 space-y-3">
         {criticalTasks.length === 0 ? (
           <p className="rounded-2xl border border-slate-800 bg-slate-950 p-4 text-sm text-slate-400">
-            No critical dependency detected.
+            {t("empty")}
           </p>
         ) : (
           criticalTasks.map((task) => (
@@ -114,13 +125,16 @@ export default function ProjectCriticalPathCard({
                   <p className="truncate text-sm font-bold text-white">
                     {task.title}
                   </p>
+
                   <p className="mt-1 text-xs text-red-200">
-                    Depends on: {task.dependsOn?.title}
+                    {t("dependsOn", {
+                      task: task.dependsOn?.title ?? "",
+                    })}
                   </p>
                 </div>
 
                 <span className="rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
-                  Critical
+                  {t("critical")}
                 </span>
               </div>
             </div>

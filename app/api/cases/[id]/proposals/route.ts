@@ -4,7 +4,7 @@ import { prisma } from "../../../../../lib/prisma";
 import { getProposalLimit } from "../../../../../lib/plans";
 import { parseId } from "../../../../../lib/validation";
 import { requireUser } from "../../../../../lib/auth";
-
+import { notifyProposalSubmitted } from "../../../../../lib/notificationEvents";
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -160,15 +160,10 @@ export async function POST(
         },
       });
 
-      await tx.notification.create({
-        data: {
-          userId: tradeCase.customerId,
-          title: "New Proposal Received",
-          message: "A new proposal has been submitted for your trade case.",
-          type: "PROPOSAL_SUBMITTED",
-          link: `/dashboard/cases/${tradeCase.id}`,
-        },
-      });
+      await notifyProposalSubmitted({
+  userId: tradeCase.customerId,
+  caseId: tradeCase.id,
+});
     });
 
     return Response.json({

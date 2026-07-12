@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 type ChecklistItem = {
   id: number;
   completed: boolean;
@@ -8,19 +12,26 @@ export default function TaskProgressBar({
 }: {
   items: ChecklistItem[];
 }) {
+  const t = useTranslations("taskProgressBar");
+
   const totalItems = items.length;
-  const completedItems = items.filter((item) => item.completed).length;
+
+  const completedItems = items.filter(
+    (item) => item.completed,
+  ).length;
 
   const progress =
-    totalItems > 0
-      ? Math.round((completedItems / totalItems) * 100)
-      : 0;
+    totalItems === 0
+      ? 0
+      : Math.round(
+          (completedItems / totalItems) * 100,
+        );
 
   return (
     <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-2 flex items-center justify-between gap-3">
         <p className="text-sm font-semibold text-slate-300">
-          Task Progress
+          {t("title")}
         </p>
 
         <p className="text-sm font-bold text-blue-400">
@@ -28,9 +39,16 @@ export default function TaskProgressBar({
         </p>
       </div>
 
-      <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+      <div
+        className="h-2 overflow-hidden rounded-full bg-slate-800"
+        role="progressbar"
+        aria-label={t("ariaLabel")}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={progress}
+      >
         <div
-          className="h-full rounded-full bg-blue-500 transition-all"
+          className="h-full rounded-full bg-blue-500 transition-all duration-300"
           style={{
             width: `${progress}%`,
           }}
@@ -38,7 +56,10 @@ export default function TaskProgressBar({
       </div>
 
       <p className="mt-2 text-xs text-slate-500">
-        {completedItems} of {totalItems} checklist items completed
+        {t("summary", {
+          completed: completedItems,
+          total: totalItems,
+        })}
       </p>
     </div>
   );

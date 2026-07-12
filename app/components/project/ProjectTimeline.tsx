@@ -1,8 +1,12 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+
 type TimelineStep = {
   id: number;
   title: string;
   completed: boolean;
-  completedAt: Date | null;
+  completedAt: Date | string | null;
 };
 
 export default function ProjectTimeline({
@@ -10,42 +14,98 @@ export default function ProjectTimeline({
 }: {
   steps: TimelineStep[];
 }) {
+  const t = useTranslations("projectTimeline");
+  const locale = useLocale();
+
+  function formatCompletedDate(
+    value: Date | string | null,
+  ) {
+    if (!value) {
+      return t("pending");
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return t("unknownDate");
+    }
+
+    return new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }).format(date);
+  }
+
   return (
-    <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-      <h2 className="text-2xl font-bold mb-5">
-        Timeline Steps
+    <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+      <h2 className="mb-5 text-2xl font-bold text-white">
+        {t("title")}
       </h2>
 
-      <div className="space-y-4">
-        {steps.map((step) => (
-          <div
-            key={step.id}
-            className="flex items-start gap-4 rounded-2xl border border-slate-800 bg-slate-950 p-4"
-          >
-            <div
-              className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
-                step.completed
-                  ? "bg-emerald-600 text-white"
-                  : "bg-slate-800 text-slate-400"
-              }`}
+      {steps.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-8 text-center text-sm text-slate-500">
+          {t("emptyState")}
+        </div>
+      ) : (
+        <ol className="space-y-4">
+          {steps.map((step, index) => (
+            <li
+              key={step.id}
+              className="flex items-start gap-4 rounded-2xl border border-slate-800 bg-slate-950 p-4"
             >
-              {step.completed ? "✓" : "•"}
-            </div>
+              <div
+                aria-hidden="true"
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
+                  step.completed
+                    ? "bg-emerald-600 text-white"
+                    : "bg-slate-800 text-slate-400"
+                }`}
+              >
+                {step.completed ? "✓" : index + 1}
+              </div>
 
-            <div>
-              <p className="font-semibold">
-                {step.title}
-              </p>
+              <div className="min-w-0">
+                <p className="break-words font-semibold text-white">
+                  {step.title}
+                </p>
 
-              <p className="mt-1 text-sm text-slate-500">
-                {step.completedAt
-                  ? step.completedAt.toLocaleDateString()
-                  : "Pending"}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-500">
+                  <span>
+                    {step.completed
+                      ? t("completed")
+                      : t("pending")}
+                  </span>
+
+                  <span aria-hidden="true">·</span>
+
+                  {step.completedAt ? (
+                    <time
+                      dateTime={
+                        Number.isNaN(
+                          new Date(
+                            step.completedAt,
+                          ).getTime(),
+                        )
+                          ? undefined
+                          : new Date(
+                              step.completedAt,
+                            ).toISOString()
+                      }
+                    >
+                      {formatCompletedDate(
+                        step.completedAt,
+                      )}
+                    </time>
+                  ) : (
+                    <span>{t("notCompletedYet")}</span>
+                  )}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   );
 }

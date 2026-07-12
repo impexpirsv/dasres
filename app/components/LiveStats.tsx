@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
-
+import { getTranslations } from "next-intl/server";
 export default async function LiveStats() {
+  const t = await getTranslations("liveStats");
   const [
     companiesCount,
     expertsCount,
@@ -26,31 +27,31 @@ export default async function LiveStats() {
 
   const stats = [
     {
-      label: "Verified Companies",
+      label: t("verifiedCompanies"),
       value: companiesCount,
       suffix: "+",
       color: "text-blue-400",
     },
     {
-      label: "Trusted Experts",
+      label: t("trustedExperts"),
       value: expertsCount,
       suffix: "+",
       color: "text-cyan-400",
     },
     {
-      label: "Trade Opportunities",
+      label: t("tradeOpportunities"),
       value: opportunitiesCount,
       suffix: "+",
       color: "text-purple-400",
     },
     {
-      label: "Trade Cases",
+      label: t("tradeCases"),
       value: tradeCasesCount,
       suffix: "+",
       color: "text-emerald-400",
     },
     {
-      label: "Case Success Rate",
+      label: t("caseSuccessRate"),
       value: successRate,
       suffix: "%",
       color: "text-yellow-400",
@@ -61,11 +62,9 @@ export default async function LiveStats() {
     <section className="bg-slate-950 border-y border-slate-800 py-14">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-10">
-          <p className="text-blue-400 font-semibold mb-2">
-            Live Platform Metrics
-          </p>
+          <p className="mb-2 font-semibold text-blue-400">{t("eyebrow")}</p>
 
-          <h2 className="text-3xl font-bold">Dasres activity in real time</h2>
+          <h2 className="text-3xl font-bold">{t("title")}</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
           {stats.map((stat) => (
@@ -73,7 +72,7 @@ export default async function LiveStats() {
               key={stat.label}
               className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 text-center"
             >
-              <p className={`text-4xl font-black ${stat.color}`}>
+              <p dir="ltr" className={`text-4xl font-black ${stat.color}`}>
                 {stat.value}
                 {stat.suffix}
               </p>

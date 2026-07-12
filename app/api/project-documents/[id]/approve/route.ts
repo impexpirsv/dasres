@@ -1,6 +1,6 @@
 import { prisma } from "../../../../../lib/prisma";
 import { requireAdmin } from "../../../../../lib/auth";
-
+import { notifyDocumentApproved } from "../../../../../lib/notificationEvents";
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -17,7 +17,7 @@ export async function PATCH(
       );
     }
 
-    await prisma.projectTaskAttachment.update({
+    const document = await prisma.projectTaskAttachment.update({
       where: {
         id: documentId,
       },
@@ -27,10 +27,30 @@ export async function PATCH(
         approvedAt: new Date(),
         rejectionReason: null,
       },
+      include: {
+        uploadedBy: {
+          select: {
+            id: true,
+          },
+        },
+        task: {
+          select: {
+            projectId: true,
+          },
+        },
+      },
     });
+
+    if (document.uploadedBy?.id && document.uploadedBy.id !== user.id) {
+      await notifyDocumentApproved({
+  userId: document.uploadedBy.id,
+  projectId: document.task.projectId,
+});
+    }
 
     return Response.json({
       message: "Document approved",
+      document,
     });
   } catch {
     return Response.json(

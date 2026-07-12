@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 type Expert = {
   id: number;
@@ -23,30 +24,32 @@ type Props = {
   topRatedCompanies: Company[];
 };
 
-export default function DashboardTopRated({
+export default async function DashboardTopRated({
   topRatedExperts,
   topRatedCompanies,
 }: Props) {
+  const t = await getTranslations("dashboardTopRated");
+
   return (
     <div className="grid lg:grid-cols-2 gap-6 mt-12">
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center gap-4 mb-4">
           <h2 className="text-xl font-bold">
-            🏆 Top Rated Experts
+            🏆 {t("experts.title")}
           </h2>
 
           <Link
             href="/dashboard/experts"
             className="text-blue-400 text-sm hover:underline"
           >
-            View all
+            {t("viewAll")}
           </Link>
         </div>
 
         <div className="space-y-4">
           {topRatedExperts.length === 0 ? (
             <p className="text-slate-500">
-              No rated experts yet.
+              {t("experts.empty")}
             </p>
           ) : (
             topRatedExperts.map((expert) => (
@@ -72,8 +75,9 @@ export default function DashboardTopRated({
                 </div>
 
                 <p className="text-xs text-slate-500 mt-2">
-                  Based on {expert.reviewCount} review
-                  {expert.reviewCount > 1 ? "s" : ""}
+                  {t("reviewCount", {
+                    count: expert.reviewCount,
+                  })}
                 </p>
               </Link>
             ))
@@ -82,23 +86,23 @@ export default function DashboardTopRated({
       </div>
 
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center gap-4 mb-4">
           <h2 className="text-xl font-bold">
-            🏆 Top Rated Companies
+            🏆 {t("companies.title")}
           </h2>
 
           <Link
             href="/dashboard/companies"
             className="text-blue-400 text-sm hover:underline"
           >
-            View all
+            {t("viewAll")}
           </Link>
         </div>
 
         <div className="space-y-4">
           {topRatedCompanies.length === 0 ? (
             <p className="text-slate-500">
-              No rated companies yet.
+              {t("companies.empty")}
             </p>
           ) : (
             topRatedCompanies.map((company) => (
@@ -124,8 +128,9 @@ export default function DashboardTopRated({
                 </div>
 
                 <p className="text-xs text-slate-500 mt-2">
-                  Based on {company.reviewCount} review
-                  {company.reviewCount > 1 ? "s" : ""}
+                  {t("reviewCount", {
+                    count: company.reviewCount,
+                  })}
                 </p>
               </Link>
             ))

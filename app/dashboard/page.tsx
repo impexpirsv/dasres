@@ -18,8 +18,10 @@ import DashboardTopRated from "../components/dashboard/DashboardTopRated";
 import DashboardLatestItems from "../components/dashboard/DashboardLatestItems";
 import DashboardMyTasks from "../components/dashboard/DashboardMyTasks";
 import DashboardOverdueTasks from "../components/dashboard/DashboardOverdueTasks";
+import { getTranslations } from "next-intl/server";
 export default async function DashboardPage() {
   const user = await requireUser();
+  const t = await getTranslations("dashboardPage");
   const pendingCompaniesCount =
     user.role === "admin"
       ? await prisma.company.count({
@@ -435,11 +437,13 @@ export default async function DashboardPage() {
     <div className="max-w-7xl mx-auto px-6 py-20">
       <DashboardProfileCard user={user} />
 
-      <h1 className="text-5xl font-bold mb-4">Dashboard</h1>
+     <h1 className="text-5xl font-bold mb-4">
+  {t("title")}
+</h1>
 
       <p className="text-slate-400 mb-12">
-        Manage your Dasres account, profiles and trade activities.
-      </p>
+  {t("description")}
+</p>
       <DashboardQuickActions />
       <DashboardAttention
         unreadNotificationsCount={unreadNotificationsCount}
@@ -471,24 +475,26 @@ export default async function DashboardPage() {
         <div className="mb-12 bg-slate-900 border border-blue-500 rounded-3xl p-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
-              <h2 className="text-3xl font-bold">Admin Command Center</h2>
+              <h2 className="text-3xl font-bold">
+  {t("admin.commandCenter")}
+</h2>
 
               <p className="text-slate-400 mt-2">
-                High-level operational overview of Dasres.
-              </p>
+  {t("admin.description")}
+</p>
             </div>
 
             <Link
               href="/dashboard/verifications"
               className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl text-center"
             >
-              Review Verifications
+             {t("admin.reviewVerifications")}
             </Link>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6 mt-8">
             <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
-              <p className="text-slate-500 text-sm">Pending Verifications</p>
+              <p className="text-slate-500 text-sm">{t("admin.pendingVerifications")}</p>
 
               <p className="text-4xl font-bold text-yellow-400 mt-2">
                 {pendingCompaniesCount + pendingExpertsCount}
@@ -496,7 +502,7 @@ export default async function DashboardPage() {
             </div>
 
             <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
-              <p className="text-slate-500 text-sm">Total Reviews</p>
+              <p className="text-slate-500 text-sm">{t("admin.totalReviews")}</p>
 
               <p className="text-4xl font-bold text-emerald-400 mt-2">
                 {totalReviewsCount}
@@ -504,7 +510,7 @@ export default async function DashboardPage() {
             </div>
 
             <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
-              <p className="text-slate-500 text-sm">Premium Users</p>
+              <p className="text-slate-500 text-sm">{t("admin.premiumUsers")}</p>
 
               <p className="text-4xl font-bold text-purple-400 mt-2">
                 {premiumUsersCount}
@@ -512,7 +518,7 @@ export default async function DashboardPage() {
             </div>
 
             <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
-              <p className="text-slate-500 text-sm">Open Tickets</p>
+              <p className="text-slate-500 text-sm">{t("admin.openTickets")}</p>
 
               <p className="text-4xl font-bold text-blue-400 mt-2">
                 {openTicketsCount}
@@ -548,14 +554,14 @@ export default async function DashboardPage() {
       />
       {user.role === "admin" && (
         <div className="mt-12">
-          <h2 className="text-3xl font-bold mb-6">Admin Panel</h2>
+          <h2 className="text-3xl font-bold mb-6">{t("admin.panel")}</h2>
 
           <div className="grid md:grid-cols-4 gap-6">
             <Link
               href="/dashboard/users"
               className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-green-500"
             >
-              <h3 className="text-lg font-semibold">Users</h3>
+              <h3 className="text-lg font-semibold">{t("admin.users")}</h3>
 
               <div className="text-4xl font-bold text-green-400 mt-3">
                 {usersCount}
@@ -566,7 +572,7 @@ export default async function DashboardPage() {
               href="/dashboard/experts"
               className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500"
             >
-              <h3 className="text-lg font-semibold">Experts</h3>
+              <h3 className="text-lg font-semibold">{t("admin.experts")}</h3>
 
               <div className="text-4xl font-bold text-blue-400 mt-3">
                 {expertsCount}
@@ -577,7 +583,7 @@ export default async function DashboardPage() {
               href="/dashboard/companies"
               className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500"
             >
-              <h3 className="text-lg font-semibold">Companies</h3>
+              <h3 className="text-lg font-semibold">{t("admin.companies")}</h3>
 
               <div className="text-4xl font-bold text-yellow-400 mt-3">
                 {companiesCount}
@@ -588,7 +594,7 @@ export default async function DashboardPage() {
               href="/dashboard/opportunities"
               className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500"
             >
-              <h3 className="text-lg font-semibold">Opportunities</h3>
+              <h3 className="text-lg font-semibold">{t("admin.opportunities")}</h3>
 
               <div className="text-4xl font-bold text-purple-400 mt-3">
                 {opportunitiesCount}
@@ -608,13 +614,13 @@ export default async function DashboardPage() {
       {user.role === "admin" && (
         <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Latest Users</h2>
+            <h2 className="text-xl font-bold">{t("admin.latestUsers")}</h2>
 
             <Link
               href="/dashboard/users"
               className="text-blue-400 text-sm hover:underline"
             >
-              Manage users
+             {t("admin.manageUsers")}
             </Link>
           </div>
 
@@ -631,7 +637,9 @@ export default async function DashboardPage() {
                 </p>
 
                 <span className="inline-block mt-3 text-xs bg-slate-800 px-2 py-1 rounded">
-                  {latestUser.role}
+                 {latestUser.role === "admin"
+  ? t("roles.admin")
+  : t("roles.user")}
                 </span>
               </div>
             ))}

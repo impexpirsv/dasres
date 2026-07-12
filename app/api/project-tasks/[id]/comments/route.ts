@@ -3,7 +3,7 @@ import { AppError } from "../../../../../lib/errors";
 import { prisma } from "../../../../../lib/prisma";
 import { parseId } from "../../../../../lib/validation";
 import { requireUser } from "../../../../../lib/auth";
-
+import { notifyTaskComment } from "../../../../../lib/notificationEvents";
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -19,7 +19,9 @@ export async function POST(
     const content = String(body.content || "").trim();
 
     const parentId =
-      body.parentId === "" || body.parentId === null || body.parentId === undefined
+      body.parentId === "" ||
+      body.parentId === null ||
+      body.parentId === undefined
         ? null
         : Number(body.parentId);
 
@@ -81,7 +83,18 @@ export async function POST(
           details: `Comment added to task: ${task.title}`,
         },
       });
+      const receiverId =
+        task.project.createdBy === user.id
+          ? task.project.assignedTo
+          : task.project.createdBy;
 
+      if (receiverId && receiverId !== user.id) {
+        await notifyTaskComment({
+          userId: receiverId,
+          taskTitle: task.title,
+          projectId: task.projectId,
+        });
+      }
       return createdComment;
     });
 
