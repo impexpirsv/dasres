@@ -1,53 +1,59 @@
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import NotificationLink from "../../components/NotificationLink";
 import MarkAllNotificationsReadButton from "../../components/MarkAllNotificationsReadButton";
 
-function getNotificationBadge(type: string) {
+function getNotificationBadgeClass(type: string) {
   switch (type) {
     case "PROPOSAL_SUBMITTED":
-      return { label: "Proposal", className: "bg-yellow-600 text-black" };
+      return "bg-yellow-600 text-black";
 
     case "PROPOSAL_ACCEPTED":
-      return { label: "Accepted", className: "bg-green-600 text-white" };
+      return "bg-green-600 text-white";
 
     case "PROPOSAL_REJECTED":
-      return { label: "Rejected", className: "bg-red-600 text-white" };
+      return "bg-red-600 text-white";
 
     case "PROJECT_MESSAGE":
-      return { label: "Message", className: "bg-blue-600 text-white" };
+      return "bg-blue-600 text-white";
 
     case "DOCUMENT_UPLOADED":
-      return { label: "Document", className: "bg-purple-600 text-white" };
+      return "bg-purple-600 text-white";
 
     case "DOCUMENT_APPROVED":
-      return { label: "Approved", className: "bg-emerald-600 text-white" };
+      return "bg-emerald-600 text-white";
 
     case "TASK_ASSIGNED":
-      return { label: "Assigned", className: "bg-indigo-600 text-white" };
+      return "bg-indigo-600 text-white";
 
     case "TASK_COMPLETED":
-      return { label: "Completed", className: "bg-green-700 text-white" };
+      return "bg-green-700 text-white";
 
     case "TASK_COMMENT":
-      return { label: "Comment", className: "bg-sky-600 text-white" };
+      return "bg-sky-600 text-white";
 
     case "TICKET_UPDATED":
-      return { label: "Ticket", className: "bg-cyan-600 text-black" };
+      return "bg-cyan-600 text-black";
 
     case "DEADLINE_REMINDER":
-      return { label: "Deadline", className: "bg-orange-600 text-white" };
+      return "bg-orange-600 text-white";
 
     case "PROJECT_COMPLETED":
-      return { label: "Project Done", className: "bg-green-500 text-black" };
+      return "bg-green-500 text-black";
 
     default:
-      return { label: "System", className: "bg-slate-700 text-slate-200" };
+      return "bg-slate-700 text-slate-200";
   }
 }
 
 export default async function NotificationsPage() {
   const user = await requireUser();
+  const locale = await getLocale();
+  const t = await getTranslations("notifications.list");
 
   const notifications =
     await prisma.notification.findMany({
@@ -60,64 +66,107 @@ export default async function NotificationsPage() {
     });
 
   const unreadCount = notifications.filter(
-    (notification) => !notification.isRead
+    (notification) => !notification.isRead,
   ).length;
 
   const readCount =
     notifications.length - unreadCount;
 
+  function getNotificationBadgeLabel(type: string) {
+    switch (type) {
+      case "PROPOSAL_SUBMITTED":
+        return t("types.proposal");
+
+      case "PROPOSAL_ACCEPTED":
+        return t("types.accepted");
+
+      case "PROPOSAL_REJECTED":
+        return t("types.rejected");
+
+      case "PROJECT_MESSAGE":
+        return t("types.message");
+
+      case "DOCUMENT_UPLOADED":
+        return t("types.document");
+
+      case "DOCUMENT_APPROVED":
+        return t("types.approved");
+
+      case "TASK_ASSIGNED":
+        return t("types.assigned");
+
+      case "TASK_COMPLETED":
+        return t("types.completed");
+
+      case "TASK_COMMENT":
+        return t("types.comment");
+
+      case "TICKET_UPDATED":
+        return t("types.ticket");
+
+      case "DEADLINE_REMINDER":
+        return t("types.deadline");
+
+      case "PROJECT_COMPLETED":
+        return t("types.projectDone");
+
+      default:
+        return t("types.system");
+    }
+  }
+
   return (
-    <div className="max-w-6xl mx-auto px-6 py-20">
+    <div className="mx-auto max-w-6xl px-6 py-20">
       <div className="mb-10">
-        <h1 className="text-5xl font-bold mb-4">
-          Notifications
+        <h1 className="mb-4 text-5xl font-bold">
+          {t("title")}
         </h1>
 
         <p className="text-slate-400">
-          Track your case updates, proposals, messages, documents and system alerts.
+          {t("description")}
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
+      <div className="mb-8 grid gap-6 md:grid-cols-3">
         <div className="rounded-2xl border border-blue-500 bg-slate-900 p-6">
-          <p className="text-slate-400 text-sm">
-            Total Notifications
+          <p className="text-sm text-slate-400">
+            {t("total")}
           </p>
 
-          <p className="text-4xl font-bold text-blue-400 mt-2">
+          <p className="mt-2 text-4xl font-bold text-blue-400">
             {notifications.length}
           </p>
         </div>
 
         <div className="rounded-2xl border border-yellow-500 bg-slate-900 p-6">
-          <p className="text-slate-400 text-sm">
-            Unread
+          <p className="text-sm text-slate-400">
+            {t("unread")}
           </p>
 
-          <p className="text-4xl font-bold text-yellow-400 mt-2">
+          <p className="mt-2 text-4xl font-bold text-yellow-400">
             {unreadCount}
           </p>
         </div>
 
         <div className="rounded-2xl border border-green-500 bg-slate-900 p-6">
-          <p className="text-slate-400 text-sm">
-            Read
+          <p className="text-sm text-slate-400">
+            {t("read")}
           </p>
 
-          <p className="text-4xl font-bold text-green-400 mt-2">
+          <p className="mt-2 text-4xl font-bold text-green-400">
             {readCount}
           </p>
         </div>
       </div>
 
-      <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5">
+      <div className="mb-8 flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="font-semibold">
-            Notification Center
+            {t("centerTitle")}
           </p>
 
           <p className="text-sm text-slate-500">
-            Manage your case updates, messages, documents and system alerts.
+            {t("centerDescription")}
           </p>
         </div>
 
@@ -128,60 +177,70 @@ export default async function NotificationsPage() {
 
       <div className="space-y-4">
         {notifications.length === 0 && (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-slate-400">
-            No notifications yet.
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-slate-400">
+            {t("empty")}
           </div>
         )}
 
         {notifications.map((notification) => {
-          const badge = getNotificationBadge(
-            notification.type
-          );
+          const badgeClass =
+            getNotificationBadgeClass(
+              notification.type,
+            );
+
+          const badgeLabel =
+            getNotificationBadgeLabel(
+              notification.type,
+            );
 
           const content = (
             <div
               className={`rounded-2xl border p-6 transition ${
                 notification.isRead
-                  ? "bg-slate-900 border-slate-800"
-                  : "bg-slate-900 border-blue-500 hover:border-blue-400"
+                  ? "border-slate-800 bg-slate-900"
+                  : "border-blue-500 bg-slate-900 hover:border-blue-400"
               }`}
             >
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div className="flex flex-wrap items-center gap-3">
-                  <h2 className="font-bold text-lg">
+                  <h2 className="text-lg font-bold">
                     {notification.title}
                   </h2>
 
                   <span
-                    className={`text-xs px-3 py-1 rounded-full font-semibold ${badge.className}`}
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}`}
                   >
-                    {badge.label}
+                    {badgeLabel}
                   </span>
                 </div>
 
                 <span
-                  className={`text-xs px-3 py-1 rounded-full w-fit ${
+                  className={`w-fit rounded-full px-3 py-1 text-xs ${
                     notification.isRead
                       ? "bg-slate-800 text-slate-400"
                       : "bg-blue-600 text-white"
                   }`}
                 >
-                  {notification.isRead ? "Read" : "Unread"}
+                  {notification.isRead
+                    ? t("read")
+                    : t("unread")}
                 </span>
               </div>
 
-              <p className="text-slate-400 mt-3">
+              <p className="mt-3 text-slate-400">
                 {notification.message}
               </p>
 
-              <div className="flex flex-wrap items-center justify-between gap-3 mt-4">
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                 <p className="text-xs text-slate-500">
-                  {notification.createdAt.toLocaleString()}
+                  {notification.createdAt.toLocaleString(
+                    locale,
+                  )}
                 </p>
 
                 {notification.link && (
                   <p className="text-sm text-blue-400">
-                    Open →
+                    {t("open")}
                   </p>
                 )}
               </div>

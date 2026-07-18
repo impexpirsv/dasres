@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function DeleteOpportunityButton({
   id,
@@ -8,33 +10,65 @@ export default function DeleteOpportunityButton({
   id: number;
 }) {
   const router = useRouter();
+  const t = useTranslations("opportunities.deleteButton");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleDelete() {
-    const confirmDelete = confirm(
-      "Are you sure you want to delete this opportunity?"
-    );
+    const confirmed = window.confirm(t("confirm"));
 
-    if (!confirmDelete) return;
+    if (!confirmed) {
+      return;
+    }
 
-    const response = await fetch(
-      `/api/opportunities/${id}`,
-      {
-        method: "DELETE",
+    try {
+      setError("");
+      setLoading(true);
+
+      const response = await fetch(
+        `/api/opportunities/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setError(
+          data?.message || t("errors.deleteFailed"),
+        );
+        return;
       }
-    );
 
-    if (response.ok) {
-     router.push("/dashboard/opportunities");
+      router.push("/dashboard/opportunities");
       router.refresh();
+    } catch {
+      setError(t("errors.deleteFailed"));
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <button
-      onClick={handleDelete}
-      className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg"
-    >
-      Delete Opportunity
-    </button>
+    <div className="space-y-2">
+      {error && (
+        <p className="text-xs text-red-400">
+          {error}
+        </p>
+      )}
+
+      <button
+        type="button"
+        onClick={handleDelete}
+        disabled={loading}
+        className="rounded-lg bg-red-600 px-6 py-3 text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {loading
+          ? t("deleting")
+          : t("button")}
+      </button>
+    </div>
   );
 }

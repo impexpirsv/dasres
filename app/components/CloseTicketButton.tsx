@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function CloseTicketButton({
   ticketId,
@@ -9,45 +10,60 @@ export default function CloseTicketButton({
   ticketId: number;
 }) {
   const router = useRouter();
+  const t = useTranslations("tickets.closeButton");
+
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function closeTicket() {
-    if (
-      !confirm(
-        "Are you sure you want to close this ticket?"
-      )
-    ) {
+    const confirmed = window.confirm(t("confirm"));
+
+    if (!confirmed) {
       return;
     }
 
-    setLoading(true);
+    try {
+      setError("");
+      setLoading(true);
 
-    const response = await fetch(
-      `/api/tickets/${ticketId}/close`,
-      {
-        method: "PATCH",
+      const response = await fetch(
+        `/api/tickets/${ticketId}/close`,
+        {
+          method: "PATCH",
+        },
+      );
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setError(data?.message || t("errors.closeFailed"));
+        return;
       }
-    );
 
-    setLoading(false);
-
-    if (!response.ok) {
-      alert("Failed to close ticket");
-      return;
+      router.refresh();
+    } catch {
+      setError(t("errors.closeFailed"));
+    } finally {
+      setLoading(false);
     }
-
-    router.refresh();
   }
 
   return (
-    <button
-      onClick={closeTicket}
-      disabled={loading}
-      className="rounded-xl bg-red-600 px-5 py-3 text-white hover:bg-red-700 disabled:opacity-50"
-    >
-      {loading
-        ? "Closing..."
-        : "Close Ticket"}
-    </button>
+    <div className="space-y-2">
+      {error && (
+        <div className="rounded-xl border border-red-800 bg-red-950/40 px-3 py-2 text-sm text-red-300">
+          {error}
+        </div>
+      )}
+
+      <button
+        type="button"
+        onClick={closeTicket}
+        disabled={loading}
+        className="rounded-xl bg-red-600 px-5 py-3 font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {loading ? t("closing") : t("close")}
+      </button>
+    </div>
   );
 }

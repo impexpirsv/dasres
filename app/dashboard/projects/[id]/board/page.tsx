@@ -1,39 +1,33 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
 import { prisma } from "../../../../../lib/prisma";
 import { requireUser } from "../../../../../lib/auth";
-import KanbanTaskCard from "../../../../components/project/KanbanTaskCard";
 import ProjectBoard from "../../../../components/project/ProjectBoard";
-const columns = [
-  {
-    title: "Todo",
-    status: "TODO",
-  },
-  {
-    title: "In Progress",
-    status: "IN_PROGRESS",
-  },
-  {
-    title: "Review",
-    status: "REVIEW",
-  },
-  {
-    title: "Completed",
-    status: "COMPLETED",
-  },
-];
+
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
 
 export default async function ProjectBoardPage({
   params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+}: Props) {
   const user = await requireUser();
 
-  const { id } = await params;
-  const projectId = Number(id);
+  const [t, locale, resolvedParams] = await Promise.all([
+    getTranslations("projectBoardPage"),
+    getLocale(),
+    params,
+  ]);
 
-  if (Number.isNaN(projectId)) {
+  const projectId = Number(resolvedParams.id);
+
+  if (!Number.isInteger(projectId) || projectId <= 0) {
     notFound();
   }
 
@@ -41,9 +35,27 @@ export default async function ProjectBoardPage({
     where: {
       id: projectId,
     },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      createdBy: true,
+      assignedTo: true,
       tasks: {
-        include: {
+        orderBy: {
+          createdAt: "asc",
+        },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          status: true,
+          priority: true,
+          progress: true,
+          startDate: true,
+          dueDate: true,
+          assignedToId: true,
+          createdAt: true,
+          updatedAt: true,
           attachments: {
             select: {
               id: true,
@@ -67,9 +79,6 @@ export default async function ProjectBoardPage({
             },
           },
         },
-        orderBy: {
-          createdAt: "asc",
-        },
       },
     },
   });
@@ -78,30 +87,43 @@ export default async function ProjectBoardPage({
     notFound();
   }
 
-  if (
-    user.role !== "admin" &&
-    project.createdBy !== user.id &&
-    project.assignedTo !== user.id
-  ) {
+  const canAccessProject =
+    user.role === "admin" ||
+    project.createdBy === user.id ||
+    project.assignedTo === user.id;
+
+  if (!canAccessProject) {
     notFound();
   }
 
+  const isRtl =
+    locale.startsWith("fa") ||
+    locale.startsWith("ar");
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-20">
+    <div className="mx-auto max-w-7xl px-6 py-20">
       <Link
         href={`/dashboard/projects/${project.id}`}
-        className="text-blue-400 hover:underline"
+        className="inline-flex items-center gap-2 text-blue-400 hover:underline"
       >
-        ← Back to Project
+        <span aria-hidden="true">
+          {isRtl ? "→" : "←"}
+        </span>
+
+        <span>{t("backToProject")}</span>
       </Link>
 
-      <div className="mt-6 mb-10">
-        <p className="text-blue-400 font-semibold mb-3">Project Board</p>
+      <div className="mb-10 mt-6">
+        <p className="mb-3 font-semibold text-blue-400">
+          {t("eyebrow")}
+        </p>
 
-        <h1 className="text-4xl font-bold">{project.title}</h1>
+        <h1 className="break-words text-4xl font-bold">
+          {project.title}
+        </h1>
 
-        <p className="text-slate-400 mt-3">
-          Track project tasks by workflow status.
+        <p className="mt-3 text-slate-400">
+          {t("description")}
         </p>
       </div>
 

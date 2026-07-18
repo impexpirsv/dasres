@@ -1,111 +1,194 @@
+import { apiHandler } from "../../../../../lib/api";
+import { AppError } from "../../../../../lib/errors";
 import { prisma } from "../../../../../lib/prisma";
+import { parseId } from "../../../../../lib/validation";
 import { requireAdmin } from "../../../../../lib/auth";
 import { notifyTaskAssigned } from "../../../../../lib/notificationEvents";
+
 export async function PATCH(
   request: Request,
-  { params }: { params: Promise<{ id: string }> },
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  },
 ) {
-  try {
+  return apiHandler(async () => {
     const admin = await requireAdmin();
 
     const { id } = await params;
-    const taskId = Number(id);
+    const taskId = parseId(id, "task id");
 
-    if (!taskId) {
-      return Response.json({ message: "Invalid task id." }, { status: 400 });
+    let body: unknown;
+
+    try {
+      body = await request.json();
+    } catch {
+      throw new AppError(
+        "INVALID_JSON_BODY",
+        400,
+      );
     }
-
-    const body = await request.json();
-    const assignedToId =
-      body.assignedToId === null || body.assignedToId === ""
-        ? null
-        : Number(body.assignedToId);
 
     if (
-      assignedToId !== null &&
-      (!Number.isInteger(assignedToId) || assignedToId <= 0)
+      !body ||
+      typeof body !== "object" ||
+      Array.isArray(body)
     ) {
-      return Response.json({ message: "Invalid assignee." }, { status: 400 });
+      throw new AppError(
+        "INVALID_REQUEST_BODY",
+        400,
+      );
     }
 
-    const task = await prisma.projectTask.findUnique({
-      where: { id: taskId },
-      include: {
-        project: {
-          include: {
-            tradeCase: true,
-          },
-        },
-      },
-    });
+    const payload = body as Record<
+      string,
+      unknown
+    >;
 
-    if (!task) {
-      return Response.json({ message: "Task not found." }, { status: 404 });
-    }
+    let assignedToId: number | null = null;
 
-    if (assignedToId !== null) {
-      const assignee = await prisma.user.findUnique({
-        where: { id: assignedToId },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-        },
-      });
+    if (
+      payload.assignedToId !== null &&
+      payload.assignedToId !== undefined &&
+      payload.assignedToId !== ""
+    ) {
+      assignedToId = Number(
+        payload.assignedToId,
+      );
 
-      if (!assignee) {
-        return Response.json(
-          { message: "Assignee not found." },
-          { status: 404 },
+      if (
+        !Number.isInteger(assignedToId) ||
+        assignedToId <= 0
+      ) {
+        throw new AppError(
+          "INVALID_TASK_ASSIGNEE",
+          400,
         );
       }
     }
 
-    const updatedTask = await prisma.projectTask.update({
-      where: { id: taskId },
-      data: {
-        assignedToId,
-      },
-      include: {
-        assignedTo: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
+    const task =
+      await prisma.projectTask.findUnique({
+        where: {
+          id: taskId,
+        },
+        select: {
+          id: true,
+          title: true,
+          projectId: true,
+          assignedToId: true,
+          project: {
+            select: {
+              tradeCaseId: true,
+            },
           },
         },
-      },
-    });
+      });
 
-    await prisma.caseActivity.create({
-      data: {
-        caseId: task.project.tradeCaseId,
-        userId: admin.id,
-        action: "TASK_ASSIGNED",
-        details: updatedTask.assignedTo
-          ? `Task "${task.title}" assigned to ${
-              updatedTask.assignedTo.name || updatedTask.assignedTo.email
-            }.`
-          : `Task "${task.title}" was unassigned.`,
-      },
-    });
-    if (updatedTask.assignedToId) {
-      await notifyTaskAssigned({
-        userId: updatedTask.assignedToId,
-        taskTitle: task.title,
-        projectId: task.projectId,
+    if (!task) {
+      throw new AppError(
+        "PROJECT_TASK_NOT_FOUND",
+        404,
+      );
+    }
+
+    if (assignedToId !== null) {
+      const assignee =
+        await prisma.user.findUnique({
+          where: {
+            id: assignedToId,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+      if (!assignee) {
+        throw new AppError(
+          "TASK_ASSIGNEE_NOT_FOUND",
+          404,
+        );
+      }
+    }
+
+    if (task.assignedToId === assignedToId) {
+      return Response.json({
+        code: "TASK_ASSIGNMENT_UNCHANGED",
       });
     }
+
+    const updatedTask =
+      await prisma.$transaction(
+        async (transaction) => {
+          const updated =
+            await transaction.projectTask.update({
+              where: {
+                id: taskId,
+              },
+              data: {
+                assignedToId,
+              },
+              select: {
+                id: true,
+                title: true,
+                projectId: true,
+                assignedToId: true,
+                assignedTo: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            });
+
+          await transaction.caseActivity.create({
+            data: {
+              caseId:
+                task.project.tradeCaseId,
+              userId: admin.id,
+              action: "TASK_ASSIGNED",
+              details: updated.assignedTo
+                ? `Task "${task.title}" assigned to ${
+                    updated.assignedTo
+                      .name ||
+                    updated.assignedTo
+                      .email
+                  }.`
+                : `Task "${task.title}" was unassigned.`,
+            },
+          });
+
+          return updated;
+        },
+      );
+
+    if (updatedTask.assignedToId) {
+      try {
+        await notifyTaskAssigned({
+          userId:
+            updatedTask.assignedToId,
+          taskTitle: task.title,
+          projectId: task.projectId,
+        });
+      } catch (notificationError) {
+        console.error(
+          "TASK_ASSIGNMENT_NOTIFICATION_ERROR",
+          {
+            taskId: task.id,
+            userId:
+              updatedTask.assignedToId,
+            error: notificationError,
+          },
+        );
+      }
+    }
+
     return Response.json({
-      message: "Task assignment updated.",
+      code: "TASK_ASSIGNMENT_UPDATED",
       task: updatedTask,
     });
-  } catch (error) {
-    console.error(error);
-
-    return Response.json(
-      { message: "Failed to assign task." },
-      { status: 500 },
-    );
-  }
+  });
 }

@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import EmptyState from "../../components/EmptyState";
+import Image from "next/image";
 function getVerificationClass(status: string) {
   switch (status) {
     case "VERIFIED":
@@ -30,8 +32,29 @@ function getPlanClass(planType: string) {
       return "bg-slate-700 text-slate-200";
   }
 }
+
+function getStatusClass(status: string) {
+  switch (status) {
+    case "ACTIVE":
+      return "bg-emerald-600/20 text-emerald-300";
+
+    case "INACTIVE":
+      return "bg-slate-700 text-slate-300";
+
+    case "SUSPENDED":
+      return "bg-red-600/20 text-red-300";
+
+    default:
+      return "bg-slate-800 text-slate-300";
+  }
+}
+
 export default async function MyExpertsPage() {
   const user = await requireUser();
+
+  const t = await getTranslations("dashboardMyExperts");
+
+  const locale = await getLocale();
 
   const experts = await prisma.expert.findMany({
     where: {
@@ -41,6 +64,7 @@ export default async function MyExpertsPage() {
       id: "desc",
     },
   });
+
   const verifiedExperts = experts.filter(
     (expert) => expert.verificationStatus === "VERIFIED",
   ).length;
@@ -56,101 +80,206 @@ export default async function MyExpertsPage() {
   const premiumExperts = experts.filter(
     (expert) => expert.planType !== "FREE",
   ).length;
+
+  function getVerificationLabel(status: string) {
+    switch (status) {
+      case "VERIFIED":
+        return t("verification.verified");
+
+      case "REJECTED":
+        return t("verification.rejected");
+
+      default:
+        return t("verification.pending");
+    }
+  }
+
+  function getPlanLabel(planType: string) {
+    switch (planType) {
+      case "GOLD":
+        return t("plans.gold");
+
+      case "DIAMOND":
+        return t("plans.diamond");
+
+      case "ENTERPRISE":
+        return t("plans.enterprise");
+
+      default:
+        return t("plans.free");
+    }
+  }
+
+  function getStatusLabel(status: string) {
+    switch (status) {
+      case "ACTIVE":
+        return t("statuses.active");
+
+      case "INACTIVE":
+        return t("statuses.inactive");
+
+      case "SUSPENDED":
+        return t("statuses.suspended");
+
+      default:
+        return status;
+    }
+  }
+
+  const stats = [
+    {
+      key: "total",
+      label: t("stats.total"),
+      value: experts.length,
+      borderClass: "border-blue-500",
+      textClass: "text-blue-400",
+    },
+    {
+      key: "verified",
+      label: t("stats.verified"),
+      value: verifiedExperts,
+      borderClass: "border-emerald-500",
+      textClass: "text-emerald-400",
+    },
+    {
+      key: "pending",
+      label: t("stats.pending"),
+      value: pendingExperts,
+      borderClass: "border-yellow-500",
+      textClass: "text-yellow-400",
+    },
+    {
+      key: "rejected",
+      label: t("stats.rejected"),
+      value: rejectedExperts,
+      borderClass: "border-red-500",
+      textClass: "text-red-400",
+    },
+    {
+      key: "premium",
+      label: t("stats.premium"),
+      value: premiumExperts,
+      borderClass: "border-purple-500",
+      textClass: "text-purple-400",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-6xl mx-auto px-6 py-20">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold">My Experts</h1>
+      <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h1 className="text-4xl font-bold">{t("title")}</h1>
+
+            <p className="mt-3 text-slate-400">{t("description")}</p>
+          </div>
 
           <Link
             href="/dashboard/experts/new"
-            className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl"
+            className="rounded-xl bg-blue-600 px-5 py-3 text-center transition hover:bg-blue-700"
           >
-            Add Expert
+            {t("addExpert")}
           </Link>
         </div>
-        <div className="grid md:grid-cols-5 gap-6 mb-10">
-          <div className="bg-slate-900 border border-blue-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">Total</p>
-            <p className="text-4xl font-bold text-blue-400 mt-2">
-              {experts.length}
-            </p>
-          </div>
 
-          <div className="bg-slate-900 border border-emerald-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">Verified</p>
-            <p className="text-4xl font-bold text-emerald-400 mt-2">
-              {verifiedExperts}
-            </p>
-          </div>
+        <div className="mb-10 grid gap-6 md:grid-cols-5">
+          {stats.map((stat) => (
+            <div
+              key={stat.key}
+              className={`rounded-2xl border bg-slate-900 p-6 ${stat.borderClass}`}
+            >
+              <p className="text-sm text-slate-400">{stat.label}</p>
 
-          <div className="bg-slate-900 border border-yellow-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">Pending</p>
-            <p className="text-4xl font-bold text-yellow-400 mt-2">
-              {pendingExperts}
-            </p>
-          </div>
-
-          <div className="bg-slate-900 border border-red-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">Rejected</p>
-            <p className="text-4xl font-bold text-red-400 mt-2">
-              {rejectedExperts}
-            </p>
-          </div>
-
-          <div className="bg-slate-900 border border-purple-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">Premium</p>
-            <p className="text-4xl font-bold text-purple-400 mt-2">
-              {premiumExperts}
-            </p>
-          </div>
+              <p className={`mt-2 text-4xl font-bold ${stat.textClass}`}>
+                {stat.value}
+              </p>
+            </div>
+          ))}
         </div>
+
         {experts.length === 0 ? (
           <EmptyState
             icon="👨‍💼"
-            title="No experts yet"
-            description="Create your first expert profile to showcase your experience and receive trade requests."
-            buttonText="Add Expert"
+            title={t("empty.title")}
+            description={t("empty.description")}
+            buttonText={t("empty.button")}
             buttonHref="/dashboard/experts/new"
           />
         ) : (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 md:grid-cols-2">
             {experts.map((expert) => (
               <Link
                 key={expert.id}
                 href={`/dashboard/experts/${expert.id}`}
-                className="group bg-slate-900 border border-slate-800 rounded-3xl p-6 hover:border-blue-500 transition"
+                className="group rounded-3xl border border-slate-800 bg-slate-900 p-6 transition hover:border-blue-500"
               >
-                <h2 className="text-2xl font-bold mb-2">{expert.name}</h2>
+                <div className="flex items-start gap-4">
+                  {expert.imageUrl ? (
+                    <Image
+                      src={expert.imageUrl}
+                      alt={expert.name}
+                      width={80}
+                      height={80}
+                      className="h-20 w-20 shrink-0 rounded-2xl object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-slate-800 text-3xl">
+                      👤
+                    </div>
+                  )}
 
-                <p className="text-blue-400 mb-2">{expert.specialty}</p>
+                  <div className="min-w-0 flex-1">
+                    <h2 className="break-words text-2xl font-bold transition group-hover:text-blue-400">
+                      {expert.name}
+                    </h2>
 
-                <p className="text-slate-400">{expert.country}</p>
-                <p className="text-slate-500 mt-3 line-clamp-2">
-                  {expert.experience}
-                </p>
-                <p className="text-slate-500 mt-3 line-clamp-2">
-                  {expert.experience}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                    <p className="mt-1 text-blue-400">{expert.specialty}</p>
+
+                    <p className="mt-1 text-slate-400">{expert.country}</p>
+                  </div>
+                </div>
+
+                {expert.experience && (
+                  <p className="mt-5 line-clamp-3 text-sm leading-6 text-slate-500">
+                    {expert.experience}
+                  </p>
+                )}
+
+                <div className="mt-5 flex flex-wrap gap-2">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${getVerificationClass(
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${getVerificationClass(
                       expert.verificationStatus,
                     )}`}
                   >
-                    {expert.verificationStatus}
+                    {getVerificationLabel(expert.verificationStatus)}
                   </span>
 
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${getPlanClass(
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${getPlanClass(
                       expert.planType,
                     )}`}
                   >
-                    {expert.planType}
+                    {getPlanLabel(expert.planType)}
                   </span>
 
-                  <span className="bg-slate-800 px-3 py-1 rounded-full text-xs">
-                    {expert.status}
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs ${getStatusClass(
+                      expert.status,
+                    )}`}
+                  >
+                    {getStatusLabel(expert.status)}
+                  </span>
+                </div>
+
+                <div className="mt-6 flex items-center justify-between border-t border-slate-800 pt-5">
+                  <span className="text-xs text-slate-500">
+                    {t("created", {
+                      date: expert.createdAt.toLocaleDateString(locale),
+                    })}
+                  </span>
+
+                  <span className="text-sm text-blue-400 group-hover:underline">
+                    {t("viewExpert")}
                   </span>
                 </div>
               </Link>

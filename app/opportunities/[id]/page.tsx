@@ -1,68 +1,183 @@
 import Link from "next/link";
-import { prisma } from "../../../lib/prisma";
-import DeleteOpportunityButton from "../../components/DeleteOpportunityButton";
+import Image from "next/image";
 import type { Metadata } from "next";
-import { requireUser } from "../../../lib/auth";
+import { unstable_cache } from "next/cache";
+import { getTranslations } from "next-intl/server";
+
+import { prisma } from "../../../lib/prisma";
+import { getCurrentUser } from "../../../lib/auth";
 import { formatCountry } from "../../../lib/format";
+
 import Navbar from "../../components/Navbar";
+import DeleteOpportunityButton from "../../components/DeleteOpportunityButton";
+
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{
+    id: string;
+  }>;
 };
 
-function StatusBadge({ status }: { status: string }) {
-  const normalizedStatus = status.toUpperCase();
-
-  if (normalizedStatus === "OPEN") {
-    return (
-      <span className="rounded-full bg-emerald-600 px-4 py-2 text-sm">
-        Open
-      </span>
-    );
-  }
-
-  if (normalizedStatus === "IN_PROGRESS") {
-    return (
-      <span className="rounded-full bg-yellow-600 px-4 py-2 text-sm">
-        In Progress
-      </span>
-    );
-  }
-
-  if (normalizedStatus === "CLOSED") {
-    return (
-      <span className="rounded-full bg-red-600 px-4 py-2 text-sm">Closed</span>
-    );
-  }
-
-  return (
-    <span className="rounded-full bg-slate-700 px-4 py-2 text-sm">
-      {status}
-    </span>
-  );
+function normalizeStatus(status: string) {
+  return status
+    .trim()
+    .toUpperCase()
+    .replaceAll("-", "_")
+    .replaceAll(" ", "_");
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+function getStatusClass(status: string) {
+  const normalizedStatus =
+    normalizeStatus(status);
+
+  switch (normalizedStatus) {
+    case "OPEN":
+      return "bg-emerald-600 text-white";
+
+    case "IN_PROGRESS":
+      return "bg-yellow-600 text-black";
+
+    case "CLOSED":
+      return "bg-red-600 text-white";
+
+    default:
+      return "bg-slate-700 text-slate-200";
+  }
+}
+
+const getOpportunityMetadata =
+  unstable_cache(
+    async (opportunityId: number) => {
+      return prisma.opportunity.findUnique({
+        where: {
+          id: opportunityId,
+        },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          imageUrl: true,
+        },
+      });
+    },
+    ["public-opportunity-metadata"],
+    {
+      revalidate: 300,
+      tags: ["public-opportunities"],
+    },
+  );
+
+const getRelatedCompanies =
+  unstable_cache(
+    async (country: string) => {
+      return prisma.company.findMany({
+        where: {
+          verificationStatus: "VERIFIED",
+          country,
+        },
+        select: {
+          id: true,
+          name: true,
+          category: true,
+        },
+        take: 3,
+        orderBy: [
+          {
+            verifiedAt: "desc",
+          },
+          {
+            id: "desc",
+          },
+        ],
+      });
+    },
+    ["public-opportunity-related-companies"],
+    {
+      revalidate: 300,
+      tags: ["public-companies"],
+    },
+  );
+
+const getRelatedExperts =
+  unstable_cache(
+    async (country: string) => {
+      return prisma.expert.findMany({
+        where: {
+          verificationStatus: "VERIFIED",
+          country,
+        },
+        select: {
+          id: true,
+          name: true,
+          specialty: true,
+        },
+        take: 3,
+        orderBy: [
+          {
+            verifiedAt: "desc",
+          },
+          {
+            id: "desc",
+          },
+        ],
+      });
+    },
+    ["public-opportunity-related-experts"],
+    {
+      revalidate: 300,
+      tags: ["public-experts"],
+    },
+  );
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
   const { id } = await params;
 
-  const opportunity = await prisma.opportunity.findUnique({
-    where: {
-      id: Number(id),
-    },
-  });
+  const opportunityId = Number(id);
+
+  const t = await getTranslations(
+    "publicOpportunityProfile.metadata",
+  );
+
+  if (
+    !Number.isInteger(opportunityId) ||
+    opportunityId <= 0
+  ) {
+    return {
+      title: t("notFoundTitle"),
+      description: t(
+        "notFoundDescription",
+      ),
+    };
+  }
+
+  const opportunity =
+    await getOpportunityMetadata(
+      opportunityId,
+    );
 
   if (!opportunity) {
     return {
-      title: "Opportunity Not Found",
-      description: "The requested opportunity could not be found.",
+      title: t("notFoundTitle"),
+      description: t(
+        "notFoundDescription",
+      ),
     };
   }
+
+  const opportunityDescription =
+    opportunity.description || "";
 
   const title = `${opportunity.title} | Dasres`;
 
   const description =
-    opportunity.description.length > 160
-      ? `${opportunity.description.slice(0, 157)}...`
-      : opportunity.description;
+    opportunityDescription.length > 160
+      ? `${opportunityDescription.slice(
+          0,
+          157,
+        )}...`
+      : opportunityDescription ||
+        t("notFoundDescription");
 
   return {
     title,
@@ -78,64 +193,127 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
               alt: opportunity.title,
             },
           ]
-        : ["/og-image.png"],
+        : [
+            {
+              url: "/og-image.png",
+              alt: opportunity.title,
+            },
+          ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: opportunity.imageUrl ? [opportunity.imageUrl] : ["/og-image.png"],
+      images: opportunity.imageUrl
+        ? [opportunity.imageUrl]
+        : ["/og-image.png"],
     },
   };
 }
 
-export default async function OpportunityProfilePage({ params }: Props) {
+export default async function OpportunityProfilePage({
+  params,
+}: Props) {
   const { id } = await params;
 
-  const user = await requireUser();
-  const isAdmin = user.role === "admin";
+  const opportunityId = Number(id);
 
-  const opportunity = await prisma.opportunity.findUnique({
-    where: {
-      id: Number(id),
-    },
-  });
-  const relatedCompanies = await prisma.company.findMany({
-    where: {
-      verificationStatus: "VERIFIED",
-      country: opportunity?.country,
-    },
-    take: 3,
-    orderBy: {
-      verifiedAt: "desc",
-    },
-  });
-  const relatedExperts = opportunity
-    ? await prisma.expert.findMany({
-        where: {
-          verificationStatus: "VERIFIED",
-          country: opportunity.country,
-        },
-        take: 3,
-        orderBy: {
-          verifiedAt: "desc",
-        },
-      })
-    : [];
-  if (!opportunity) {
+  const t = await getTranslations(
+    "publicOpportunityProfile",
+  );
+
+  if (
+    !Number.isInteger(opportunityId) ||
+    opportunityId <= 0
+  ) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Opportunity Not Found</h1>
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+        <h1 className="text-4xl font-bold">
+          {t("notFound")}
+        </h1>
       </div>
     );
+  }
+
+  const [user, opportunity] =
+    await Promise.all([
+      getCurrentUser(),
+
+      prisma.opportunity.findUnique({
+        where: {
+          id: opportunityId,
+        },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          status: true,
+          country: true,
+          imageUrl: true,
+        },
+      }),
+    ]);
+
+  const isAdmin =
+    user?.role === "admin";
+
+  if (!opportunity) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+        <h1 className="text-4xl font-bold">
+          {t("notFound")}
+        </h1>
+      </div>
+    );
+  }
+
+  const opportunityDescription =
+    opportunity.description || "";
+
+  const [
+    relatedCompanies,
+    relatedExperts,
+  ] = await Promise.all([
+    getRelatedCompanies(
+      opportunity.country,
+    ),
+    getRelatedExperts(
+      opportunity.country,
+    ),
+  ]);
+
+  function getStatusLabel(
+    status: string,
+  ) {
+    const normalizedStatus =
+      normalizeStatus(status);
+
+    switch (normalizedStatus) {
+      case "OPEN":
+        return t("statuses.open");
+
+      case "IN_PROGRESS":
+        return t(
+          "statuses.inProgress",
+        );
+
+      case "CLOSED":
+        return t("statuses.closed");
+
+      default:
+        return status;
+    }
   }
 
   const opportunitySchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: opportunity.title,
-    description: opportunity.description,
-    image: opportunity.imageUrl ? opportunity.imageUrl : "/og-image.png",
+    description:
+      opportunityDescription,
+    image:
+      opportunity.imageUrl ||
+      "/og-image.png",
     author: {
       "@type": "Organization",
       name: "Dasres",
@@ -150,7 +328,9 @@ export default async function OpportunityProfilePage({ params }: Props) {
     },
     about: {
       "@type": "Thing",
-      name: opportunity.status,
+      name: getStatusLabel(
+        opportunity.status,
+      ),
     },
     contentLocation: {
       "@type": "Country",
@@ -161,264 +341,415 @@ export default async function OpportunityProfilePage({ params }: Props) {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <Navbar />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(opportunitySchema),
+          __html: JSON.stringify(
+            opportunitySchema,
+          ),
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-7xl px-6 py-20">
         <Link
           href="/opportunities"
-          className="text-blue-400 hover:underline mb-8 inline-block"
+          className="mb-8 inline-block text-blue-400 hover:underline"
         >
-          ← Back to Opportunities
+          {t("backToOpportunities")}
         </Link>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden">
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 lg:col-span-2">
             {opportunity.imageUrl ? (
-              <img
-                src={opportunity.imageUrl}
-                alt={opportunity.title}
-                className="w-full h-96 object-cover"
-              />
+              <div className="relative h-96 w-full">
+                <Image
+                  src={
+                    opportunity.imageUrl
+                  }
+                  alt={
+                    opportunity.title
+                  }
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  className="object-cover"
+                />
+              </div>
             ) : (
-              <div className="h-96 bg-slate-800 flex items-center justify-center text-7xl">
+              <div className="flex h-96 items-center justify-center bg-slate-800 text-7xl">
                 🌍
               </div>
             )}
 
             <div className="p-10">
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <StatusBadge status={opportunity.status} />
+              <div className="mb-6 flex flex-wrap items-center gap-3">
+                <span
+                  className={`rounded-full px-4 py-2 text-sm ${getStatusClass(
+                    opportunity.status,
+                  )}`}
+                >
+                  {getStatusLabel(
+                    opportunity.status,
+                  )}
+                </span>
 
                 <span className="rounded-full bg-blue-500/20 px-4 py-2 text-sm text-blue-400">
-                  {formatCountry(opportunity.country)}
+                  {formatCountry(
+                    opportunity.country,
+                  )}
                 </span>
 
                 <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
-                  Trade Opportunity
+                  {t(
+                    "tradeOpportunity",
+                  )}
                 </span>
               </div>
 
-              <h1 className="text-5xl md:text-6xl font-black leading-tight mb-6">
+              <h1 className="mb-6 text-5xl font-black leading-tight md:text-6xl">
                 {opportunity.title}
               </h1>
 
-              <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 mb-10">
+              <div className="mb-10 grid grid-cols-2 gap-4 xl:grid-cols-3">
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm">Status</p>
-                  <p className="text-2xl font-bold text-emerald-400 mt-2">
-                    {opportunity.status}
+                  <p className="text-sm text-slate-500">
+                    {t("metrics.status")}
+                  </p>
+
+                  <p className="mt-2 text-2xl font-bold text-emerald-400">
+                    {getStatusLabel(
+                      opportunity.status,
+                    )}
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm">Country</p>
-                  <p className="text-2xl font-bold text-blue-400 mt-2">
-                    {formatCountry(opportunity.country)}
+                  <p className="text-sm text-slate-500">
+                    {t(
+                      "metrics.country",
+                    )}
+                  </p>
+
+                  <p className="mt-2 text-2xl font-bold text-blue-400">
+                    {formatCountry(
+                      opportunity.country,
+                    )}
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm">Visibility</p>
-                  <p className="text-2xl font-bold text-yellow-400 mt-2">
-                    Public
+                  <p className="text-sm text-slate-500">
+                    {t(
+                      "metrics.visibility",
+                    )}
+                  </p>
+
+                  <p className="mt-2 text-2xl font-bold text-yellow-400">
+                    {t("values.public")}
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm">Platform</p>
-                  <p className="text-2xl font-bold text-cyan-400 mt-2">
+                  <p className="text-sm text-slate-500">
+                    {t(
+                      "metrics.platform",
+                    )}
+                  </p>
+
+                  <p className="mt-2 text-2xl font-bold text-cyan-400">
                     Dasres
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm">Category</p>
-                  <p className="text-xl font-bold text-purple-400 mt-2">
-                    Trade
+                  <p className="text-sm text-slate-500">
+                    {t(
+                      "metrics.category",
+                    )}
+                  </p>
+
+                  <p className="mt-2 text-xl font-bold text-purple-400">
+                    {t("values.trade")}
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <p className="text-slate-500 text-sm">Trust</p>
-                  <p className="text-2xl font-bold text-emerald-400 mt-2">
-                    Verified
+                  <p className="text-sm text-slate-500">
+                    {t("metrics.trust")}
+                  </p>
+
+                  <p className="mt-2 text-2xl font-bold text-emerald-400">
+                    {t(
+                      "values.verified",
+                    )}
                   </p>
                 </div>
               </div>
 
               <div className="border-t border-slate-800 pt-8">
-                <h2 className="text-2xl font-bold mb-4">
-                  Opportunity Description
+                <h2 className="mb-4 text-2xl font-bold">
+                  {t(
+                    "opportunityDescription",
+                  )}
                 </h2>
 
-                <p className="text-slate-300 text-lg leading-8">
-                  {opportunity.description}
+                <p className="whitespace-pre-wrap text-lg leading-8 text-slate-300">
+                  {
+                    opportunityDescription
+                  }
                 </p>
               </div>
 
-              <div className="border-t border-slate-800 pt-8 mt-8">
-                <h2 className="text-2xl font-bold mb-4">How to respond</h2>
+              <div className="mt-8 border-t border-slate-800 pt-8">
+                <h2 className="mb-4 text-2xl font-bold">
+                  {t(
+                    "howToRespond.title",
+                  )}
+                </h2>
 
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid gap-4 md:grid-cols-3">
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                    <p className="text-blue-400 font-bold mb-2">1. Review</p>
+                    <p className="mb-2 font-bold text-blue-400">
+                      {t(
+                        "howToRespond.review.title",
+                      )}
+                    </p>
 
                     <p className="text-slate-400">
-                      Read the full opportunity requirements.
+                      {t(
+                        "howToRespond.review.description",
+                      )}
                     </p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                    <p className="text-blue-400 font-bold mb-2">2. Contact</p>
+                    <p className="mb-2 font-bold text-blue-400">
+                      {t(
+                        "howToRespond.contact.title",
+                      )}
+                    </p>
 
                     <p className="text-slate-400">
-                      Reach out through Dasres or email.
+                      {t(
+                        "howToRespond.contact.description",
+                      )}
                     </p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                    <p className="text-blue-400 font-bold mb-2">
-                      3. Collaborate
+                    <p className="mb-2 font-bold text-blue-400">
+                      {t(
+                        "howToRespond.collaborate.title",
+                      )}
                     </p>
 
                     <p className="text-slate-400">
-                      Build a trusted trade partnership.
+                      {t(
+                        "howToRespond.collaborate.description",
+                      )}
                     </p>
                   </div>
                 </div>
               </div>
 
               {isAdmin && (
-                <div className="border-t border-slate-800 pt-8 mt-8 flex flex-wrap gap-3">
+                <div className="mt-8 flex flex-wrap gap-3 border-t border-slate-800 pt-8">
                   <Link
                     href={`/dashboard/opportunities/${opportunity.id}/edit`}
-                    className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
+                    className="rounded-xl bg-blue-600 px-6 py-3 transition hover:bg-blue-700"
                   >
-                    Edit Opportunity
+                    {t(
+                      "editOpportunity",
+                    )}
                   </Link>
 
-                  <DeleteOpportunityButton id={opportunity.id} />
+                  <DeleteOpportunityButton
+                    id={opportunity.id}
+                  />
                 </div>
               )}
             </div>
           </div>
 
           <aside className="space-y-6">
-            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-6">Opportunity Summary</h2>
+            <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="mb-6 text-2xl font-bold">
+                {t("summary.title")}
+              </h2>
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-slate-500 text-sm">Country</p>
+                  <p className="text-sm text-slate-500">
+                    {t(
+                      "summary.country",
+                    )}
+                  </p>
 
                   <p className="text-slate-200">
-                    {formatCountry(opportunity.country)}
+                    {formatCountry(
+                      opportunity.country,
+                    )}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Status</p>
+                  <p className="text-sm text-slate-500">
+                    {t(
+                      "summary.status",
+                    )}
+                  </p>
 
-                  <p className="text-slate-200">{opportunity.status}</p>
+                  <p className="text-slate-200">
+                    {getStatusLabel(
+                      opportunity.status,
+                    )}
+                  </p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Type</p>
+                  <p className="text-sm text-slate-500">
+                    {t("summary.type")}
+                  </p>
 
-                  <p className="text-slate-200">Trade Opportunity</p>
+                  <p className="text-slate-200">
+                    {t(
+                      "tradeOpportunity",
+                    )}
+                  </p>
                 </div>
               </div>
 
               <Link
                 href="/dashboard/cases/new"
-                className="mt-6 block text-center bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
+                className="mt-6 block rounded-xl bg-blue-600 px-6 py-3 text-center transition hover:bg-blue-700"
               >
-                Open Trade Case
+                {t(
+                  "actions.openTradeCase",
+                )}
               </Link>
 
               <Link
                 href="/companies"
-                className="mt-3 block text-center bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl"
+                className="mt-3 block rounded-xl bg-slate-800 px-6 py-3 text-center transition hover:bg-slate-700"
               >
-                Find Companies
+                {t(
+                  "actions.findCompanies",
+                )}
               </Link>
 
               <Link
                 href="/experts"
-                className="mt-3 block text-center bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl"
+                className="mt-3 block rounded-xl bg-slate-800 px-6 py-3 text-center transition hover:bg-slate-700"
               >
-                Find Experts
+                {t(
+                  "actions.findExperts",
+                )}
               </Link>
             </div>
-            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">Related Companies</h2>
 
-              {relatedCompanies.length === 0 ? (
+            <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="mb-4 text-2xl font-bold">
+                {t(
+                  "relatedCompanies.title",
+                )}
+              </h2>
+
+              {relatedCompanies.length ===
+              0 ? (
                 <p className="text-slate-500">
-                  No verified companies found for this country yet.
+                  {t(
+                    "relatedCompanies.empty",
+                  )}
                 </p>
               ) : (
                 <div className="space-y-3">
-                  {relatedCompanies.map((company) => (
-                    <Link
-                      key={company.id}
-                      href={`/companies/${company.id}`}
-                      className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 hover:border-blue-500 transition"
-                    >
-                      <p className="font-semibold">{company.name}</p>
+                  {relatedCompanies.map(
+                    (company) => (
+                      <Link
+                        key={company.id}
+                        href={`/companies/${company.id}`}
+                        className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 transition hover:border-blue-500"
+                      >
+                        <p className="font-semibold">
+                          {company.name}
+                        </p>
 
-                      <p className="text-sm text-slate-400 mt-1">
-                        {company.category}
-                      </p>
+                        <p className="mt-1 text-sm text-slate-400">
+                          {
+                            company.category
+                          }
+                        </p>
 
-                      <p className="text-xs text-emerald-400 mt-2">
-                        ✓ Verified
-                      </p>
-                    </Link>
-                  ))}
+                        <p className="mt-2 text-xs text-emerald-400">
+                          ✓{" "}
+                          {t(
+                            "relatedCompanies.verified",
+                          )}
+                        </p>
+                      </Link>
+                    ),
+                  )}
                 </div>
               )}
             </div>
-            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">Related Experts</h2>
 
-              {relatedExperts.length === 0 ? (
+            <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="mb-4 text-2xl font-bold">
+                {t(
+                  "relatedExperts.title",
+                )}
+              </h2>
+
+              {relatedExperts.length ===
+              0 ? (
                 <p className="text-slate-500">
-                  No verified experts found for this country yet.
+                  {t(
+                    "relatedExperts.empty",
+                  )}
                 </p>
               ) : (
                 <div className="space-y-3">
-                  {relatedExperts.map((expert) => (
-                    <Link
-                      key={expert.id}
-                      href={`/experts/${expert.id}`}
-                      className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 hover:border-cyan-500 transition"
-                    >
-                      <p className="font-semibold">{expert.name}</p>
+                  {relatedExperts.map(
+                    (expert) => (
+                      <Link
+                        key={expert.id}
+                        href={`/experts/${expert.id}`}
+                        className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 transition hover:border-cyan-500"
+                      >
+                        <p className="font-semibold">
+                          {expert.name}
+                        </p>
 
-                      <p className="text-sm text-slate-400 mt-1">
-                        {expert.specialty}
-                      </p>
+                        <p className="mt-1 text-sm text-slate-400">
+                          {
+                            expert.specialty
+                          }
+                        </p>
 
-                      <p className="text-xs text-emerald-400 mt-2">
-                        ✓ Verified
-                      </p>
-                    </Link>
-                  ))}
+                        <p className="mt-2 text-xs text-emerald-400">
+                          ✓{" "}
+                          {t(
+                            "relatedExperts.verified",
+                          )}
+                        </p>
+                      </Link>
+                    ),
+                  )}
                 </div>
               )}
             </div>
-            <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">Trust Notice</h2>
 
-              <p className="text-slate-400 leading-7">
-                Always verify trade details, documents and service providers
-                before starting any international transaction.
+            <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="mb-4 text-2xl font-bold">
+                {t(
+                  "trustNotice.title",
+                )}
+              </h2>
+
+              <p className="leading-7 text-slate-400">
+                {t(
+                  "trustNotice.description",
+                )}
               </p>
             </div>
           </aside>

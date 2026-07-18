@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function SaveExpertButton({
   expertId,
@@ -9,6 +10,8 @@ export default function SaveExpertButton({
   expertId: number;
   initialSaved: boolean;
 }) {
+  const t = useTranslations("saveExpertButton");
+
   const [saved, setSaved] =
     useState(initialSaved);
 
@@ -34,7 +37,7 @@ export default function SaveExpertButton({
           : "bg-slate-800 text-white"
       }`}
     >
-      {saved ? "Saved ★" : "Save ☆"}
+      {saved ? t("saved") : t("save")}
     </button>
   );
 }

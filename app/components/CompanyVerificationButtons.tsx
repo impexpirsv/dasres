@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function CompanyVerificationButtons({
   companyId,
@@ -9,35 +10,54 @@ export default function CompanyVerificationButtons({
   companyId: number;
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const t = useTranslations(
+    "companyVerificationButtons",
+  );
 
-  async function updateVerification(action: "verify" | "reject") {
+  const [loading, setLoading] =
+    useState(false);
+
+  async function updateVerification(
+    action: "verify" | "reject",
+  ) {
     setLoading(true);
 
-    await fetch(`/api/admin/companies/${companyId}/${action}`, {
-      method: "PATCH",
-    });
+    try {
+      await fetch(
+        `/api/admin/companies/${companyId}/${action}`,
+        {
+          method: "PATCH",
+        },
+      );
 
-    setLoading(false);
-    router.refresh();
+      router.refresh();
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="flex gap-3">
       <button
-        onClick={() => updateVerification("verify")}
+        type="button"
+        onClick={() =>
+          updateVerification("verify")
+        }
         disabled={loading}
-        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50"
+        className="rounded-xl bg-emerald-600 px-4 py-2 hover:bg-emerald-500 disabled:opacity-50"
       >
-        Verify
+        {t("verify")}
       </button>
 
       <button
-        onClick={() => updateVerification("reject")}
+        type="button"
+        onClick={() =>
+          updateVerification("reject")
+        }
         disabled={loading}
-        className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 disabled:opacity-50"
+        className="rounded-xl bg-red-600 px-4 py-2 hover:bg-red-500 disabled:opacity-50"
       >
-        Reject
+        {t("reject")}
       </button>
     </div>
   );

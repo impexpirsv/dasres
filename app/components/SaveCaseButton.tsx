@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function SaveCaseButton({
   caseId,
@@ -10,6 +11,8 @@ export default function SaveCaseButton({
   caseId: number;
   initialSaved: boolean;
 }) {
+  const t = useTranslations("saveCaseButton");
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -35,11 +38,10 @@ export default function SaveCaseButton({
       }`}
     >
       {loading
-        ? "Saving..."
+        ? t("saving")
         : initialSaved
-          ? "Unsave"
-          
-          : "☆ Save Case"}
+          ? t("unsave")
+          : t("save")}
     </button>
   );
 }

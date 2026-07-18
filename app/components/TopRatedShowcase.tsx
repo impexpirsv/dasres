@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "../../lib/prisma";
 import { calculateTrustScore } from "../../lib/ranking";
-
+import { unstable_cache } from "next/cache";
 function getAverageRating(reviews: { rating: number }[]) {
   if (reviews.length === 0) return 0;
 
@@ -11,45 +11,59 @@ function getAverageRating(reviews: { rating: number }[]) {
     reviews.length
   );
 }
+const getTopRatedData = unstable_cache(
+  async () => {
+    const [companies, experts] = await Promise.all([
+      prisma.company.findMany({
+        where: {
+          verificationStatus: "VERIFIED",
+        },
+        include: {
+          owner: {
+            include: {
+              reviewsReceived: {
+                select: {
+                  rating: true,
+                },
+              },
+            },
+          },
+        },
+      }),
 
+      prisma.expert.findMany({
+        where: {
+          verificationStatus: "VERIFIED",
+        },
+        include: {
+          owner: {
+            include: {
+              reviewsReceived: {
+                select: {
+                  rating: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+    ]);
+
+    return {
+      companies,
+      experts,
+    };
+  },
+  ["top-rated-showcase"],
+  {
+    revalidate: 300,
+  },
+);
 export default async function TopRatedShowcase() {
   const t = await getTranslations("topRatedShowcase");
 
-  const [companies, experts] = await Promise.all([
-    prisma.company.findMany({
-      where: {
-        verificationStatus: "VERIFIED",
-      },
-      include: {
-        owner: {
-          include: {
-            reviewsReceived: {
-              select: {
-                rating: true,
-              },
-            },
-          },
-        },
-      },
-    }),
-
-    prisma.expert.findMany({
-      where: {
-        verificationStatus: "VERIFIED",
-      },
-      include: {
-        owner: {
-          include: {
-            reviewsReceived: {
-              select: {
-                rating: true,
-              },
-            },
-          },
-        },
-      },
-    }),
-  ]);
+ const { companies, experts } =
+  await getTopRatedData();
 
   const topCompany = companies
     .map((company) => {

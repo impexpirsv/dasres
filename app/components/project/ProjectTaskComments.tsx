@@ -135,7 +135,13 @@ export default function ProjectTaskComments({
 
           <span aria-hidden="true">·</span>
 
-          <time dateTime={new Date(comment.createdAt).toISOString()}>
+         <time
+  dateTime={
+    Number.isNaN(new Date(comment.createdAt).getTime())
+      ? undefined
+      : new Date(comment.createdAt).toISOString()
+  }
+>
             {formatDate(comment.createdAt)}
           </time>
 

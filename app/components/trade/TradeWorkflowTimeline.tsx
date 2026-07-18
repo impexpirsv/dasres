@@ -1,26 +1,32 @@
-const steps = [
-  "Inquiry",
-  "Quotation",
-  "Negotiation",
-  "Contract",
-  "Documents",
-  "Customs",
-  "Shipping",
-  "Inspection",
-  "Insurance",
-  "Delivery",
-  "Completed",
-];
+"use client";
+
+import { useTranslations } from "next-intl";
 
 export default function TradeWorkflowTimeline({
   currentStep,
 }: {
   currentStep: number;
 }) {
+  const t = useTranslations("tradeCases.workflow");
+
+  const steps = [
+    t("steps.inquiry"),
+    t("steps.quotation"),
+    t("steps.negotiation"),
+    t("steps.contract"),
+    t("steps.documents"),
+    t("steps.customs"),
+    t("steps.shipping"),
+    t("steps.inspection"),
+    t("steps.insurance"),
+    t("steps.delivery"),
+    t("steps.completed"),
+  ];
+
   return (
     <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
       <h2 className="mb-6 text-xl font-bold text-white">
-        Trade Workflow
+        {t("title")}
       </h2>
 
       <div className="flex overflow-x-auto pb-3">

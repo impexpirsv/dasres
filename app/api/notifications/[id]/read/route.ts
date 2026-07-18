@@ -1,40 +1,60 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "../../../../../lib/prisma";
 import { requireUser } from "../../../../../lib/auth";
 import { parseId } from "../../../../../lib/validation";
 
 export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> },
+  _request: Request,
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  },
 ) {
   try {
     const user = await requireUser();
 
     const { id } = await params;
-    const notificationId = parseId(id, "notification id");
+    const notificationId = parseId(
+      id,
+      "notification id",
+    );
 
-    const notification = await prisma.notification.findUnique({
-      where: {
-        id: notificationId,
-      },
-    });
+    const notification =
+      await prisma.notification.findUnique({
+        where: {
+          id: notificationId,
+        },
+        select: {
+          id: true,
+          userId: true,
+          isRead: true,
+        },
+      });
 
     if (!notification) {
       return Response.json(
-        { message: "Notification not found" },
+        {
+          code: "NOTIFICATION_NOT_FOUND",
+        },
         { status: 404 },
       );
     }
 
-    if (notification.userId !== user.id) {
+    if (
+      notification.userId !== user.id
+    ) {
       return Response.json(
-        { message: "Unauthorized" },
+        {
+          code: "NOTIFICATION_ACCESS_DENIED",
+        },
         { status: 403 },
       );
     }
 
     if (notification.isRead) {
       return Response.json({
-        message: "Already read",
+        code: "NOTIFICATION_ALREADY_READ",
       });
     }
 
@@ -45,14 +65,39 @@ export async function POST(
       data: {
         isRead: true,
       },
+      select: {
+        id: true,
+      },
     });
 
     return Response.json({
-      message: "Notification marked as read",
+      code: "NOTIFICATION_MARKED_AS_READ",
     });
-  } catch {
+  } catch (error) {
+    if (
+      error instanceof
+        Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return Response.json(
+        {
+          code: "NOTIFICATION_NOT_FOUND",
+        },
+        { status: 404 },
+      );
+    }
+
+    console.error(
+      "NOTIFICATION_MARK_READ_ERROR",
+      {
+        error,
+      },
+    );
+
     return Response.json(
-      { message: "Failed to mark notification as read" },
+      {
+        code: "NOTIFICATION_MARK_READ_FAILED",
+      },
       { status: 500 },
     );
   }

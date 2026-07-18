@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function AddReviewForm({
   caseId,
@@ -13,50 +14,58 @@ export default function AddReviewForm({
   label: string;
 }) {
   const router = useRouter();
+  const t = useTranslations("tradeCases.addReview");
 
   const [rating, setRating] = useState("5");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function submitReview(e: React.FormEvent) {
+  async function submitReview(
+    e: React.FormEvent<HTMLFormElement>,
+  ) {
     e.preventDefault();
 
-    setLoading(true);
     setError("");
 
-    const response = await fetch("/api/reviews", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        caseId,
-        reviewedUserId,
-        rating,
-        comment,
-      }),
-    });
+    try {
+      setLoading(true);
 
-    const data = await response.json();
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          caseId,
+          reviewedUserId,
+          rating,
+          comment: comment.trim(),
+        }),
+      });
 
-    if (!response.ok) {
-      setError(data.message || "Failed to submit review.");
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setError(data?.message || t("errors.submitFailed"));
+        return;
+      }
+
+      setRating("5");
+      setComment("");
+
+      router.refresh();
+    } catch {
+      setError(t("errors.submitFailed"));
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setComment("");
-    setRating("5");
-
-    router.refresh();
-    setLoading(false);
   }
 
   return (
     <form
       onSubmit={submitReview}
-      className="space-y-3 border border-slate-800 rounded-2xl p-4 bg-slate-950"
+      className="space-y-3 rounded-2xl border border-slate-800 bg-slate-950 p-4"
     >
       <h3 className="font-bold">
         {label}
@@ -71,29 +80,33 @@ export default function AddReviewForm({
       <select
         value={rating}
         onChange={(e) => setRating(e.target.value)}
-        className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+        disabled={loading}
+        aria-label={t("ratingLabel")}
+        className="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        <option value="5">5 - Excellent</option>
-        <option value="4">4 - Good</option>
-        <option value="3">3 - Average</option>
-        <option value="2">2 - Poor</option>
-        <option value="1">1 - Bad</option>
+        <option value="5">{t("ratings.5")}</option>
+        <option value="4">{t("ratings.4")}</option>
+        <option value="3">{t("ratings.3")}</option>
+        <option value="2">{t("ratings.2")}</option>
+        <option value="1">{t("ratings.1")}</option>
       </select>
 
       <textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         rows={3}
-        placeholder="Write your review..."
-        className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+        disabled={loading}
+        placeholder={t("placeholder")}
+        aria-label={t("commentLabel")}
+        className="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
       />
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-emerald-600 hover:bg-emerald-700 px-4 py-3 rounded-xl font-semibold disabled:opacity-50"
+        className="w-full rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {loading ? "Submitting..." : "Submit Review"}
+        {loading ? t("submitting") : t("submit")}
       </button>
     </form>
   );

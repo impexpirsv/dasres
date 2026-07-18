@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import { calculateTrustScore } from "../../../lib/ranking";
@@ -13,26 +14,49 @@ const planPriority = {
 export default async function TopExpertsPage() {
   await requireUser();
 
-  const experts = await prisma.expert.findMany({
-    include: {
-      owner: {
-        include: {
-          reviewsReceived: true,
+  const [locale, t, experts] = await Promise.all([
+    getLocale(),
+    getTranslations("topExperts"),
+    prisma.expert.findMany({
+      select: {
+        id: true,
+        name: true,
+        specialty: true,
+        country: true,
+        verificationStatus: true,
+        planType: true,
+        owner: {
+          select: {
+            reviewsReceived: {
+              select: {
+                rating: true,
+              },
+            },
+          },
         },
       },
-    },
+    }),
+  ]);
+
+  const numberFormatter = new Intl.NumberFormat(locale);
+
+  const ratingFormatter = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
   });
 
   const rankedExperts = experts
     .map((expert) => {
-      const reviews = expert.owner?.reviewsReceived || [];
+      const reviews = expert.owner?.reviewsReceived ?? [];
+
+      const reviewCount = reviews.length;
 
       const averageRating =
-        reviews.length > 0
+        reviewCount > 0
           ? reviews.reduce(
               (sum, review) => sum + review.rating,
-              0
-            ) / reviews.length
+              0,
+            ) / reviewCount
           : 0;
 
       const trustScore = calculateTrustScore({
@@ -43,9 +67,14 @@ export default async function TopExpertsPage() {
       });
 
       return {
-        ...expert,
+        id: expert.id,
+        name: expert.name,
+        specialty: expert.specialty,
+        country: expert.country,
+        verificationStatus: expert.verificationStatus,
+        planType: expert.planType,
         averageRating,
-        reviewCount: reviews.length,
+        reviewCount,
         trustScore,
       };
     })
@@ -54,26 +83,25 @@ export default async function TopExpertsPage() {
         b.trustScore - a.trustScore ||
         b.averageRating - a.averageRating ||
         b.reviewCount - a.reviewCount ||
-        planPriority[b.planType] -
-          planPriority[a.planType]
+        planPriority[b.planType] - planPriority[a.planType],
     );
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="mb-10">
-          <h1 className="text-4xl font-bold mb-3">
-            Top Rated Experts
+          <h1 className="mb-3 text-4xl font-bold">
+            {t("title")}
           </h1>
 
           <p className="text-slate-400">
-            Ranked experts based on verification, trust score and reviews.
+            {t("description")}
           </p>
         </div>
 
         {rankedExperts.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-slate-400">
-            No experts found.
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-slate-400">
+            {t("empty")}
           </div>
         ) : (
           <div className="space-y-5">
@@ -81,28 +109,29 @@ export default async function TopExpertsPage() {
               <Link
                 key={expert.id}
                 href={`/dashboard/experts/${expert.id}`}
-                className="block bg-slate-900 border border-slate-800 hover:border-blue-500 rounded-3xl p-6 transition"
+                className="block rounded-3xl border border-slate-800 bg-slate-900 p-6 transition hover:border-blue-500"
               >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                   <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-2xl bg-slate-800 flex items-center justify-center text-2xl font-bold text-blue-400">
-                      #{index + 1}
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-800 text-2xl font-bold text-blue-400">
+                      #{numberFormatter.format(index + 1)}
                     </div>
 
                     <div>
-                      <div className="flex flex-wrap items-center gap-3 mb-2">
+                      <div className="mb-2 flex flex-wrap items-center gap-3">
                         <h2 className="text-2xl font-bold">
                           {expert.name}
                         </h2>
 
-                        {expert.verificationStatus === "VERIFIED" && (
-                          <span className="bg-emerald-600 px-3 py-1 rounded-full text-xs">
-                            ✓ Verified
+                        {expert.verificationStatus ===
+                          "VERIFIED" && (
+                          <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs">
+                            ✓ {t("verified")}
                           </span>
                         )}
 
-                        <span className="bg-slate-800 px-3 py-1 rounded-full text-xs text-slate-300">
-                          {expert.planType}
+                        <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
+                          {t(`plans.${expert.planType}`)}
                         </span>
                       </div>
 
@@ -110,42 +139,49 @@ export default async function TopExpertsPage() {
                         {expert.specialty}
                       </p>
 
-                      <p className="text-slate-500 text-sm mt-1">
+                      <p className="mt-1 text-sm text-slate-500">
                         {expert.country}
                       </p>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4 min-w-full md:min-w-[420px]">
-                    <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                      <p className="text-slate-500 text-xs">
-                        Trust
+                  <div className="grid min-w-full grid-cols-1 gap-4 sm:grid-cols-3 md:min-w-[420px]">
+                    <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                      <p className="text-xs text-slate-500">
+                        {t("trust")}
                       </p>
 
                       <p className="text-2xl font-bold text-emerald-400">
-                        {expert.trustScore}/100
+                        {numberFormatter.format(
+                          expert.trustScore,
+                        )}
+                        /{numberFormatter.format(100)}
                       </p>
                     </div>
 
-                    <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                      <p className="text-slate-500 text-xs">
-                        Rating
+                    <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                      <p className="text-xs text-slate-500">
+                        {t("rating")}
                       </p>
 
                       <p className="text-2xl font-bold text-yellow-400">
                         {expert.averageRating > 0
-                          ? expert.averageRating.toFixed(1)
-                          : "N/A"}
+                          ? ratingFormatter.format(
+                              expert.averageRating,
+                            )
+                          : t("notAvailable")}
                       </p>
                     </div>
 
-                    <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                      <p className="text-slate-500 text-xs">
-                        Reviews
+                    <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                      <p className="text-xs text-slate-500">
+                        {t("reviews")}
                       </p>
 
                       <p className="text-2xl font-bold text-blue-400">
-                        {expert.reviewCount}
+                        {numberFormatter.format(
+                          expert.reviewCount,
+                        )}
                       </p>
                     </div>
                   </div>

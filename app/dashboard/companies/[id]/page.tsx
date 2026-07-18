@@ -1,17 +1,25 @@
-import { prisma } from "../../../../lib/prisma";
-import DeleteCompanyButton from "../../../components/DeleteCompanyButton";
 import Link from "next/link";
 import type { Metadata } from "next";
-import CompanyVerificationButtons from "../../../components/CompanyVerificationButtons";
+import { getLocale, getTranslations } from "next-intl/server";
+import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
 import { calculateTrustScore } from "../../../../lib/ranking";
+import DeleteCompanyButton from "../../../components/DeleteCompanyButton";
+import CompanyVerificationButtons from "../../../components/CompanyVerificationButtons";
 import SaveCompanyButton from "../../../components/SaveCompanyButton";
+import Image from "next/image";
 type Props = {
   params: Promise<{ id: string }>;
 };
 
+function normalizeStatus(status: string) {
+  return status.trim().toLowerCase().replaceAll("-", "_").replaceAll(" ", "_");
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
+
+  const t = await getTranslations("companyProfile.metadata");
 
   const company = await prisma.company.findUnique({
     where: {
@@ -21,13 +29,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!company) {
     return {
-      title: "Company Not Found",
-      description: "The requested company profile could not be found.",
+      title: t("notFoundTitle"),
+      description: t("notFoundDescription"),
     };
   }
 
   const title = `${company.name} | ${company.category}`;
-  const description = `${company.name} is a ${company.category} company from ${company.country}. Discover this company profile on Dasres.`;
+
+  const description = t("description", {
+    name: company.name,
+    category: company.category,
+    country: company.country,
+  });
 
   return {
     title,
@@ -58,6 +71,11 @@ export default async function CompanyProfilePage({ params }: Props) {
   const { id } = await params;
 
   const user = await requireUser();
+
+  const t = await getTranslations("companyProfile");
+
+  const locale = await getLocale();
+
   const isAdmin = user.role === "admin";
 
   const company = await prisma.company.findUnique({
@@ -68,8 +86,8 @@ export default async function CompanyProfilePage({ params }: Props) {
 
   if (!company) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Company Not Found</h1>
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+        <h1 className="text-4xl font-bold">{t("notFound")}</h1>
       </div>
     );
   }
@@ -92,6 +110,7 @@ export default async function CompanyProfilePage({ params }: Props) {
       : null;
 
   const canManageCompany = isAdmin || company.ownerId === user.id;
+
   const completedCases = company.ownerId
     ? await prisma.tradeCase.count({
         where: {
@@ -114,6 +133,7 @@ export default async function CompanyProfilePage({ params }: Props) {
     verificationStatus: company.verificationStatus,
     planType: company.planType,
   });
+
   const existingSave = await prisma.savedCompany.findUnique({
     where: {
       userId_companyId: {
@@ -122,6 +142,69 @@ export default async function CompanyProfilePage({ params }: Props) {
       },
     },
   });
+
+  function getStatusLabel(status: string) {
+    const normalized = normalizeStatus(status);
+
+    switch (normalized) {
+      case "active":
+        return t("statuses.active");
+
+      case "inactive":
+        return t("statuses.inactive");
+
+      case "open":
+        return t("statuses.open");
+
+      case "pending":
+        return t("statuses.pending");
+
+      case "verified":
+        return t("statuses.verified");
+
+      case "rejected":
+        return t("statuses.rejected");
+
+      case "completed":
+        return t("statuses.completed");
+
+      case "in_progress":
+        return t("statuses.inProgress");
+
+      default:
+        return status;
+    }
+  }
+
+  function getVerificationLabel(status: string) {
+    switch (status) {
+      case "VERIFIED":
+        return t("verificationStatuses.verified");
+
+      case "REJECTED":
+        return t("verificationStatuses.rejected");
+
+      default:
+        return t("verificationStatuses.pending");
+    }
+  }
+
+  function getPlanLabel(planType: string) {
+    switch (planType) {
+      case "GOLD":
+        return t("plans.gold");
+
+      case "DIAMOND":
+        return t("plans.diamond");
+
+      case "ENTERPRISE":
+        return t("plans.enterprise");
+
+      default:
+        return planType;
+    }
+  }
+
   const companySchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -138,12 +221,12 @@ export default async function CompanyProfilePage({ params }: Props) {
     additionalProperty: [
       {
         "@type": "PropertyValue",
-        name: "Status",
-        value: company.status,
+        name: t("schema.status"),
+        value: getStatusLabel(company.status),
       },
       {
         "@type": "PropertyValue",
-        name: "Category",
+        name: t("schema.category"),
         value: company.category,
       },
     ],
@@ -158,17 +241,17 @@ export default async function CompanyProfilePage({ params }: Props) {
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-6xl px-6 py-20">
         <Link
           href="/dashboard/companies"
-          className="text-blue-400 hover:underline mb-8 inline-block"
+          className="mb-8 inline-block text-blue-400 hover:underline"
         >
-          ← Back to Companies
+          {t("backToCompanies")}
         </Link>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid gap-8 lg:grid-cols-3">
           <div
-            className={`lg:col-span-2 bg-slate-900 rounded-3xl border overflow-hidden ${
+            className={`overflow-hidden rounded-3xl border bg-slate-900 lg:col-span-2 ${
               company.planType === "GOLD"
                 ? "border-yellow-500 shadow-lg shadow-yellow-500/10"
                 : company.planType === "DIAMOND"
@@ -180,84 +263,96 @@ export default async function CompanyProfilePage({ params }: Props) {
           >
             {company.logoUrl && (
               <div className="bg-white p-10">
-                <img
+                <Image
                   src={company.logoUrl}
                   alt={company.name}
-                  className="w-full h-72 object-contain"
+                  width={800}
+                  height={500}
+                  className="h-72 w-full object-contain"
                 />
               </div>
             )}
 
             <div className="p-10">
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
-                  Status: {company.status}
+              <div className="mb-4 flex flex-wrap items-center gap-3">
+                <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
+                  {t("statusLabel")}: {getStatusLabel(company.status)}
                 </span>
 
-                <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
+                <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
                   {company.country}
                 </span>
 
                 {company.verificationStatus === "VERIFIED" && (
-                  <span className="bg-emerald-600 px-4 py-2 rounded-full text-sm">
-                    ✓ Verified Company
+                  <span className="rounded-full bg-emerald-600 px-4 py-2 text-sm">
+                    ✓ {t("verificationBadges.verified")}
                   </span>
                 )}
 
                 {company.verificationStatus === "REJECTED" && (
-                  <span className="bg-red-600 px-4 py-2 rounded-full text-sm">
-                    Rejected
+                  <span className="rounded-full bg-red-600 px-4 py-2 text-sm">
+                    {t("verificationBadges.rejected")}
                   </span>
                 )}
 
                 {company.verificationStatus === "PENDING" && (
-                  <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
-                    Pending Verification
+                  <span className="rounded-full bg-yellow-600 px-4 py-2 text-sm text-black">
+                    {t("verificationBadges.pending")}
                   </span>
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 mb-4">
+              <div className="mb-4 flex flex-wrap items-center gap-3">
                 <h1 className="text-5xl font-bold">{company.name}</h1>
 
                 {company.planType === "GOLD" && (
-                  <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
-                    🥇 GOLD
+                  <span className="rounded-full bg-yellow-600 px-4 py-2 text-sm text-black">
+                    🥇 {getPlanLabel(company.planType)}
                   </span>
                 )}
 
                 {company.planType === "DIAMOND" && (
-                  <span className="bg-cyan-600 px-4 py-2 rounded-full text-sm">
-                    💎 DIAMOND
+                  <span className="rounded-full bg-cyan-600 px-4 py-2 text-sm text-black">
+                    💎 {getPlanLabel(company.planType)}
                   </span>
                 )}
 
                 {company.planType === "ENTERPRISE" && (
-                  <span className="bg-purple-600 px-4 py-2 rounded-full text-sm">
-                    👑 ENTERPRISE
+                  <span className="rounded-full bg-purple-600 px-4 py-2 text-sm">
+                    👑 {getPlanLabel(company.planType)}
                   </span>
                 )}
               </div>
 
-              <p className="text-blue-400 text-2xl mb-8">{company.category}</p>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <p className="mb-8 text-2xl text-blue-400">{company.category}</p>
+
+              <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                  <p className="text-slate-500 text-sm mb-1">Trust Score</p>
+                  <p className="mb-1 text-sm text-slate-500">
+                    {t("metrics.trustScore")}
+                  </p>
 
                   <p className="text-2xl font-bold text-emerald-400">
                     {trustScore}/100
                   </p>
                 </div>
+
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                  <p className="text-slate-500 text-sm mb-1">Rating</p>
+                  <p className="mb-1 text-sm text-slate-500">
+                    {t("metrics.rating")}
+                  </p>
 
                   <p className="text-2xl font-bold text-yellow-400">
-                    {averageRating ? `⭐ ${averageRating.toFixed(1)}` : "N/A"}
+                    {averageRating
+                      ? `⭐ ${averageRating.toFixed(1)}`
+                      : t("notAvailable")}
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                  <p className="text-slate-500 text-sm mb-1">Reviews</p>
+                  <p className="mb-1 text-sm text-slate-500">
+                    {t("metrics.reviews")}
+                  </p>
 
                   <p className="text-2xl font-bold text-slate-200">
                     {companyReviews.length}
@@ -265,7 +360,9 @@ export default async function CompanyProfilePage({ params }: Props) {
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                  <p className="text-slate-500 text-sm mb-1">Verification</p>
+                  <p className="mb-1 text-sm text-slate-500">
+                    {t("metrics.verification")}
+                  </p>
 
                   <p
                     className={`text-2xl font-bold ${
@@ -276,20 +373,25 @@ export default async function CompanyProfilePage({ params }: Props) {
                           : "text-yellow-400"
                     }`}
                   >
-                    {company.verificationStatus}
+                    {getVerificationLabel(company.verificationStatus)}
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                  <p className="text-slate-500 text-sm mb-1">Country</p>
+                  <p className="mb-1 text-sm text-slate-500">
+                    {t("metrics.country")}
+                  </p>
 
                   <p className="text-2xl font-bold text-blue-400">
                     {company.country}
                   </p>
                 </div>
               </div>
+
               <div className="mb-8 rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <p className="text-slate-500 text-sm mb-2">Company Rating</p>
+                <p className="mb-2 text-sm text-slate-500">
+                  {t("companyRating")}
+                </p>
 
                 {averageRating ? (
                   <div>
@@ -297,35 +399,46 @@ export default async function CompanyProfilePage({ params }: Props) {
                       ⭐ {averageRating.toFixed(1)} / 5.0
                     </p>
 
-                    <p className="text-slate-400 mt-2">
-                      Based on {companyReviews.length} review
-                      {companyReviews.length === 1 ? "" : "s"}
-                    </p>
-                    <p className="text-emerald-400 mt-3 font-semibold">
-                      Trust Score: {trustScore}/100
+                    <p className="mt-2 text-slate-400">
+                      {t("basedOnReviews", {
+                        count: companyReviews.length,
+                      })}
                     </p>
 
-                    <p className="text-slate-500 text-sm mt-1">
-                      Completed Cases: {completedCases}
+                    <p className="mt-3 font-semibold text-emerald-400">
+                      {t("trustScoreValue", {
+                        score: trustScore,
+                      })}
+                    </p>
+
+                    <p className="mt-1 text-sm text-slate-500">
+                      {t("completedCasesValue", {
+                        count: completedCases,
+                      })}
                     </p>
                   </div>
                 ) : (
-                  <p className="text-slate-500">No reviews yet.</p>
+                  <p className="text-slate-500">{t("noReviews")}</p>
                 )}
               </div>
 
               <div className="border-t border-slate-800 pt-8">
-                <h2 className="text-2xl font-bold mb-4">Company Description</h2>
+                <h2 className="mb-4 text-2xl font-bold">
+                  {t("companyDescription")}
+                </h2>
 
-                <p className="text-slate-300 text-lg leading-8">
+                <p className="text-lg leading-8 text-slate-300">
                   {company.description}
                 </p>
               </div>
-              <div className="border-t border-slate-800 pt-8 mt-8">
-                <h2 className="text-2xl font-bold mb-4">Recent Reviews</h2>
+
+              <div className="mt-8 border-t border-slate-800 pt-8">
+                <h2 className="mb-4 text-2xl font-bold">
+                  {t("recentReviews")}
+                </h2>
 
                 {companyReviews.length === 0 ? (
-                  <p className="text-slate-500">No reviews yet.</p>
+                  <p className="text-slate-500">{t("noReviews")}</p>
                 ) : (
                   <div className="space-y-4">
                     {companyReviews.slice(0, 3).map((review) => (
@@ -333,16 +446,16 @@ export default async function CompanyProfilePage({ params }: Props) {
                         key={review.id}
                         className="rounded-2xl border border-slate-800 bg-slate-950 p-5"
                       >
-                        <p className="text-yellow-400 font-semibold mb-2">
+                        <p className="mb-2 font-semibold text-yellow-400">
                           {"⭐".repeat(review.rating)}
                         </p>
 
-                        <p className="text-slate-300 leading-7">
-                          {review.comment || "No comment provided."}
+                        <p className="leading-7 text-slate-300">
+                          {review.comment || t("noCommentProvided")}
                         </p>
 
-                        <p className="text-xs text-slate-500 mt-3">
-                          {review.createdAt.toLocaleDateString()}
+                        <p className="mt-3 text-xs text-slate-500">
+                          {review.createdAt.toLocaleDateString(locale)}
                         </p>
                       </div>
                     ))}
@@ -354,7 +467,7 @@ export default async function CompanyProfilePage({ params }: Props) {
 
           <aside className="space-y-6">
             <div
-              className={`bg-slate-900 rounded-3xl border p-6 ${
+              className={`rounded-3xl border bg-slate-900 p-6 ${
                 company.planType === "GOLD"
                   ? "border-yellow-500 shadow-lg shadow-yellow-500/10"
                   : company.planType === "DIAMOND"
@@ -364,49 +477,69 @@ export default async function CompanyProfilePage({ params }: Props) {
                       : "border-slate-800"
               }`}
             >
-              <h2 className="text-2xl font-bold mb-6">Company Information</h2>
+              <h2 className="mb-6 text-2xl font-bold">
+                {t("companyInformation")}
+              </h2>
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-slate-500 text-sm">Email</p>
-                  <p className="text-slate-200 break-all">{company.email}</p>
+                  <p className="text-sm text-slate-500">{t("fields.email")}</p>
+
+                  <p className="break-all text-slate-200">{company.email}</p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Website</p>
-                  <p className="text-slate-200 break-all">
-                    {company.website || "Not provided"}
+                  <p className="text-sm text-slate-500">
+                    {t("fields.website")}
+                  </p>
+
+                  <p className="break-all text-slate-200">
+                    {company.website || t("notProvided")}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Country</p>
+                  <p className="text-sm text-slate-500">
+                    {t("fields.country")}
+                  </p>
+
                   <p className="text-slate-200">{company.country}</p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Category</p>
+                  <p className="text-sm text-slate-500">
+                    {t("fields.category")}
+                  </p>
+
                   <p className="text-slate-200">{company.category}</p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Reputation</p>
+                  <p className="text-sm text-slate-500">
+                    {t("fields.reputation")}
+                  </p>
+
                   <p className="text-slate-200">
                     {averageRating
-                      ? `⭐ ${averageRating.toFixed(1)} (${companyReviews.length} reviews)`
-                      : "No reviews yet"}
+                      ? t("ratingWithReviews", {
+                          rating: averageRating.toFixed(1),
+                          count: companyReviews.length,
+                        })
+                      : t("noReviews")}
                   </p>
                 </div>
               </div>
+
               <SaveCompanyButton
                 companyId={company.id}
-                initialSaved={!!existingSave}
+                initialSaved={Boolean(existingSave)}
               />
+
               <a
                 href={`mailto:${company.email}`}
-                className="mt-6 block text-center bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
+                className="mt-6 block rounded-xl bg-blue-600 px-6 py-3 text-center hover:bg-blue-700"
               >
-                Send Email
+                {t("sendEmail")}
               </a>
 
               {company.website && (
@@ -414,9 +547,9 @@ export default async function CompanyProfilePage({ params }: Props) {
                   href={company.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 block text-center bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl"
+                  className="mt-3 block rounded-xl bg-slate-800 px-6 py-3 text-center hover:bg-slate-700"
                 >
-                  Visit Website
+                  {t("visitWebsite")}
                 </a>
               )}
             </div>
@@ -424,13 +557,13 @@ export default async function CompanyProfilePage({ params }: Props) {
             {canManageCompany && (
               <div className="flex flex-col gap-3">
                 {isAdmin && (
-                  <div className="bg-slate-800 rounded-xl p-4">
-                    <p className="text-slate-500 text-sm mb-2">
-                      Verification Status
+                  <div className="rounded-xl bg-slate-800 p-4">
+                    <p className="mb-2 text-sm text-slate-500">
+                      {t("verificationStatus")}
                     </p>
 
-                    <p className="text-slate-200 font-semibold mb-4">
-                      {company.verificationStatus}
+                    <p className="mb-4 font-semibold text-slate-200">
+                      {getVerificationLabel(company.verificationStatus)}
                     </p>
 
                     <CompanyVerificationButtons companyId={company.id} />
@@ -439,9 +572,9 @@ export default async function CompanyProfilePage({ params }: Props) {
 
                 <Link
                   href={`/dashboard/companies/${company.id}/edit`}
-                  className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-center"
+                  className="rounded-xl bg-blue-600 px-6 py-3 text-center hover:bg-blue-700"
                 >
-                  Edit Company
+                  {t("editCompany")}
                 </Link>
 
                 <DeleteCompanyButton id={company.id} />

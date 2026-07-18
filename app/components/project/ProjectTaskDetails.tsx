@@ -123,12 +123,12 @@ export default function ProjectTaskDetails({
   const validDueDate =
     dueDate !== null &&
     !Number.isNaN(dueDate.getTime());
-
+const now = new Date();
   const isOverdue =
     validDueDate &&
     task.status !== "COMPLETED" &&
-    dueDate.getTime() < Date.now();
-
+   dueDate.getTime() < now.getTime();
+   
   const formatDate = (date: Date) =>
     new Intl.DateTimeFormat(locale, {
       year: "numeric",

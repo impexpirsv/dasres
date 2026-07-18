@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 
 type CreateCaseState = {
   error?: string;
@@ -15,20 +16,51 @@ const CASE_CATEGORIES = [
   "Sourcing",
   "Documentation",
   "Payment",
-];
+] as const;
 
 export default function CreateCaseForm({
   action,
 }: {
   action: (
     previousState: CreateCaseState,
-    formData: FormData
+    formData: FormData,
   ) => Promise<CreateCaseState>;
 }) {
-  const [state, formAction, isPending] = useActionState(
-    action,
-    {}
-  );
+  const t = useTranslations("createCaseForm");
+
+  const [state, formAction, isPending] =
+    useActionState(action, {});
+
+  function getCategoryLabel(category: string) {
+    switch (category) {
+      case "General":
+        return t("categories.general");
+
+      case "Customs Clearance":
+        return t("categories.customsClearance");
+
+      case "Shipping":
+        return t("categories.shipping");
+
+      case "Inspection":
+        return t("categories.inspection");
+
+      case "Insurance":
+        return t("categories.insurance");
+
+      case "Sourcing":
+        return t("categories.sourcing");
+
+      case "Documentation":
+        return t("categories.documentation");
+
+      case "Payment":
+        return t("categories.payment");
+
+      default:
+        return category;
+    }
+  }
 
   return (
     <form action={formAction} className="space-y-6">
@@ -39,59 +71,78 @@ export default function CreateCaseForm({
       )}
 
       <div>
-        <label className="block text-sm text-slate-400 mb-2">
-          Case Title
+        <label
+          htmlFor="case-title"
+          className="mb-2 block text-sm text-slate-400"
+        >
+          {t("titleLabel")}
         </label>
+
         <input
+          id="case-title"
           name="title"
           type="text"
           required
-          placeholder="Need customs clearance in Dubai"
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+          disabled={isPending}
+          placeholder={t("titlePlaceholder")}
+          className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
         />
       </div>
 
       <div>
-        <label className="block text-sm text-slate-400 mb-2">
-          Case Category
+        <label
+          htmlFor="case-category"
+          className="mb-2 block text-sm text-slate-400"
+        >
+          {t("categoryLabel")}
         </label>
 
         <select
+          id="case-category"
           name="category"
           defaultValue="General"
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+          disabled={isPending}
+          className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {CASE_CATEGORIES.map((category) => (
             <option key={category} value={category}>
-              {category}
+              {getCategoryLabel(category)}
             </option>
           ))}
         </select>
 
-        <p className="text-xs text-slate-500 mt-2">
-          This helps Dasres match the case with relevant companies and experts.
+        <p className="mt-2 text-xs text-slate-500">
+          {t("categoryHelp")}
         </p>
       </div>
 
       <div>
-        <label className="block text-sm text-slate-400 mb-2">
-          Description
+        <label
+          htmlFor="case-description"
+          className="mb-2 block text-sm text-slate-400"
+        >
+          {t("descriptionLabel")}
         </label>
+
         <textarea
+          id="case-description"
           name="description"
           required
           rows={7}
-          placeholder="Describe the shipment, service needed, country, documents, timeline, and any special requirements..."
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+          disabled={isPending}
+          placeholder={t("descriptionPlaceholder")}
+          className="w-full resize-y rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
         />
       </div>
 
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 px-6 py-3 rounded-xl font-semibold"
+        className="w-full rounded-xl bg-blue-600 px-6 py-3 font-semibold hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isPending ? "Creating..." : "Create Case"}
+        {isPending
+          ? t("creating")
+          : t("create")}
       </button>
     </form>
   );

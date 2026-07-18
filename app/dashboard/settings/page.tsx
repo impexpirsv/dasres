@@ -1,88 +1,178 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { requireUser } from "../../../lib/auth";
-import { getCaseLimit, getProposalLimit } from "../../../lib/plans";
+import {
+  getCaseLimit,
+  getProposalLimit,
+} from "../../../lib/plans";
 
 export default async function DashboardSettingsPage() {
   const user = await requireUser();
 
-  const caseLimit = getCaseLimit(user.planType);
-  const proposalLimit = getProposalLimit(user.planType);
+  const t = await getTranslations(
+    "dashboardSettings",
+  );
+
+  const caseLimit = getCaseLimit(
+    user.planType,
+  );
+
+  const proposalLimit = getProposalLimit(
+    user.planType,
+  );
+
+  function getRoleLabel(role: string) {
+    switch (role.toLowerCase()) {
+      case "admin":
+        return t("roles.admin");
+
+      case "user":
+        return t("roles.user");
+
+      default:
+        return role;
+    }
+  }
+
+  function getPlanLabel(planType: string) {
+    switch (planType) {
+      case "FREE":
+        return t("plans.free");
+
+      case "GOLD":
+        return t("plans.gold");
+
+      case "DIAMOND":
+        return t("plans.diamond");
+
+      case "ENTERPRISE":
+        return t("plans.enterprise");
+
+      default:
+        return planType;
+    }
+  }
+
+  function getLimitLabel(limit: number) {
+    if (
+      limit === Number.MAX_SAFE_INTEGER
+    ) {
+      return t("unlimited");
+    }
+
+    return String(limit);
+  }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-20">
+    <div className="mx-auto max-w-5xl px-6 py-20">
       <div className="mb-10">
-        <p className="text-blue-400 font-semibold mb-3">
-          Account Settings
+        <p className="mb-3 font-semibold text-blue-400">
+          {t("eyebrow")}
         </p>
 
-        <h1 className="text-5xl font-bold mb-4">
-          Settings
+        <h1 className="mb-4 text-5xl font-bold">
+          {t("title")}
         </h1>
 
         <p className="text-slate-400">
-          Manage your Dasres account, plan and profile information.
+          {t("description")}
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
-          <section className="bg-slate-900 border border-slate-800 rounded-3xl p-8">
-            <h2 className="text-2xl font-bold mb-6">
-              Profile Information
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="space-y-6 lg:col-span-2">
+          <section className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+            <h2 className="mb-6 text-2xl font-bold">
+              {t(
+                "profileInformation.title",
+              )}
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-5">
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 p-5">
-                <p className="text-slate-500 text-sm">Name</p>
-                <p className="text-xl font-semibold mt-2">
-                  {user.name}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                <p className="text-sm text-slate-500">
+                  {t(
+                    "profileInformation.fields.name",
+                  )}
+                </p>
+
+                <p className="mt-2 text-xl font-semibold">
+                  {user.name ||
+                    t(
+                      "profileInformation.notProvided",
+                    )}
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 p-5">
-                <p className="text-slate-500 text-sm">Email</p>
-                <p className="text-xl font-semibold mt-2 break-all">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                <p className="text-sm text-slate-500">
+                  {t(
+                    "profileInformation.fields.email",
+                  )}
+                </p>
+
+                <p className="mt-2 break-all text-xl font-semibold">
                   {user.email}
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 p-5">
-                <p className="text-slate-500 text-sm">Role</p>
-                <p className="text-xl font-semibold mt-2">
-                  {user.role}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                <p className="text-sm text-slate-500">
+                  {t(
+                    "profileInformation.fields.role",
+                  )}
+                </p>
+
+                <p className="mt-2 text-xl font-semibold">
+                  {getRoleLabel(user.role)}
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 p-5">
-                <p className="text-slate-500 text-sm">Plan</p>
-                <p className="text-xl font-semibold text-yellow-400 mt-2">
-                  {user.planType}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                <p className="text-sm text-slate-500">
+                  {t(
+                    "profileInformation.fields.plan",
+                  )}
+                </p>
+
+                <p className="mt-2 text-xl font-semibold text-yellow-400">
+                  {getPlanLabel(
+                    user.planType,
+                  )}
                 </p>
               </div>
             </div>
           </section>
 
-          <section className="bg-slate-900 border border-slate-800 rounded-3xl p-8">
-            <h2 className="text-2xl font-bold mb-6">
-              Plan Limits
+          <section className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+            <h2 className="mb-6 text-2xl font-bold">
+              {t("planLimits.title")}
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-5">
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 p-5">
-                <p className="text-slate-500 text-sm">Case Limit</p>
-                <p className="text-2xl font-bold text-cyan-400 mt-2">
-                  {caseLimit === Number.MAX_SAFE_INTEGER
-                    ? "Unlimited"
-                    : caseLimit}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                <p className="text-sm text-slate-500">
+                  {t(
+                    "planLimits.caseLimit",
+                  )}
+                </p>
+
+                <p className="mt-2 text-2xl font-bold text-cyan-400">
+                  {getLimitLabel(caseLimit)}
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 p-5">
-                <p className="text-slate-500 text-sm">Proposal Limit</p>
-                <p className="text-2xl font-bold text-emerald-400 mt-2">
-                  {proposalLimit === Number.MAX_SAFE_INTEGER
-                    ? "Unlimited"
-                    : proposalLimit}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                <p className="text-sm text-slate-500">
+                  {t(
+                    "planLimits.proposalLimit",
+                  )}
+                </p>
+
+                <p className="mt-2 text-2xl font-bold text-emerald-400">
+                  {getLimitLabel(
+                    proposalLimit,
+                  )}
                 </p>
               </div>
             </div>
@@ -90,43 +180,48 @@ export default async function DashboardSettingsPage() {
         </div>
 
         <aside className="space-y-6">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-            <h2 className="text-2xl font-bold mb-4">
-              Quick Links
+          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="mb-4 text-2xl font-bold">
+              {t("quickLinks.title")}
             </h2>
 
             <div className="space-y-3">
               <Link
                 href="/dashboard/subscription"
-                className="block bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl text-center"
+                className="block rounded-xl bg-blue-600 px-5 py-3 text-center transition hover:bg-blue-700"
               >
-                Manage Subscription
+                {t(
+                  "quickLinks.manageSubscription",
+                )}
               </Link>
 
               <Link
                 href="/dashboard/my-companies"
-                className="block bg-slate-800 hover:bg-slate-700 px-5 py-3 rounded-xl text-center"
+                className="block rounded-xl bg-slate-800 px-5 py-3 text-center transition hover:bg-slate-700"
               >
-                My Companies
+                {t(
+                  "quickLinks.myCompanies",
+                )}
               </Link>
 
               <Link
                 href="/dashboard/my-experts"
-                className="block bg-slate-800 hover:bg-slate-700 px-5 py-3 rounded-xl text-center"
+                className="block rounded-xl bg-slate-800 px-5 py-3 text-center transition hover:bg-slate-700"
               >
-                My Experts
+                {t(
+                  "quickLinks.myExperts",
+                )}
               </Link>
             </div>
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-            <h2 className="text-2xl font-bold mb-4">
-              Security
+          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="mb-4 text-2xl font-bold">
+              {t("security.title")}
             </h2>
 
-            <p className="text-slate-400 leading-7">
-              Password changes, two-factor authentication and login history will
-              be added in the production security phase.
+            <p className="leading-7 text-slate-400">
+              {t("security.description")}
             </p>
           </div>
         </aside>

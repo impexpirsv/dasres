@@ -62,6 +62,12 @@ function getActivityIcon(action: string) {
     case "TASK_COMPLETED":
       return "✅";
 
+    case "PROJECT_TASK_UPDATED":
+      return "🔔";
+
+    case "PROJECT_TASK_CHECKLIST_TOGGLED":
+      return "☑️";
+
     case "TICKET_UPDATED":
       return "🎫";
 
@@ -73,11 +79,6 @@ function getActivityIcon(action: string) {
 
     default:
       return "🔔";
-      case "PROJECT_TASK_UPDATED":
-  return "🔔";
-
-case "PROJECT_TASK_CHECKLIST_TOGGLED":
-  return "☑️";
   }
 }
 
@@ -125,6 +126,12 @@ function getActivityTranslationKey(action: string) {
     case "TASK_COMPLETED":
       return "taskCompleted";
 
+    case "PROJECT_TASK_UPDATED":
+      return "projectTaskUpdated";
+
+    case "PROJECT_TASK_CHECKLIST_TOGGLED":
+      return "projectTaskChecklistToggled";
+
     case "TICKET_UPDATED":
       return "ticketUpdated";
 
@@ -133,11 +140,6 @@ function getActivityTranslationKey(action: string) {
 
     case "COMPANY_REJECTED":
       return "companyRejected";
-      case "PROJECT_TASK_UPDATED":
-  return "projectTaskUpdated";
-
-case "PROJECT_TASK_CHECKLIST_TOGGLED":
-  return "projectTaskChecklistToggled";
 
     default:
       return null;
@@ -145,16 +147,22 @@ case "PROJECT_TASK_CHECKLIST_TOGGLED":
 }
 
 function getBadgeColor(action: string) {
-  if (action.includes("MESSAGE") || action.includes("COMMENT")) {
-    return "bg-blue-500/20 text-blue-300 border-blue-500/30";
+  if (
+    action.includes("MESSAGE") ||
+    action.includes("COMMENT")
+  ) {
+    return "border-blue-500/30 bg-blue-500/20 text-blue-300";
   }
 
-  if (action.includes("DOCUMENT") || action.includes("ATTACHMENT")) {
-    return "bg-purple-500/20 text-purple-300 border-purple-500/30";
+  if (
+    action.includes("DOCUMENT") ||
+    action.includes("ATTACHMENT")
+  ) {
+    return "border-purple-500/30 bg-purple-500/20 text-purple-300";
   }
 
   if (action.includes("PROPOSAL")) {
-    return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
+    return "border-emerald-500/30 bg-emerald-500/20 text-emerald-300";
   }
 
   if (
@@ -162,18 +170,18 @@ function getBadgeColor(action: string) {
     action.includes("PROJECT") ||
     action.includes("TASK")
   ) {
-    return "bg-yellow-500/20 text-yellow-300 border-yellow-500/30";
+    return "border-yellow-500/30 bg-yellow-500/20 text-yellow-300";
   }
 
   if (action.includes("TICKET")) {
-    return "bg-orange-500/20 text-orange-300 border-orange-500/30";
+    return "border-orange-500/30 bg-orange-500/20 text-orange-300";
   }
 
   if (action.includes("COMPANY")) {
-    return "bg-cyan-500/20 text-cyan-300 border-cyan-500/30";
+    return "border-cyan-500/30 bg-cyan-500/20 text-cyan-300";
   }
 
-  return "bg-slate-700 text-slate-300 border-slate-600";
+  return "border-slate-600 bg-slate-700 text-slate-300";
 }
 
 export default async function DashboardRecentActivity({
@@ -181,14 +189,17 @@ export default async function DashboardRecentActivity({
 }: {
   recentActivities: Activity[];
 }) {
-  const t = await getTranslations("dashboardRecentActivity");
-  const locale = await getLocale();
+  const t = await getTranslations(
+    "dashboardRecentActivity",
+  );
 
-  const dateLocale = localeMap[locale] ?? locale;
+  const locale = await getLocale();
+  const dateLocale =
+    localeMap[locale] ?? locale;
 
   return (
-    <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 mt-12">
-      <div className="flex justify-between items-center mb-6">
+    <div className="mt-12 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+      <div className="mb-6 flex items-center justify-between">
         <h2 className="text-xl font-bold">
           {t("title")}
         </h2>
@@ -200,58 +211,85 @@ export default async function DashboardRecentActivity({
         </p>
       ) : (
         <div className="space-y-4">
-          {recentActivities.map((activity) => {
-            const translationKey =
-              getActivityTranslationKey(activity.action);
+          {recentActivities.map(
+            (activity) => {
+              const translationKey =
+                getActivityTranslationKey(
+                  activity.action,
+                );
 
-            const activityLabel = translationKey
-              ? t(`actions.${translationKey}`)
-              : activity.action.replaceAll("_", " ");
+              const activityLabel =
+                translationKey
+                  ? t(
+                      `actions.${translationKey}`,
+                    )
+                  : activity.action.replaceAll(
+                      "_",
+                      " ",
+                    );
 
-            const badgeColor = getBadgeColor(activity.action);
-            const icon = getActivityIcon(activity.action);
+              const badgeColor =
+                getBadgeColor(
+                  activity.action,
+                );
 
-            return (
-              <div
-                key={activity.id}
-                className="border-b border-slate-800 pb-4 last:border-0"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-medium">
-                    {icon} {activityLabel}
+              const icon =
+                getActivityIcon(
+                  activity.action,
+                );
+
+              return (
+                <div
+                  key={activity.id}
+                  className="border-b border-slate-800 pb-4 last:border-0"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-medium">
+                      {icon}{" "}
+                      {activityLabel}
+                    </p>
+
+                    <span
+                      className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${badgeColor}`}
+                    >
+                      {activityLabel}
+                    </span>
+                  </div>
+
+                  {activity.details && (
+                    <p className="mt-1 text-sm text-slate-400">
+                      {
+                        activity.details
+                      }
+                    </p>
+                  )}
+
+                  <p className="mt-2 text-xs text-slate-500">
+                    {activity.user
+                      ?.name ||
+                      t("system")}
+                    {" • "}
+
+                    <Link
+                      href={`/dashboard/cases/${activity.caseId}`}
+                      className="text-blue-400 hover:underline"
+                    >
+                      {
+                        activity
+                          .tradeCase.title
+                      }
+                    </Link>
+
+                    {" • "}
+
+                    {activity.createdAt.toLocaleString(
+                      dateLocale,
+                    )}
                   </p>
-
-                  <span
-                    className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${badgeColor}`}
-                  >
-                    {activityLabel}
-                  </span>
                 </div>
-
-                {activity.details && (
-                  <p className="text-slate-400 text-sm mt-1">
-                    {activity.details}
-                  </p>
-                )}
-
-                <p className="text-xs text-slate-500 mt-2">
-                  {activity.user?.name || t("system")}
-                  {" • "}
-
-                  <Link
-                    href={`/dashboard/cases/${activity.caseId}`}
-                    className="text-blue-400 hover:underline"
-                  >
-                    {activity.tradeCase.title}
-                  </Link>
-
-                  {" • "}
-
-                  {activity.createdAt.toLocaleString(dateLocale)}
-                </p>
-              </div>
-            );
-          })}
+              );
+            },
+          )}
         </div>
       )}
     </div>

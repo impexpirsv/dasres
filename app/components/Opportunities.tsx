@@ -1,16 +1,33 @@
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "../../lib/prisma";
 
-export default async function Opportunities() {
-  const t = await getTranslations("opportunitiesSection");
+const getHomepageOpportunities = unstable_cache(
+  async () => {
+    return prisma.opportunity.findMany({
+      where: {
+        status: "OPEN",
+      },
+      take: 6,
+      orderBy: {
+        id: "desc",
+      },
+    });
+  },
+  ["homepage-opportunities"],
+  {
+    revalidate: 300,
+  },
+);
 
-  const opportunities = await prisma.opportunity.findMany({
-    take: 6,
-    orderBy: {
-      id: "desc",
-    },
-  });
+export default async function Opportunities() {
+  const t = await getTranslations(
+    "opportunitiesSection",
+  );
+
+  const opportunities =
+    await getHomepageOpportunities();
 
   return (
     <section className="bg-slate-950 py-24">
@@ -34,7 +51,8 @@ export default async function Opportunities() {
             href="/opportunities"
             className="font-semibold text-blue-400 hover:text-blue-300"
           >
-            {t("viewAll")} <span aria-hidden>→</span>
+            {t("viewAll")}{" "}
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
 
@@ -50,9 +68,7 @@ export default async function Opportunities() {
                 </span>
 
                 <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs text-emerald-300">
-                  {opportunity.status === "OPEN"
-                    ? t("statusOpen")
-                    : opportunity.status}
+                  {t("statusOpen")}
                 </span>
               </div>
 
@@ -77,7 +93,8 @@ export default async function Opportunities() {
                   href={`/opportunities/${opportunity.id}`}
                   className="font-medium text-blue-400 hover:text-blue-300"
                 >
-                  {t("viewDetails")} <span aria-hidden>→</span>
+                  {t("viewDetails")}{" "}
+                  <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </div>

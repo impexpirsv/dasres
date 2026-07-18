@@ -1,8 +1,37 @@
 import Link from "next/link";
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import SaveCaseButton from "../../components/SaveCaseButton";
 import StopLinkClick from "../../components/StopLinkClick";
+import StatusBadge from "../../components/StatusBadge";
+
+type SortOption = "newest" | "oldest";
+
+function isSortOption(value?: string): value is SortOption {
+  return value === "newest" || value === "oldest";
+}
+
+function buildOpenCasesUrl({
+  category,
+  sort,
+}: {
+  category?: string;
+  sort: SortOption;
+}) {
+  const params = new URLSearchParams();
+
+  if (category && category !== "ALL") {
+    params.set("category", category);
+  }
+
+  params.set("sort", sort);
+
+  return `/dashboard/open-cases?${params.toString()}`;
+}
 
 export default async function OpenCasesPage({
   searchParams,
@@ -13,54 +42,115 @@ export default async function OpenCasesPage({
   }>;
 }) {
   const user = await requireUser();
-  const params = await searchParams;
 
-  const selectedCategory = params?.category || "ALL";
-  const selectedSort = params?.sort || "newest";
- const myCompanies =
-  user.role === "admin"
-    ? await prisma.company.findMany()
-    : await prisma.company.findMany({
-        where: {
+  const [params, t, locale] = await Promise.all([
+    searchParams,
+    getTranslations("openCasesPage"),
+    getLocale(),
+  ]);
+
+  const selectedSort: SortOption = isSortOption(params?.sort)
+    ? params.sort
+    : "newest";
+
+  const isAdmin = user.role === "admin";
+
+  const myCompanies = await prisma.company.findMany({
+    where: isAdmin
+      ? undefined
+      : {
           ownerId: user.id,
         },
-      });
+    select: {
+      id: true,
+      category: true,
+    },
+    orderBy: {
+      category: "asc",
+    },
+  });
 
   const categories = [
-    ...new Set(myCompanies.map((company) => company.category).filter(Boolean)),
+    ...new Set(
+      myCompanies
+        .map((company) => company.category)
+        .filter(
+          (category): category is string =>
+            typeof category === "string" &&
+            category.trim().length > 0,
+        ),
+    ),
   ];
-  const filteredCategories =
-    selectedCategory === "ALL" ? categories : [selectedCategory];
+
+  const requestedCategory = params?.category;
+
+  const selectedCategory =
+    requestedCategory &&
+    categories.includes(requestedCategory)
+      ? requestedCategory
+      : "ALL";
+
+  const matchingCategories =
+    selectedCategory === "ALL"
+      ? categories
+      : [selectedCategory];
+
   const openCases = await prisma.tradeCase.findMany({
-   where:
-  user.role === "admin"
-    ? {
-        status: "OPEN",
-      }
-    : {
-        status: "OPEN",
-        category: {
-          in: filteredCategories,
+    where: isAdmin
+      ? {
+          status: "OPEN",
+          ...(selectedCategory !== "ALL"
+            ? {
+                category: selectedCategory,
+              }
+            : {}),
+        }
+      : {
+          status: "OPEN",
+          category: {
+            in: matchingCategories,
+          },
+          NOT: {
+            customerId: user.id,
+          },
         },
-        NOT: {
-          customerId: user.id,
-        },
-      },
     orderBy: {
-      createdAt: selectedSort === "oldest" ? "asc" : "desc",
+      createdAt:
+        selectedSort === "oldest" ? "asc" : "desc",
     },
     include: {
       proposals: {
-  include: {
-    company: true,
-    expert: true,
-  },
-},
-      documents: true,
-      messages: true,
+        include: {
+          company: {
+            select: {
+              id: true,
+              ownerId: true,
+            },
+          },
+          expert: {
+            select: {
+              id: true,
+              ownerId: true,
+            },
+          },
+        },
+      },
+      documents: {
+        select: {
+          id: true,
+        },
+      },
+      messages: {
+        select: {
+          id: true,
+        },
+      },
       savedCases: {
         where: {
           userId: user.id,
+        },
+        select: {
+          id: true,
         },
       },
       customer: {
@@ -73,298 +163,382 @@ export default async function OpenCasesPage({
     },
   });
 
-  const mySubmittedProposals = await prisma.caseProposal.count({
-  where: {
-    tradeCase: {
-      status: "OPEN",
-    },
-    OR: [
-      {
-        company: {
-          ownerId: user.id,
+  const mySubmittedProposals =
+    await prisma.caseProposal.count({
+      where: {
+        tradeCase: {
+          status: "OPEN",
         },
+        OR: [
+          {
+            company: {
+              ownerId: user.id,
+            },
+          },
+          {
+            expert: {
+              ownerId: user.id,
+            },
+          },
+        ],
       },
-      {
-        expert: {
-          ownerId: user.id,
-        },
-      },
-    ],
-  },
-});
+    });
 
   const highCompetitionCases = openCases.filter(
     (tradeCase) => tradeCase.proposals.length >= 3,
   ).length;
+
   const savedMatchingCases = openCases.filter(
     (tradeCase) => tradeCase.savedCases.length > 0,
   ).length;
 
-  return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-          <div>
-            <h1 className="text-5xl font-bold mb-4">Open Cases</h1>
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 
-           <p className="text-slate-400">
-  {user.role === "admin"
-    ? "All open trade cases."
-    : "Cases matched to your company categories."}
-</p>
+  function formatDate(value: Date | string) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return t("unknownDate");
+    }
+
+    return dateFormatter.format(date);
+  }
+
+  const isRtl =
+    locale.startsWith("fa") ||
+    locale.startsWith("ar");
+
+  const hasMatchingCategories =
+    isAdmin || categories.length > 0;
+
+  return (
+    <main className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto max-w-7xl px-6 py-20">
+        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h1 className="mb-4 text-5xl font-bold">
+              {t("title")}
+            </h1>
+
+            <p className="text-slate-400">
+              {isAdmin
+                ? t("adminDescription")
+                : t("userDescription")}
+            </p>
           </div>
 
           <Link
             href="/dashboard/my-proposals"
-            className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl text-center"
+            className="w-fit rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white transition hover:bg-blue-700"
           >
-            My Proposals
+            {t("myProposals")}
           </Link>
         </div>
-        <div className="flex flex-wrap items-center gap-3 mb-8">
-          <span className="text-sm text-slate-400">Sort by:</span>
+
+        <div className="mb-8 flex flex-wrap items-center gap-3">
+          <span className="text-sm text-slate-400">
+            {t("sort.label")}
+          </span>
 
           <Link
-            href="/dashboard/open-cases?sort=newest"
-            className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+            href={buildOpenCasesUrl({
+              category: selectedCategory,
+              sort: "newest",
+            })}
+            className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
               selectedSort === "newest"
                 ? "bg-blue-600 text-white"
-                : "bg-slate-900 border border-slate-800 text-slate-300 hover:border-blue-500"
+                : "border border-slate-800 bg-slate-900 text-slate-300 hover:border-blue-500"
             }`}
           >
-            Newest
+            {t("sort.newest")}
           </Link>
 
           <Link
-            href="/dashboard/open-cases?sort=oldest"
-            className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+            href={buildOpenCasesUrl({
+              category: selectedCategory,
+              sort: "oldest",
+            })}
+            className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
               selectedSort === "oldest"
                 ? "bg-blue-600 text-white"
-                : "bg-slate-900 border border-slate-800 text-slate-300 hover:border-blue-500"
+                : "border border-slate-800 bg-slate-900 text-slate-300 hover:border-blue-500"
             }`}
           >
-            Oldest
+            {t("sort.oldest")}
           </Link>
         </div>
-        <div className="flex flex-wrap items-center gap-3 mb-8">
-          <span className="text-sm text-slate-400">Category:</span>
 
-          <Link
-            href={`/dashboard/open-cases?sort=${selectedSort}`}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold ${
-              selectedCategory === "ALL"
-                ? "bg-purple-600 text-white"
-                : "bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500"
-            }`}
-          >
-            All
-          </Link>
+        {categories.length > 0 && (
+          <div className="mb-8 flex flex-wrap items-center gap-3">
+            <span className="text-sm text-slate-400">
+              {t("categoryLabel")}
+            </span>
 
-          {categories.map((category) => (
             <Link
-              key={category}
-              href={`/dashboard/open-cases?category=${encodeURIComponent(
-                category,
-              )}&sort=${selectedSort}`}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold ${
-                selectedCategory === category
+              href={buildOpenCasesUrl({
+                sort: selectedSort,
+              })}
+              className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                selectedCategory === "ALL"
                   ? "bg-purple-600 text-white"
-                  : "bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500"
+                  : "border border-slate-800 bg-slate-900 text-slate-300 hover:border-purple-500"
               }`}
             >
-              {category}
+              {t("allCategories")}
             </Link>
-          ))}
-        </div>
-        <div className="grid md:grid-cols-2 xl:grid-cols-5 gap-6 mb-10">
-          <div className="bg-slate-900 border border-blue-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">Matching Cases</p>
 
-            <p className="text-4xl font-bold text-blue-400 mt-2">
+            {categories.map((category) => (
+              <Link
+                key={category}
+                href={buildOpenCasesUrl({
+                  category,
+                  sort: selectedSort,
+                })}
+                className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                  selectedCategory === category
+                    ? "bg-purple-600 text-white"
+                    : "border border-slate-800 bg-slate-900 text-slate-300 hover:border-purple-500"
+                }`}
+              >
+                {category}
+              </Link>
+            ))}
+          </div>
+        )}
+
+        <div className="mb-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="rounded-2xl border border-blue-500 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.matchingCases")}
+            </p>
+
+            <p className="mt-2 text-4xl font-bold text-blue-400">
               {openCases.length}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-purple-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">Matching Categories</p>
+          <div className="rounded-2xl border border-purple-500 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.matchingCategories")}
+            </p>
 
-            <p className="text-4xl font-bold text-purple-400 mt-2">
+            <p className="mt-2 text-4xl font-bold text-purple-400">
               {categories.length}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-yellow-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">High Competition</p>
+          <div className="rounded-2xl border border-yellow-500 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.highCompetition")}
+            </p>
 
-            <p className="text-4xl font-bold text-yellow-400 mt-2">
+            <p className="mt-2 text-4xl font-bold text-yellow-400">
               {highCompetitionCases}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-emerald-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">My Open Proposals</p>
+          <div className="rounded-2xl border border-emerald-500 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.myOpenProposals")}
+            </p>
 
-            <p className="text-4xl font-bold text-emerald-400 mt-2">
+            <p className="mt-2 text-4xl font-bold text-emerald-400">
               {mySubmittedProposals}
             </p>
           </div>
-          <div className="bg-slate-900 border border-pink-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">Saved Matching</p>
 
-            <p className="text-4xl font-bold text-pink-400 mt-2">
+          <div className="rounded-2xl border border-pink-500 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.savedMatching")}
+            </p>
+
+            <p className="mt-2 text-4xl font-bold text-pink-400">
               {savedMatchingCases}
             </p>
           </div>
         </div>
 
-        {categories.length === 0 && (
-          <div className="mb-10 bg-yellow-950/30 border border-yellow-600 rounded-2xl p-6">
-            <h2 className="text-xl font-bold text-yellow-400 mb-2">
-              No company categories found
+        {!isAdmin && categories.length === 0 && (
+          <div className="mb-10 rounded-2xl border border-yellow-600 bg-yellow-950/30 p-6">
+            <h2 className="mb-2 text-xl font-bold text-yellow-400">
+              {t("noCategories.title")}
             </h2>
 
             <p className="text-slate-300">
-              Add a company profile first so Dasres can match open cases to your
-              service category.
+              {t("noCategories.description")}
             </p>
 
             <Link
               href="/dashboard/companies/new"
-              className="inline-block mt-4 bg-yellow-600 hover:bg-yellow-700 text-black px-5 py-3 rounded-xl font-semibold"
+              className="mt-4 inline-block rounded-xl bg-yellow-600 px-5 py-3 font-semibold text-black transition hover:bg-yellow-700"
             >
-              Add Company
+              {t("noCategories.addCompany")}
             </Link>
           </div>
         )}
 
-        {categories.length === 0 ? null : openCases.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center">
-            <div className="text-6xl mb-4">📭</div>
+        {!hasMatchingCategories ? null : openCases.length === 0 ? (
+          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-12 text-center">
+            <div
+              aria-hidden="true"
+              className="mb-4 text-6xl"
+            >
+              📭
+            </div>
 
-            <h2 className="text-2xl font-bold mb-3">No Matching Cases Found</h2>
+            <h2 className="mb-3 text-2xl font-bold">
+              {t("emptyState.title")}
+            </h2>
 
-            <p className="text-slate-400 max-w-md mx-auto">
-              There are currently no open cases matching your company
-              categories. Try again later or expand your company services.
+            <p className="mx-auto max-w-md text-slate-400">
+              {isAdmin
+                ? t("emptyState.adminDescription")
+                : t("emptyState.userDescription")}
             </p>
 
-            <Link
-              href="/dashboard/my-companies"
-              className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl"
-            >
-              Manage Companies
-            </Link>
+            {!isAdmin && (
+              <Link
+                href="/dashboard/my-companies"
+                className="mt-6 inline-block rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
+              >
+                {t("emptyState.manageCompanies")}
+              </Link>
+            )}
           </div>
         ) : (
-          <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid gap-6 lg:grid-cols-2">
             {openCases.map((tradeCase) => {
-  const hasApplied = tradeCase.proposals.some(
-    (proposal) =>
-      proposal.company?.ownerId === user.id ||
-      proposal.expert?.ownerId === user.id,
-  );
+              const hasApplied =
+                tradeCase.proposals.some(
+                  (proposal) =>
+                    proposal.company?.ownerId ===
+                      user.id ||
+                    proposal.expert?.ownerId ===
+                      user.id,
+                );
 
-  return (
-              <Link
-                key={tradeCase.id}
-                href={`/dashboard/cases/${tradeCase.id}`}
-                className="group bg-slate-900 border border-slate-800 rounded-3xl p-6 hover:border-blue-500 transition"
-              >
-                <div className="flex flex-wrap items-center gap-3 mb-4">
-                  <span className="bg-purple-600/20 text-purple-300 border border-purple-800 px-3 py-1 rounded-full text-xs">
-                    {tradeCase.category}
-                  </span>
-
-                  <span
-  className={`px-3 py-1 rounded-full text-xs font-semibold ${
-    tradeCase.status === "OPEN"
-      ? "bg-emerald-600"
-      : tradeCase.status === "IN_PROGRESS"
-        ? "bg-yellow-600 text-black"
-        : "bg-slate-700"
-  }`}
->
-  {tradeCase.status.replace("_", " ")}
-</span>
-                  {tradeCase.savedCases.length > 0 && (
-                    <span className="bg-yellow-600 text-black px-3 py-1 rounded-full text-xs font-semibold">
-                      ★ Saved
+              return (
+                <Link
+                  key={tradeCase.id}
+                  href={`/dashboard/cases/${tradeCase.id}`}
+                  className="group rounded-3xl border border-slate-800 bg-slate-900 p-6 transition hover:border-blue-500"
+                >
+                  <div className="mb-4 flex flex-wrap items-center gap-3">
+                    <span className="rounded-full border border-purple-800 bg-purple-600/20 px-3 py-1 text-xs text-purple-300">
+                      {tradeCase.category}
                     </span>
-                  )}
-                  {hasApplied && (
-  <span className="bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-    Applied
-  </span>
-)}
-                  {tradeCase.proposals.length >= 3 && (
-                    <span className="bg-yellow-600 text-black px-3 py-1 rounded-full text-xs font-semibold">
-                      High Competition
+
+                    <StatusBadge
+                      status="OPEN"
+                      small
+                    />
+
+                    {tradeCase.savedCases.length > 0 && (
+                      <span className="rounded-full bg-yellow-600 px-3 py-1 text-xs font-semibold text-black">
+                        {t("badges.saved")}
+                      </span>
+                    )}
+
+                    {hasApplied && (
+                      <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white">
+                        {t("badges.applied")}
+                      </span>
+                    )}
+
+                    {tradeCase.proposals.length >= 3 && (
+                      <span className="rounded-full bg-yellow-600 px-3 py-1 text-xs font-semibold text-black">
+                        {t("badges.highCompetition")}
+                      </span>
+                    )}
+                  </div>
+
+                  <h2 className="mb-3 break-words text-2xl font-bold transition group-hover:text-blue-400">
+                    {tradeCase.title}
+                  </h2>
+
+                  <p className="mb-4 text-sm text-slate-500">
+                    {t("requestedBy")}{" "}
+                    <span className="text-slate-300">
+                      {tradeCase.customer.name ||
+                        tradeCase.customer.email}
                     </span>
-                  )}
-                </div>
-
-                <h2 className="text-2xl font-bold mb-3 group-hover:text-blue-400 transition">
-                  {tradeCase.title}
-                </h2>
-                <p className="text-sm text-slate-500 mb-4">
-                  Requested by:{" "}
-                  <span className="text-slate-300">
-                    {tradeCase.customer.name || tradeCase.customer.email}
-                  </span>
-                </p>
-                <p className="text-slate-400 text-sm leading-6 mb-5 line-clamp-3">
-                  {tradeCase.description}
-                </p>
-
-                <div className="grid grid-cols-3 gap-4 mb-5">
-                  <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                    <p className="text-slate-500 text-xs">Proposals</p>
-
-                    <p className="text-2xl font-bold text-blue-400 mt-1">
-                      {tradeCase.proposals.length}
-                    </p>
-                  </div>
-
-                  <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                    <p className="text-slate-500 text-xs">Documents</p>
-
-                    <p className="text-2xl font-bold text-cyan-400 mt-1">
-                      {tradeCase.documents.length}
-                    </p>
-                  </div>
-
-                  <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                    <p className="text-slate-500 text-xs">Messages</p>
-
-                    <p className="text-2xl font-bold text-emerald-400 mt-1">
-                      {tradeCase.messages.length}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-slate-800">
-                  <p className="text-xs text-slate-500">
-                    Created: {tradeCase.createdAt.toLocaleDateString()}
                   </p>
 
-                  <div className="flex items-center gap-3">
-                    <StopLinkClick>
-                      <SaveCaseButton
-                        caseId={tradeCase.id}
-                        initialSaved={tradeCase.savedCases.length > 0}
-                      />
-                    </StopLinkClick>
-                    <span className="text-blue-400 text-sm group-hover:underline">
-                      View Case →
-                    </span>
+                  <p className="mb-5 line-clamp-3 text-sm leading-6 text-slate-400">
+                    {tradeCase.description}
+                  </p>
+
+                  <div className="mb-5 grid grid-cols-3 gap-4">
+                    <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                      <p className="text-xs text-slate-500">
+                        {t("metrics.proposals")}
+                      </p>
+
+                      <p className="mt-1 text-2xl font-bold text-blue-400">
+                        {tradeCase.proposals.length}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                      <p className="text-xs text-slate-500">
+                        {t("metrics.documents")}
+                      </p>
+
+                      <p className="mt-1 text-2xl font-bold text-cyan-400">
+                        {tradeCase.documents.length}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                      <p className="text-xs text-slate-500">
+                        {t("metrics.messages")}
+                      </p>
+
+                      <p className="mt-1 text-2xl font-bold text-emerald-400">
+                        {tradeCase.messages.length}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-             );
-          })}
+
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-t border-slate-800 pt-5">
+                    <p className="text-xs text-slate-500">
+                      {t("created", {
+                        date: formatDate(
+                          tradeCase.createdAt,
+                        ),
+                      })}
+                    </p>
+
+                    <div className="flex items-center gap-3">
+                      <StopLinkClick>
+                        <SaveCaseButton
+                          caseId={tradeCase.id}
+                          initialSaved={
+                            tradeCase.savedCases.length >
+                            0
+                          }
+                        />
+                      </StopLinkClick>
+
+                      <span className="text-sm text-blue-400 group-hover:underline">
+                        {t("viewCase")}{" "}
+                        <span aria-hidden="true">
+                          {isRtl ? "←" : "→"}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }

@@ -1,156 +1,326 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { requireUser } from "../../../lib/auth";
-import { getCaseLimit, getProposalLimit } from "../../../lib/plans";
+import {
+  getCaseLimit,
+  getProposalLimit,
+} from "../../../lib/plans";
 import { prisma } from "../../../lib/prisma";
-const plans = [
-  {
-    name: "FREE",
-    title: "Free",
-    description: "For testing Dasres and starting basic trade activity.",
-    price: "$0",
-    features: [
-      "3 active trade cases",
-      "5 proposals",
-      "Basic company profile",
-      "Basic expert profile",
-    ],
-  },
-  {
-    name: "GOLD",
-    title: "Gold",
-    description: "For growing teams that need more visibility and capacity.",
-    price: "$29/mo",
-    features: [
-      "20 active trade cases",
-      "20 proposals",
-      "Gold badge",
-      "Priority listing",
-    ],
-  },
-  {
-    name: "DIAMOND",
-    title: "Diamond",
-    description: "For serious providers and frequent trade operators.",
-    price: "$99/mo",
-    features: [
-      "Unlimited active trade cases",
-      "Unlimited proposals",
-      "Diamond badge",
-      "Featured listing",
-    ],
-  },
-  {
-    name: "ENTERPRISE",
-    title: "Enterprise",
-    description: "For large trade companies, agencies and enterprise teams.",
-    price: "Custom Pricing",
-    features: [
-      "Unlimited active trade cases",
-      "Unlimited proposals",
-      "Enterprise badge",
-      "Highest visibility",
-      "Future account manager access",
-    ],
-  },
+
+type PlanName =
+  | "FREE"
+  | "GOLD"
+  | "DIAMOND"
+  | "ENTERPRISE";
+
+const PLAN_NAMES: PlanName[] = [
+  "FREE",
+  "GOLD",
+  "DIAMOND",
+  "ENTERPRISE",
 ];
 
+function getPlanColorClasses(
+  planType: string,
+  isCurrentPlan: boolean,
+) {
+  if (!isCurrentPlan) {
+    return "border-slate-800";
+  }
 
-function getPlanColor(planType: string) {
   switch (planType) {
     case "GOLD":
-      return "yellow";
+      return "border-yellow-500 shadow-lg shadow-yellow-500/20";
 
     case "DIAMOND":
-      return "cyan";
+      return "border-cyan-500 shadow-lg shadow-cyan-500/20";
 
     case "ENTERPRISE":
-      return "purple";
+      return "border-purple-500 shadow-lg shadow-purple-500/20";
 
     default:
-      return "slate";
+      return "border-slate-500 shadow-lg shadow-slate-500/20";
+  }
+}
+
+function getCurrentBadgeClass(planType: string) {
+  switch (planType) {
+    case "GOLD":
+      return "bg-yellow-600 text-black";
+
+    case "DIAMOND":
+      return "bg-cyan-600 text-black";
+
+    case "ENTERPRISE":
+      return "bg-purple-600 text-white";
+
+    default:
+      return "bg-slate-400 text-black";
+  }
+}
+
+function getCurrentPlanTextClass(
+  planType: string,
+) {
+  switch (planType) {
+    case "GOLD":
+      return "text-yellow-400";
+
+    case "DIAMOND":
+      return "text-cyan-400";
+
+    case "ENTERPRISE":
+      return "text-purple-400";
+
+    default:
+      return "text-slate-200";
   }
 }
 
 export default async function SubscriptionPage() {
   const user = await requireUser();
 
-  const currentCaseLimit = getCaseLimit(user.planType);
-  const currentProposalLimit = getProposalLimit(user.planType);
-  const activeCasesUsed = await prisma.tradeCase.count({
-    where: {
-      customerId: user.id,
-      status: {
-        in: ["OPEN", "IN_PROGRESS"],
-      },
-    },
-  });
+  const t = await getTranslations(
+    "dashboardSubscription",
+  );
 
- const proposalsUsed = await prisma.caseProposal.count({
-  where: {
-    OR: [
-      {
-        company: {
-          ownerId: user.id,
+  const currentCaseLimit = getCaseLimit(
+    user.planType,
+  );
+
+  const currentProposalLimit =
+    getProposalLimit(user.planType);
+
+  const [activeCasesUsed, proposalsUsed] =
+    await Promise.all([
+      prisma.tradeCase.count({
+        where: {
+          customerId: user.id,
+          status: {
+            in: ["OPEN", "IN_PROGRESS"],
+          },
         },
-      },
-      {
-        expert: {
-          ownerId: user.id,
+      }),
+
+      prisma.caseProposal.count({
+        where: {
+          OR: [
+            {
+              company: {
+                ownerId: user.id,
+              },
+            },
+            {
+              expert: {
+                ownerId: user.id,
+              },
+            },
+          ],
         },
-      },
-    ],
-  },
-});
-  const currentPlanColor = getPlanColor(user.planType);
+      }),
+    ]);
+
+  function getPlanTitle(planName: PlanName) {
+    switch (planName) {
+      case "FREE":
+        return t("plans.free.title");
+
+      case "GOLD":
+        return t("plans.gold.title");
+
+      case "DIAMOND":
+        return t("plans.diamond.title");
+
+      case "ENTERPRISE":
+        return t("plans.enterprise.title");
+    }
+  }
+
+  function getPlanDescription(
+    planName: PlanName,
+  ) {
+    switch (planName) {
+      case "FREE":
+        return t("plans.free.description");
+
+      case "GOLD":
+        return t("plans.gold.description");
+
+      case "DIAMOND":
+        return t(
+          "plans.diamond.description",
+        );
+
+      case "ENTERPRISE":
+        return t(
+          "plans.enterprise.description",
+        );
+    }
+  }
+
+  function getPlanPrice(planName: PlanName) {
+    switch (planName) {
+      case "FREE":
+        return t("plans.free.price");
+
+      case "GOLD":
+        return t("plans.gold.price");
+
+      case "DIAMOND":
+        return t("plans.diamond.price");
+
+      case "ENTERPRISE":
+        return t("plans.enterprise.price");
+    }
+  }
+
+  function getPlanFeatures(
+    planName: PlanName,
+  ) {
+    switch (planName) {
+      case "FREE":
+        return [
+          t("plans.free.features.activeCases"),
+          t("plans.free.features.proposals"),
+          t(
+            "plans.free.features.companyProfile",
+          ),
+          t(
+            "plans.free.features.expertProfile",
+          ),
+        ];
+
+      case "GOLD":
+        return [
+          t("plans.gold.features.activeCases"),
+          t("plans.gold.features.proposals"),
+          t("plans.gold.features.badge"),
+          t(
+            "plans.gold.features.priorityListing",
+          ),
+        ];
+
+      case "DIAMOND":
+        return [
+          t(
+            "plans.diamond.features.activeCases",
+          ),
+          t(
+            "plans.diamond.features.proposals",
+          ),
+          t("plans.diamond.features.badge"),
+          t(
+            "plans.diamond.features.featuredListing",
+          ),
+        ];
+
+      case "ENTERPRISE":
+        return [
+          t(
+            "plans.enterprise.features.activeCases",
+          ),
+          t(
+            "plans.enterprise.features.proposals",
+          ),
+          t(
+            "plans.enterprise.features.badge",
+          ),
+          t(
+            "plans.enterprise.features.visibility",
+          ),
+          t(
+            "plans.enterprise.features.accountManager",
+          ),
+        ];
+    }
+  }
+
+  function getPlanLabel(planType: string) {
+    switch (planType) {
+      case "FREE":
+        return t("planLabels.free");
+
+      case "GOLD":
+        return t("planLabels.gold");
+
+      case "DIAMOND":
+        return t("planLabels.diamond");
+
+      case "ENTERPRISE":
+        return t("planLabels.enterprise");
+
+      default:
+        return planType;
+    }
+  }
+
+  function getUsageValue(
+    used: number,
+    limit: number,
+  ) {
+    if (limit === Number.MAX_SAFE_INTEGER) {
+      return t("usage.unlimitedValue", {
+        used,
+      });
+    }
+
+    return t("usage.limitedValue", {
+      used,
+      limit,
+    });
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="mb-10">
-          <h1 className="text-5xl font-bold mb-4">Subscription</h1>
+          <h1 className="mb-4 text-5xl font-bold">
+            {t("title")}
+          </h1>
 
-          <p className="text-slate-400 max-w-3xl">
-            Manage your Dasres plan, usage limits and premium visibility.
-            Payments are not enabled yet; plans are currently managed by admin.
+          <p className="max-w-3xl text-slate-400">
+            {t("description")}
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 mb-10">
-          <div className="grid md:grid-cols-3 gap-6">
+        <div className="mb-10 rounded-3xl border border-slate-800 bg-slate-900 p-8">
+          <div className="grid gap-6 md:grid-cols-3">
             <div>
-              <p className="text-slate-500 text-sm">Current Plan</p>
+              <p className="text-sm text-slate-500">
+                {t("usage.currentPlan")}
+              </p>
 
               <div
-                className={`text-4xl font-bold mt-2 ${
-                  user.planType === "FREE"
-                    ? "text-slate-200"
-                    : user.planType === "GOLD"
-                      ? "text-yellow-400"
-                      : user.planType === "DIAMOND"
-                        ? "text-cyan-400"
-                        : "text-purple-400"
-                }`}
+                className={`mt-2 text-4xl font-bold ${getCurrentPlanTextClass(
+                  user.planType,
+                )}`}
               >
-                {user.planType}
+                {getPlanLabel(user.planType)}
               </div>
             </div>
 
             <div>
-              <p className="text-slate-500 text-sm">Active Cases Used</p>
+              <p className="text-sm text-slate-500">
+                {t("usage.activeCasesUsed")}
+              </p>
 
-              <div className="text-4xl font-bold text-cyan-400 mt-2">
-                {currentCaseLimit === Number.MAX_SAFE_INTEGER
-                  ? `${activeCasesUsed} / Unlimited`
-                  : `${activeCasesUsed} / ${currentCaseLimit}`}
+              <div className="mt-2 text-4xl font-bold text-cyan-400">
+                {getUsageValue(
+                  activeCasesUsed,
+                  currentCaseLimit,
+                )}
               </div>
 
-              {currentCaseLimit !== Number.MAX_SAFE_INTEGER && (
-                <div className="mt-4 h-3 bg-slate-800 rounded-full overflow-hidden">
+              {currentCaseLimit !==
+                Number.MAX_SAFE_INTEGER && (
+                <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-800">
                   <div
-                    className="h-full bg-cyan-500 rounded-full"
+                    className="h-full rounded-full bg-cyan-500"
                     style={{
                       width: `${Math.min(
-                        (activeCasesUsed / currentCaseLimit) * 100,
+                        (activeCasesUsed /
+                          currentCaseLimit) *
+                          100,
                         100,
                       )}%`,
                     }}
@@ -160,21 +330,27 @@ export default async function SubscriptionPage() {
             </div>
 
             <div>
-              <p className="text-slate-500 text-sm">Proposals Used</p>
+              <p className="text-sm text-slate-500">
+                {t("usage.proposalsUsed")}
+              </p>
 
-              <div className="text-4xl font-bold text-emerald-400 mt-2">
-                {currentProposalLimit === Number.MAX_SAFE_INTEGER
-                  ? `${proposalsUsed} / Unlimited`
-                  : `${proposalsUsed} / ${currentProposalLimit}`}
+              <div className="mt-2 text-4xl font-bold text-emerald-400">
+                {getUsageValue(
+                  proposalsUsed,
+                  currentProposalLimit,
+                )}
               </div>
 
-              {currentProposalLimit !== Number.MAX_SAFE_INTEGER && (
-                <div className="mt-4 h-3 bg-slate-800 rounded-full overflow-hidden">
+              {currentProposalLimit !==
+                Number.MAX_SAFE_INTEGER && (
+                <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-800">
                   <div
-                    className="h-full bg-emerald-500 rounded-full"
+                    className="h-full rounded-full bg-emerald-500"
                     style={{
                       width: `${Math.min(
-                        (proposalsUsed / currentProposalLimit) * 100,
+                        (proposalsUsed /
+                          currentProposalLimit) *
+                          100,
                         100,
                       )}%`,
                     }}
@@ -185,83 +361,90 @@ export default async function SubscriptionPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          {plans.map((plan) => {
-            const isCurrentPlan = plan.name === user.planType;
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {PLAN_NAMES.map((planName) => {
+            const isCurrentPlan =
+              planName === user.planType;
+
+            const features =
+              getPlanFeatures(planName);
 
             return (
               <div
-                key={plan.name}
-                className={`rounded-3xl border p-6 bg-slate-900 ${
-                  isCurrentPlan
-                    ? currentPlanColor === "yellow"
-                      ? "border-yellow-500 shadow-lg shadow-yellow-500/20"
-                      : currentPlanColor === "cyan"
-                        ? "border-cyan-500 shadow-lg shadow-cyan-500/20"
-                        : currentPlanColor === "purple"
-                          ? "border-purple-500 shadow-lg shadow-purple-500/20"
-                          : "border-slate-500 shadow-lg shadow-slate-500/20"
-                    : "border-slate-800"
-                }`}
+                key={planName}
+                className={`rounded-3xl border bg-slate-900 p-6 ${getPlanColorClasses(
+                  planName,
+                  isCurrentPlan,
+                )}`}
               >
-                <div className="flex items-center justify-between gap-4 mb-4">
-                  <h2 className="text-2xl font-bold">{plan.title}</h2>
+                <div className="mb-4 flex items-center justify-between gap-4">
+                  <h2 className="text-2xl font-bold">
+                    {getPlanTitle(planName)}
+                  </h2>
 
                   {isCurrentPlan && (
                     <span
-                      className={`text-black text-xs font-bold px-3 py-1 rounded-full ${
-                        currentPlanColor === "yellow"
-                          ? "bg-yellow-600"
-                          : currentPlanColor === "cyan"
-                            ? "bg-cyan-600"
-                            : currentPlanColor === "purple"
-                              ? "bg-purple-600"
-                              : "bg-slate-400"
-                      }`}
+                      className={`rounded-full px-3 py-1 text-xs font-bold ${getCurrentBadgeClass(
+                        planName,
+                      )}`}
                     >
-                      CURRENT
+                      {t("currentBadge")}
                     </span>
                   )}
                 </div>
 
-                <p className="text-slate-400 text-sm min-h-16">
-                  {plan.description}
+                <p className="min-h-16 text-sm text-slate-400">
+                  {getPlanDescription(planName)}
                 </p>
 
-                <div className="text-3xl font-bold mt-6">{plan.price}</div>
+                <div className="mt-6 text-3xl font-bold">
+                  {getPlanPrice(planName)}
+                </div>
 
-                <ul className="space-y-3 mt-6">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="text-slate-300 text-sm">
-                      ✓ {feature}
-                    </li>
-                  ))}
+                <ul className="mt-6 space-y-3">
+                  {features.map(
+                    (feature, index) => (
+                      <li
+                        key={`${planName}-${index}`}
+                        className="text-sm text-slate-300"
+                      >
+                        ✓ {feature}
+                      </li>
+                    ),
+                  )}
                 </ul>
 
                 {isCurrentPlan ? (
                   <button
+                    type="button"
                     disabled
-                    className="w-full mt-8 px-5 py-3 rounded-xl font-semibold bg-slate-800 text-slate-500 cursor-not-allowed"
+                    className="mt-8 w-full cursor-not-allowed rounded-xl bg-slate-800 px-5 py-3 font-semibold text-slate-500"
                   >
-                    Current Plan
+                    {t("actions.currentPlan")}
                   </button>
-                ) : plan.name === "ENTERPRISE" ? (
-                  <button className="w-full mt-8 px-5 py-3 rounded-xl font-semibold bg-blue-600 hover:bg-blue-700 text-white transition">
-                    Contact Sales
-                  </button>
-                ) : plan.name === "FREE" ? (
+                ) : planName ===
+                  "ENTERPRISE" ? (
                   <button
-                    disabled
-                    className="w-full mt-8 px-5 py-3 rounded-xl font-semibold bg-slate-800 text-slate-500 cursor-not-allowed"
+                    type="button"
+                    className="mt-8 w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
                   >
-                    Not Available
+                    {t("actions.contactSales")}
+                  </button>
+                ) : planName === "FREE" ? (
+                  <button
+                    type="button"
+                    disabled
+                    className="mt-8 w-full cursor-not-allowed rounded-xl bg-slate-800 px-5 py-3 font-semibold text-slate-500"
+                  >
+                    {t("actions.notAvailable")}
                   </button>
                 ) : (
                   <button
+                    type="button"
                     disabled
-                    className="w-full mt-8 px-5 py-3 rounded-xl font-semibold bg-blue-600/60 text-white cursor-not-allowed"
+                    className="mt-8 w-full cursor-not-allowed rounded-xl bg-blue-600/60 px-5 py-3 font-semibold text-white"
                   >
-                    Request Upgrade
+                    {t("actions.requestUpgrade")}
                   </button>
                 )}
               </div>
@@ -269,19 +452,20 @@ export default async function SubscriptionPage() {
           })}
         </div>
 
-        <div className="mt-10 bg-slate-900 border border-slate-800 rounded-3xl p-8">
-          <h2 className="text-2xl font-bold mb-3">Need a higher plan?</h2>
+        <div className="mt-10 rounded-3xl border border-slate-800 bg-slate-900 p-8">
+          <h2 className="mb-3 text-2xl font-bold">
+            {t("upgradeNotice.title")}
+          </h2>
 
-          <p className="text-slate-400 mb-6">
-            Payments are not active yet. For now, admins can manually upgrade
-            user plans from the user management panel.
+          <p className="mb-6 text-slate-400">
+            {t("upgradeNotice.description")}
           </p>
 
           <Link
             href="/dashboard"
-            className="inline-block bg-slate-800 hover:bg-slate-700 px-5 py-3 rounded-xl"
+            className="inline-block rounded-xl bg-slate-800 px-5 py-3 transition hover:bg-slate-700"
           >
-            Back to Dashboard
+            {t("upgradeNotice.back")}
           </Link>
         </div>
       </div>

@@ -144,7 +144,7 @@ function Metric({
           {label}
         </span>
 
-        <span className="text-right font-bold text-white">
+        <span className="text-start font-bold text-white">
           {value}
         </span>
       </div>

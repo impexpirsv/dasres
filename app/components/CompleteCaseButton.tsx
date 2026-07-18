@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function CompleteCaseButton({
   caseId,
@@ -9,37 +10,40 @@ export default function CompleteCaseButton({
   caseId: number;
 }) {
   const router = useRouter();
+  const t = useTranslations("tradeCases.completeCase");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function completeCase() {
-    const confirmed = confirm(
-      "Are you sure you want to mark this case as completed?"
-    );
+    const confirmed = window.confirm(t("confirm"));
 
     if (!confirmed) return;
 
-    setLoading(true);
-    setError("");
+    try {
+      setLoading(true);
+      setError("");
 
-    const response = await fetch(
-      `/api/cases/${caseId}/complete`,
-      {
-        method: "PATCH",
+      const response = await fetch(
+        `/api/cases/${caseId}/complete`,
+        {
+          method: "PATCH",
+        },
+      );
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setError(data?.message || t("errors.completeFailed"));
+        return;
       }
-    );
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      setError(data.message || "Failed to complete case.");
+      router.refresh();
+    } catch {
+      setError(t("errors.completeFailed"));
+    } finally {
       setLoading(false);
-      return;
     }
-
-    router.refresh();
-    setLoading(false);
   }
 
   return (
@@ -51,11 +55,12 @@ export default function CompleteCaseButton({
       )}
 
       <button
+        type="button"
         onClick={completeCase}
         disabled={loading}
-        className="w-full bg-emerald-600 hover:bg-emerald-700 px-4 py-3 rounded-xl font-semibold disabled:opacity-50"
+        className="w-full rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {loading ? "Completing..." : "Mark As Completed"}
+        {loading ? t("completing") : t("complete")}
       </button>
     </div>
   );

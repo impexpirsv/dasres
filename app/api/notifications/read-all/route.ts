@@ -5,25 +5,36 @@ export async function POST() {
   try {
     const user = await requireUser();
 
-    await prisma.notification.updateMany({
-      where: {
-        userId: user.id,
-        isRead: false,
-      },
-      data: {
-        isRead: true,
-      },
-    });
+    const result =
+      await prisma.notification.updateMany({
+        where: {
+          userId: user.id,
+          isRead: false,
+        },
+        data: {
+          isRead: true,
+        },
+      });
 
     return Response.json({
-      message: "All notifications marked as read",
+      code: "NOTIFICATIONS_MARKED_AS_READ",
+      updatedCount: result.count,
     });
   } catch (error) {
-    console.error(error);
+    console.error(
+      "NOTIFICATIONS_READ_ALL_ERROR",
+      {
+        error,
+      },
+    );
 
     return Response.json(
-      { message: "Failed to mark notifications as read" },
-      { status: 500 }
+      {
+        code: "NOTIFICATIONS_READ_ALL_FAILED",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }

@@ -1,6 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslations } from "next-intl";
 
 type UserOption = {
@@ -26,7 +30,16 @@ export default function ProjectWorkloadView({
 }: {
   tasks: Task[];
 }) {
-  const t = useTranslations("projectWorkloadView");
+  const t = useTranslations(
+    "projectWorkloadView",
+  );
+
+  const [currentTime, setCurrentTime] =
+    useState<number | null>(null);
+
+  useEffect(() => {
+    setCurrentTime(Date.now());
+  }, []);
 
   const rows = useMemo(() => {
     const grouped = new Map<
@@ -60,47 +73,71 @@ export default function ProjectWorkloadView({
       grouped.get(key)?.tasks.push(task);
     }
 
-    const now = Date.now();
-
     return Array.from(grouped.values())
       .map((group) => {
         const total = group.tasks.length;
 
         const completed = group.tasks.filter(
-          (task) => task.status === "COMPLETED",
+          (task) =>
+            task.status === "COMPLETED",
         ).length;
 
         const active = group.tasks.filter(
-          (task) => task.status !== "COMPLETED",
+          (task) =>
+            task.status !== "COMPLETED",
         ).length;
 
-        const overdue = group.tasks.filter((task) => {
-          if (!task.dueDate || task.status === "COMPLETED") {
-            return false;
-          }
+        const overdue = group.tasks.filter(
+          (task) => {
+            if (
+              !task.dueDate ||
+              task.status === "COMPLETED" ||
+              currentTime === null
+            ) {
+              return false;
+            }
 
-          const dueDate = new Date(task.dueDate);
+            const dueDate = new Date(
+              task.dueDate,
+            );
 
-          return (
-            !Number.isNaN(dueDate.getTime()) &&
-            dueDate.getTime() < now
-          );
-        }).length;
+            return (
+              !Number.isNaN(
+                dueDate.getTime(),
+              ) &&
+              dueDate.getTime() < currentTime
+            );
+          },
+        ).length;
 
         const averageProgress =
           total === 0
             ? 0
             : Math.round(
-                group.tasks.reduce((sum, task) => {
-                  const progress = Number(task.progress);
+                group.tasks.reduce(
+                  (sum, task) => {
+                    const progress = Number(
+                      task.progress,
+                    );
 
-                  const normalizedProgress =
-                    Number.isFinite(progress)
-                      ? Math.min(100, Math.max(0, progress))
-                      : 0;
+                    const normalizedProgress =
+                      Number.isFinite(progress)
+                        ? Math.min(
+                            100,
+                            Math.max(
+                              0,
+                              progress,
+                            ),
+                          )
+                        : 0;
 
-                  return sum + normalizedProgress;
-                }, 0) / total,
+                    return (
+                      sum +
+                      normalizedProgress
+                    );
+                  },
+                  0,
+                ) / total,
               );
 
         const capacity: Capacity =
@@ -121,17 +158,27 @@ export default function ProjectWorkloadView({
         };
       })
       .sort((first, second) => {
-        if (first.overdue !== second.overdue) {
-          return second.overdue - first.overdue;
+        if (
+          first.overdue !== second.overdue
+        ) {
+          return (
+            second.overdue - first.overdue
+          );
         }
 
-        if (first.active !== second.active) {
-          return second.active - first.active;
+        if (
+          first.active !== second.active
+        ) {
+          return (
+            second.active - first.active
+          );
         }
 
-        return first.name.localeCompare(second.name);
+        return first.name.localeCompare(
+          second.name,
+        );
       });
-  }, [tasks, t]);
+  }, [tasks, t, currentTime]);
 
   if (rows.length === 0) {
     return (
@@ -151,7 +198,9 @@ export default function ProjectWorkloadView({
     );
   }
 
-  function getCapacityLabel(capacity: Capacity) {
+  function getCapacityLabel(
+    capacity: Capacity,
+  ) {
     switch (capacity) {
       case "HIGH":
         return t("capacities.high");
@@ -169,18 +218,26 @@ export default function ProjectWorkloadView({
     overdue: number,
   ) {
     if (overdue > 0) {
-      return t("workloadStates.needsAttention");
+      return t(
+        "workloadStates.needsAttention",
+      );
     }
 
     if (capacity === "HIGH") {
-      return t("workloadStates.highLoad");
+      return t(
+        "workloadStates.highLoad",
+      );
     }
 
     if (capacity === "MEDIUM") {
-      return t("workloadStates.balanced");
+      return t(
+        "workloadStates.balanced",
+      );
     }
 
-    return t("workloadStates.available");
+    return t(
+      "workloadStates.available",
+    );
   }
 
   return (
@@ -195,10 +252,11 @@ export default function ProjectWorkloadView({
 
       <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {rows.map((row) => {
-          const workloadLabel = getWorkloadLabel(
-            row.capacity,
-            row.overdue,
-          );
+          const workloadLabel =
+            getWorkloadLabel(
+              row.capacity,
+              row.overdue,
+            );
 
           return (
             <article
@@ -208,7 +266,8 @@ export default function ProjectWorkloadView({
                   ? "border-red-700 bg-red-950/10"
                   : row.capacity === "HIGH"
                     ? "border-orange-600 bg-orange-950/10"
-                    : row.capacity === "MEDIUM"
+                    : row.capacity ===
+                        "MEDIUM"
                       ? "border-yellow-600 bg-yellow-950/10"
                       : "border-green-700 bg-green-950/10"
               }`}
@@ -235,12 +294,15 @@ export default function ProjectWorkloadView({
                     className={`rounded-full px-3 py-1 text-xs font-semibold ${
                       row.capacity === "HIGH"
                         ? "bg-red-600/20 text-red-300"
-                        : row.capacity === "MEDIUM"
+                        : row.capacity ===
+                            "MEDIUM"
                           ? "bg-yellow-600/20 text-yellow-300"
                           : "bg-green-600/20 text-green-300"
                     }`}
                   >
-                    {getCapacityLabel(row.capacity)}
+                    {getCapacityLabel(
+                      row.capacity,
+                    )}
                   </span>
                 </div>
               </div>
@@ -248,20 +310,27 @@ export default function ProjectWorkloadView({
               <div
                 className="h-3 overflow-hidden rounded-full bg-slate-800"
                 role="progressbar"
-                aria-label={t("progressLabel", {
-                  name: row.name,
-                })}
+                aria-label={t(
+                  "progressLabel",
+                  {
+                    name: row.name,
+                  },
+                )}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                aria-valuenow={row.averageProgress}
+                aria-valuenow={
+                  row.averageProgress
+                }
               >
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
                     row.overdue > 0
                       ? "bg-red-500"
-                      : row.capacity === "HIGH"
+                      : row.capacity ===
+                          "HIGH"
                         ? "bg-orange-500"
-                        : row.capacity === "MEDIUM"
+                        : row.capacity ===
+                            "MEDIUM"
                           ? "bg-yellow-500"
                           : "bg-green-500"
                   }`}
@@ -280,9 +349,11 @@ export default function ProjectWorkloadView({
                   className={
                     row.overdue > 0
                       ? "text-end font-semibold text-red-400"
-                      : row.capacity === "HIGH"
+                      : row.capacity ===
+                          "HIGH"
                         ? "text-end font-semibold text-orange-400"
-                        : row.capacity === "MEDIUM"
+                        : row.capacity ===
+                            "MEDIUM"
                           ? "text-end font-semibold text-yellow-400"
                           : "text-end font-semibold text-green-400"
                   }

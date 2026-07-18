@@ -1,57 +1,187 @@
 import bcrypt from "bcryptjs";
+import { Prisma } from "@prisma/client";
 import { apiHandler } from "../../../lib/api";
 import { AppError } from "../../../lib/errors";
 import { prisma } from "../../../lib/prisma";
 
-export async function POST(request: Request) {
+const MIN_PASSWORD_LENGTH = 8;
+const MAX_PASSWORD_LENGTH = 128;
+const MAX_NAME_LENGTH = 150;
+const MAX_EMAIL_LENGTH = 254;
+
+const EMAIL_PATTERN =
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export async function POST(
+  request: Request,
+) {
   return apiHandler(async () => {
-    const body = await request.json();
+    let body: unknown;
 
-    const name = String(body.name || "").trim();
-    const email = String(body.email || "").trim().toLowerCase();
-    const password = String(body.password || "");
-
-    if (!name || !email || !password) {
-      throw new AppError("Name, email and password are required.", 400);
+    try {
+      body = await request.json();
+    } catch {
+      throw new AppError(
+        "INVALID_JSON_BODY",
+        400,
+      );
     }
 
-    if (!email.includes("@")) {
-      throw new AppError("Please enter a valid email address.", 400);
+    if (
+      !body ||
+      typeof body !== "object" ||
+      Array.isArray(body)
+    ) {
+      throw new AppError(
+        "INVALID_REQUEST_BODY",
+        400,
+      );
     }
 
-    if (password.length < 6) {
-      throw new AppError("Password must be at least 6 characters.", 400);
+    const payload = body as Record<
+      string,
+      unknown
+    >;
+
+    const name = String(
+      payload.name ?? "",
+    ).trim();
+
+    const email = String(
+      payload.email ?? "",
+    )
+      .trim()
+      .toLowerCase();
+
+    const password = String(
+      payload.password ?? "",
+    );
+
+    if (!name) {
+      throw new AppError(
+        "REGISTER_NAME_REQUIRED",
+        400,
+      );
     }
 
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    if (name.length > MAX_NAME_LENGTH) {
+      throw new AppError(
+        "REGISTER_NAME_TOO_LONG",
+        400,
+      );
+    }
+
+    if (!email) {
+      throw new AppError(
+        "REGISTER_EMAIL_REQUIRED",
+        400,
+      );
+    }
+
+    if (
+      email.length > MAX_EMAIL_LENGTH ||
+      !EMAIL_PATTERN.test(email)
+    ) {
+      throw new AppError(
+        "REGISTER_EMAIL_INVALID",
+        400,
+      );
+    }
+
+    if (!password) {
+      throw new AppError(
+        "REGISTER_PASSWORD_REQUIRED",
+        400,
+      );
+    }
+
+    if (
+      password.length <
+      MIN_PASSWORD_LENGTH
+    ) {
+      throw new AppError(
+        "REGISTER_PASSWORD_TOO_SHORT",
+        400,
+      );
+    }
+
+    if (
+      password.length >
+      MAX_PASSWORD_LENGTH
+    ) {
+      throw new AppError(
+        "REGISTER_PASSWORD_TOO_LONG",
+        400,
+      );
+    }
+
+    const existingUser =
+      await prisma.user.findUnique({
+        where: {
+          email,
+        },
+        select: {
+          id: true,
+        },
+      });
 
     if (existingUser) {
-      throw new AppError("User with this email already exists.", 400);
+      throw new AppError(
+        "REGISTER_EMAIL_ALREADY_EXISTS",
+        409,
+      );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword =
+      await bcrypt.hash(password, 12);
 
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role: "user",
-      },
-    });
+    try {
+      const user =
+        await prisma.user.create({
+          data: {
+            name,
+            email,
+            password: hashedPassword,
+            role: "user",
+          },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+          },
+        });
 
-    return Response.json({
-      message: "User created successfully",
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
+      return Response.json(
+        {
+          code: "USER_REGISTERED",
+          user,
+        },
+        {
+          status: 201,
+        },
+      );
+    } catch (error) {
+      if (
+        error instanceof
+          Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        throw new AppError(
+          "REGISTER_EMAIL_ALREADY_EXISTS",
+          409,
+        );
+      }
+
+      console.error(
+        "USER_REGISTRATION_ERROR",
+        {
+          email,
+          error,
+        },
+      );
+
+      throw error;
+    }
   });
 }

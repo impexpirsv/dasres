@@ -29,21 +29,24 @@ const localeMap: Record<string, string> = {
 export default async function DashboardMyTasks({
   tasks,
 }: Props) {
-  const t = await getTranslations("dashboardMyTasks");
+  const t = await getTranslations(
+    "dashboardMyTasksWidget",
+  );
+
   const locale = await getLocale();
 
   const dateLocale = localeMap[locale] ?? locale;
 
   return (
-    <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 mt-12">
-      <div className="flex items-center justify-between mb-6">
+    <div className="mt-12 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+      <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold">
           {t("title")}
         </h2>
 
         <Link
           href="/dashboard/my-tasks"
-          className="text-blue-400 hover:underline text-sm"
+          className="text-sm text-blue-400 hover:underline"
         >
           {t("viewAll")}
         </Link>
@@ -59,7 +62,7 @@ export default async function DashboardMyTasks({
             <Link
               key={task.id}
               href={`/dashboard/projects/${task.project.id}`}
-              className="block rounded-xl border border-slate-800 bg-slate-950 p-4 hover:border-blue-500"
+              className="block rounded-xl border border-slate-800 bg-slate-950 p-4 transition hover:border-blue-500"
             >
               <div className="flex justify-between gap-4">
                 <div>
@@ -67,7 +70,7 @@ export default async function DashboardMyTasks({
                     {task.title}
                   </p>
 
-                  <p className="text-sm text-slate-400 mt-1">
+                  <p className="mt-1 text-sm text-slate-400">
                     {task.project.title}
                   </p>
                 </div>

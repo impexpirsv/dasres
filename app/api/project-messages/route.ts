@@ -1,34 +1,138 @@
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import { notifyProjectMessage } from "../../../lib/notificationEvents";
+import { parseId } from "../../../lib/validation";
+
+const MAX_MESSAGE_LENGTH = 5000;
+
 export async function POST(request: Request) {
   try {
     const user = await requireUser();
-    const body = await request.json();
 
-    const projectId = Number(body.projectId);
-    const conversationId = body.conversationId
-      ? Number(body.conversationId)
-      : null;
-    const message = String(body.message || "").trim();
+    let body: unknown;
 
-    if (!projectId || !message) {
+    try {
+      body = await request.json();
+    } catch {
       return Response.json(
-        { message: "Project and message are required." },
-        { status: 400 },
+        {
+          code: "INVALID_JSON_BODY",
+        },
+        {
+          status: 400,
+        },
       );
     }
 
-    const project = await prisma.project.findUnique({
-      where: {
-        id: projectId,
-      },
-    });
+    if (
+      !body ||
+      typeof body !== "object" ||
+      Array.isArray(body)
+    ) {
+      return Response.json(
+        {
+          code: "INVALID_REQUEST_BODY",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const payload = body as Record<
+      string,
+      unknown
+    >;
+
+    let projectId: number;
+
+    try {
+      projectId = parseId(
+        String(payload.projectId ?? ""),
+        "project id",
+      );
+    } catch {
+      return Response.json(
+        {
+          code: "INVALID_PROJECT_ID",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    let conversationId: number | null = null;
+
+    if (
+      payload.conversationId !== undefined &&
+      payload.conversationId !== null &&
+      payload.conversationId !== ""
+    ) {
+      try {
+        conversationId = parseId(
+          String(payload.conversationId),
+          "conversation id",
+        );
+      } catch {
+        return Response.json(
+          {
+            code: "INVALID_CONVERSATION_ID",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+    }
+
+    const message = String(
+      payload.message ?? "",
+    ).trim();
+
+    if (!message) {
+      return Response.json(
+        {
+          code: "PROJECT_MESSAGE_REQUIRED",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      return Response.json(
+        {
+          code: "PROJECT_MESSAGE_TOO_LONG",
+          maxLength: MAX_MESSAGE_LENGTH,
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const project =
+      await prisma.project.findUnique({
+        where: {
+          id: projectId,
+        },
+        select: {
+          id: true,
+          createdBy: true,
+          assignedTo: true,
+        },
+      });
 
     if (!project) {
       return Response.json(
-        { message: "Project not found." },
-        { status: 404 },
+        {
+          code: "PROJECT_NOT_FOUND",
+        },
+        {
+          status: 404,
+        },
       );
     }
 
@@ -39,71 +143,150 @@ export async function POST(request: Request) {
 
     if (!canAccess) {
       return Response.json(
-        { message: "Access denied." },
-        { status: 403 },
+        {
+          code: "PROJECT_ACCESS_DENIED",
+        },
+        {
+          status: 403,
+        },
       );
     }
 
-    const conversation =
-      conversationId
-        ? await prisma.projectConversation.findUnique({
-            where: {
-              id: conversationId,
-            },
-          })
-        : await prisma.projectConversation.create({
+    if (conversationId !== null) {
+      const existingConversation =
+        await prisma.projectConversation.findUnique({
+          where: {
+            id: conversationId,
+          },
+          select: {
+            id: true,
+            projectId: true,
+          },
+        });
+
+      if (
+        !existingConversation ||
+        existingConversation.projectId !==
+          project.id
+      ) {
+        return Response.json(
+          {
+            code: "INVALID_PROJECT_CONVERSATION",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+    }
+
+    const result = await prisma.$transaction(
+      async (transaction) => {
+        const conversation =
+          conversationId !== null
+            ? {
+                id: conversationId,
+              }
+            : await transaction.projectConversation.create(
+                {
+                  data: {
+                    projectId: project.id,
+                    title:
+                      "Project Conversation",
+                  },
+                  select: {
+                    id: true,
+                  },
+                },
+              );
+
+        const createdMessage =
+          await transaction.projectMessage.create({
             data: {
-              projectId,
-              title: "Project Conversation",
+              conversationId:
+                conversation.id,
+              senderId: user.id,
+              message,
+            },
+            select: {
+              id: true,
+              conversationId: true,
+              senderId: true,
+              message: true,
+              createdAt: true,
+              sender: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
+              },
             },
           });
 
-    if (!conversation || conversation.projectId !== projectId) {
-      return Response.json(
-        { message: "Invalid conversation." },
-        { status: 400 },
-      );
+        return {
+          conversationId: conversation.id,
+          message: createdMessage,
+        };
+      },
+    );
+
+    const receiverId =
+      project.createdBy === user.id
+        ? project.assignedTo
+        : project.createdBy;
+
+    if (
+      receiverId &&
+      receiverId !== user.id
+    ) {
+      try {
+        await notifyProjectMessage({
+          userId: receiverId,
+          projectId: project.id,
+        });
+      } catch (notificationError) {
+        console.error(
+          "PROJECT_MESSAGE_NOTIFICATION_ERROR",
+          {
+            projectId: project.id,
+            receiverId,
+            error: notificationError,
+          },
+        );
+      }
     }
 
-   const createdMessage = await prisma.projectMessage.create({
-  data: {
-    conversationId: conversation.id,
-    senderId: user.id,
-    message,
-  },
-  include: {
-    sender: {
-      select: {
-        id: true,
-        name: true,
-        email: true,
-      },
-    },
-  },
-});
-
-const receiverId =
-  project.createdBy === user.id
-    ? project.assignedTo
-    : project.createdBy;
-
-if (receiverId && receiverId !== user.id) {
-  await notifyProjectMessage({
-  userId: receiverId,
-  projectId: project.id,
-});
-}
-
-return Response.json({
-  conversationId: conversation.id,
-  message: createdMessage,
-});
-
-
-  } catch {
     return Response.json(
-      { message: "Failed to send message." },
-      { status: 500 },
+      {
+        code: "PROJECT_MESSAGE_SENT",
+        conversationId:
+          result.conversationId,
+        message: result.message,
+      },
+      {
+        status: 201,
+      },
+    );
+  } catch (error) {
+    if (error instanceof Response) {
+      return error;
+    }
+
+    console.error(
+      "PROJECT_MESSAGE_CREATE_ERROR",
+      {
+        error,
+      },
+    );
+
+    return Response.json(
+      {
+        code: "PROJECT_MESSAGE_CREATE_FAILED",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }

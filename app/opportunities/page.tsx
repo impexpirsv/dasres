@@ -1,99 +1,216 @@
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
+
 import { prisma } from "../../lib/prisma";
 import OpportunitiesSearch from "../components/OpportunitiesSearch";
 
-export const dynamic = "force-dynamic";
-
 const PAGE_SIZE = 10;
+
+type OpportunitiesPageProps = {
+  searchParams?: Promise<{
+    page?: string;
+  }>;
+};
+
+const getOpportunitiesPageData = unstable_cache(
+  async (requestedPage: number) => {
+    const [
+      totalOpportunities,
+      openOpportunitiesCount,
+      opportunityCountries,
+    ] = await Promise.all([
+      prisma.opportunity.count(),
+
+      prisma.opportunity.count({
+        where: {
+          status: "OPEN",
+        },
+      }),
+
+      prisma.opportunity.findMany({
+        distinct: ["country"],
+        select: {
+          country: true,
+        },
+      }),
+    ]);
+
+    const totalPages = Math.max(
+      1,
+      Math.ceil(
+        totalOpportunities / PAGE_SIZE,
+      ),
+    );
+
+    const currentPage = Math.min(
+      Math.max(1, requestedPage),
+      totalPages,
+    );
+
+    const opportunities =
+      await prisma.opportunity.findMany({
+        skip:
+          (currentPage - 1) * PAGE_SIZE,
+        take: PAGE_SIZE,
+        orderBy: {
+          id: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          country: true,
+          status: true,
+          description: true,
+          imageUrl: true,
+        },
+      });
+
+    return {
+      totalOpportunities,
+      openOpportunitiesCount,
+      countriesCount:
+        opportunityCountries.length,
+      totalPages,
+      currentPage,
+      opportunities,
+    };
+  },
+  ["public-opportunities-page"],
+  {
+    revalidate: 300,
+    tags: ["public-opportunities"],
+  },
+);
 
 export default async function OpportunitiesPage({
   searchParams,
-}: {
-  searchParams?: Promise<{ page?: string }>;
-}) {
+}: OpportunitiesPageProps) {
   const params = await searchParams;
-  const currentPage = Number(params?.page) || 1;
 
-  const totalOpportunities = await prisma.opportunity.count();
-  const totalPages = Math.ceil(totalOpportunities / PAGE_SIZE);
+  const parsedPage = Number(params?.page);
 
-  const opportunities = await prisma.opportunity.findMany({
-    skip: (currentPage - 1) * PAGE_SIZE,
-    take: PAGE_SIZE,
-    orderBy: {
-      id: "desc",
-    },
-  });
-  const featuredOpportunities = opportunities.filter(
-    (o) => o.status === "OPEN",
+  const requestedPage =
+    Number.isInteger(parsedPage) &&
+    parsedPage > 0
+      ? parsedPage
+      : 1;
+
+  const locale = await getLocale();
+
+  const t = await getTranslations(
+    "publicOpportunities",
   );
+
+  const numberFormatter =
+    new Intl.NumberFormat(locale);
+
+  const {
+    totalOpportunities,
+    openOpportunitiesCount,
+    countriesCount,
+    totalPages,
+    currentPage,
+    opportunities,
+  } = await getOpportunitiesPageData(
+    requestedPage,
+  );
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="mb-12">
-          <p className="text-blue-400 font-semibold mb-3">
-            Global Trade Marketplace
+          <p className="mb-3 font-semibold text-blue-400">
+            {t("eyebrow")}
           </p>
 
-          <h1 className="text-5xl md:text-6xl font-black mb-5">
-            Discover international opportunities
+          <h1 className="mb-5 text-5xl font-black md:text-6xl">
+            {t("title")}
           </h1>
 
-          <p className="text-slate-400 text-lg max-w-3xl">
-            Explore verified trade opportunities from companies around the
-            world, connect with buyers and suppliers, and expand your
-            international business.
+          <p className="max-w-3xl text-lg leading-8 text-slate-400">
+            {t("description")}
           </p>
 
-          <div className="grid sm:grid-cols-3 gap-4 mt-10">
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
               <p className="text-3xl font-bold text-blue-400">
-                {totalOpportunities}
+                {numberFormatter.format(
+                  totalOpportunities,
+                )}
               </p>
 
-              <p className="text-slate-400 text-sm mt-1">Total Opportunities</p>
+              <p className="mt-1 text-sm text-slate-400">
+                {t("statistics.total")}
+              </p>
             </div>
 
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
               <p className="text-3xl font-bold text-emerald-400">
-                {opportunities.filter((o) => o.status === "OPEN").length}
+                {numberFormatter.format(
+                  openOpportunitiesCount,
+                )}
               </p>
 
-              <p className="text-slate-400 text-sm mt-1">Open Opportunities</p>
+              <p className="mt-1 text-sm text-slate-400">
+                {t("statistics.open")}
+              </p>
             </div>
 
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
               <p className="text-3xl font-bold text-purple-400">
-                {new Set(opportunities.map((o) => o.country)).size}
+                {numberFormatter.format(
+                  countriesCount,
+                )}
               </p>
 
-              <p className="text-slate-400 text-sm mt-1">Countries</p>
+              <p className="mt-1 text-sm text-slate-400">
+                {t("statistics.countries")}
+              </p>
             </div>
           </div>
         </div>
 
-        <OpportunitiesSearch opportunities={opportunities} />
+        <OpportunitiesSearch
+          opportunities={opportunities}
+        />
 
-        <div className="flex justify-center gap-4 mt-12">
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
           {currentPage > 1 && (
             <Link
-              href={`/opportunities?page=${currentPage - 1}`}
-              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700"
+              href={`/opportunities?page=${
+                currentPage - 1
+              }`}
+              className="rounded-lg bg-slate-800 px-4 py-2 transition hover:bg-slate-700"
             >
-              Previous
+              {t("pagination.previous")}
             </Link>
           )}
 
           <span className="px-4 py-2 text-slate-300">
-            Page {currentPage} of {totalPages || 1}
+            {t("pagination.page", {
+              current:
+                numberFormatter.format(
+                  currentPage,
+                ),
+              total:
+                numberFormatter.format(
+                  totalPages,
+                ),
+            })}
           </span>
 
           {currentPage < totalPages && (
             <Link
-              href={`/opportunities?page=${currentPage + 1}`}
-              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700"
+              href={`/opportunities?page=${
+                currentPage + 1
+              }`}
+              className="rounded-lg bg-slate-800 px-4 py-2 transition hover:bg-slate-700"
             >
-              Next
+              {t("pagination.next")}
             </Link>
           )}
         </div>

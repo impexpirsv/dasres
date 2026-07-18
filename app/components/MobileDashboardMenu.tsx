@@ -41,7 +41,7 @@ export default function MobileDashboardMenu({
             onClick={() => setOpen(false)}
           />
 
-          <div className="fixed left-0 top-0 z-50 h-screen w-72 overflow-y-auto">
+        <div className="fixed start-0 top-0 z-50 h-screen w-72 overflow-y-auto">
             <DashboardSidebar
               isAdmin={isAdmin}
               unreadNotificationsCount={unreadNotificationsCount}

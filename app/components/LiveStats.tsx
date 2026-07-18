@@ -1,24 +1,48 @@
 import { prisma } from "../../lib/prisma";
 import { getTranslations } from "next-intl/server";
+import { unstable_cache } from "next/cache";
+const getLiveStats = unstable_cache(
+  async () => {
+    const [
+      companiesCount,
+      expertsCount,
+      opportunitiesCount,
+      tradeCasesCount,
+      completedCasesCount,
+    ] = await Promise.all([
+      prisma.company.count(),
+      prisma.expert.count(),
+      prisma.opportunity.count(),
+      prisma.tradeCase.count(),
+      prisma.tradeCase.count({
+        where: {
+          status: "COMPLETED",
+        },
+      }),
+    ]);
+
+    return {
+      companiesCount,
+      expertsCount,
+      opportunitiesCount,
+      tradeCasesCount,
+      completedCasesCount,
+    };
+  },
+  ["live-stats"],
+  {
+    revalidate: 300,
+  },
+);
 export default async function LiveStats() {
   const t = await getTranslations("liveStats");
-  const [
-    companiesCount,
-    expertsCount,
-    opportunitiesCount,
-    tradeCasesCount,
-    completedCasesCount,
-  ] = await Promise.all([
-    prisma.company.count(),
-    prisma.expert.count(),
-    prisma.opportunity.count(),
-    prisma.tradeCase.count(),
-    prisma.tradeCase.count({
-      where: {
-        status: "COMPLETED",
-      },
-    }),
-  ]);
+ const {
+  companiesCount,
+  expertsCount,
+  opportunitiesCount,
+  tradeCasesCount,
+  completedCasesCount,
+} = await getLiveStats();
 
   const successRate =
     tradeCasesCount > 0

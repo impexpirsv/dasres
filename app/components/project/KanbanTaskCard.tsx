@@ -77,10 +77,12 @@ export default function KanbanTaskCard({
     dueDate !== null &&
     !Number.isNaN(dueDate.getTime());
 
-  const isOverdue =
-    hasValidDueDate &&
-    task.status !== "COMPLETED" &&
-    dueDate.getTime() < Date.now();
+  const now = new Date();
+
+const isOverdue =
+  hasValidDueDate &&
+  task.status !== "COMPLETED" &&
+  dueDate.getTime() < now.getTime();
 
   const formattedDueDate =
     hasValidDueDate && dueDate

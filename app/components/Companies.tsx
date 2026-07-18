@@ -1,16 +1,34 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "../../lib/prisma";
-
+import { unstable_cache } from "next/cache";
+const getHomepageCompanies = unstable_cache(
+  async () => {
+    return prisma.company.findMany({
+      take: 6,
+      where: {
+        verificationStatus: "VERIFIED",
+      },
+      orderBy: [
+        {
+          verifiedAt: "desc",
+        },
+        {
+          id: "desc",
+        },
+      ],
+    });
+  },
+  ["homepage-companies"],
+  {
+    revalidate: 300,
+  },
+);
 export default async function Companies() {
   const t = await getTranslations("companiesSection");
 
-  const companies = await prisma.company.findMany({
-    take: 6,
-    orderBy: {
-      verifiedAt: "desc",
-    },
-  });
+ const companies =
+  await getHomepageCompanies();
 
   return (
     <section className="border-y border-slate-800 bg-slate-900 py-24">

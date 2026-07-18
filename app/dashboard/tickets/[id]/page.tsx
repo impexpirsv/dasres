@@ -1,4 +1,8 @@
 import Link from "next/link";
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
 import AddTicketReplyForm from "../../../components/AddTicketReplyForm";
@@ -32,15 +36,17 @@ export default async function TicketDetailPage({
   params,
 }: Props) {
   const user = await requireUser();
+  const locale = await getLocale();
+  const t = await getTranslations("tickets.detail");
 
   const { id } = await params;
   const ticketId = Number(id);
 
   if (!ticketId || Number.isNaN(ticketId)) {
     return (
-      <div className="max-w-4xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="text-4xl font-bold">
-          Invalid Ticket ID
+          {t("errors.invalidId")}
         </h1>
       </div>
     );
@@ -65,9 +71,9 @@ export default async function TicketDetailPage({
 
   if (!ticket) {
     return (
-      <div className="max-w-4xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="text-4xl font-bold">
-          Ticket Not Found
+          {t("errors.notFound")}
         </h1>
       </div>
     );
@@ -78,9 +84,9 @@ export default async function TicketDetailPage({
 
   if (!isAdmin && !isOwner) {
     return (
-      <div className="max-w-4xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="text-4xl font-bold">
-          Access Denied
+          {t("errors.accessDenied")}
         </h1>
       </div>
     );
@@ -90,58 +96,101 @@ export default async function TicketDetailPage({
   const latestMessage =
     ticket.messages[ticket.messages.length - 1];
 
+  function getStatusLabel(status: string) {
+    switch (status) {
+      case "OPEN":
+        return t("statuses.open");
+
+      case "IN_PROGRESS":
+        return t("statuses.inProgress");
+
+      case "CLOSED":
+        return t("statuses.closed");
+
+      case "REOPEN":
+        return t("statuses.reopened");
+
+      default:
+        return status;
+    }
+  }
+
+  function getCategoryLabel(category: string) {
+    switch (category) {
+      case "GENERAL":
+        return t("categories.general");
+
+      case "TECHNICAL":
+        return t("categories.technical");
+
+      case "VERIFICATION":
+        return t("categories.verification");
+
+      case "BILLING":
+        return t("categories.billing");
+
+      case "DISPUTE":
+        return t("categories.dispute");
+
+      default:
+        return category;
+    }
+  }
+
+  function formatDate(date: Date) {
+    return date.toLocaleString(locale);
+  }
+
   return (
-    <div className="max-w-6xl mx-auto px-6 py-20">
+    <div className="mx-auto max-w-6xl px-6 py-20">
       <Link
         href="/dashboard/tickets"
-        className="text-blue-400 hover:underline mb-8 inline-block"
+        className="mb-8 inline-block text-blue-400 hover:underline"
       >
-        ← Back to Tickets
+        {t("backToTickets")}
       </Link>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 mb-8">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-8">
+      <div className="mb-8 rounded-3xl border border-slate-800 bg-slate-900 p-8">
+        <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <p className="text-sm text-slate-500">
-              Ticket #{ticket.id}
+              {t("ticketNumber", {
+                id: ticket.id,
+              })}
             </p>
 
-            <h1 className="text-4xl font-bold mt-2">
+            <h1 className="mt-2 text-4xl font-bold">
               {ticket.subject}
             </h1>
 
-            <p className="text-slate-400 mt-3">
-              {ticket.category}
+            <p className="mt-3 text-slate-400">
+              {getCategoryLabel(ticket.category)}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <span
               className={`rounded-full px-4 py-2 text-sm font-semibold ${getTicketBadge(
-                ticket.status
+                ticket.status,
               )}`}
             >
-              {ticket.status}
+              {getStatusLabel(ticket.status)}
             </span>
 
             {ticket.status !== "CLOSED" ? (
-              <CloseTicketButton
-                ticketId={ticket.id}
-              />
+              <CloseTicketButton ticketId={ticket.id} />
             ) : (
               isAdmin && (
-                <ReopenTicketButton
-                  ticketId={ticket.id}
-                />
+                <ReopenTicketButton ticketId={ticket.id} />
               )
             )}
           </div>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+        <div className="grid gap-4 md:grid-cols-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
             <p className="text-sm text-slate-500">
-              Created By
+              {t("createdBy")}
             </p>
 
             <p className="mt-1">
@@ -149,19 +198,19 @@ export default async function TicketDetailPage({
             </p>
           </div>
 
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
             <p className="text-sm text-slate-500">
-              Created At
+              {t("createdAt")}
             </p>
 
             <p className="mt-1">
-              {ticket.createdAt.toLocaleString()}
+              {formatDate(ticket.createdAt)}
             </p>
           </div>
 
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
             <p className="text-sm text-slate-500">
-              Messages
+              {t("messages")}
             </p>
 
             <p className="mt-1 text-2xl font-bold text-blue-400">
@@ -169,36 +218,37 @@ export default async function TicketDetailPage({
             </p>
           </div>
 
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
             <p className="text-sm text-slate-500">
-              Last Update
+              {t("lastUpdate")}
             </p>
 
             <p className="mt-1">
               {latestMessage
-                ? latestMessage.createdAt.toLocaleString()
-                : ticket.createdAt.toLocaleString()}
+                ? formatDate(latestMessage.createdAt)
+                : formatDate(ticket.createdAt)}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-8">
-          <div className="flex items-center justify-between mb-6">
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8 lg:col-span-2">
+          <div className="mb-6 flex items-center justify-between gap-4">
             <h2 className="text-2xl font-bold">
-              Conversation
+              {t("conversation")}
             </h2>
 
             <span className="text-sm text-slate-500">
-              {ticket.messages.length} message
-              {ticket.messages.length === 1 ? "" : "s"}
+              {t("messageCount", {
+                count: ticket.messages.length,
+              })}
             </span>
           </div>
 
           {ticket.messages.length === 0 ? (
             <p className="text-slate-500">
-              No messages yet.
+              {t("noMessages")}
             </p>
           ) : (
             <div className="space-y-4">
@@ -222,7 +272,7 @@ export default async function TicketDetailPage({
                           : "bg-slate-800 text-slate-200"
                       }`}
                     >
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-4 mb-2">
+                      <div className="mb-2 flex flex-col gap-1 md:flex-row md:items-center md:justify-between md:gap-4">
                         <p
                           className={`text-sm font-semibold ${
                             isMine
@@ -241,11 +291,11 @@ export default async function TicketDetailPage({
                               : "text-slate-500"
                           }`}
                         >
-                          {message.createdAt.toLocaleString()}
+                          {formatDate(message.createdAt)}
                         </p>
                       </div>
 
-                      <p className="leading-7">
+                      <p className="whitespace-pre-wrap break-words leading-7">
                         {message.message}
                       </p>
                     </div>
@@ -257,92 +307,101 @@ export default async function TicketDetailPage({
 
           {ticket.status === "CLOSED" ? (
             <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-500">
-              This ticket is closed.
+              {t("closedNotice")}
             </div>
           ) : (
-            <AddTicketReplyForm
-              ticketId={ticket.id}
-            />
+            <AddTicketReplyForm ticketId={ticket.id} />
           )}
         </div>
 
         <aside className="space-y-6">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-            <h2 className="text-2xl font-bold mb-4">
-              Ticket Timeline
+          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="mb-4 text-2xl font-bold">
+              {t("timeline.title")}
             </h2>
 
             <div className="space-y-4">
-              <div className="border-l-2 border-blue-500 pl-4">
+              <div className="border-s-2 border-blue-500 ps-4">
                 <p className="font-semibold">
-                  Ticket Created
+                  {t("timeline.created")}
                 </p>
 
                 <p className="text-sm text-slate-500">
-                  {ticket.createdAt.toLocaleString()}
+                  {formatDate(ticket.createdAt)}
                 </p>
               </div>
 
               {firstMessage && (
-                <div className="border-l-2 border-slate-700 pl-4">
+                <div className="border-s-2 border-slate-700 ps-4">
                   <p className="font-semibold">
-                    First Message
+                    {t("timeline.firstMessage")}
                   </p>
 
                   <p className="text-sm text-slate-500">
-                    {firstMessage.createdAt.toLocaleString()}
+                    {formatDate(firstMessage.createdAt)}
                   </p>
                 </div>
               )}
 
               {latestMessage && (
-                <div className="border-l-2 border-slate-700 pl-4">
+                <div className="border-s-2 border-slate-700 ps-4">
                   <p className="font-semibold">
-                    Latest Reply
+                    {t("timeline.latestReply")}
                   </p>
 
                   <p className="text-sm text-slate-500">
-                    {latestMessage.createdAt.toLocaleString()}
+                    {formatDate(latestMessage.createdAt)}
                   </p>
                 </div>
               )}
 
               {ticket.status === "CLOSED" && (
-                <div className="border-l-2 border-slate-500 pl-4">
+                <div className="border-s-2 border-slate-500 ps-4">
                   <p className="font-semibold">
-                    Ticket Closed
+                    {t("timeline.closed")}
                   </p>
 
                   <p className="text-sm text-slate-500">
-                    Current status is closed.
+                    {t("timeline.closedDescription")}
                   </p>
                 </div>
               )}
 
               {ticket.status === "REOPEN" && (
-                <div className="border-l-2 border-yellow-500 pl-4">
+                <div className="border-s-2 border-yellow-500 ps-4">
                   <p className="font-semibold">
-                    Ticket Reopened
+                    {t("timeline.reopened")}
                   </p>
 
                   <p className="text-sm text-slate-500">
-                    This ticket requires attention again.
+                    {t("timeline.reopenedDescription")}
                   </p>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-            <h2 className="text-2xl font-bold mb-4">
-              Support Rules
+          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="mb-4 text-2xl font-bold">
+              {t("rules.title")}
             </h2>
 
             <ul className="space-y-3 text-sm text-slate-400">
-              <li>• Keep replies focused and professional.</li>
-              <li>• Attach case details when needed.</li>
-              <li>• Closed tickets cannot receive replies.</li>
-              <li>• Admins can reopen closed tickets.</li>
+              <li>
+                • {t("rules.focused")}
+              </li>
+
+              <li>
+                • {t("rules.caseDetails")}
+              </li>
+
+              <li>
+                • {t("rules.closedReplies")}
+              </li>
+
+              <li>
+                • {t("rules.adminReopen")}
+              </li>
             </ul>
           </div>
         </aside>

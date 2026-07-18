@@ -1,16 +1,37 @@
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "../../lib/prisma";
 
-export default async function Experts() {
-  const t = await getTranslations("expertsSection");
+const getHomepageExperts = unstable_cache(
+  async () => {
+    return prisma.expert.findMany({
+      take: 6,
+      where: {
+        verificationStatus: "VERIFIED",
+      },
+      orderBy: [
+        {
+          verifiedAt: "desc",
+        },
+        {
+          id: "desc",
+        },
+      ],
+    });
+  },
+  ["homepage-experts"],
+  {
+    revalidate: 300,
+  },
+);
 
-  const experts = await prisma.expert.findMany({
-    take: 6,
-    orderBy: {
-      verifiedAt: "desc",
-    },
-  });
+export default async function Experts() {
+  const t = await getTranslations(
+    "expertsSection",
+  );
+
+  const experts = await getHomepageExperts();
 
   return (
     <section className="bg-slate-950 py-24">
@@ -34,7 +55,8 @@ export default async function Experts() {
             href="/experts"
             className="font-semibold text-blue-400 hover:text-blue-300"
           >
-            {t("viewAll")} <span aria-hidden>→</span>
+            {t("viewAll")}{" "}
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
 
@@ -53,11 +75,9 @@ export default async function Experts() {
                   {expert.name}
                 </h3>
 
-                {expert.verificationStatus === "VERIFIED" && (
-                  <span className="rounded-full bg-emerald-500/20 px-2 py-1 text-xs text-emerald-400">
-                    {t("verified")}
-                  </span>
-                )}
+                <span className="rounded-full bg-emerald-500/20 px-2 py-1 text-xs text-emerald-400">
+                  {t("verified")}
+                </span>
               </div>
 
               <p className="text-blue-400">
@@ -77,7 +97,8 @@ export default async function Experts() {
                   href={`/experts/${expert.id}`}
                   className="font-medium text-blue-400 hover:text-blue-300"
                 >
-                  {t("viewProfile")} <span aria-hidden>→</span>
+                  {t("viewProfile")}{" "}
+                  <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </div>

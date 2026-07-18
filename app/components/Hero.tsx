@@ -1,10 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import {
+  useFormatter,
+  useTranslations,
+} from "next-intl";
 
 export default function Hero() {
   const t = useTranslations("hero");
+  const format = useFormatter();
+
+  const proposalsCount = format.number(6);
+  const trustPercentage = format.number(0.83, {
+    style: "percent",
+    maximumFractionDigits: 0,
+  });
+  const ratingValue = format.number(5, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
 
   return (
     <section className="relative overflow-hidden">
@@ -80,7 +94,9 @@ export default function Hero() {
                     {t("proposals")}
                   </p>
 
-                  <p className="text-2xl font-bold text-blue-400">6</p>
+                  <p className="text-2xl font-bold text-blue-400">
+                    {proposalsCount}
+                  </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
@@ -88,7 +104,9 @@ export default function Hero() {
                     {t("trust")}
                   </p>
 
-                  <p className="text-2xl font-bold text-emerald-400">83%</p>
+                  <p className="text-2xl font-bold text-emerald-400">
+                    {trustPercentage}
+                  </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
@@ -109,14 +127,16 @@ export default function Hero() {
                   {t("topCompany")}
                 </p>
 
-                <h3 className="text-xl font-bold">Sina Customs</h3>
+                <h3 className="text-xl font-bold">
+                  Sina Customs
+                </h3>
 
                 <p className="mt-1 text-blue-400">
                   {t("customsClearance")}
                 </p>
 
                 <p className="mt-4 text-yellow-400">
-                  ⭐ {t("rating", { value: "5.0" })}
+                  ⭐ {t("rating", { value: ratingValue })}
                 </p>
               </div>
 
@@ -125,7 +145,9 @@ export default function Hero() {
                   {t("topExpert")}
                 </p>
 
-                <h3 className="text-xl font-bold">Ahad Customs</h3>
+                <h3 className="text-xl font-bold">
+                  Ahad Customs
+                </h3>
 
                 <p className="mt-1 text-cyan-400">
                   {t("tradeConsultant")}

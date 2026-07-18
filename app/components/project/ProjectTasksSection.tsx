@@ -78,9 +78,7 @@ export default function ProjectTasksSection({
 
   const [search, setSearch] = useState("");
 
-  const selectedTask =
-    tasks.find((task) => task.id === selectedTaskId) ?? null;
-
+ 
   const filteredTasks = useMemo(() => {
     const value = search.trim().toLocaleLowerCase();
 
@@ -134,7 +132,7 @@ export default function ProjectTasksSection({
       />
 
       <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
-        <div className="max-h-[75vh] overflow-y-auto pr-1">
+        <div className="max-h-[75vh] overflow-y-auto pe-1">
           <ProjectTaskList
             tasks={filteredTasks}
             selectedTaskId={visibleSelectedTask?.id ?? null}

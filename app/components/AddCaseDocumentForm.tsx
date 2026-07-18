@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function AddCaseDocumentForm({
   caseId,
@@ -9,11 +10,13 @@ export default function AddCaseDocumentForm({
   caseId: number;
 }) {
   const router = useRouter();
+  const t = useTranslations("tradeCases.addDocument");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function uploadDocument(
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ) {
     e.preventDefault();
 
@@ -21,27 +24,38 @@ export default function AddCaseDocumentForm({
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const file = formData.get("file");
 
-    setLoading(true);
-
-    const response = await fetch(
-      `/api/cases/${caseId}/documents`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    setLoading(false);
-
-    if (!response.ok) {
-      const data = await response.json();
-      setError(data.message || "Failed to upload document");
+    if (!(file instanceof File) || file.size === 0) {
+      setError(t("errors.fileRequired"));
       return;
     }
 
-    form.reset();
-    router.refresh();
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `/api/cases/${caseId}/documents`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setError(data?.message || t("errors.uploadFailed"));
+        return;
+      }
+
+      form.reset();
+      router.refresh();
+    } catch {
+      setError(t("errors.uploadFailed"));
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -50,7 +64,9 @@ export default function AddCaseDocumentForm({
         name="file"
         type="file"
         required
-        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm"
+        disabled={loading}
+        aria-label={t("fileLabel")}
+        className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60"
       />
 
       {error && (
@@ -62,9 +78,9 @@ export default function AddCaseDocumentForm({
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-xl disabled:opacity-50"
+        className="w-full rounded-xl bg-blue-600 px-4 py-3 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {loading ? "Uploading..." : "Upload Document"}
+        {loading ? t("uploading") : t("submit")}
       </button>
     </form>
   );

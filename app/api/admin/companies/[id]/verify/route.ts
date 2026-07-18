@@ -1,9 +1,10 @@
 import { prisma } from "../../../../../../lib/prisma";
 import { requireAdmin } from "../../../../../../lib/auth";
 import { notifyCompanyVerification } from "../../../../../../lib/notificationEvents";
+
 export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await requireAdmin();
@@ -11,32 +12,61 @@ export async function PATCH(
     const { id } = await params;
     const companyId = Number(id);
 
-    const company =
-  await prisma.company.update({
-    where: {
-      id: companyId,
-    },
-    data: {
-      verificationStatus: "VERIFIED",
-      verifiedAt: new Date(),
-    },
-  });
+    if (!Number.isInteger(companyId) || companyId <= 0) {
+      return Response.json(
+        {
+          code: "INVALID_COMPANY_ID",
+        },
+        { status: 400 },
+      );
+    }
 
-if (company.ownerId) {
-  await notifyCompanyVerification({
-  userId: company.ownerId,
-  approved: true,
-  companyId: company.id,
-});
-}
+    const company = await prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+      select: {
+        id: true,
+        ownerId: true,
+      },
+    });
+
+    if (!company) {
+      return Response.json(
+        {
+          code: "COMPANY_NOT_FOUND",
+        },
+        { status: 404 },
+      );
+    }
+
+    const updatedCompany = await prisma.company.update({
+      where: {
+        id: companyId,
+      },
+      data: {
+        verificationStatus: "VERIFIED",
+        verifiedAt: new Date(),
+      },
+    });
+
+    if (updatedCompany.ownerId) {
+      await notifyCompanyVerification({
+        userId: updatedCompany.ownerId,
+        approved: true,
+        companyId: updatedCompany.id,
+      });
+    }
 
     return Response.json({
-      message: "Company verified",
+      code: "COMPANY_VERIFIED",
     });
-  } catch (error) {
+  } catch {
     return Response.json(
-      { message: "Failed to verify company" },
-      { status: 500 }
+      {
+        code: "COMPANY_VERIFICATION_FAILED",
+      },
+      { status: 500 },
     );
   }
 }

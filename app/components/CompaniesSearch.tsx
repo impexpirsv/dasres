@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-
+import Image from "next/image";
+import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 interface Company {
   id: number;
   name: string;
@@ -21,57 +22,70 @@ interface Company {
 }
 
 function trustColor(score: number) {
-  if (score >= 90) return "text-emerald-400";
-  if (score >= 70) return "text-cyan-400";
-  if (score >= 50) return "text-yellow-400";
+  if (score >= 90) {
+    return "text-emerald-400";
+  }
+
+  if (score >= 70) {
+    return "text-cyan-400";
+  }
+
+  if (score >= 50) {
+    return "text-yellow-400";
+  }
+
   return "text-red-400";
 }
 
 function VerificationBadge({ status }: { status: string }) {
+  const t = useTranslations("companies.search.verification");
+
   if (status === "VERIFIED") {
     return (
-      <span className="inline-block bg-emerald-600 px-3 py-1 rounded-lg text-sm">
-        ✓ Verified
+      <span className="inline-block rounded-lg bg-emerald-600 px-3 py-1 text-sm text-white">
+        ✓ {t("verified")}
       </span>
     );
   }
 
   if (status === "REJECTED") {
     return (
-      <span className="inline-block bg-red-600 px-3 py-1 rounded-lg text-sm">
-        Rejected
+      <span className="inline-block rounded-lg bg-red-600 px-3 py-1 text-sm text-white">
+        {t("rejected")}
       </span>
     );
   }
 
   return (
-    <span className="inline-block bg-yellow-600 px-3 py-1 rounded-lg text-sm">
-      Pending
+    <span className="inline-block rounded-lg bg-yellow-600 px-3 py-1 text-sm text-black">
+      {t("pending")}
     </span>
   );
 }
 
 function PlanBadge({ planType }: { planType: string }) {
+  const t = useTranslations("companies.search.plans");
+
   if (planType === "ENTERPRISE") {
     return (
-      <span className="inline-block bg-purple-600 px-3 py-1 rounded-lg text-sm">
-        👑 ENTERPRISE
+      <span className="inline-block rounded-lg bg-purple-600 px-3 py-1 text-sm text-white">
+        👑 {t("enterprise")}
       </span>
     );
   }
 
   if (planType === "DIAMOND") {
     return (
-      <span className="inline-block bg-cyan-600 px-3 py-1 rounded-lg text-sm">
-        💎 DIAMOND
+      <span className="inline-block rounded-lg bg-cyan-600 px-3 py-1 text-sm text-black">
+        💎 {t("diamond")}
       </span>
     );
   }
 
   if (planType === "GOLD") {
     return (
-      <span className="inline-block bg-yellow-600 px-3 py-1 rounded-lg text-sm">
-        🥇 GOLD
+      <span className="inline-block rounded-lg bg-yellow-600 px-3 py-1 text-sm text-black">
+        🥇 {t("gold")}
       </span>
     );
   }
@@ -86,23 +100,34 @@ export default function CompaniesSearch({
   companies: Company[];
   profileBasePath?: string;
 }) {
+  const t = useTranslations("companies.search");
+  const locale = useLocale();
+
+  const numberFormatter = new Intl.NumberFormat(locale);
+
+  const ratingFormatter = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
   const [ratingFilter, setRatingFilter] = useState("");
   const [verifiedOnly, setVerifiedOnly] = useState(false);
 
   const countries = Array.from(
-    new Set(companies.map((company) => company.country))
-  );
+    new Set(companies.map((company) => company.country).filter(Boolean)),
+  ).sort((a, b) => a.localeCompare(b));
+
+  const normalizedSearch = search.trim().toLowerCase();
 
   const filteredCompanies = companies.filter((company) => {
     const matchesSearch =
-      company.name.toLowerCase().includes(search.toLowerCase()) ||
-      company.country.toLowerCase().includes(search.toLowerCase()) ||
-      company.category.toLowerCase().includes(search.toLowerCase());
+      normalizedSearch === "" ||
+      company.name.toLowerCase().includes(normalizedSearch) ||
+      company.country.toLowerCase().includes(normalizedSearch) ||
+      company.category.toLowerCase().includes(normalizedSearch);
 
-    const matchesCountry =
-      country === "" || company.country === country;
+    const matchesCountry = country === "" || company.country === country;
 
     const matchesRating =
       ratingFilter === "" ||
@@ -110,44 +135,39 @@ export default function CompaniesSearch({
       (ratingFilter === "4" && company.averageRating >= 4);
 
     const matchesVerified =
-      !verifiedOnly ||
-      company.verificationStatus === "VERIFIED";
+      !verifiedOnly || company.verificationStatus === "VERIFIED";
 
-    return (
-      matchesSearch &&
-      matchesCountry &&
-      matchesRating &&
-      matchesVerified
-    );
+    return matchesSearch && matchesCountry && matchesRating && matchesVerified;
   });
 
   const featuredCompanies = filteredCompanies.filter(
     (company) =>
-      company.planType === "ENTERPRISE" ||
-      company.planType === "DIAMOND"
+      company.planType === "ENTERPRISE" || company.planType === "DIAMOND",
   );
 
   return (
     <>
-      <div className="grid lg:grid-cols-4 gap-4 mb-10">
+      <div className="mb-10 grid gap-4 lg:grid-cols-4">
         <input
           type="text"
-          placeholder="🔍 Search companies..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-4 rounded-xl bg-slate-900 border border-slate-800 outline-none focus:border-blue-500"
+          placeholder={t("searchPlaceholder")}
+          aria-label={t("searchLabel")}
+          className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
         />
 
         <select
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          className="w-full p-4 rounded-xl bg-slate-900 border border-slate-800 outline-none focus:border-blue-500"
+          aria-label={t("countryLabel")}
+          className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
         >
-          <option value="">All Countries</option>
+          <option value="">{t("allCountries")}</option>
 
-          {countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
+          {countries.map((countryName) => (
+            <option key={countryName} value={countryName}>
+              {countryName}
             </option>
           ))}
         </select>
@@ -155,11 +175,14 @@ export default function CompaniesSearch({
         <select
           value={ratingFilter}
           onChange={(e) => setRatingFilter(e.target.value)}
-          className="w-full p-4 rounded-xl bg-slate-900 border border-slate-800 outline-none focus:border-blue-500"
+          aria-label={t("ratingFilterLabel")}
+          className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
         >
-          <option value="">All Ratings</option>
-          <option value="5">5 Stars</option>
-          <option value="4">4+ Stars</option>
+          <option value="">{t("allRatings")}</option>
+
+          <option value="5">{t("fiveStars")}</option>
+
+          <option value="4">{t("fourPlusStars")}</option>
         </select>
 
         <label className="flex items-center justify-center rounded-xl border border-slate-800 bg-slate-900 px-4 py-4 text-slate-300">
@@ -167,101 +190,98 @@ export default function CompaniesSearch({
             type="checkbox"
             checked={verifiedOnly}
             onChange={(e) => setVerifiedOnly(e.target.checked)}
-            className="mr-3"
+            className="me-3"
           />
-          Verified Only
+
+          {t("verifiedOnly")}
         </label>
       </div>
 
       {featuredCompanies.length > 0 && (
         <div className="mb-12">
           <div className="mb-6">
-            <h2 className="text-3xl font-bold">
-              Featured Companies
-            </h2>
+            <h2 className="text-3xl font-bold">{t("featured.title")}</h2>
 
-            <p className="text-slate-400 mt-2">
-              Premium trade companies with higher visibility on Dasres.
-            </p>
+            <p className="mt-2 text-slate-400">{t("featured.description")}</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 md:grid-cols-2">
             {featuredCompanies.slice(0, 4).map((company) => (
               <Link
                 key={company.id}
                 href={`${profileBasePath}/${company.id}`}
-                className="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-3xl border border-yellow-500 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-yellow-400 hover:shadow-2xl hover:shadow-yellow-500/20"
+                className="rounded-3xl border border-yellow-500 bg-gradient-to-br from-slate-900 to-slate-950 p-6 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-yellow-400 hover:shadow-2xl hover:shadow-yellow-500/20"
               >
                 <div className="flex items-start gap-5">
                   {company.logoUrl ? (
-                    <img
+                    <Image
                       src={company.logoUrl}
                       alt={company.name}
-                      className="w-24 h-24 object-contain rounded-2xl bg-white p-3"
+                      width={96}
+                      height={96}
+                      className="h-24 w-24 rounded-2xl bg-white object-contain p-3"
                     />
                   ) : (
-                    <div className="w-24 h-24 rounded-2xl bg-slate-800 flex items-center justify-center text-4xl">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-slate-800 text-4xl">
                       🏢
                     </div>
                   )}
 
-                  <div className="flex-1">
-                    <div className="flex flex-wrap gap-2 mb-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-3 flex flex-wrap gap-2">
                       <PlanBadge planType={company.planType} />
-                      <VerificationBadge
-                        status={company.verificationStatus}
-                      />
+
+                      <VerificationBadge status={company.verificationStatus} />
                     </div>
 
-                    <h3 className="text-2xl font-bold">
+                    <h3 className="break-words text-2xl font-bold">
                       {company.name}
                     </h3>
 
-                    <p className="text-blue-400 mt-1">
-                      {company.category}
-                    </p>
+                    <p className="mt-1 text-blue-400">{company.category}</p>
 
-                    <p className="text-slate-400 mt-2">
-                      {company.country}
-                    </p>
+                    <p className="mt-2 text-slate-400">{company.country}</p>
 
-                    <div className="grid grid-cols-3 gap-3 mt-5">
+                    <div className="mt-5 grid grid-cols-3 gap-3">
                       <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
                         <p
                           className={`text-xl font-bold ${trustColor(
-                            company.trustScore
+                            company.trustScore,
                           )}`}
                         >
-                          {company.trustScore}
+                          {numberFormatter.format(company.trustScore)}
                         </p>
+
                         <p className="text-xs text-slate-500">
-                          Trust
+                          {t("metrics.trust")}
                         </p>
                       </div>
 
                       <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
                         <p className="text-xl font-bold text-yellow-400">
                           {company.averageRating > 0
-                            ? company.averageRating.toFixed(1)
-                            : "N/A"}
+                            ? ratingFormatter.format(company.averageRating)
+                            : t("notAvailable")}
                         </p>
+
                         <p className="text-xs text-slate-500">
-                          Rating
+                          {t("metrics.rating")}
                         </p>
                       </div>
 
                       <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
                         <p className="text-xl font-bold text-blue-400">
-                          {company.reviewCount}
+                          {numberFormatter.format(company.reviewCount)}
                         </p>
+
                         <p className="text-xs text-slate-500">
-                          Reviews
+                          {t("metrics.reviews")}
                         </p>
                       </div>
                     </div>
 
-                    <span className="inline-flex mt-6 text-blue-400 hover:text-blue-300">
-                      View Profile →
+                    <span className="mt-6 inline-flex text-blue-400 hover:text-blue-300">
+                      {t("viewProfile")}
                     </span>
                   </div>
                 </div>
@@ -271,104 +291,107 @@ export default function CompaniesSearch({
         </div>
       )}
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {filteredCompanies.map((company) => (
-          <Link
-            key={company.id}
-            href={`${profileBasePath}/${company.id}`}
-            className="bg-slate-900 p-6 rounded-2xl border border-slate-800 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/20"
-          >
-            {company.logoUrl && (
-              <img
-                src={company.logoUrl}
-                alt={company.name}
-                className="w-full h-40 object-contain rounded-xl mb-4 bg-white p-3"
-              />
-            )}
+      {filteredCompanies.length === 0 ? (
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-slate-400">
+          {t("empty")}
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-3">
+          {filteredCompanies.map((company) => (
+            <Link
+              key={company.id}
+              href={`${profileBasePath}/${company.id}`}
+              className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/20"
+            >
+              {company.logoUrl && (
+                <Image
+                  src={company.logoUrl}
+                  alt={company.name}
+                  width={800}
+                  height={400}
+                  className="mb-4 h-40 w-full rounded-xl bg-white object-contain p-3"
+                />
+              )}
 
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-xl">
-                  🏢
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-800 text-xl">
+                    🏢
+                  </div>
+
+                  <div className="min-w-0">
+                    <h2 className="break-words text-2xl font-bold">
+                      {company.name}
+                    </h2>
+
+                    <p className="text-sm text-slate-500">{company.country}</p>
+                  </div>
                 </div>
 
-                <div>
-                  <h2 className="text-2xl font-bold">
-                    {company.name}
-                  </h2>
+                <VerificationBadge status={company.verificationStatus} />
+              </div>
 
-                  <p className="text-slate-500 text-sm">
-                    {company.country}
+              <p className="text-blue-400">{company.category}</p>
+
+              <p className="mt-3 line-clamp-2 text-slate-500">
+                {company.description}
+              </p>
+
+              {company.reviewCount > 0 ? (
+                <div className="mt-3 font-semibold text-yellow-400">
+                  ⭐ {ratingFormatter.format(company.averageRating)} (
+                  {t("reviewCount", {
+                    count: numberFormatter.format(company.reviewCount),
+                  })}
+                  )
+                </div>
+              ) : (
+                <div className="mt-3 text-slate-500">{t("noRating")}</div>
+              )}
+
+              <div className="mt-5 grid grid-cols-3 gap-3">
+                <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
+                  <p
+                    className={`text-lg font-bold ${trustColor(
+                      company.trustScore,
+                    )}`}
+                  >
+                    {numberFormatter.format(company.trustScore)}
+                  </p>
+
+                  <p className="text-xs text-slate-500">{t("metrics.trust")}</p>
+                </div>
+
+                <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
+                  <p className="text-lg font-bold text-yellow-400">
+                    {company.averageRating > 0
+                      ? ratingFormatter.format(company.averageRating)
+                      : t("notAvailable")}
+                  </p>
+
+                  <p className="text-xs text-slate-500">
+                    {t("metrics.rating")}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
+                  <p className="text-lg font-bold text-blue-400">
+                    {numberFormatter.format(company.reviewCount)}
+                  </p>
+
+                  <p className="text-xs text-slate-500">
+                    {t("metrics.reviews")}
                   </p>
                 </div>
               </div>
 
-              <VerificationBadge
-                status={company.verificationStatus}
-              />
-            </div>
-
-            <p className="text-blue-400">
-              {company.category}
-            </p>
-
-            <p className="text-slate-500 mt-3 line-clamp-2">
-              {company.description}
-            </p>
-
-            {company.reviewCount > 0 ? (
-              <div className="mt-3 text-yellow-400 font-semibold">
-                ⭐ {company.averageRating.toFixed(1)} (
-                {company.reviewCount}{" "}
-                {company.reviewCount > 1 ? "reviews" : "review"})
+              <div className="mt-5 inline-block rounded-lg bg-green-600 px-3 py-1 text-white">
+                {t("available")}
               </div>
-            ) : (
-              <div className="mt-3 text-slate-500">
-                No rating yet
-              </div>
-            )}
-
-            <div className="grid grid-cols-3 gap-3 mt-5">
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                <p
-                  className={`text-lg font-bold ${trustColor(
-                    company.trustScore
-                  )}`}
-                >
-                  {company.trustScore}
-                </p>
-                <p className="text-xs text-slate-500">
-                  Trust
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                <p className="text-lg font-bold text-yellow-400">
-                  {company.averageRating > 0
-                    ? company.averageRating.toFixed(1)
-                    : "N/A"}
-                </p>
-                <p className="text-xs text-slate-500">
-                  Rating
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                <p className="text-lg font-bold text-blue-400">
-                  {company.reviewCount}
-                </p>
-                <p className="text-xs text-slate-500">
-                  Reviews
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 inline-block bg-green-600 px-3 py-1 rounded-lg">
-              Available
-            </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </>
   );
 }

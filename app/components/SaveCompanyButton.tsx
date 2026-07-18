@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function SaveCompanyButton({
   companyId,
@@ -9,8 +10,9 @@ export default function SaveCompanyButton({
   companyId: number;
   initialSaved: boolean;
 }) {
-  const [saved, setSaved] =
-    useState(initialSaved);
+  const t = useTranslations("saveCompanyButton");
+
+  const [saved, setSaved] = useState(initialSaved);
 
   async function toggleSave() {
     const response = await fetch(
@@ -34,7 +36,7 @@ export default function SaveCompanyButton({
           : "bg-slate-800 text-white"
       }`}
     >
-      {saved ? "Saved ★" : "Save ☆"}
+      {saved ? t("saved") : t("save")}
     </button>
   );
 }

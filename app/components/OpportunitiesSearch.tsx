@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { formatCountry } from "../../lib/format";
+import Image from "next/image";
 interface Opportunity {
   id: number;
   title: string;
@@ -13,34 +15,36 @@ interface Opportunity {
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const t = useTranslations("opportunities.search.statuses");
+
   const normalizedStatus = status.toUpperCase();
 
   if (normalizedStatus === "OPEN") {
     return (
-      <span className="rounded-full bg-emerald-600 px-4 py-2 text-sm">
-        Open
+      <span className="rounded-full bg-emerald-600 px-4 py-2 text-sm text-white">
+        {t("open")}
       </span>
     );
   }
 
   if (normalizedStatus === "IN_PROGRESS") {
     return (
-      <span className="rounded-full bg-yellow-600 px-4 py-2 text-sm">
-        In Progress
+      <span className="rounded-full bg-yellow-600 px-4 py-2 text-sm text-black">
+        {t("inProgress")}
       </span>
     );
   }
 
   if (normalizedStatus === "CLOSED") {
     return (
-      <span className="rounded-full bg-red-600 px-4 py-2 text-sm">
-        Closed
+      <span className="rounded-full bg-red-600 px-4 py-2 text-sm text-white">
+        {t("closed")}
       </span>
     );
   }
 
   return (
-    <span className="rounded-full bg-slate-700 px-4 py-2 text-sm">
+    <span className="rounded-full bg-slate-700 px-4 py-2 text-sm text-slate-200">
       {status}
     </span>
   );
@@ -51,6 +55,8 @@ export default function OpportunitiesSearch({
 }: {
   opportunities: Opportunity[];
 }) {
+  const t = useTranslations("opportunities.search");
+
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
   const [status, setStatus] = useState("");
@@ -59,19 +65,30 @@ export default function OpportunitiesSearch({
     new Set(
       opportunities
         .map((opportunity) => opportunity.country?.trim())
-        .filter(Boolean),
+        .filter((value): value is string => Boolean(value)),
     ),
-  );
+  ).sort((a, b) => a.localeCompare(b));
+
+  const normalizedSearch = search.trim().toLowerCase();
 
   const filteredOpportunities = opportunities.filter((opportunity) => {
+    const opportunityTitle = opportunity.title?.toLowerCase() || "";
+
+    const opportunityCountry = opportunity.country?.toLowerCase() || "";
+
+    const opportunityDescription = opportunity.description?.toLowerCase() || "";
+
     const matchesSearch =
-      opportunity.title.toLowerCase().includes(search.toLowerCase()) ||
-      opportunity.country.toLowerCase().includes(search.toLowerCase()) ||
-      opportunity.description.toLowerCase().includes(search.toLowerCase());
+      normalizedSearch === "" ||
+      opportunityTitle.includes(normalizedSearch) ||
+      opportunityCountry.includes(normalizedSearch) ||
+      opportunityDescription.includes(normalizedSearch);
 
-    const matchesCountry = country === "" || opportunity.country === country;
+    const matchesCountry =
+      country === "" || opportunity.country.trim() === country;
 
-    const matchesStatus = status === "" || opportunity.status.toUpperCase() === status.toUpperCase();
+    const matchesStatus =
+      status === "" || opportunity.status.toUpperCase() === status;
 
     return matchesSearch && matchesCountry && matchesStatus;
   });
@@ -82,25 +99,27 @@ export default function OpportunitiesSearch({
 
   return (
     <>
-      <div className="grid lg:grid-cols-3 gap-4 mb-10">
+      <div className="mb-10 grid gap-4 lg:grid-cols-3">
         <input
           type="text"
-          placeholder="🔍 Search opportunities..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          placeholder={t("searchPlaceholder")}
+          aria-label={t("searchLabel")}
           className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
         />
 
         <select
           value={country}
           onChange={(e) => setCountry(e.target.value)}
+          aria-label={t("countryLabel")}
           className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
         >
-          <option value="">All Countries</option>
+          <option value="">{t("allCountries")}</option>
 
-          {countries.map((country) => (
-            <option key={country} value={country}>
-             {formatCountry(country)}
+          {countries.map((countryName) => (
+            <option key={countryName} value={countryName}>
+              {formatCountry(countryName)}
             </option>
           ))}
         </select>
@@ -108,25 +127,28 @@ export default function OpportunitiesSearch({
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
+          aria-label={t("statusLabel")}
           className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
         >
-          <option value="">All Statuses</option>
-          <option value="OPEN">Open</option>
-          <option value="CLOSED">Closed</option>
+          <option value="">{t("allStatuses")}</option>
+
+          <option value="OPEN">{t("statuses.open")}</option>
+
+          <option value="IN_PROGRESS">{t("statuses.inProgress")}</option>
+
+          <option value="CLOSED">{t("statuses.closed")}</option>
         </select>
       </div>
 
       {featuredOpportunities.length > 0 && (
         <div className="mb-12">
           <div className="mb-6">
-            <h2 className="text-3xl font-bold">Featured Opportunities</h2>
+            <h2 className="text-3xl font-bold">{t("featured.title")}</h2>
 
-            <p className="mt-2 text-slate-400">
-              Active trade opportunities currently open for collaboration.
-            </p>
+            <p className="mt-2 text-slate-400">{t("featured.description")}</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 md:grid-cols-2">
             {featuredOpportunities.slice(0, 4).map((opportunity) => (
               <Link
                 key={opportunity.id}
@@ -135,18 +157,20 @@ export default function OpportunitiesSearch({
               >
                 <div className="flex items-start gap-5">
                   {opportunity.imageUrl ? (
-                    <img
+                    <Image
                       src={opportunity.imageUrl}
                       alt={opportunity.title}
+                      width={96}
+                      height={96}
                       className="h-24 w-24 rounded-2xl object-cover"
                     />
                   ) : (
-                    <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-slate-800 text-4xl">
+                    <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-slate-800 text-4xl">
                       🌍
                     </div>
                   )}
 
-                  <div className="flex-1">
+                  <div className="min-w-0 flex-1">
                     <div className="mb-3 flex flex-wrap gap-2">
                       <StatusBadge status={opportunity.status} />
 
@@ -155,14 +179,16 @@ export default function OpportunitiesSearch({
                       </span>
                     </div>
 
-                    <h3 className="text-2xl font-bold">{opportunity.title}</h3>
+                    <h3 className="break-words text-2xl font-bold">
+                      {opportunity.title}
+                    </h3>
 
                     <p className="mt-3 line-clamp-3 text-slate-400">
                       {opportunity.description}
                     </p>
 
                     <span className="mt-6 inline-flex text-blue-400 hover:text-blue-300">
-                      View Opportunity →
+                      {t("viewOpportunity")}
                     </span>
                   </div>
                 </div>
@@ -171,17 +197,15 @@ export default function OpportunitiesSearch({
           </div>
         </div>
       )}
-      {filteredOpportunities.length === 0 && (
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center">
-          <h3 className="text-2xl font-bold">No opportunities found</h3>
 
-          <p className="text-slate-400 mt-3">
-            Try changing your search or filters.
-          </p>
+      {filteredOpportunities.length === 0 ? (
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center">
+          <h3 className="text-2xl font-bold">{t("empty.title")}</h3>
+
+          <p className="mt-3 text-slate-400">{t("empty.description")}</p>
         </div>
-      )}
-      {filteredOpportunities.length > 0 && (
-        <div className="grid md:grid-cols-3 gap-6">
+      ) : (
+        <div className="grid gap-6 md:grid-cols-3">
           {filteredOpportunities.map((opportunity) => (
             <Link
               key={opportunity.id}
@@ -189,9 +213,11 @@ export default function OpportunitiesSearch({
               className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/20"
             >
               {opportunity.imageUrl ? (
-                <img
+                <Image
                   src={opportunity.imageUrl}
                   alt={opportunity.title}
+                  width={800}
+                  height={400}
                   className="h-48 w-full object-cover"
                 />
               ) : (
@@ -209,14 +235,16 @@ export default function OpportunitiesSearch({
                   <StatusBadge status={opportunity.status} />
                 </div>
 
-                <h2 className="text-2xl font-bold">{opportunity.title}</h2>
+                <h2 className="break-words text-2xl font-bold">
+                  {opportunity.title}
+                </h2>
 
                 <p className="mt-3 line-clamp-3 text-slate-400">
                   {opportunity.description}
                 </p>
 
                 <span className="mt-5 inline-flex text-blue-400 hover:text-blue-300">
-                  View Opportunity →
+                  {t("viewOpportunity")}
                 </span>
               </div>
             </Link>

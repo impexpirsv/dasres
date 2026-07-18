@@ -1,36 +1,50 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { prisma } from "../../../../lib/prisma";
-import DeleteOpportunityButton from "../../../components/DeleteOpportunityButton";
 import { formatCountry } from "../../../../lib/format";
+import DeleteOpportunityButton from "../../../components/DeleteOpportunityButton";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-function StatusBadge({ status }: { status: string }) {
-  const normalizedStatus = status.toUpperCase();
+type StatusBadgeProps = {
+  status: string;
+  labels: {
+    open: string;
+    inProgress: string;
+    closed: string;
+  };
+};
 
-  if (normalizedStatus === "OPEN") {
+function StatusBadge({
+  status,
+  labels,
+}: StatusBadgeProps) {
+  const normalizedValue = status.toUpperCase();
+
+  if (normalizedValue === "OPEN") {
     return (
       <span className="rounded-full bg-emerald-600 px-4 py-2 text-sm">
-        Open
+        {labels.open}
       </span>
     );
   }
 
-  if (normalizedStatus === "IN_PROGRESS") {
+  if (normalizedValue === "IN_PROGRESS") {
     return (
       <span className="rounded-full bg-yellow-600 px-4 py-2 text-sm">
-        In Progress
+        {labels.inProgress}
       </span>
     );
   }
 
-  if (normalizedStatus === "CLOSED") {
+  if (normalizedValue === "CLOSED") {
     return (
       <span className="rounded-full bg-red-600 px-4 py-2 text-sm">
-        Closed
+        {labels.closed}
       </span>
     );
   }
@@ -45,10 +59,17 @@ function StatusBadge({ status }: { status: string }) {
 export default async function DashboardOpportunityDetailPage({
   params,
 }: Props) {
+  const t = await getTranslations(
+    "dashboardOpportunityDetail",
+  );
+
   const { id } = await params;
   const opportunityId = Number(id);
 
-  if (!opportunityId) {
+  if (
+    !Number.isInteger(opportunityId) ||
+    opportunityId <= 0
+  ) {
     notFound();
   }
 
@@ -62,68 +83,98 @@ export default async function DashboardOpportunityDetailPage({
     notFound();
   }
 
+  const statusLabels = {
+    open: t("statuses.open"),
+    inProgress: t("statuses.inProgress"),
+    closed: t("statuses.closed"),
+  };
+
+  function getStatusLabel(status: string) {
+    switch (status.toUpperCase()) {
+      case "OPEN":
+        return statusLabels.open;
+
+      case "IN_PROGRESS":
+        return statusLabels.inProgress;
+
+      case "CLOSED":
+        return statusLabels.closed;
+
+      default:
+        return status;
+    }
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="mx-auto max-w-7xl px-6 py-12">
       <Link
         href="/dashboard/opportunities"
-        className="text-blue-400 hover:underline mb-8 inline-block"
+        className="mb-8 inline-block text-blue-400 hover:underline"
       >
-        ← Back to Dashboard Opportunities
+        {t("backToDashboardOpportunities")}
       </Link>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden">
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 lg:col-span-2">
           {opportunity.imageUrl ? (
-            <img
-              src={opportunity.imageUrl}
-              alt={opportunity.title}
-              className="w-full h-80 object-cover"
-            />
+            <div className="relative h-80 w-full">
+              <Image
+                src={opportunity.imageUrl}
+                alt={opportunity.title}
+                fill
+                sizes="(min-width: 1024px) 66vw, 100vw"
+                className="object-cover"
+                priority
+              />
+            </div>
           ) : (
-            <div className="h-80 bg-slate-800 flex flex-col items-center justify-center text-center">
-              <div className="text-7xl mb-4">🌍</div>
+            <div className="flex h-80 flex-col items-center justify-center bg-slate-800 text-center">
+              <div className="mb-4 text-7xl">🌍</div>
 
               <p className="text-slate-400">
-                Trade Opportunity
+                {t("tradeOpportunity")}
               </p>
 
-              <p className="text-slate-500 text-sm mt-1">
-                Global Marketplace
+              <p className="mt-1 text-sm text-slate-500">
+                {t("globalMarketplace")}
               </p>
             </div>
           )}
 
           <div className="p-10">
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              <StatusBadge status={opportunity.status} />
+            <div className="mb-6 flex flex-wrap items-center gap-3">
+              <StatusBadge
+                status={opportunity.status}
+                labels={statusLabels}
+              />
 
               <span className="rounded-full bg-blue-500/20 px-4 py-2 text-sm text-blue-400">
                 {formatCountry(opportunity.country)}
               </span>
 
               <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
-                Trade Opportunity
+                {t("tradeOpportunity")}
               </span>
             </div>
 
-            <h1 className="text-5xl font-black leading-tight mb-8">
+            <h1 className="mb-8 text-5xl font-black leading-tight">
               {opportunity.title}
             </h1>
 
-            <div className="grid sm:grid-cols-3 gap-4 mb-10">
+            <div className="mb-10 grid gap-4 sm:grid-cols-3">
               <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <p className="text-slate-500 text-sm mb-1">
-                  Status
+                <p className="mb-1 text-sm text-slate-500">
+                  {t("status")}
                 </p>
 
                 <p className="text-2xl font-bold text-emerald-400">
-                  {opportunity.status}
+                  {getStatusLabel(opportunity.status)}
                 </p>
               </div>
 
               <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <p className="text-slate-500 text-sm mb-1">
-                  Country
+                <p className="mb-1 text-sm text-slate-500">
+                  {t("country")}
                 </p>
 
                 <p className="text-2xl font-bold text-blue-400">
@@ -132,55 +183,57 @@ export default async function DashboardOpportunityDetailPage({
               </div>
 
               <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <p className="text-slate-500 text-sm mb-1">
-                  Visibility
+                <p className="mb-1 text-sm text-slate-500">
+                  {t("visibility")}
                 </p>
 
                 <p className="text-2xl font-bold text-yellow-400">
-                  Dashboard
+                  {t("dashboard")}
                 </p>
               </div>
             </div>
 
             <div className="border-t border-slate-800 pt-8">
-              <h2 className="text-2xl font-bold mb-4">
-                Opportunity Description
+              <h2 className="mb-4 text-2xl font-bold">
+                {t("opportunityDescription")}
               </h2>
 
-              <p className="text-slate-300 leading-8 whitespace-pre-line">
+              <p className="whitespace-pre-line leading-8 text-slate-300">
                 {opportunity.description}
               </p>
             </div>
 
-            <div className="border-t border-slate-800 pt-8 mt-8">
-              <h2 className="text-2xl font-bold mb-4">
-                Admin Actions
+            <div className="mt-8 border-t border-slate-800 pt-8">
+              <h2 className="mb-4 text-2xl font-bold">
+                {t("adminActions")}
               </h2>
 
               <div className="flex flex-wrap gap-3">
                 <Link
                   href={`/dashboard/opportunities/${opportunity.id}/edit`}
-                  className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl"
+                  className="rounded-xl bg-blue-600 px-5 py-3 hover:bg-blue-700"
                 >
-                  Edit Opportunity
+                  {t("editOpportunity")}
                 </Link>
 
-                <DeleteOpportunityButton id={opportunity.id} />
+                <DeleteOpportunityButton
+                  id={opportunity.id}
+                />
               </div>
             </div>
           </div>
         </div>
 
         <aside className="space-y-6">
-          <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-            <h2 className="text-2xl font-bold mb-6">
-              Opportunity Summary
+          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="mb-6 text-2xl font-bold">
+              {t("opportunitySummary")}
             </h2>
 
             <div className="space-y-4">
               <div>
-                <p className="text-slate-500 text-sm">
-                  Country
+                <p className="text-sm text-slate-500">
+                  {t("country")}
                 </p>
 
                 <p className="text-slate-200">
@@ -189,50 +242,48 @@ export default async function DashboardOpportunityDetailPage({
               </div>
 
               <div>
-                <p className="text-slate-500 text-sm">
-                  Status
+                <p className="text-sm text-slate-500">
+                  {t("status")}
                 </p>
 
                 <p className="text-slate-200">
-                  {opportunity.status}
+                  {getStatusLabel(opportunity.status)}
                 </p>
               </div>
 
               <div>
-                <p className="text-slate-500 text-sm">
-                  Type
+                <p className="text-sm text-slate-500">
+                  {t("type")}
                 </p>
 
                 <p className="text-slate-200">
-                  Trade Opportunity
+                  {t("tradeOpportunity")}
                 </p>
               </div>
             </div>
 
             <Link
               href={`/opportunities/${opportunity.id}`}
-              className="mt-6 block text-center bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
+              className="mt-6 block rounded-xl bg-blue-600 px-6 py-3 text-center hover:bg-blue-700"
             >
-              View Public Page
+              {t("viewPublicPage")}
             </Link>
 
             <Link
               href="/dashboard/opportunities"
-              className="mt-3 block text-center bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl"
+              className="mt-3 block rounded-xl bg-slate-800 px-6 py-3 text-center hover:bg-slate-700"
             >
-              Back to Management
+              {t("backToManagement")}
             </Link>
           </div>
 
-          <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-            <h2 className="text-2xl font-bold mb-4">
-              Admin Note
+          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="mb-4 text-2xl font-bold">
+              {t("adminNote")}
             </h2>
 
-            <p className="text-slate-400 leading-7">
-              This page is used for managing trade opportunities inside
-              the dashboard. Public visitors see the separate public
-              opportunity page.
+            <p className="leading-7 text-slate-400">
+              {t("adminNoteDescription")}
             </p>
           </div>
         </aside>

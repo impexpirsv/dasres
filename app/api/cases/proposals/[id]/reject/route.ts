@@ -1,9 +1,10 @@
 import { prisma } from "../../../../../../lib/prisma";
 import { requireUser } from "../../../../../../lib/auth";
+import { notifyProposalRejected } from "../../../../../../lib/notificationEvents";
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const user = await requireUser();
@@ -11,10 +12,12 @@ export async function PATCH(
     const { id } = await params;
     const proposalId = Number(id);
 
-    if (Number.isNaN(proposalId)) {
+    if (!Number.isInteger(proposalId) || proposalId <= 0) {
       return Response.json(
-        { message: "Invalid proposal id" },
-        { status: 400 }
+        {
+          code: "INVALID_PROPOSAL_ID",
+        },
+        { status: 400 },
       );
     }
 
@@ -22,12 +25,21 @@ export async function PATCH(
       where: {
         id: proposalId,
       },
+      include: {
+        company: {
+          select: {
+            ownerId: true,
+          },
+        },
+      },
     });
 
     if (!proposal) {
       return Response.json(
-        { message: "Proposal not found" },
-        { status: 404 }
+        {
+          code: "PROPOSAL_NOT_FOUND",
+        },
+        { status: 404 },
       );
     }
 
@@ -35,12 +47,19 @@ export async function PATCH(
       where: {
         id: proposal.caseId,
       },
+      select: {
+        id: true,
+        customerId: true,
+        status: true,
+      },
     });
 
     if (!tradeCase) {
       return Response.json(
-        { message: "Case not found" },
-        { status: 404 }
+        {
+          code: "CASE_NOT_FOUND",
+        },
+        { status: 404 },
       );
     }
 
@@ -50,58 +69,65 @@ export async function PATCH(
     ) {
       return Response.json(
         {
-          message:
-            "You can only reject proposals for your own case.",
+          code: "PROPOSAL_REJECT_ACCESS_DENIED",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     if (tradeCase.status !== "OPEN") {
       return Response.json(
         {
-          message:
-            "This case is not open for proposal updates.",
+          code: "CASE_NOT_OPEN_FOR_PROPOSAL_UPDATE",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (proposal.status !== "PENDING") {
       return Response.json(
         {
-          message:
-            "Only pending proposals can be rejected.",
+          code: "ONLY_PENDING_PROPOSALS_CAN_BE_REJECTED",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    await prisma.caseProposal.update({
-      where: {
-        id: proposalId,
-      },
-      data: {
-        status: "REJECTED",
-      },
-    });
+    await prisma.$transaction([
+      prisma.caseProposal.update({
+        where: {
+          id: proposalId,
+        },
+        data: {
+          status: "REJECTED",
+        },
+      }),
+      prisma.caseActivity.create({
+        data: {
+          caseId: proposal.caseId,
+          userId: user.id,
+          action: "PROPOSAL_REJECTED",
+          details: `Proposal #${proposal.id} rejected.`,
+        },
+      }),
+    ]);
 
-    await prisma.caseActivity.create({
-      data: {
-        caseId: proposal.caseId,
-        userId: user.id,
-        action: "PROPOSAL_REJECTED",
-        details: `Proposal #${proposal.id} rejected.`,
-      },
-    });
+    if (proposal.company?.ownerId) {
+      await notifyProposalRejected({
+        userId: proposal.company.ownerId,
+        caseId: tradeCase.id,
+      });
+    }
 
     return Response.json({
-      message: "Proposal rejected",
+      code: "PROPOSAL_REJECTED",
     });
   } catch {
     return Response.json(
-      { message: "Failed to reject proposal" },
-      { status: 500 }
+      {
+        code: "PROPOSAL_REJECT_FAILED",
+      },
+      { status: 500 },
     );
   }
 }

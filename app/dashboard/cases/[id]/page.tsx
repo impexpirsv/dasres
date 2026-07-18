@@ -1,6 +1,9 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
-import Link from "next/link";
+import StatusBadge, { type Status } from "../../../components/StatusBadge";
 import CompleteCaseStepButton from "../../../components/CompleteCaseStepButton";
 import AddCaseMessageForm from "../../../components/AddCaseMessageForm";
 import AddCaseDocumentForm from "../../../components/AddCaseDocumentForm";
@@ -10,133 +13,215 @@ import CompleteCaseButton from "../../../components/CompleteCaseButton";
 import AddReviewForm from "../../../components/AddReviewForm";
 import EmptyState from "../../../components/EmptyState";
 import TradeWorkflowTimeline from "../../../components/trade/TradeWorkflowTimeline";
-function getActivityDisplay(action: string) {
+
+type ActivityTranslation = (key: string) => string;
+
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+function getActivityDisplay(action: string, t: ActivityTranslation) {
   switch (action) {
     case "PROPOSAL_SUBMITTED":
       return {
-        title: "Proposal Submitted",
+        title: t("activity.actions.proposalSubmitted"),
         icon: "📨",
         border: "border-yellow-500",
       };
 
     case "PROPOSAL_ACCEPTED":
       return {
-        title: "Proposal Accepted",
+        title: t("activity.actions.proposalAccepted"),
         icon: "✅",
         border: "border-green-500",
       };
 
     case "PROPOSAL_REJECTED":
       return {
-        title: "Proposal Rejected",
+        title: t("activity.actions.proposalRejected"),
         icon: "❌",
         border: "border-red-500",
       };
 
     case "MESSAGE_SENT":
       return {
-        title: "Message Sent",
+        title: t("activity.actions.messageSent"),
         icon: "💬",
         border: "border-blue-500",
       };
 
     case "DOCUMENT_UPLOADED":
       return {
-        title: "Document Uploaded",
+        title: t("activity.actions.documentUploaded"),
         icon: "📄",
         border: "border-purple-500",
       };
 
     case "CASE_COMPLETED":
       return {
-        title: "Case Completed",
+        title: t("activity.actions.caseCompleted"),
         icon: "🏁",
         border: "border-emerald-500",
       };
+
     case "REVIEW_SUBMITTED":
       return {
-        title: "Review Submitted",
+        title: t("activity.actions.reviewSubmitted"),
         icon: "⭐",
         border: "border-yellow-500",
       };
+
     default:
       return {
-        title: action.replaceAll("_", " "),
+        title: action
+          .replaceAll("_", " ")
+          .toLowerCase()
+          .replace(/\b\w/g, (character) => character.toUpperCase()),
         icon: "•",
         border: "border-slate-600",
       };
   }
 }
-type Props = {
-  params: Promise<{ id: string }>;
-};
 
 export default async function CaseDetailPage({ params }: Props) {
   const user = await requireUser();
+
+  const [t, locale] = await Promise.all([
+    getTranslations("caseDetailPage"),
+    getLocale(),
+  ]);
+
   const { id } = await params;
   const caseId = Number(id);
 
-  if (!caseId || Number.isNaN(caseId)) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Invalid Case ID</h1>
-      </div>
-    );
+  if (!Number.isInteger(caseId) || caseId <= 0) {
+    notFound();
   }
 
   const tradeCase = await prisma.tradeCase.findUnique({
     where: {
       id: caseId,
     },
-    include: {
+    select: {
+      id: true,
+      customerId: true,
+      acceptedProposalId: true,
+      status: true,
+      category: true,
+      title: true,
+      description: true,
+      createdAt: true,
+      updatedAt: true,
+      assignedAt: true,
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
       steps: {
         orderBy: {
           id: "asc",
+        },
+        select: {
+          id: true,
+          title: true,
+          completed: true,
         },
       },
       documents: {
         orderBy: {
           id: "desc",
         },
-        include: {
-          uploader: true,
+        select: {
+          id: true,
+          name: true,
+          fileUrl: true,
+          createdAt: true,
+          uploader: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
         },
       },
       messages: {
         orderBy: {
           id: "asc",
         },
-        include: {
-          sender: true,
+        select: {
+          id: true,
+          senderId: true,
+          content: true,
+          createdAt: true,
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
         },
       },
       proposals: {
         orderBy: {
           id: "desc",
         },
-        include: {
-          company: true,
-          expert: true,
+        select: {
+          id: true,
+          status: true,
+          price: true,
+          message: true,
+          company: {
+            select: {
+              id: true,
+              ownerId: true,
+              name: true,
+            },
+          },
+          expert: {
+            select: {
+              id: true,
+              ownerId: true,
+              name: true,
+            },
+          },
         },
       },
-      reviews: true,
+      reviews: {
+        select: {
+          reviewerId: true,
+          reviewedUserId: true,
+        },
+      },
       activities: {
         orderBy: {
           id: "desc",
         },
-        include: {
-          user: true,
+        select: {
+          id: true,
+          action: true,
+          details: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
         },
       },
     },
   });
 
   if (!tradeCase) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Case Not Found</h1>
-      </div>
-    );
+    notFound();
   }
 
   const isAdmin = user.role === "admin";
@@ -146,91 +231,102 @@ export default async function CaseDetailPage({ params }: Props) {
     (proposal) => proposal.id === tradeCase.acceptedProposalId,
   );
 
-  const acceptedProviderUserId = winningProposal?.company?.ownerId || null;
+  const acceptedProviderUserId =
+    winningProposal?.company?.ownerId ??
+    winningProposal?.expert?.ownerId ??
+    null;
 
   const isAcceptedProvider = acceptedProviderUserId === user.id;
 
-  const userMatchingCompanies = await prisma.company.findMany({
-    where: {
-      ownerId: user.id,
-      category: tradeCase.category,
-    },
-    orderBy: {
-      name: "asc",
-    },
-  });
-
-  const canViewCase =
-    isAdmin ||
-    isCustomer ||
-    isAcceptedProvider ||
-    (tradeCase.status === "OPEN" && userMatchingCompanies.length > 0);
-
-  if (!canViewCase) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Access Denied</h1>
-      </div>
+  const hasReviewedProvider =
+    acceptedProviderUserId !== null &&
+    tradeCase.reviews.some(
+      (review) =>
+        review.reviewerId === tradeCase.customerId &&
+        review.reviewedUserId === acceptedProviderUserId,
     );
-  }
 
-  const hasReviewedProvider = acceptedProviderUserId
-    ? tradeCase.reviews.some(
-        (review) =>
-          review.reviewerId === user.id &&
-          review.reviewedUserId === acceptedProviderUserId,
-      )
-    : true;
+  const hasReviewedCustomer =
+    acceptedProviderUserId !== null &&
+    tradeCase.reviews.some(
+      (review) =>
+        review.reviewerId === acceptedProviderUserId &&
+        review.reviewedUserId === tradeCase.customerId,
+    );
 
-  const hasReviewedCustomer = tradeCase.reviews.some(
-    (review) =>
-      review.reviewerId === user.id &&
-      review.reviewedUserId === tradeCase.customerId,
-  );
-  const recommendedCompanies = await prisma.company.findMany({
-    where: {
-      category: tradeCase.category,
-      verificationStatus: "VERIFIED",
-    },
-    include: {
-      owner: {
-        include: {
-          reviewsReceived: true,
-        },
-      },
-    },
-    take: 5,
-  });
-  const companies = isAdmin
-    ? await prisma.company.findMany({
+  const [userMatchingCompanies, recommendedCompanies, adminCompanies, experts] =
+    await Promise.all([
+      prisma.company.findMany({
         where: {
+          ownerId: user.id,
           category: tradeCase.category,
         },
         orderBy: {
           name: "asc",
         },
-      })
-    : userMatchingCompanies;
+        select: {
+          id: true,
+          name: true,
+        },
+      }),
 
-  const experts = await prisma.expert.findMany({
-    where: {
-      specialty: tradeCase.category,
-      ...(isAdmin
-        ? {}
-        : {
-            ownerId: user.id,
-          }),
-    },
-    orderBy: {
-      name: "asc",
-    },
-  });
+      prisma.company.findMany({
+        where: {
+          category: tradeCase.category,
+          verificationStatus: "VERIFIED",
+        },
+        orderBy: {
+          name: "asc",
+        },
+        take: 5,
+        select: {
+          id: true,
+          name: true,
+          country: true,
+        },
+      }),
 
+      isAdmin
+        ? prisma.company.findMany({
+            where: {
+              category: tradeCase.category,
+            },
+            orderBy: {
+              name: "asc",
+            },
+            select: {
+              id: true,
+              name: true,
+            },
+          })
+        : Promise.resolve([]),
+
+      prisma.expert.findMany({
+        where: {
+          specialty: tradeCase.category,
+          ...(isAdmin
+            ? {}
+            : {
+                ownerId: user.id,
+              }),
+        },
+        orderBy: {
+          name: "asc",
+        },
+        select: {
+          id: true,
+          name: true,
+        },
+      }),
+    ]);
+
+  const companies = isAdmin ? adminCompanies : userMatchingCompanies;
   const canSubmitProposal =
     tradeCase.status === "OPEN" &&
     !tradeCase.acceptedProposalId &&
     !isCustomer &&
     companies.length > 0;
+
   const completedStepsCount = tradeCase.steps.filter(
     (step) => step.completed,
   ).length;
@@ -241,117 +337,160 @@ export default async function CaseDetailPage({ params }: Props) {
     totalStepsCount > 0
       ? Math.round((completedStepsCount / totalStepsCount) * 100)
       : 0;
+
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+  const dateTimeFormatter = new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  function formatDate(value: Date | string | null) {
+    if (!value) {
+      return t("notAssigned");
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return t("unknownDate");
+    }
+
+    return dateFormatter.format(date);
+  }
+
+  function formatDateTime(value: Date | string) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return t("unknownDate");
+    }
+
+    return dateTimeFormatter.format(date);
+  }
+
+  const isRtl = locale.startsWith("fa") || locale.startsWith("ar");
+
+  const customerName =
+    tradeCase.customer.name || tradeCase.customer.email || t("unknownUser");
+
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-    
-      <div className="max-w-7xl mx-auto px-6 py-20">
+    <main className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto max-w-7xl px-6 py-20">
         <Link
           href="/dashboard/cases"
-          className="text-blue-400 hover:underline mb-8 inline-block"
+          className="mb-8 inline-flex items-center gap-2 text-blue-400 hover:underline"
         >
-          ← Back to Cases
+          <span aria-hidden="true">{isRtl ? "→" : "←"}</span>
+
+          <span>{t("backToCases")}</span>
         </Link>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          <main className="lg:col-span-2 space-y-6">
-           <TradeWorkflowTimeline
-  currentStep={completedStepsCount}
-/>
-            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-8">
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="bg-slate-800/80 border border-slate-700 px-4 py-2 rounded-full text-sm text-slate-300">
-                  Case #{tradeCase.id}
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="space-y-6 lg:col-span-2">
+            <TradeWorkflowTimeline currentStep={completedStepsCount} />
+
+            <section className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+              <div className="mb-4 flex flex-wrap items-center gap-3">
+                <span className="rounded-full border border-slate-700 bg-slate-800/80 px-4 py-2 text-sm text-slate-300">
+                  {t("caseNumber", {
+                    id: tradeCase.id,
+                  })}
                 </span>
 
-                <span
-                  className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                    tradeCase.status === "OPEN"
-                      ? "bg-blue-600"
-                      : tradeCase.status === "IN_PROGRESS"
-                        ? "bg-orange-600"
-                        : tradeCase.status === "COMPLETED"
-                          ? "bg-emerald-600"
-                          : "bg-red-600"
-                  }`}
-                >
-                  {tradeCase.status === "OPEN"
-                    ? "🟢 OPEN"
-                    : tradeCase.status === "IN_PROGRESS"
-                      ? "🟡 IN PROGRESS"
-                      : tradeCase.status === "COMPLETED"
-                        ? "✅ COMPLETED"
-                        : "🔴 CANCELLED"}
-                </span>
+                <StatusBadge status={tradeCase.status as Status} />
 
-                <span className="bg-purple-600/20 border border-purple-500/40 text-purple-300 px-4 py-2 rounded-full text-sm font-semibold">
-                  🧭 {tradeCase.category}
+                <span className="rounded-full border border-purple-500/40 bg-purple-600/20 px-4 py-2 text-sm font-semibold text-purple-300">
+                  <span aria-hidden="true">🧭</span> {tradeCase.category}
                 </span>
               </div>
 
-              <h1 className="text-4xl font-bold mb-4">{tradeCase.title}</h1>
+              <h1 className="mb-4 break-words text-4xl font-bold">
+                {tradeCase.title}
+              </h1>
 
-              <p className="text-slate-300 leading-8">
+              <p className="whitespace-pre-wrap break-words leading-8 text-slate-300">
                 {tradeCase.description}
               </p>
-              <div className="grid md:grid-cols-3 gap-4 mt-6">
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Customer</p>
 
-                  <p className="font-semibold text-slate-200 mt-1">
-                    {isCustomer ? "You" : `User #${tradeCase.customerId}`}
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">{t("customer")}</p>
+
+                  <p className="mt-1 break-words font-semibold text-slate-200">
+                    {isCustomer ? t("you") : customerName}
                   </p>
                 </div>
 
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Winning Company</p>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">
+                    {t("winningCompany")}
+                  </p>
 
-                  <p className="font-semibold text-slate-200 mt-1">
-                    {winningProposal?.company?.name || "Not selected"}
+                  <p className="mt-1 break-words font-semibold text-slate-200">
+                    {winningProposal?.company?.name ?? t("notSelected")}
                   </p>
                 </div>
 
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Winning Expert</p>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">{t("winningExpert")}</p>
 
-                  <p className="font-semibold text-slate-200 mt-1">
-                    {winningProposal?.expert?.name || "Not assigned"}
+                  <p className="mt-1 break-words font-semibold text-slate-200">
+                    {winningProposal?.expert?.name ?? t("notAssigned")}
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mt-8">
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Proposals</p>
+
+              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">
+                    {t("metrics.proposals")}
+                  </p>
 
                   <p className="text-3xl font-bold text-blue-400">
                     {tradeCase.proposals.length}
                   </p>
                 </div>
 
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Messages</p>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">
+                    {t("metrics.messages")}
+                  </p>
 
                   <p className="text-3xl font-bold text-emerald-400">
                     {tradeCase.messages.length}
                   </p>
                 </div>
 
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Documents</p>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">
+                    {t("metrics.documents")}
+                  </p>
 
                   <p className="text-3xl font-bold text-cyan-400">
                     {tradeCase.documents.length}
                   </p>
                 </div>
 
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Activities</p>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">
+                    {t("metrics.activities")}
+                  </p>
 
                   <p className="text-3xl font-bold text-purple-400">
                     {tradeCase.activities.length}
                   </p>
                 </div>
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Progress</p>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">{t("progress")}</p>
 
                   <p className="text-3xl font-bold text-emerald-400">
                     {progressPercent}%
@@ -360,20 +499,22 @@ export default async function CaseDetailPage({ params }: Props) {
               </div>
             </section>
 
-            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-8">
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <h2 className="text-2xl font-bold">Case Timeline</h2>
+            <section className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                <h2 className="text-2xl font-bold">{t("timeline")}</h2>
 
                 <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
-                  {progressPercent}% Complete
+                  {t("percentComplete", {
+                    percent: progressPercent,
+                  })}
                 </span>
               </div>
 
               <div className="mb-6">
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-4">
                     <span className="text-sm text-slate-400">
-                      Workflow Progress
+                      {t("workflowProgress")}
                     </span>
 
                     <span className="text-sm font-semibold text-emerald-400">
@@ -381,7 +522,14 @@ export default async function CaseDetailPage({ params }: Props) {
                     </span>
                   </div>
 
-                  <div className="h-3 w-full rounded-full bg-slate-800 overflow-hidden">
+                  <div
+                    className="h-3 w-full overflow-hidden rounded-full bg-slate-800"
+                    role="progressbar"
+                    aria-label={t("workflowProgress")}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={progressPercent}
+                  >
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 transition-all duration-500"
                       style={{
@@ -392,62 +540,77 @@ export default async function CaseDetailPage({ params }: Props) {
                 </div>
 
                 <p className="mt-2 text-sm text-slate-500">
-                  {completedStepsCount} of {totalStepsCount} steps completed
+                  {t("stepsSummary", {
+                    completed: completedStepsCount,
+                    total: totalStepsCount,
+                  })}
                 </p>
               </div>
 
-              <div className="space-y-4">
-                {tradeCase.steps.map((step) => {
-                  const isFinalStep = step.title === "Completed";
+              {tradeCase.steps.length === 0 ? (
+                <EmptyState
+                  icon="🧭"
+                  title={t("timelineEmpty.title")}
+                  description={t("timelineEmpty.description")}
+                />
+              ) : (
+                <div className="space-y-4">
+                  {tradeCase.steps.map((step) => {
+                    const isFinalStep = step.title === "Completed";
 
-                  return (
-                    <div
-                      key={step.id}
-                      className={`flex items-start gap-4 rounded-2xl p-4 border ${
-                        isFinalStep && step.completed
-                          ? "bg-emerald-600/20 border-emerald-400"
-                          : step.completed
-                            ? "bg-emerald-950/30 border-emerald-600"
-                            : "bg-slate-950 border-slate-800"
-                      }`}
-                    >
+                    return (
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          step.completed ? "bg-emerald-600" : "bg-slate-700"
+                        key={step.id}
+                        className={`flex items-start gap-4 rounded-2xl border p-4 ${
+                          isFinalStep && step.completed
+                            ? "border-emerald-400 bg-emerald-600/20"
+                            : step.completed
+                              ? "border-emerald-600 bg-emerald-950/30"
+                              : "border-slate-800 bg-slate-950"
                         }`}
                       >
-                        {step.completed ? "✓" : "•"}
-                      </div>
-
-                      <div className="flex justify-between items-center w-full">
-                        <div>
-                          <p className="font-semibold">{step.title}</p>
-
-                          <p
-                            className={`text-sm mt-1 ${
-                              step.completed
-                                ? "text-emerald-400"
-                                : "text-slate-500"
-                            }`}
-                          >
-                            {step.completed
-                              ? "✓ Step completed"
-                              : "Waiting for completion"}
-                          </p>
+                        <div
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+                            step.completed ? "bg-emerald-600" : "bg-slate-700"
+                          }`}
+                        >
+                          {step.completed ? "✓" : "•"}
                         </div>
 
-                        {isAdmin && !step.completed && (
-                          <CompleteCaseStepButton stepId={step.id} />
-                        )}
+                        <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                          <div className="min-w-0">
+                            <p className="break-words font-semibold">
+                              {step.title}
+                            </p>
+
+                            <p
+                              className={`mt-1 text-sm ${
+                                step.completed
+                                  ? "text-emerald-400"
+                                  : "text-slate-500"
+                              }`}
+                            >
+                              {step.completed
+                                ? t("timelineStep.completed")
+                                : t("timelineStep.pending")}
+                            </p>
+                          </div>
+
+                          {isAdmin && !step.completed && (
+                            <CompleteCaseStepButton stepId={step.id} />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </section>
 
-            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-8">
-              <h2 className="text-2xl font-bold mb-6">Proposals</h2>
+            <section className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+              <h2 className="mb-6 text-2xl font-bold">
+                {t("proposals.title")}
+              </h2>
 
               {canSubmitProposal ? (
                 <div className="mb-6">
@@ -458,131 +621,150 @@ export default async function CaseDetailPage({ params }: Props) {
                   />
                 </div>
               ) : tradeCase.acceptedProposalId ? (
-                <p className="text-slate-500 mb-6">
-                  A winning proposal has already been selected.
+                <p className="mb-6 text-slate-500">
+                  {t("proposals.winnerSelected")}
                 </p>
               ) : tradeCase.status !== "OPEN" ? (
-                <p className="text-slate-500 mb-6">
-                  This case is already in progress. New proposals are closed.
-                </p>
+                <p className="mb-6 text-slate-500">{t("proposals.closed")}</p>
               ) : isCustomer ? (
-                <p className="text-slate-500 mb-6">
-                  You cannot submit a proposal for your own case.
-                </p>
+                <p className="mb-6 text-slate-500">{t("proposals.ownCase")}</p>
               ) : (
-                <p className="text-slate-500 mb-6">
-                  You do not have a matching company for this case category.
+                <p className="mb-6 text-slate-500">
+                  {t("proposals.noMatchingCompany")}
                 </p>
               )}
 
               {tradeCase.proposals.length === 0 ? (
                 <EmptyState
                   icon="🤝"
-                  title="No proposals yet"
-                  description="Matching companies can submit proposals while this case is open."
+                  title={t("proposals.empty.title")}
+                  description={t("proposals.empty.description")}
                 />
               ) : (
                 <div className="space-y-4">
                   {tradeCase.proposals.map((proposal) => {
                     const statusClass =
                       proposal.status === "ACCEPTED"
-                        ? "bg-emerald-500/20 border border-emerald-500/40 text-emerald-300"
+                        ? "border border-emerald-500/40 bg-emerald-500/20 text-emerald-300"
                         : proposal.status === "REJECTED"
-                          ? "bg-red-500/20 border border-red-500/40 text-red-300"
-                          : "bg-yellow-500/20 border border-yellow-500/40 text-yellow-300";
+                          ? "border border-red-500/40 bg-red-500/20 text-red-300"
+                          : "border border-yellow-500/40 bg-yellow-500/20 text-yellow-300";
+
+                    const proposalStatus =
+                      proposal.status === "ACCEPTED"
+                        ? t("proposals.status.accepted")
+                        : proposal.status === "REJECTED"
+                          ? t("proposals.status.rejected")
+                          : t("proposals.status.pending");
 
                     return (
-                      <div
+                      <article
                         key={proposal.id}
-                        className={`rounded-3xl p-6 border transition ${
+                        className={`rounded-3xl border p-6 transition ${
                           proposal.id === tradeCase.acceptedProposalId
-                            ? "bg-emerald-950/30 border-emerald-500"
-                            : "bg-slate-950 border-slate-800"
+                            ? "border-emerald-500 bg-emerald-950/30"
+                            : "border-slate-800 bg-slate-950"
                         }`}
                       >
-                        <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
-                          <div className="flex items-start gap-4">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center text-2xl shrink-0">
+                        <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
+                          <div className="flex min-w-0 items-start gap-4">
+                            <div
+                              aria-hidden="true"
+                              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-600 to-blue-600 text-2xl"
+                            >
                               🏢
                             </div>
 
-                            <div>
-                              <p className="text-slate-500 text-sm">
-                                Provider Proposal
+                            <div className="min-w-0">
+                              <p className="text-sm text-slate-500">
+                                {t("proposals.providerProposal")}
                               </p>
 
-                              <h3 className="text-2xl font-bold mt-1">
-                                {proposal.company?.name || "Unknown Company"}
+                              <h3 className="mt-1 break-words text-2xl font-bold">
+                                {proposal.company?.name ??
+                                  t("proposals.unknownCompany")}
                               </h3>
 
-                              <p className="text-sm text-slate-400 mt-1">
+                              <p className="mt-1 break-words text-sm text-slate-400">
                                 {proposal.expert?.name
-                                  ? `Expert: ${proposal.expert.name}`
-                                  : "No expert assigned"}
+                                  ? t("proposals.expertName", {
+                                      name: proposal.expert.name,
+                                    })
+                                  : t("proposals.noExpert")}
                               </p>
                             </div>
                           </div>
 
                           <span
-                            className={`px-3 py-1 rounded-full text-xs font-semibold ${statusClass}`}
+                            className={`rounded-full px-3 py-1 text-xs font-semibold ${statusClass}`}
                           >
-                            {proposal.status === "ACCEPTED"
-                              ? "✓ Accepted"
-                              : proposal.status === "REJECTED"
-                                ? "Rejected"
-                                : "Pending"}
+                            {proposalStatus}
                           </span>
                         </div>
 
-                        <div className="grid md:grid-cols-3 gap-3 mb-5">
-                          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4">
-                            <p className="text-slate-500 text-xs">Price</p>
+                        <div className="mb-5 grid gap-3 md:grid-cols-3">
+                          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p className="text-xs text-slate-500">
+                              {t("proposals.price")}
+                            </p>
 
-                            <p className="text-xl font-bold text-emerald-400 mt-1">
-                              {proposal.price || "No price"}
+                            <p className="mt-1 break-words text-xl font-bold text-emerald-400">
+                              {proposal.price || t("proposals.noPrice")}
                             </p>
                           </div>
 
-                          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4">
-                            <p className="text-slate-500 text-xs">Company</p>
+                          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p className="text-xs text-slate-500">
+                              {t("proposals.company")}
+                            </p>
 
                             {proposal.company?.id ? (
                               <Link
                                 href={`/dashboard/companies/${proposal.company.id}`}
-                                className="block text-blue-400 hover:underline font-semibold mt-1 truncate"
+                                className="mt-1 block truncate font-semibold text-blue-400 hover:underline"
                               >
-                                View Company →
+                                {t("viewCompany")}{" "}
+                                <span aria-hidden="true">
+                                  {isRtl ? "←" : "→"}
+                                </span>
                               </Link>
                             ) : (
-                              <p className="text-slate-400 mt-1">Unknown</p>
+                              <p className="mt-1 text-slate-400">
+                                {t("unknown")}
+                              </p>
                             )}
                           </div>
 
-                          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4">
-                            <p className="text-slate-500 text-xs">Expert</p>
+                          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p className="text-xs text-slate-500">
+                              {t("proposals.expert")}
+                            </p>
 
                             {proposal.expert?.id ? (
                               <Link
                                 href={`/dashboard/experts/${proposal.expert.id}`}
-                                className="block text-cyan-400 hover:underline font-semibold mt-1 truncate"
+                                className="mt-1 block truncate font-semibold text-cyan-400 hover:underline"
                               >
-                                View Expert →
+                                {t("viewExpert")}{" "}
+                                <span aria-hidden="true">
+                                  {isRtl ? "←" : "→"}
+                                </span>
                               </Link>
                             ) : (
-                              <p className="text-slate-400 mt-1">
-                                Not assigned
+                              <p className="mt-1 text-slate-400">
+                                {t("notAssigned")}
                               </p>
                             )}
                           </div>
                         </div>
 
-                        <div className="rounded-2xl bg-slate-900/70 border border-slate-800 p-4">
-                          <p className="text-slate-500 text-xs mb-2">
-                            Proposal Message
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                          <p className="mb-2 text-xs text-slate-500">
+                            {t("proposals.message")}
                           </p>
 
-                          <p className="text-sm text-slate-300 leading-7">
-                            {proposal.message || "No message provided."}
+                          <p className="whitespace-pre-wrap break-words text-sm leading-7 text-slate-300">
+                            {proposal.message || t("proposals.noMessage")}
                           </p>
                         </div>
 
@@ -592,16 +774,18 @@ export default async function CaseDetailPage({ params }: Props) {
                               <ProposalActionButtons proposalId={proposal.id} />
                             </div>
                           )}
-                      </div>
+                      </article>
                     );
                   })}
                 </div>
               )}
             </section>
 
-            <section className="grid lg:grid-cols-2 gap-6">
-              <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-                <h2 className="text-2xl font-bold mb-4">Messages</h2>
+            <section className="grid gap-6 lg:grid-cols-2">
+              <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+                <h2 className="mb-4 text-2xl font-bold">
+                  {t("messages.title")}
+                </h2>
 
                 {(isAdmin || isCustomer || isAcceptedProvider) &&
                   tradeCase.status === "IN_PROGRESS" && (
@@ -612,13 +796,18 @@ export default async function CaseDetailPage({ params }: Props) {
                   {tradeCase.messages.length === 0 ? (
                     <EmptyState
                       icon="💬"
-                      title="No messages yet"
-                      description="Messages will appear here once the case is in progress."
+                      title={t("messages.empty.title")}
+                      description={t("messages.empty.description")}
                     />
                   ) : (
                     <div className="space-y-3">
                       {tradeCase.messages.map((message) => {
                         const isMine = message.senderId === user.id;
+
+                        const senderName =
+                          message.sender.name ||
+                          message.sender.email ||
+                          t("unknownUser");
 
                         return (
                           <div
@@ -628,31 +817,36 @@ export default async function CaseDetailPage({ params }: Props) {
                             }`}
                           >
                             <div
-                              className={`max-w-[80%] rounded-2xl p-4 ${
+                              className={`max-w-[90%] rounded-2xl p-4 sm:max-w-[80%] ${
                                 isMine
                                   ? "bg-blue-600 text-white"
                                   : "bg-slate-800 text-slate-200"
                               }`}
                             >
-                              <div className="flex justify-between items-center gap-4 mb-2">
+                              <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                                 <p
-                                  className={`text-sm font-semibold ${
+                                  className={`break-words text-sm font-semibold ${
                                     isMine ? "text-blue-100" : "text-blue-400"
                                   }`}
                                 >
-                                  {message.sender.name}
+                                  {isMine ? t("you") : senderName}
                                 </p>
 
-                                <p
-                                  className={`text-xs ${
+                                <time
+                                  dateTime={new Date(
+                                    message.createdAt,
+                                  ).toISOString()}
+                                  className={`shrink-0 text-xs ${
                                     isMine ? "text-blue-100" : "text-slate-500"
                                   }`}
                                 >
-                                  {message.createdAt.toLocaleString()}
-                                </p>
+                                  {formatDateTime(message.createdAt)}
+                                </time>
                               </div>
 
-                              <p>{message.content}</p>
+                              <p className="whitespace-pre-wrap break-words">
+                                {message.content}
+                              </p>
                             </div>
                           </div>
                         );
@@ -662,8 +856,10 @@ export default async function CaseDetailPage({ params }: Props) {
                 </div>
               </div>
 
-              <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-                <h2 className="text-2xl font-bold mb-4">Documents</h2>
+              <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+                <h2 className="mb-4 text-2xl font-bold">
+                  {t("documents.title")}
+                </h2>
 
                 {(isAdmin || isCustomer || isAcceptedProvider) &&
                   tradeCase.status === "IN_PROGRESS" && (
@@ -674,222 +870,300 @@ export default async function CaseDetailPage({ params }: Props) {
                   {tradeCase.documents.length === 0 ? (
                     <EmptyState
                       icon="📄"
-                      title="No documents yet"
-                      description="Uploaded trade documents will be stored here."
+                      title={t("documents.empty.title")}
+                      description={t("documents.empty.description")}
                     />
                   ) : (
                     <div className="space-y-3">
-                      {tradeCase.documents.map((document) => (
-                        <div
-                          key={document.id}
-                          className="bg-slate-800 rounded-xl p-4"
-                        >
-                          <div className="flex justify-between items-start gap-4">
-                            <div>
-                              <p className="font-semibold">{document.name}</p>
+                      {tradeCase.documents.map((document) => {
+                        const uploader =
+                          document.uploader.name ||
+                          document.uploader.email ||
+                          t("unknownUser");
 
-                              <p className="text-sm text-blue-400 mt-1">
-                                Uploaded by {document.uploader.name}
-                              </p>
+                        return (
+                          <div
+                            key={document.id}
+                            className="rounded-xl bg-slate-800 p-4"
+                          >
+                            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                              <div className="min-w-0">
+                                <p className="break-all font-semibold">
+                                  {document.name}
+                                </p>
 
-                              <p className="text-xs text-slate-500 mt-1">
-                                {document.createdAt.toLocaleString()}
-                              </p>
+                                <p className="mt-1 text-sm text-blue-400">
+                                  {t("documents.uploadedBy", {
+                                    name: uploader,
+                                  })}
+                                </p>
+
+                                <time
+                                  dateTime={new Date(
+                                    document.createdAt,
+                                  ).toISOString()}
+                                  className="mt-1 block text-xs text-slate-500"
+                                >
+                                  {formatDateTime(document.createdAt)}
+                                </time>
+                              </div>
+
+                              <a
+                                href={document.fileUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-fit shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                              >
+                                {t("documents.download")}
+                              </a>
                             </div>
-
-                            <a
-                              href={document.fileUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm"
-                            >
-                              Download
-                            </a>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
               </div>
             </section>
-          </main>
+          </div>
 
           <aside className="space-y-6">
-            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">Case Information</h2>
+            <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="mb-4 text-2xl font-bold">
+                {t("caseInformation")}
+              </h2>
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-slate-500 text-sm">Status</p>
-                  <p className="text-slate-200">{tradeCase.status}</p>
+                  <p className="text-sm text-slate-500">{t("status")}</p>
+
+                  <div className="mt-2">
+                    <StatusBadge status={tradeCase.status as Status} small />
+                  </div>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Category</p>
-                  <p className="text-slate-200">{tradeCase.category}</p>
-                </div>
+                  <p className="text-sm text-slate-500">{t("category")}</p>
 
-                <div>
-                  <p className="text-slate-500 text-sm">Created</p>
-                  <p className="text-slate-200">
-                    {tradeCase.createdAt.toLocaleDateString()}
+                  <p className="break-words text-slate-200">
+                    {tradeCase.category}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Last Updated</p>
+                  <p className="text-sm text-slate-500">{t("created")}</p>
+
                   <p className="text-slate-200">
-                    {tradeCase.updatedAt.toLocaleDateString()}
+                    {formatDate(tradeCase.createdAt)}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-slate-500">{t("updated")}</p>
+
+                  <p className="text-slate-200">
+                    {formatDate(tradeCase.updatedAt)}
                   </p>
                 </div>
               </div>
             </section>
-            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">Recommended Companies</h2>
 
-              <div className="space-y-3">
-                {recommendedCompanies.map((company) => (
-                  <Link
-                    key={company.id}
-                    href={`/dashboard/companies/${company.id}`}
-                    className="block bg-slate-950 border border-slate-800 rounded-2xl p-4 hover:border-blue-500 transition"
-                  >
-                    <p className="font-semibold">{company.name}</p>
+            <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="mb-4 text-2xl font-bold">
+                {t("recommendedCompanies.title")}
+              </h2>
 
-                    <p className="text-sm text-slate-400">{company.country}</p>
+              {recommendedCompanies.length === 0 ? (
+                <p className="text-sm text-slate-500">
+                  {t("recommendedCompanies.empty")}
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {recommendedCompanies.map((company) => (
+                    <Link
+                      key={company.id}
+                      href={`/dashboard/companies/${company.id}`}
+                      className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 transition hover:border-blue-500"
+                    >
+                      <p className="break-words font-semibold">
+                        {company.name}
+                      </p>
 
-                    <p className="text-xs text-emerald-400 mt-1">VERIFIED</p>
-                  </Link>
-                ))}
-              </div>
+                      <p className="text-sm text-slate-400">
+                        {company.country || t("unknownCountry")}
+                      </p>
+
+                      <p className="mt-1 text-xs text-emerald-400">
+                        {t("verified")}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </section>
-            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">Assigned Provider</h2>
+
+            <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="mb-4 text-2xl font-bold">
+                {t("assignedProvider.title")}
+              </h2>
+
               {!winningProposal && (
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 mb-5">
-                  <div className="text-4xl mb-3">⏳</div>
+                <div className="mb-5 rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                  <div aria-hidden="true" className="mb-3 text-4xl">
+                    ⏳
+                  </div>
 
-                  <h3 className="text-lg font-bold mb-2">
-                    No provider assigned yet
+                  <h3 className="mb-2 text-lg font-bold">
+                    {t("assignedProvider.empty.title")}
                   </h3>
 
-                  <p className="text-slate-400 text-sm leading-6">
-                    Once the customer accepts a proposal, the selected company
-                    or expert will appear here as the assigned provider.
+                  <p className="text-sm leading-6 text-slate-400">
+                    {t("assignedProvider.empty.description")}
                   </p>
                 </div>
               )}
+
               <div className="space-y-4">
                 <div>
-                  <p className="text-slate-500 text-sm">Winning Proposal</p>
-                  <p className="text-slate-200">
+                  <p className="text-sm text-slate-500">
+                    {t("assignedProvider.winningProposal")}
+                  </p>
+
+                  <p className="break-words text-slate-200">
                     {winningProposal
-                      ? `#${winningProposal.id} - ${
-                          winningProposal.price || "No price"
-                        }`
-                      : "Not selected"}
+                      ? t("assignedProvider.proposalSummary", {
+                          id: winningProposal.id,
+                          price:
+                            winningProposal.price || t("proposals.noPrice"),
+                        })
+                      : t("notSelected")}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Winning Company</p>
+                  <p className="text-sm text-slate-500">
+                    {t("winningCompany")}
+                  </p>
+
                   {winningProposal?.company?.id && (
                     <Link
                       href={`/dashboard/companies/${winningProposal.company.id}`}
-                      className="inline-block mt-2 text-blue-400 hover:underline"
+                      className="mt-2 inline-block text-blue-400 hover:underline"
                     >
-                      View Company →
+                      {t("viewCompany")}{" "}
+                      <span aria-hidden="true">{isRtl ? "←" : "→"}</span>
                     </Link>
                   )}
-                  <p className="text-slate-200">
-                    {winningProposal?.company?.name || "Not selected"}
+
+                  <p className="break-words text-slate-200">
+                    {winningProposal?.company?.name ?? t("notSelected")}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 text-sm">Winning Expert</p>
+                  <p className="text-sm text-slate-500">{t("winningExpert")}</p>
+
                   {winningProposal?.expert?.id && (
                     <Link
                       href={`/dashboard/experts/${winningProposal.expert.id}`}
-                      className="inline-block mt-2 text-blue-400 hover:underline"
+                      className="mt-2 inline-block text-blue-400 hover:underline"
                     >
-                      View Expert →
+                      {t("viewExpert")}{" "}
+                      <span aria-hidden="true">{isRtl ? "←" : "→"}</span>
                     </Link>
                   )}
-                  <p className="text-slate-200">
-                    {winningProposal?.expert?.name || "Not selected"}
-                  </p>
-                  {winningProposal && (
-                    <div className="mt-4 pt-4 border-t border-slate-800">
-                      <p className="text-slate-500 text-sm">Proposal Value</p>
 
-                      <p className="text-2xl font-bold text-emerald-400 mt-1">
-                        {winningProposal.price || "N/A"}
-                      </p>
-                    </div>
-                  )}
+                  <p className="break-words text-slate-200">
+                    {winningProposal?.expert?.name ?? t("notSelected")}
+                  </p>
                 </div>
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4">
-                  <p className="text-slate-500 text-sm">Reviews</p>
+
+                {winningProposal && (
+                  <div className="border-t border-slate-800 pt-4">
+                    <p className="text-sm text-slate-500">
+                      {t("assignedProvider.proposalValue")}
+                    </p>
+
+                    <p className="mt-1 break-words text-2xl font-bold text-emerald-400">
+                      {winningProposal.price || t("notAvailable")}
+                    </p>
+                  </div>
+                )}
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="text-sm text-slate-500">{t("reviews.title")}</p>
 
                   <p className="text-3xl font-bold text-yellow-400">
                     {tradeCase.reviews.length}
                   </p>
                 </div>
+
                 <div>
-                  <p className="text-slate-500 text-sm">Assigned At</p>
+                  <p className="text-sm text-slate-500">
+                    {t("assignedProvider.assignedAt")}
+                  </p>
+
                   <p className="text-slate-200">
-                    {tradeCase.assignedAt
-                      ? tradeCase.assignedAt.toLocaleDateString()
-                      : "Not assigned"}
+                    {formatDate(tradeCase.assignedAt)}
                   </p>
                 </div>
               </div>
 
               {(isAdmin || isCustomer) &&
                 tradeCase.status === "IN_PROGRESS" && (
-                  <div className="pt-4 mt-4 border-t border-slate-800">
+                  <div className="mt-4 border-t border-slate-800 pt-4">
                     <CompleteCaseButton caseId={tradeCase.id} />
                   </div>
                 )}
             </section>
-            <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-              <h2 className="text-2xl font-bold mb-4">
-                Case Activity ({tradeCase.activities.length})
+
+            <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="mb-4 text-2xl font-bold">
+                {t("activity.title", {
+                  count: tradeCase.activities.length,
+                })}
               </h2>
 
               {tradeCase.activities.length === 0 ? (
                 <EmptyState
                   icon="📌"
-                  title="No activity yet"
-                  description="Case events, proposals, messages and document actions will appear here."
+                  title={t("activity.empty.title")}
+                  description={t("activity.empty.description")}
                 />
               ) : (
                 <div className="space-y-4">
                   {tradeCase.activities.map((activity) => {
-                    const activityDisplay = getActivityDisplay(activity.action);
+                    const activityDisplay = getActivityDisplay(
+                      activity.action,
+                      t,
+                    );
+
+                    const actor =
+                      activity.user?.name ||
+                      activity.user?.email ||
+                      t("system");
 
                     return (
                       <div
                         key={activity.id}
-                        className={`border-l-2 ${activityDisplay.border} pl-4`}
+                        className={`border-s-2 ps-4 ${activityDisplay.border}`}
                       >
                         <p className="font-semibold">
-                          {activityDisplay.icon} {activityDisplay.title}
+                          <span aria-hidden="true">{activityDisplay.icon}</span>{" "}
+                          {activityDisplay.title}
                         </p>
 
                         {activity.details && (
-                          <p className="text-sm text-slate-400 mt-1">
+                          <p className="mt-1 whitespace-pre-wrap break-words text-sm text-slate-400">
                             {activity.details}
                           </p>
                         )}
 
-                        <p className="text-xs text-slate-500 mt-1">
-                          {activity.user?.name ||
-                            activity.user?.email ||
-                            "System"}{" "}
-                          · {activity.createdAt.toLocaleString()}
+                        <p className="mt-1 text-xs text-slate-500">
+                          {t("activity.meta", {
+                            actor,
+                            date: formatDateTime(activity.createdAt),
+                          })}
                         </p>
                       </div>
                     );
@@ -897,9 +1171,12 @@ export default async function CaseDetailPage({ params }: Props) {
                 </div>
               )}
             </section>
+
             {tradeCase.status === "COMPLETED" && (
-              <section className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-                <h2 className="text-2xl font-bold mb-4">Reviews</h2>
+              <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+                <h2 className="mb-4 text-2xl font-bold">
+                  {t("reviews.title")}
+                </h2>
 
                 {isCustomer &&
                   acceptedProviderUserId &&
@@ -907,7 +1184,7 @@ export default async function CaseDetailPage({ params }: Props) {
                     <AddReviewForm
                       caseId={tradeCase.id}
                       reviewedUserId={acceptedProviderUserId}
-                      label="Review accepted provider"
+                      label={t("reviews.reviewProvider")}
                     />
                   )}
 
@@ -917,27 +1194,25 @@ export default async function CaseDetailPage({ params }: Props) {
                     <AddReviewForm
                       caseId={tradeCase.id}
                       reviewedUserId={tradeCase.customerId}
-                      label="Review customer"
+                      label={t("reviews.reviewCustomer")}
                     />
                   )}
 
                 {((isCustomer && hasReviewedProvider) ||
                   (!isCustomer && hasReviewedCustomer)) && (
                   <p className="text-slate-500">
-                    Your review has already been submitted.
+                    {t("reviews.alreadySubmitted")}
                   </p>
                 )}
+
                 {!isCustomer && acceptedProviderUserId !== user.id && (
-                  <p className="text-slate-500">
-                    Only the customer and accepted provider can submit reviews
-                    for this case.
-                  </p>
+                  <p className="text-slate-500">{t("reviews.permission")}</p>
                 )}
               </section>
             )}
           </aside>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

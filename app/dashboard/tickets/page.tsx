@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 
@@ -23,6 +24,8 @@ function getTicketBadge(status: string) {
 
 export default async function TicketsPage() {
   const user = await requireUser();
+  const locale = await getLocale();
+  const t = await getTranslations("tickets.list");
 
   const tickets = await prisma.ticket.findMany({
     where:
@@ -40,100 +43,120 @@ export default async function TicketsPage() {
   });
 
   const openCount = tickets.filter(
-    (ticket) => ticket.status === "OPEN"
+    (ticket) => ticket.status === "OPEN",
   ).length;
 
   const inProgressCount = tickets.filter(
-    (ticket) => ticket.status === "IN_PROGRESS"
+    (ticket) => ticket.status === "IN_PROGRESS",
   ).length;
 
   const closedCount = tickets.filter(
-    (ticket) => ticket.status === "CLOSED"
+    (ticket) => ticket.status === "CLOSED",
   ).length;
 
   const reopenedCount = tickets.filter(
-    (ticket) => ticket.status === "REOPEN"
+    (ticket) => ticket.status === "REOPEN",
   ).length;
 
+  function getTicketStatusLabel(status: string) {
+    switch (status) {
+      case "OPEN":
+        return t("statuses.open");
+
+      case "IN_PROGRESS":
+        return t("statuses.inProgress");
+
+      case "CLOSED":
+        return t("statuses.closed");
+
+      case "REOPEN":
+        return t("statuses.reopened");
+
+      default:
+        return status;
+    }
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-20">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+    <div className="mx-auto max-w-7xl px-6 py-20">
+      <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <h1 className="text-5xl font-bold">
-            Tickets
+            {t("title")}
           </h1>
 
-          <p className="text-slate-400 mt-3">
-            Manage support requests, case issues and platform assistance.
+          <p className="mt-3 text-slate-400">
+            {t("description")}
           </p>
         </div>
 
         <Link
           href="/dashboard/tickets/new"
-          className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl text-center"
+          className="rounded-xl bg-blue-600 px-5 py-3 text-center font-medium text-white transition hover:bg-blue-700"
         >
-          New Ticket
+          {t("newTicket")}
         </Link>
       </div>
 
-      <div className="grid md:grid-cols-4 gap-6 mb-10">
-        <div className="bg-slate-900 border border-emerald-500 rounded-2xl p-6">
-          <p className="text-slate-400 text-sm">
-            Open
+      <div className="mb-10 grid gap-6 md:grid-cols-4">
+        <div className="rounded-2xl border border-emerald-500 bg-slate-900 p-6">
+          <p className="text-sm text-slate-400">
+            {t("statuses.open")}
           </p>
 
-          <p className="text-4xl font-bold text-emerald-400 mt-2">
+          <p className="mt-2 text-4xl font-bold text-emerald-400">
             {openCount}
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-blue-500 rounded-2xl p-6">
-          <p className="text-slate-400 text-sm">
-            In Progress
+        <div className="rounded-2xl border border-blue-500 bg-slate-900 p-6">
+          <p className="text-sm text-slate-400">
+            {t("statuses.inProgress")}
           </p>
 
-          <p className="text-4xl font-bold text-blue-400 mt-2">
+          <p className="mt-2 text-4xl font-bold text-blue-400">
             {inProgressCount}
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-yellow-500 rounded-2xl p-6">
-          <p className="text-slate-400 text-sm">
-            Reopened
+        <div className="rounded-2xl border border-yellow-500 bg-slate-900 p-6">
+          <p className="text-sm text-slate-400">
+            {t("statuses.reopened")}
           </p>
 
-          <p className="text-4xl font-bold text-yellow-400 mt-2">
+          <p className="mt-2 text-4xl font-bold text-yellow-400">
             {reopenedCount}
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6">
-          <p className="text-slate-400 text-sm">
-            Closed
+        <div className="rounded-2xl border border-slate-700 bg-slate-900 p-6">
+          <p className="text-sm text-slate-400">
+            {t("statuses.closed")}
           </p>
 
-          <p className="text-4xl font-bold text-slate-300 mt-2">
+          <p className="mt-2 text-4xl font-bold text-slate-300">
             {closedCount}
           </p>
         </div>
       </div>
 
       {tickets.length === 0 ? (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-slate-400">
-          No tickets found.
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-slate-400">
+          {t("empty")}
         </div>
       ) : (
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
-          <div className="p-6 border-b border-slate-800">
+        <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900">
+          <div className="border-b border-slate-800 p-6">
             <h2 className="text-2xl font-bold">
               {user.role === "admin"
-                ? "All Tickets"
-                : "My Tickets"}
+                ? t("allTickets")
+                : t("myTickets")}
             </h2>
 
-            <p className="text-slate-400 mt-2">
-              {tickets.length} ticket
-              {tickets.length === 1 ? "" : "s"} found
+            <p className="mt-2 text-slate-400">
+              {t("ticketsFound", {
+                count: tickets.length,
+              })}
             </p>
           </div>
 
@@ -142,44 +165,48 @@ export default async function TicketsPage() {
               <Link
                 key={ticket.id}
                 href={`/dashboard/tickets/${ticket.id}`}
-                className="block p-6 hover:bg-slate-800/50 transition"
+                className="block p-6 transition hover:bg-slate-800/50"
               >
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <h3 className="font-bold text-lg">
+                      <h3 className="text-lg font-bold">
                         {ticket.subject}
                       </h3>
 
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${getTicketBadge(
-                          ticket.status
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${getTicketBadge(
+                          ticket.status,
                         )}`}
                       >
-                        {ticket.status}
+                        {getTicketStatusLabel(ticket.status)}
                       </span>
                     </div>
 
-                    <p className="text-slate-400 mt-2">
+                    <p className="mt-2 text-slate-400">
                       {ticket.category}
                     </p>
 
                     {user.role === "admin" && (
-                      <p className="text-sm text-slate-500 mt-2">
-                        Created by:{" "}
-                        {ticket.user.name ||
-                          ticket.user.email}
+                      <p className="mt-2 text-sm text-slate-500">
+                        {t("createdBy", {
+                          name:
+                            ticket.user.name ||
+                            ticket.user.email,
+                        })}
                       </p>
                     )}
                   </div>
 
-                  <div className="text-left md:text-right">
+                  <div className="text-start md:text-end">
                     <p className="text-xs text-slate-500">
-                      Created
+                      {t("created")}
                     </p>
 
-                    <p className="text-sm text-slate-300 mt-1">
-                      {ticket.createdAt.toLocaleString()}
+                    <p className="mt-1 text-sm text-slate-300">
+                      {ticket.createdAt.toLocaleString(
+                        locale,
+                      )}
                     </p>
                   </div>
                 </div>

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ProposalActionButtons({
   proposalId,
@@ -9,36 +10,82 @@ export default function ProposalActionButtons({
   proposalId: number;
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const t = useTranslations("tradeCases.proposalActions");
+
+  const [loadingAction, setLoadingAction] = useState<
+    "accept" | "reject" | null
+  >(null);
+  const [error, setError] = useState("");
 
   async function updateProposal(action: "accept" | "reject") {
-    setLoading(true);
+    try {
+      setError("");
+      setLoadingAction(action);
 
-    await fetch(`/api/cases/proposals/${proposalId}/${action}`, {
-      method: "PATCH",
-    });
+      const response = await fetch(
+        `/api/cases/proposals/${proposalId}/${action}`,
+        {
+          method: "PATCH",
+        },
+      );
 
-    router.refresh();
-    setLoading(false);
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setError(
+          data?.message ||
+            (action === "accept"
+              ? t("errors.acceptFailed")
+              : t("errors.rejectFailed")),
+        );
+        return;
+      }
+
+      router.refresh();
+    } catch {
+      setError(
+        action === "accept"
+          ? t("errors.acceptFailed")
+          : t("errors.rejectFailed"),
+      );
+    } finally {
+      setLoadingAction(null);
+    }
   }
 
-  return (
-    <div className="flex gap-2 mt-4">
-      <button
-        onClick={() => updateProposal("accept")}
-        disabled={loading}
-        className="flex-1 bg-emerald-600 hover:bg-emerald-700 px-3 py-2 rounded-xl text-sm disabled:opacity-50"
-      >
-        Accept
-      </button>
+  const loading = loadingAction !== null;
 
-      <button
-        onClick={() => updateProposal("reject")}
-        disabled={loading}
-        className="flex-1 bg-red-600 hover:bg-red-700 px-3 py-2 rounded-xl text-sm disabled:opacity-50"
-      >
-        Reject
-      </button>
+  return (
+    <div className="mt-4 space-y-3">
+      {error && (
+        <div className="rounded-xl border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-300">
+          {error}
+        </div>
+      )}
+
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => updateProposal("accept")}
+          disabled={loading}
+          className="flex-1 rounded-xl bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {loadingAction === "accept"
+            ? t("accepting")
+            : t("accept")}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => updateProposal("reject")}
+          disabled={loading}
+          className="flex-1 rounded-xl bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {loadingAction === "reject"
+            ? t("rejecting")
+            : t("reject")}
+        </button>
+      </div>
     </div>
   );
 }

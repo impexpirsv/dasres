@@ -1,56 +1,19 @@
 import Link from "next/link";
-import { prisma } from "../../../lib/prisma";
-import DeleteExpertButton from "../../components/DeleteExpertButton";
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
+import { getLocale, getTranslations } from "next-intl/server";
+import Image from "next/image";
+import { prisma } from "../../../lib/prisma";
 import { calculateTrustScore } from "../../../lib/ranking";
 import { requireUser } from "../../../lib/auth";
+
+import DeleteExpertButton from "../../components/DeleteExpertButton";
+
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{
+    id: string;
+  }>;
 };
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-
-  const expert = await prisma.expert.findUnique({
-    where: {
-      id: Number(id),
-    },
-  });
-
-  if (!expert) {
-    return {
-      title: "Expert Not Found",
-      description: "The requested expert profile could not be found.",
-    };
-  }
-
-  const title = `${expert.name} | ${expert.specialty}`;
-  const description = `${expert.name} is an expert in ${expert.specialty} from ${expert.country}. Discover this expert profile on Dasres.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "profile",
-      images: expert.imageUrl
-        ? [
-            {
-              url: expert.imageUrl,
-              alt: expert.name,
-            },
-          ]
-        : ["/og-image.png"],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: expert.imageUrl ? [expert.imageUrl] : ["/og-image.png"],
-    },
-  };
-}
 
 function getPremiumBorder(planType: string) {
   if (planType === "GOLD") {
@@ -68,106 +31,325 @@ function getPremiumBorder(planType: string) {
   return "border-slate-800";
 }
 
-function PlanBadge({ planType }: { planType: string }) {
-  if (planType === "GOLD") {
-    return (
-      <span className="bg-yellow-600 px-4 py-2 rounded-full text-sm">
-        🥇 GOLD
-      </span>
-    );
+function normalizeStatus(status: string) {
+  return status.trim().toLowerCase().replaceAll("-", "_").replaceAll(" ", "_");
+}
+
+function getStatusClass(status: string) {
+  const normalized = status
+    .trim()
+    .toUpperCase()
+    .replaceAll("-", "_")
+    .replaceAll(" ", "_");
+
+  switch (normalized) {
+    case "ACTIVE":
+    case "VERIFIED":
+      return "bg-emerald-600 text-white";
+
+    case "PENDING":
+      return "bg-yellow-600 text-black";
+
+    case "REJECTED":
+    case "SUSPENDED":
+      return "bg-red-600 text-white";
+
+    case "INACTIVE":
+      return "bg-slate-700 text-slate-200";
+
+    default:
+      return "bg-slate-700 text-slate-200";
+  }
+}
+
+const getExpertMetadata = unstable_cache(
+  async (expertId: number) => {
+    return prisma.expert.findUnique({
+      where: {
+        id: expertId,
+      },
+      select: {
+        id: true,
+        name: true,
+        specialty: true,
+        country: true,
+        imageUrl: true,
+      },
+    });
+  },
+  ["public-expert-metadata"],
+  {
+    revalidate: 300,
+    tags: ["public-experts"],
+  },
+);
+
+const getRelatedCompanies = unstable_cache(
+  async (country: string) => {
+    return prisma.company.findMany({
+      where: {
+        verificationStatus: "VERIFIED",
+        country,
+      },
+      select: {
+        id: true,
+        name: true,
+        category: true,
+        country: true,
+      },
+      take: 3,
+      orderBy: [
+        {
+          verifiedAt: "desc",
+        },
+        {
+          id: "desc",
+        },
+      ],
+    });
+  },
+  ["public-expert-related-companies"],
+  {
+    revalidate: 300,
+    tags: ["public-companies"],
+  },
+);
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const expertId = Number(id);
+
+  const t = await getTranslations("publicExpertProfile.metadata");
+
+  if (!Number.isInteger(expertId) || expertId <= 0) {
+    return {
+      title: t("notFoundTitle"),
+      description: t("notFoundDescription"),
+    };
   }
 
-  if (planType === "DIAMOND") {
-    return (
-      <span className="bg-cyan-600 px-4 py-2 rounded-full text-sm">
-        💎 DIAMOND
-      </span>
-    );
+  const expert = await getExpertMetadata(expertId);
+
+  if (!expert) {
+    return {
+      title: t("notFoundTitle"),
+      description: t("notFoundDescription"),
+    };
   }
 
-  if (planType === "ENTERPRISE") {
-    return (
-      <span className="bg-purple-600 px-4 py-2 rounded-full text-sm">
-        👑 ENTERPRISE
-      </span>
-    );
-  }
+  const title = `${expert.name} | ${expert.specialty}`;
 
-  return null;
+  const description = t("description", {
+    name: expert.name,
+    specialty: expert.specialty,
+    country: expert.country,
+  });
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "profile",
+      images: expert.imageUrl
+        ? [
+            {
+              url: expert.imageUrl,
+              alt: expert.name,
+            },
+          ]
+        : [
+            {
+              url: "/og-image.png",
+              alt: expert.name,
+            },
+          ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: expert.imageUrl ? [expert.imageUrl] : ["/og-image.png"],
+    },
+  };
 }
 
 export default async function ExpertProfilePage({ params }: Props) {
   const { id } = await params;
+  const expertId = Number(id);
 
-  const expert = await prisma.expert.findUnique({
-    where: {
-      id: Number(id),
-    },
+  const t = await getTranslations("publicExpertProfile");
+
+  const locale = await getLocale();
+
+  const numberFormatter = new Intl.NumberFormat(locale);
+
+  const ratingFormatter = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
   });
 
-  if (!expert) {
+  if (!Number.isInteger(expertId) || expertId <= 0) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Expert Not Found</h1>
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+        <h1 className="text-4xl font-bold">{t("notFound")}</h1>
       </div>
     );
   }
-  const user = await requireUser();
 
-  const isAdmin = user.role === "admin";
+  const [user, expert] = await Promise.all([
+    requireUser(),
 
-  const canManageExpert = isAdmin || expert.ownerId === user.id;
-  const reviews = expert.ownerId
-    ? await prisma.review.findMany({
-        where: {
-          reviewedUserId: expert.ownerId,
-        },
-        include: {
-          reviewer: true,
-        },
-        orderBy: {
-          id: "desc",
-        },
-      })
-    : [];
-
-  const averageRating =
-    reviews.length > 0
-      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
-      : 0;
-  const completedCases = expert.ownerId
-    ? await prisma.tradeCase.count({
-        where: {
-          status: "COMPLETED",
-          proposals: {
-            some: {
-              status: "ACCEPTED",
-              expert: {
-                ownerId: expert.ownerId,
+    prisma.expert.findUnique({
+      where: {
+        id: expertId,
+      },
+      include: {
+        owner: {
+          select: {
+            reviewsReceived: {
+              select: {
+                id: true,
+                rating: true,
+                comment: true,
+                createdAt: true,
+                reviewer: {
+                  select: {
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+              orderBy: {
+                id: "desc",
               },
             },
           },
         },
-      })
-    : 0;
+      },
+    }),
+  ]);
+
+  if (!expert) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+        <h1 className="text-4xl font-bold">{t("notFound")}</h1>
+      </div>
+    );
+  }
+
+  const isAdmin = user.role === "admin";
+
+  const canManageExpert = isAdmin || expert.ownerId === user.id;
+
+  const reviews = expert.owner?.reviewsReceived ?? [];
+
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+      : null;
+
+  const [completedCases, relatedCompanies] = await Promise.all([
+    expert.ownerId
+      ? prisma.tradeCase.count({
+          where: {
+            status: "COMPLETED",
+            proposals: {
+              some: {
+                status: "ACCEPTED",
+                expert: {
+                  ownerId: expert.ownerId,
+                },
+              },
+            },
+          },
+        })
+      : Promise.resolve(0),
+
+    getRelatedCompanies(expert.country),
+  ]);
 
   const trustScore = calculateTrustScore({
-    averageRating,
+    averageRating: averageRating ?? 0,
     completedCases,
     verificationStatus: expert.verificationStatus,
     planType: expert.planType,
   });
+
   const premiumBorder = getPremiumBorder(expert.planType);
-  const relatedCompanies = await prisma.company.findMany({
-    where: {
-      verificationStatus: "VERIFIED",
-      country: expert.country,
-    },
-    take: 3,
-    orderBy: {
-      verifiedAt: "desc",
-    },
-  });
+
+  function getPlanLabel(planType: string) {
+    switch (planType) {
+      case "GOLD":
+        return t("plans.gold");
+
+      case "DIAMOND":
+        return t("plans.diamond");
+
+      case "ENTERPRISE":
+        return t("plans.enterprise");
+
+      default:
+        return t("plans.free");
+    }
+  }
+
+  function getStatusLabel(status: string) {
+    const normalized = normalizeStatus(status);
+
+    switch (normalized) {
+      case "active":
+        return t("statuses.active");
+
+      case "inactive":
+        return t("statuses.inactive");
+
+      case "pending":
+        return t("statuses.pending");
+
+      case "verified":
+        return t("statuses.verified");
+
+      case "rejected":
+        return t("statuses.rejected");
+
+      case "suspended":
+        return t("statuses.suspended");
+
+      default:
+        return status;
+    }
+  }
+
+  function renderPlanBadge(planType: string) {
+    if (planType === "GOLD") {
+      return (
+        <span className="rounded-full bg-yellow-600 px-4 py-2 text-sm text-black">
+          🥇 {getPlanLabel(planType)}
+        </span>
+      );
+    }
+
+    if (planType === "DIAMOND") {
+      return (
+        <span className="rounded-full bg-cyan-600 px-4 py-2 text-sm text-black">
+          💎 {getPlanLabel(planType)}
+        </span>
+      );
+    }
+
+    if (planType === "ENTERPRISE") {
+      return (
+        <span className="rounded-full bg-purple-600 px-4 py-2 text-sm text-white">
+          👑 {getPlanLabel(planType)}
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   const expertSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -191,74 +373,91 @@ export default async function ExpertProfilePage({ params }: Props) {
       />
 
       <div className="min-h-screen bg-slate-950 text-white">
-        <div className="max-w-6xl mx-auto px-6 py-20">
+        <div className="mx-auto max-w-6xl px-6 py-20">
           <Link
             href="/experts"
-            className="text-blue-400 hover:underline mb-8 inline-block"
+            className="mb-8 inline-block text-blue-400 hover:underline"
           >
-            ← Back to Experts
+            {t("backToExperts")}
           </Link>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid gap-8 lg:grid-cols-3">
             <div
-              className={`lg:col-span-2 bg-slate-900 rounded-3xl border overflow-hidden ${premiumBorder}`}
+              className={`overflow-hidden rounded-3xl border bg-slate-900 lg:col-span-2 ${premiumBorder}`}
             >
               {expert.imageUrl && (
-                <img
+                <Image
                   src={expert.imageUrl}
                   alt={expert.name}
-                  className="w-full h-80 object-cover"
+                  width={800}
+                  height={500}
+                  className="h-80 w-full object-cover"
                 />
               )}
 
               <div className="p-10">
-                <div className="flex flex-wrap items-center gap-3 mb-4">
-                  <span className="bg-green-600 px-4 py-2 rounded-full text-sm">
-                    {expert.status}
+                <div className="mb-4 flex flex-wrap items-center gap-3">
+                  <span
+                    className={`rounded-full px-4 py-2 text-sm ${getStatusClass(
+                      expert.status,
+                    )}`}
+                  >
+                    {getStatusLabel(expert.status)}
                   </span>
 
-                  <span className="bg-slate-800 px-4 py-2 rounded-full text-sm text-slate-300">
+                  <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
                     {expert.country}
                   </span>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 mb-4">
+                <div className="mb-4 flex flex-wrap items-center gap-3">
                   <h1 className="text-5xl font-bold">{expert.name}</h1>
 
-                  <PlanBadge planType={expert.planType} />
+                  {renderPlanBadge(expert.planType)}
                 </div>
 
-                <p className="text-blue-400 text-2xl mb-4">
+                <p className="mb-4 text-2xl text-blue-400">
                   {expert.specialty}
                 </p>
-                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                  <p className="text-slate-500 text-sm mb-1">Trust Score</p>
 
-                  <p className="text-2xl font-bold text-emerald-400">
-                    {trustScore}/100
+                <div className="mb-4 rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <p className="mb-1 text-sm text-slate-500">
+                    {t("metrics.trustScore")}
+                  </p>
+
+                  <p dir="ltr" className="text-2xl font-bold text-emerald-400">
+                    {numberFormatter.format(trustScore)}
+                    /100
                   </p>
                 </div>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+
+                <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-slate-500 text-sm mb-1">Rating</p>
+                    <p className="mb-1 text-sm text-slate-500">
+                      {t("metrics.rating")}
+                    </p>
 
                     <p className="text-2xl font-bold text-yellow-400">
-                      {reviews.length > 0
-                        ? `⭐ ${averageRating.toFixed(1)}`
-                        : "N/A"}
+                      {averageRating !== null
+                        ? `⭐ ${ratingFormatter.format(averageRating)}`
+                        : t("notAvailable")}
                     </p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-slate-500 text-sm mb-1">Reviews</p>
+                    <p className="mb-1 text-sm text-slate-500">
+                      {t("metrics.reviews")}
+                    </p>
 
                     <p className="text-2xl font-bold text-slate-200">
-                      {reviews.length}
+                      {numberFormatter.format(reviews.length)}
                     </p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-slate-500 text-sm mb-1">Specialty</p>
+                    <p className="mb-1 text-sm text-slate-500">
+                      {t("metrics.specialty")}
+                    </p>
 
                     <p className="text-xl font-bold text-blue-400">
                       {expert.specialty}
@@ -266,7 +465,9 @@ export default async function ExpertProfilePage({ params }: Props) {
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
-                    <p className="text-slate-500 text-sm mb-1">Country</p>
+                    <p className="mb-1 text-sm text-slate-500">
+                      {t("metrics.country")}
+                    </p>
 
                     <p className="text-2xl font-bold text-blue-400">
                       {expert.country}
@@ -275,18 +476,20 @@ export default async function ExpertProfilePage({ params }: Props) {
                 </div>
 
                 <div className="border-t border-slate-800 pt-8">
-                  <h2 className="text-2xl font-bold mb-4">Experience</h2>
+                  <h2 className="mb-4 text-2xl font-bold">{t("experience")}</h2>
 
-                  <p className="text-slate-300 text-lg leading-8">
+                  <p className="text-lg leading-8 text-slate-300">
                     {expert.experience}
                   </p>
                 </div>
 
-                <div className="border-t border-slate-800 pt-8 mt-8">
-                  <h2 className="text-2xl font-bold mb-4">Recent Reviews</h2>
+                <div className="mt-8 border-t border-slate-800 pt-8">
+                  <h2 className="mb-4 text-2xl font-bold">
+                    {t("recentReviews")}
+                  </h2>
 
                   {reviews.length === 0 ? (
-                    <p className="text-slate-500">No reviews yet.</p>
+                    <p className="text-slate-500">{t("noReviews")}</p>
                   ) : (
                     <div className="space-y-4">
                       {reviews.slice(0, 3).map((review) => (
@@ -294,20 +497,25 @@ export default async function ExpertProfilePage({ params }: Props) {
                           key={review.id}
                           className="rounded-2xl border border-slate-800 bg-slate-950 p-5"
                         >
-                          <div className="flex items-center justify-between gap-4 mb-2">
+                          <div className="mb-2 flex items-center justify-between gap-4">
                             <p className="font-semibold">
                               {review.reviewer?.name ||
                                 review.reviewer?.email ||
-                                "User"}
+                                t("anonymousUser")}
                             </p>
 
                             <p className="text-yellow-400">
-                              ⭐ {review.rating}/5
+                              ⭐ {numberFormatter.format(review.rating)}
+                              /5
                             </p>
                           </div>
 
-                          <p className="text-slate-300 leading-7">
-                            {review.comment || "No comment provided."}
+                          <p className="leading-7 text-slate-300">
+                            {review.comment || t("noCommentProvided")}
+                          </p>
+
+                          <p className="mt-3 text-xs text-slate-500">
+                            {review.createdAt.toLocaleDateString(locale)}
                           </p>
                         </div>
                       ))}
@@ -319,93 +527,137 @@ export default async function ExpertProfilePage({ params }: Props) {
 
             <aside className="space-y-6">
               <div
-                className={`bg-slate-900 rounded-3xl border p-6 ${premiumBorder}`}
+                className={`rounded-3xl border bg-slate-900 p-6 ${premiumBorder}`}
               >
-                <h2 className="text-2xl font-bold mb-6">Contact Expert</h2>
+                <h2 className="mb-6 text-2xl font-bold">
+                  {t("contactExpert")}
+                </h2>
 
                 <div className="space-y-4">
                   <div>
-                    <p className="text-slate-500 text-sm">Email</p>
-                    <p className="text-slate-200 break-all">{expert.email}</p>
+                    <p className="text-sm text-slate-500">
+                      {t("fields.email")}
+                    </p>
+
+                    {expert.email ? (
+                      <a
+                        href={`mailto:${expert.email}`}
+                        className="break-all text-blue-400 hover:underline"
+                      >
+                        {expert.email}
+                      </a>
+                    ) : (
+                      <p className="text-slate-200">{t("notProvided")}</p>
+                    )}
                   </div>
 
                   <div>
-                    <p className="text-slate-500 text-sm">Country</p>
+                    <p className="text-sm text-slate-500">
+                      {t("fields.country")}
+                    </p>
+
                     <p className="text-slate-200">{expert.country}</p>
                   </div>
 
                   <div>
-                    <p className="text-slate-500 text-sm">Specialty</p>
+                    <p className="text-sm text-slate-500">
+                      {t("fields.specialty")}
+                    </p>
+
                     <p className="text-slate-200">{expert.specialty}</p>
                   </div>
 
                   <div>
-                    <p className="text-slate-500 text-sm">Reputation</p>
+                    <p className="text-sm text-slate-500">
+                      {t("fields.reputation")}
+                    </p>
+
                     <p className="text-slate-200">
-                      {reviews.length > 0
-                        ? `⭐ ${averageRating.toFixed(1)} (${reviews.length} reviews)`
-                        : "No reviews yet"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-slate-500 text-sm">Trust Score</p>
-
-                    <p className="text-emerald-400 font-semibold">
-                      {trustScore}/100
+                      {averageRating !== null
+                        ? t("ratingWithReviews", {
+                            rating: ratingFormatter.format(averageRating),
+                            count: numberFormatter.format(reviews.length),
+                          })
+                        : t("noReviews")}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-slate-500 text-sm">Completed Cases</p>
+                    <p className="text-sm text-slate-500">
+                      {t("metrics.trustScore")}
+                    </p>
 
-                    <p className="text-slate-200">{completedCases}</p>
+                    <p dir="ltr" className="font-semibold text-emerald-400">
+                      {numberFormatter.format(trustScore)}
+                      /100
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-sm text-slate-500">
+                      {t("completedCases")}
+                    </p>
+
+                    <p className="text-slate-200">
+                      {numberFormatter.format(completedCases)}
+                    </p>
                   </div>
                 </div>
 
-                <a
-                  href={`mailto:${expert.email}`}
-                  className="mt-6 block text-center bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl"
-                >
-                  Send Email
-                </a>
+                {expert.email && (
+                  <a
+                    href={`mailto:${expert.email}`}
+                    className="mt-6 block rounded-xl bg-blue-600 px-6 py-3 text-center transition hover:bg-blue-700"
+                  >
+                    {t("sendEmail")}
+                  </a>
+                )}
               </div>
-              <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-                <h2 className="text-2xl font-bold mb-4">Related Companies</h2>
+
+              <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+                <h2 className="mb-4 text-2xl font-bold">
+                  {t("relatedCompanies.title")}
+                </h2>
 
                 {relatedCompanies.length === 0 ? (
-                  <p className="text-slate-500">No verified companies found.</p>
+                  <p className="text-slate-500">
+                    {t("relatedCompanies.empty")}
+                  </p>
                 ) : (
                   <div className="space-y-3">
                     {relatedCompanies.map((company) => (
                       <Link
                         key={company.id}
                         href={`/companies/${company.id}`}
-                        className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 hover:border-blue-500 transition"
+                        className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 transition hover:border-blue-500"
                       >
                         <p className="font-semibold">{company.name}</p>
 
-                        <p className="text-sm text-slate-400 mt-1">
+                        <p className="mt-1 text-sm text-slate-400">
                           {company.category}
                         </p>
 
-                        <p className="text-xs text-emerald-400 mt-2">
-                          ✓ Verified
+                        <p className="mt-2 text-xs text-emerald-400">
+                          ✓ {t("relatedCompanies.verified")}
                         </p>
                       </Link>
                     ))}
                   </div>
                 )}
               </div>
+
               {canManageExpert && (
-                <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6">
-                  <h2 className="text-2xl font-bold mb-4">Admin Actions</h2>
+                <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+                  <h2 className="mb-4 text-2xl font-bold">
+                    {t("adminActions")}
+                  </h2>
 
                   <div className="flex flex-col gap-3">
                     <Link
                       href={`/dashboard/experts/${expert.id}/edit`}
-                      className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-center"
+                      className="rounded-xl bg-blue-600 px-6 py-3 text-center transition hover:bg-blue-700"
                     >
-                      Edit Expert
+                      {t("editExpert")}
                     </Link>
 
                     <DeleteExpertButton id={expert.id} />
@@ -415,8 +667,8 @@ export default async function ExpertProfilePage({ params }: Props) {
             </aside>
           </div>
 
-          <div className="mt-8 bg-slate-900 border border-slate-800 rounded-3xl p-6 text-slate-400">
-            Reviews can only be submitted after a completed trade case.
+          <div className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-6 text-slate-400">
+            {t("reviewNotice")}
           </div>
         </div>
       </div>

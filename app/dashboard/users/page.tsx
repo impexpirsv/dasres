@@ -1,3 +1,7 @@
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import { requireAdmin } from "../../../lib/auth";
 import MakeAdminButton from "../../components/MakeAdminButton";
@@ -23,6 +27,9 @@ function getPlanBadge(planType: string) {
 export default async function UsersPage() {
   await requireAdmin();
 
+  const locale = await getLocale();
+  const t = await getTranslations("adminUsers.list");
+
   const users = await prisma.user.findMany({
     orderBy: {
       id: "desc",
@@ -30,136 +37,167 @@ export default async function UsersPage() {
   });
 
   const adminsCount = users.filter(
-    (user) => user.role === "admin"
+    (user) => user.role === "admin",
   ).length;
 
   const normalUsersCount =
     users.length - adminsCount;
 
   const freeUsersCount = users.filter(
-    (user) => user.planType === "FREE"
+    (user) => user.planType === "FREE",
   ).length;
 
   const goldUsersCount = users.filter(
-    (user) => user.planType === "GOLD"
+    (user) => user.planType === "GOLD",
   ).length;
 
   const diamondUsersCount = users.filter(
-    (user) => user.planType === "DIAMOND"
+    (user) => user.planType === "DIAMOND",
   ).length;
 
   const enterpriseUsersCount = users.filter(
-    (user) => user.planType === "ENTERPRISE"
+    (user) => user.planType === "ENTERPRISE",
   ).length;
+
+  const paidPlansCount =
+    goldUsersCount +
+    diamondUsersCount +
+    enterpriseUsersCount;
+
+  function getRoleLabel(role: string) {
+    if (role === "admin") {
+      return t("roles.admin");
+    }
+
+    return t("roles.user");
+  }
+
+  function getPlanLabel(planType: string) {
+    switch (planType) {
+      case "FREE":
+        return t("plans.free");
+
+      case "GOLD":
+        return t("plans.gold");
+
+      case "DIAMOND":
+        return t("plans.diamond");
+
+      case "ENTERPRISE":
+        return t("plans.enterprise");
+
+      default:
+        return planType;
+    }
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-20">
+      <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="mb-10">
-          <h1 className="text-5xl font-bold mb-4">
-            Users Management
+          <h1 className="mb-4 text-5xl font-bold">
+            {t("title")}
           </h1>
 
           <p className="text-slate-400">
-            Manage user roles, plans and account access.
+            {t("description")}
           </p>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6 mb-10">
-          <div className="bg-slate-900 border border-blue-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Total Users
+        <div className="mb-10 grid gap-6 md:grid-cols-4">
+          <div className="rounded-2xl border border-blue-500 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.totalUsers")}
             </p>
 
-            <p className="text-4xl font-bold text-blue-400 mt-2">
+            <p className="mt-2 text-4xl font-bold text-blue-400">
               {users.length}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-green-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Admins
+          <div className="rounded-2xl border border-green-500 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.admins")}
             </p>
 
-            <p className="text-4xl font-bold text-green-400 mt-2">
+            <p className="mt-2 text-4xl font-bold text-green-400">
               {adminsCount}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Users
+          <div className="rounded-2xl border border-slate-700 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.users")}
             </p>
 
-            <p className="text-4xl font-bold text-slate-200 mt-2">
+            <p className="mt-2 text-4xl font-bold text-slate-200">
               {normalUsersCount}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-yellow-500 rounded-2xl p-6">
-            <p className="text-slate-400 text-sm">
-              Paid Plans
+          <div className="rounded-2xl border border-yellow-500 bg-slate-900 p-6">
+            <p className="text-sm text-slate-400">
+              {t("stats.paidPlans")}
             </p>
 
-            <p className="text-4xl font-bold text-yellow-400 mt-2">
-              {goldUsersCount +
-                diamondUsersCount +
-                enterpriseUsersCount}
+            <p className="mt-2 text-4xl font-bold text-yellow-400">
+              {paidPlansCount}
             </p>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6 mb-10">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
-            <p className="text-slate-400 text-sm">
-              FREE
+        <div className="mb-10 grid gap-6 md:grid-cols-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+            <p className="text-sm text-slate-400">
+              {t("plans.free")}
             </p>
 
-            <p className="text-3xl font-bold text-slate-200 mt-2">
+            <p className="mt-2 text-3xl font-bold text-slate-200">
               {freeUsersCount}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-yellow-500 rounded-2xl p-5">
-            <p className="text-slate-400 text-sm">
-              GOLD
+          <div className="rounded-2xl border border-yellow-500 bg-slate-900 p-5">
+            <p className="text-sm text-slate-400">
+              {t("plans.gold")}
             </p>
 
-            <p className="text-3xl font-bold text-yellow-400 mt-2">
+            <p className="mt-2 text-3xl font-bold text-yellow-400">
               {goldUsersCount}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-cyan-500 rounded-2xl p-5">
-            <p className="text-slate-400 text-sm">
-              DIAMOND
+          <div className="rounded-2xl border border-cyan-500 bg-slate-900 p-5">
+            <p className="text-sm text-slate-400">
+              {t("plans.diamond")}
             </p>
 
-            <p className="text-3xl font-bold text-cyan-400 mt-2">
+            <p className="mt-2 text-3xl font-bold text-cyan-400">
               {diamondUsersCount}
             </p>
           </div>
 
-          <div className="bg-slate-900 border border-purple-500 rounded-2xl p-5">
-            <p className="text-slate-400 text-sm">
-              ENTERPRISE
+          <div className="rounded-2xl border border-purple-500 bg-slate-900 p-5">
+            <p className="text-sm text-slate-400">
+              {t("plans.enterprise")}
             </p>
 
-            <p className="text-3xl font-bold text-purple-400 mt-2">
+            <p className="mt-2 text-3xl font-bold text-purple-400">
               {enterpriseUsersCount}
             </p>
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
-          <div className="p-6 border-b border-slate-800">
+        <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900">
+          <div className="border-b border-slate-800 p-6">
             <h2 className="text-2xl font-bold">
-              User Accounts
+              {t("accountsTitle")}
             </h2>
 
-            <p className="text-slate-400 mt-2">
-              {users.length} account
-              {users.length === 1 ? "" : "s"} registered
+            <p className="mt-2 text-slate-400">
+              {t("accountsRegistered", {
+                count: users.length,
+              })}
             </p>
           </div>
 
@@ -167,13 +205,33 @@ export default async function UsersPage() {
             <table className="w-full min-w-[900px]">
               <thead>
                 <tr className="border-b border-slate-800 bg-slate-950/60">
-                  <th className="text-left p-4">ID</th>
-                  <th className="text-left p-4">User</th>
-                  <th className="text-left p-4">Role</th>
-                  <th className="text-left p-4">Current Plan</th>
-                  <th className="text-left p-4">Change Plan</th>
-                  <th className="text-left p-4">Created</th>
-                  <th className="text-left p-4">Actions</th>
+                  <th className="p-4 text-start">
+                    {t("table.id")}
+                  </th>
+
+                  <th className="p-4 text-start">
+                    {t("table.user")}
+                  </th>
+
+                  <th className="p-4 text-start">
+                    {t("table.role")}
+                  </th>
+
+                  <th className="p-4 text-start">
+                    {t("table.currentPlan")}
+                  </th>
+
+                  <th className="p-4 text-start">
+                    {t("table.changePlan")}
+                  </th>
+
+                  <th className="p-4 text-start">
+                    {t("table.created")}
+                  </th>
+
+                  <th className="p-4 text-start">
+                    {t("table.actions")}
+                  </th>
                 </tr>
               </thead>
 
@@ -189,7 +247,7 @@ export default async function UsersPage() {
 
                     <td className="p-4">
                       <p className="font-semibold">
-                        {user.name}
+                        {user.name || t("unnamedUser")}
                       </p>
 
                       <p className="text-sm text-slate-400">
@@ -205,17 +263,17 @@ export default async function UsersPage() {
                             : "bg-slate-700 text-slate-200"
                         }`}
                       >
-                        {user.role}
+                        {getRoleLabel(user.role)}
                       </span>
                     </td>
 
                     <td className="p-4">
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-semibold ${getPlanBadge(
-                          user.planType
+                          user.planType,
                         )}`}
                       >
-                        {user.planType}
+                        {getPlanLabel(user.planType)}
                       </span>
                     </td>
 
@@ -227,7 +285,9 @@ export default async function UsersPage() {
                     </td>
 
                     <td className="p-4 text-sm text-slate-400">
-                      {user.createdAt.toLocaleDateString()}
+                      {user.createdAt.toLocaleDateString(
+                        locale,
+                      )}
                     </td>
 
                     <td className="p-4">
