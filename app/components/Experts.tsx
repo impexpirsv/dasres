@@ -34,77 +34,134 @@ export default async function Experts() {
   const experts = await getHomepageExperts();
 
   return (
-    <section className="bg-slate-950 py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="mb-3 font-semibold text-blue-400">
-              {t("eyebrow")}
-            </p>
+    <section className="relative overflow-hidden border-y border-slate-800 bg-slate-950 py-28">
 
-            <h2 className="mb-3 text-4xl font-bold md:text-5xl">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(6,182,212,0.14),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(37,99,235,0.12),transparent_35%)]" />
+
+
+      <div className="relative mx-auto max-w-7xl px-6">
+
+        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+
+          <div>
+
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-5 py-2 text-sm font-semibold text-cyan-300">
+              <span className="h-2 w-2 rounded-full bg-cyan-400" />
+              {t("eyebrow")}
+            </div>
+
+
+            <h2 className="mb-4 text-4xl font-black md:text-6xl">
               {t("title")}
             </h2>
 
-            <p className="max-w-2xl text-slate-400">
+
+            <p className="max-w-2xl text-lg leading-8 text-slate-400">
               {t("description")}
             </p>
+
           </div>
+
 
           <Link
             href="/experts"
-            className="font-semibold text-blue-400 hover:text-blue-300"
+            className="rounded-xl border border-cyan-500/40 bg-cyan-500/10 px-6 py-3 font-semibold text-cyan-300 transition hover:bg-cyan-600 hover:text-white"
           >
-            {t("viewAll")}{" "}
-            <span aria-hidden="true">→</span>
+            {t("viewAll")} →
           </Link>
+
         </div>
 
+
+
         <div className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+
           {experts.map((expert) => (
+
             <div
               key={expert.id}
-              className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/10"
+              className="
+                group
+                relative
+                overflow-hidden
+                rounded-[2rem]
+                border
+                border-slate-800
+                bg-slate-900/80
+                p-7
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-cyan-500/60
+                hover:shadow-2xl
+                hover:shadow-cyan-500/10
+              "
             >
-              <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-3xl">
-                👨‍💼
-              </div>
 
-              <div className="mb-3 flex items-center gap-2">
-                <h3 className="text-xl font-semibold">
+              <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-cyan-500/10 blur-3xl transition group-hover:bg-cyan-500/20" />
+
+
+
+              <div className="relative">
+
+                <div className="mb-6 flex items-center justify-between">
+
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-cyan-500 to-emerald-400 text-3xl shadow-lg shadow-cyan-500/20">
+                    👨‍💼
+                  </div>
+
+
+                  <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+                    ✓ {t("verified")}
+                  </span>
+
+                </div>
+
+
+
+                <h3 className="text-2xl font-black">
                   {expert.name}
                 </h3>
 
-                <span className="rounded-full bg-emerald-500/20 px-2 py-1 text-xs text-emerald-400">
-                  {t("verified")}
-                </span>
+
+                <p className="mt-2 text-cyan-400">
+                  {expert.specialty}
+                </p>
+
+
+                <p className="mt-2 text-slate-500">
+                  {expert.country}
+                </p>
+
+
+
+                <div className="mt-7 flex items-center justify-between border-t border-slate-800 pt-5">
+
+                  <span className="text-sm font-semibold text-emerald-400">
+                    ● {t("available")}
+                  </span>
+
+
+                  <Link
+                    href={`/experts/${expert.id}`}
+                    className="font-semibold text-blue-400 transition hover:text-cyan-300"
+                  >
+                    {t("viewProfile")} →
+                  </Link>
+
+                </div>
+
+
               </div>
 
-              <p className="text-blue-400">
-                {expert.specialty}
-              </p>
-
-              <p className="mt-2 text-slate-400">
-                {expert.country}
-              </p>
-
-              <div className="mt-6 flex items-center justify-between border-t border-slate-800 pt-5">
-                <span className="text-sm text-emerald-400">
-                  ● {t("available")}
-                </span>
-
-                <Link
-                  href={`/experts/${expert.id}`}
-                  className="font-medium text-blue-400 hover:text-blue-300"
-                >
-                  {t("viewProfile")}{" "}
-                  <span aria-hidden="true">→</span>
-                </Link>
-              </div>
             </div>
+
           ))}
+
         </div>
+
       </div>
+
     </section>
   );
 }

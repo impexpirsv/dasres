@@ -1,8 +1,12 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import {
+  useLocale,
+  useTranslations,
+} from "next-intl";
 
 interface Expert {
   id: number;
@@ -36,6 +40,7 @@ function trustColor(score: number) {
   return "text-red-400";
 }
 
+
 function VerificationBadge({
   status,
 }: {
@@ -47,7 +52,7 @@ function VerificationBadge({
 
   if (status === "VERIFIED") {
     return (
-      <span className="inline-block rounded-lg bg-emerald-600 px-3 py-1 text-sm text-white">
+      <span className="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
         ✓ {t("verified")}
       </span>
     );
@@ -55,29 +60,32 @@ function VerificationBadge({
 
   if (status === "REJECTED") {
     return (
-      <span className="inline-block rounded-lg bg-red-600 px-3 py-1 text-sm text-white">
+      <span className="inline-flex items-center rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 text-xs font-semibold text-red-300">
         {t("rejected")}
       </span>
     );
   }
 
   return (
-    <span className="inline-block rounded-lg bg-yellow-600 px-3 py-1 text-sm text-black">
+    <span className="inline-flex items-center rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-300">
       {t("pending")}
     </span>
   );
 }
+
 
 function PlanBadge({
   planType,
 }: {
   planType: string;
 }) {
-  const t = useTranslations("experts.search.plans");
+  const t = useTranslations(
+    "experts.search.plans",
+  );
 
   if (planType === "ENTERPRISE") {
     return (
-      <span className="inline-block rounded-lg bg-purple-600 px-3 py-1 text-sm text-white">
+      <span className="inline-flex items-center rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-xs font-semibold text-purple-300">
         👑 {t("enterprise")}
       </span>
     );
@@ -85,7 +93,7 @@ function PlanBadge({
 
   if (planType === "DIAMOND") {
     return (
-      <span className="inline-block rounded-lg bg-cyan-600 px-3 py-1 text-sm text-black">
+      <span className="inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-300">
         💎 {t("diamond")}
       </span>
     );
@@ -93,7 +101,7 @@ function PlanBadge({
 
   if (planType === "GOLD") {
     return (
-      <span className="inline-block rounded-lg bg-yellow-600 px-3 py-1 text-sm text-black">
+      <span className="inline-flex items-center rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-300">
         🥇 {t("gold")}
       </span>
     );
@@ -102,6 +110,7 @@ function PlanBadge({
   return null;
 }
 
+
 export default function ExpertsSearch({
   experts,
   profileBasePath = "/experts",
@@ -109,29 +118,57 @@ export default function ExpertsSearch({
   experts: Expert[];
   profileBasePath?: string;
 }) {
-  const t = useTranslations("experts.search");
 
-  const [search, setSearch] = useState("");
-  const [country, setCountry] = useState("");
+  const t = useTranslations(
+    "experts.search",
+  );
+
+  const locale = useLocale();
+
+  const numberFormatter =
+    new Intl.NumberFormat(locale);
+
+  const ratingFormatter =
+    new Intl.NumberFormat(locale, {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
+
+
+  const [search, setSearch] =
+    useState("");
+
+  const [country, setCountry] =
+    useState("");
+
   const [ratingFilter, setRatingFilter] =
     useState("");
+
   const [verifiedOnly, setVerifiedOnly] =
     useState(false);
+
 
   const countries = Array.from(
     new Set(
       experts
-        .map((expert) => expert.country)
+        .map(
+          (expert) =>
+            expert.country,
+        )
         .filter(Boolean),
     ),
-  ).sort((a, b) => a.localeCompare(b));
+  ).sort((a, b) =>
+    a.localeCompare(b),
+  );
 
-  const normalizedSearch = search
-    .trim()
-    .toLowerCase();
 
-  const filteredExperts = experts.filter(
-    (expert) => {
+  const normalizedSearch =
+    search.trim().toLowerCase();
+
+
+  const filteredExperts =
+    experts.filter((expert) => {
+
       const matchesSearch =
         normalizedSearch === "" ||
         expert.name
@@ -144,9 +181,11 @@ export default function ExpertsSearch({
           .toLowerCase()
           .includes(normalizedSearch);
 
+
       const matchesCountry =
         country === "" ||
         expert.country === country;
+
 
       const matchesRating =
         ratingFilter === "" ||
@@ -155,9 +194,12 @@ export default function ExpertsSearch({
         (ratingFilter === "4" &&
           expert.averageRating >= 4);
 
+
       const matchesVerified =
         !verifiedOnly ||
-        expert.verificationStatus === "VERIFIED";
+        expert.verificationStatus ===
+          "VERIFIED";
+
 
       return (
         matchesSearch &&
@@ -165,278 +207,347 @@ export default function ExpertsSearch({
         matchesRating &&
         matchesVerified
       );
-    },
-  );
+    });
 
-  const featuredExperts = filteredExperts.filter(
-    (expert) =>
-      expert.planType === "ENTERPRISE" ||
-      expert.planType === "DIAMOND",
-  );
 
-  return (
+  const featuredExperts =
+    filteredExperts.filter(
+      (expert) =>
+        expert.planType === "ENTERPRISE" ||
+        expert.planType === "DIAMOND",
+    );
+      return (
     <>
-      <div className="mb-10 grid gap-4 lg:grid-cols-4">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-          placeholder={t("searchPlaceholder")}
-          aria-label={t("searchLabel")}
-          className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
-        />
+      <div className="mb-10 rounded-3xl border border-slate-800 bg-slate-900/70 p-5 backdrop-blur">
 
-        <select
-          value={country}
-          onChange={(e) =>
-            setCountry(e.target.value)
-          }
-          aria-label={t("countryLabel")}
-          className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
-        >
-          <option value="">
-            {t("allCountries")}
-          </option>
+        <div className="grid gap-4 lg:grid-cols-4">
 
-          {countries.map((countryName) => (
-            <option
-              key={countryName}
-              value={countryName}
-            >
-              {countryName}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={ratingFilter}
-          onChange={(e) =>
-            setRatingFilter(e.target.value)
-          }
-          aria-label={t("ratingFilterLabel")}
-          className="w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-blue-500"
-        >
-          <option value="">
-            {t("allRatings")}
-          </option>
-
-          <option value="5">
-            {t("fiveStars")}
-          </option>
-
-          <option value="4">
-            {t("fourPlusStars")}
-          </option>
-        </select>
-
-        <label className="flex items-center justify-center rounded-xl border border-slate-800 bg-slate-900 px-4 py-4 text-slate-300">
           <input
-            type="checkbox"
-            checked={verifiedOnly}
+            type="text"
+            value={search}
             onChange={(e) =>
-              setVerifiedOnly(e.target.checked)
+              setSearch(e.target.value)
             }
-            className="me-3"
+            placeholder={t("searchPlaceholder")}
+            aria-label={t("searchLabel")}
+            className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none transition placeholder:text-slate-600 focus:border-blue-500"
           />
 
-          {t("verifiedOnly")}
-        </label>
+
+          <select
+            value={country}
+            onChange={(e) =>
+              setCountry(e.target.value)
+            }
+            aria-label={t("countryLabel")}
+            className="rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-blue-500"
+          >
+            <option value="">
+              {t("allCountries")}
+            </option>
+
+            {countries.map((item) => (
+              <option
+                key={item}
+                value={item}
+              >
+                {item}
+              </option>
+            ))}
+
+          </select>
+
+
+          <select
+            value={ratingFilter}
+            onChange={(e) =>
+              setRatingFilter(e.target.value)
+            }
+            aria-label={t("ratingFilterLabel")}
+            className="rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-blue-500"
+          >
+            <option value="">
+              {t("allRatings")}
+            </option>
+
+            <option value="5">
+              {t("fiveStars")}
+            </option>
+
+            <option value="4">
+              {t("fourPlusStars")}
+            </option>
+
+          </select>
+
+
+          <label className="flex cursor-pointer items-center justify-center rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-300 transition hover:border-blue-500">
+
+            <input
+              type="checkbox"
+              checked={verifiedOnly}
+              onChange={(e) =>
+                setVerifiedOnly(
+                  e.target.checked,
+                )
+              }
+              className="me-3 h-4 w-4"
+            />
+
+            {t("verifiedOnly")}
+
+          </label>
+
+        </div>
+
       </div>
 
-      {featuredExperts.length > 0 && (
-        <div className="mb-12">
-          <div className="mb-6">
-            <h2 className="text-3xl font-bold">
-              {t("featured.title")}
-            </h2>
 
-            <p className="mt-2 text-slate-400">
+
+      {featuredExperts.length > 0 && (
+        <section className="mb-14">
+
+          <div className="mb-7">
+            <p className="mb-2 text-sm font-bold uppercase tracking-wider text-cyan-400">
+              {t("featured.title")}
+            </p>
+
+            <p className="text-slate-400">
               {t("featured.description")}
             </p>
           </div>
 
+
           <div className="grid gap-6 md:grid-cols-2">
+
             {featuredExperts
               .slice(0, 4)
               .map((expert) => (
-                <Link
-                  key={expert.id}
-                  href={`${profileBasePath}/${expert.id}`}
-                  className="rounded-3xl border border-yellow-500 bg-gradient-to-br from-slate-900 to-slate-950 p-6 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-yellow-400 hover:shadow-2xl hover:shadow-yellow-500/20"
-                >
-                  <div className="flex items-start gap-5">
-                    {expert.imageUrl ? (
+
+              <Link
+                key={expert.id}
+                href={`${profileBasePath}/${expert.id}`}
+                className="
+                  group
+                  rounded-[2rem]
+                  border
+                  border-cyan-500/30
+                  bg-gradient-to-br
+                  from-slate-900
+                  to-slate-950
+                  p-7
+                  transition-all
+                  duration-300
+                  hover:-translate-y-2
+                  hover:border-cyan-400
+                  hover:shadow-2xl
+                  hover:shadow-cyan-500/10
+                "
+              >
+
+                <div className="flex gap-5">
+
+                  {expert.imageUrl ? (
                     <Image
-  src={expert.imageUrl}
-  alt={expert.name}
-  width={96}
-  height={96}
-  className="h-24 w-24 rounded-2xl object-cover"
-/>
-                    ) : (
-                      <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-slate-800 text-4xl">
-                        👤
-                      </div>
-                    )}
-
-                    <div className="min-w-0 flex-1">
-                      <div className="mb-3 flex flex-wrap gap-2">
-                        <PlanBadge
-                          planType={expert.planType}
-                        />
-
-                        <VerificationBadge
-                          status={
-                            expert.verificationStatus
-                          }
-                        />
-                      </div>
-
-                      <h3 className="break-words text-2xl font-bold">
-                        {expert.name}
-                      </h3>
-
-                      <p className="mt-1 text-blue-400">
-                        {expert.specialty}
-                      </p>
-
-                      <p className="mt-2 text-slate-400">
-                        {expert.country}
-                      </p>
-
-                      <div className="mt-5 grid grid-cols-3 gap-3">
-                        <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                          <p
-                            className={`text-xl font-bold ${trustColor(
-                              expert.trustScore,
-                            )}`}
-                          >
-                            {expert.trustScore}
-                          </p>
-
-                          <p className="text-xs text-slate-500">
-                            {t("metrics.trust")}
-                          </p>
-                        </div>
-
-                        <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                          <p className="text-xl font-bold text-yellow-400">
-                            {expert.averageRating > 0
-                              ? expert.averageRating.toFixed(
-                                  1,
-                                )
-                              : t("notAvailable")}
-                          </p>
-
-                          <p className="text-xs text-slate-500">
-                            {t("metrics.rating")}
-                          </p>
-                        </div>
-
-                        <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                          <p className="text-xl font-bold text-blue-400">
-                            {expert.reviewCount}
-                          </p>
-
-                          <p className="text-xs text-slate-500">
-                            {t("metrics.reviews")}
-                          </p>
-                        </div>
-                      </div>
-
-                      <span className="mt-6 inline-flex text-blue-400 hover:text-blue-300">
-                        {t("viewProfile")}
-                      </span>
+                      src={expert.imageUrl}
+                      alt={expert.name}
+                      width={96}
+                      height={96}
+                      className="h-24 w-24 shrink-0 rounded-2xl object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-slate-800 text-4xl">
+                      👤
                     </div>
+                  )}
+
+
+                  <div className="min-w-0">
+
+                    <div className="mb-3 flex flex-wrap gap-2">
+
+                      <PlanBadge
+                        planType={expert.planType}
+                      />
+
+                      <VerificationBadge
+                        status={
+                          expert.verificationStatus
+                        }
+                      />
+
+                    </div>
+
+
+                    <h3 className="text-2xl font-black">
+                      {expert.name}
+                    </h3>
+
+
+                    <p className="mt-1 text-cyan-400">
+                      {expert.specialty}
+                    </p>
+
+
+                    <p className="mt-1 text-sm text-slate-500">
+                      {expert.country}
+                    </p>
+
                   </div>
-                </Link>
-              ))}
+
+                </div>
+
+
+
+                <div className="mt-7 grid grid-cols-3 gap-3">
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3 text-center">
+                    <p className={`text-xl font-black ${trustColor(expert.trustScore)}`}>
+                      {numberFormatter.format(
+                        expert.trustScore,
+                      )}
+                    </p>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      {t("metrics.trust")}
+                    </p>
+                  </div>
+
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3 text-center">
+                    <p className="text-xl font-black text-yellow-400">
+                      {expert.averageRating > 0
+                        ? ratingFormatter.format(
+                            expert.averageRating,
+                          )
+                        : t("notAvailable")}
+                    </p>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      {t("metrics.rating")}
+                    </p>
+                  </div>
+
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3 text-center">
+                    <p className="text-xl font-black text-blue-400">
+                      {numberFormatter.format(
+                        expert.reviewCount,
+                      )}
+                    </p>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      {t("metrics.reviews")}
+                    </p>
+                  </div>
+
+                </div>
+
+
+                <p className="mt-6 text-sm font-semibold text-cyan-400 transition group-hover:text-blue-300">
+                  {t("viewProfile")} →
+                </p>
+
+
+              </Link>
+
+            ))}
+
           </div>
-        </div>
+
+        </section>
       )}
 
+
+
       {filteredExperts.length === 0 ? (
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-slate-400">
+
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center text-slate-400">
           {t("empty")}
         </div>
+
       ) : (
+
         <div className="grid gap-6 md:grid-cols-3">
-          {filteredExperts.map((expert) => (
+
+          {filteredExperts.map(
+            (expert) => (
+
             <Link
               key={expert.id}
               href={`${profileBasePath}/${expert.id}`}
-              className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/20"
+              className="
+                group
+                rounded-[2rem]
+                border
+                border-slate-800
+                bg-slate-900/70
+                p-6
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-cyan-500/60
+                hover:shadow-2xl
+                hover:shadow-cyan-500/10
+              "
             >
-              {expert.imageUrl && (
-             <Image
-  src={expert.imageUrl}
-  alt={expert.name}
-  width={800}
-  height={400}
-  className="mb-4 h-48 w-full rounded-xl object-cover"
-/>
-              )}
 
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-800 text-xl">
+              <div className="mb-5 flex items-center gap-4">
+
+                {expert.imageUrl ? (
+                  <Image
+                    src={expert.imageUrl}
+                    alt={expert.name}
+                    width={64}
+                    height={64}
+                    className="h-16 w-16 rounded-2xl object-cover"
+                  />
+                ) : (
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-800 text-2xl">
                     👤
                   </div>
+                )}
 
-                  <div className="min-w-0">
-                    <h2 className="break-words text-2xl font-bold">
-                      {expert.name}
-                    </h2>
 
-                    <p className="text-sm text-slate-500">
-                      {expert.country}
-                    </p>
-                  </div>
+                <div>
+                  <h2 className="text-xl font-black">
+                    {expert.name}
+                  </h2>
+
+                  <p className="text-sm text-slate-500">
+                    {expert.country}
+                  </p>
                 </div>
 
-                <VerificationBadge
-                  status={
-                    expert.verificationStatus
-                  }
-                />
               </div>
 
-              <p className="text-blue-400">
+
+
+              <VerificationBadge
+                status={
+                  expert.verificationStatus
+                }
+              />
+
+
+              <p className="mt-4 text-cyan-400">
                 {expert.specialty}
               </p>
 
-              {expert.experience && (
-                <p className="mt-3 line-clamp-2 text-slate-500">
-                  {expert.experience}
-                </p>
-              )}
 
-              {expert.reviewCount > 0 ? (
-                <div className="mt-3 font-semibold text-yellow-400">
-                  ⭐{" "}
-                  {expert.averageRating.toFixed(1)}{" "}
-                  (
-                  {t("reviewCount", {
-                    count: expert.reviewCount,
-                  })}
-                  )
-                </div>
-              ) : (
-                <div className="mt-3 text-slate-500">
-                  {t("noRating")}
-                </div>
-              )}
+              <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500">
+                {expert.experience}
+              </p>
+
+
 
               <div className="mt-5 grid grid-cols-3 gap-3">
+
                 <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                  <p
-                    className={`text-lg font-bold ${trustColor(
+                  <p className={`font-bold ${trustColor(expert.trustScore)}`}>
+                    {numberFormatter.format(
                       expert.trustScore,
-                    )}`}
-                  >
-                    {expert.trustScore}
+                    )}
                   </p>
 
                   <p className="text-xs text-slate-500">
@@ -444,10 +555,13 @@ export default function ExpertsSearch({
                   </p>
                 </div>
 
+
                 <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                  <p className="text-lg font-bold text-yellow-400">
+                  <p className="font-bold text-yellow-400">
                     {expert.averageRating > 0
-                      ? expert.averageRating.toFixed(1)
+                      ? ratingFormatter.format(
+                          expert.averageRating,
+                        )
                       : t("notAvailable")}
                   </p>
 
@@ -456,24 +570,35 @@ export default function ExpertsSearch({
                   </p>
                 </div>
 
+
                 <div className="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                  <p className="text-lg font-bold text-blue-400">
-                    {expert.reviewCount}
+                  <p className="font-bold text-blue-400">
+                    {numberFormatter.format(
+                      expert.reviewCount,
+                    )}
                   </p>
 
                   <p className="text-xs text-slate-500">
                     {t("metrics.reviews")}
                   </p>
                 </div>
+
               </div>
 
-              <div className="mt-5 inline-block rounded-lg bg-green-600 px-3 py-1 text-white">
+
+              <div className="mt-5 inline-flex rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
                 {t("available")}
               </div>
+
+
             </Link>
+
           ))}
+
         </div>
+
       )}
+
     </>
   );
 }

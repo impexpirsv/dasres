@@ -1,39 +1,183 @@
 @import "tailwindcss";
 
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020617;
+  --foreground: #f8fafc;
+
+  --brand-primary: #2563eb;
+  --brand-secondary: #0ea5e9;
+  --brand-accent: #10b981;
+
+  --surface: #0f172a;
+  --surface-light: #1e293b;
+  --border: #1e293b;
 }
+
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+
+  --font-sans: var(--font-vazir), var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+
+/* =========================
+   Base
+========================= */
+
+html {
+  scroll-behavior: smooth;
+  background: var(--background);
 }
+
 
 body {
+  min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    var(--font-vazir),
+    var(--font-geist-sans),
+    sans-serif;
+
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+
+/* بهتر شدن اعداد و متن انگلیسی */
+code,
+pre {
+  font-family: var(--font-geist-mono), monospace;
+}
+
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+
+/* =========================
+   Selection
+========================= */
+
+::selection {
+  background: #2563eb;
+  color: white;
+}
+
+
+
+/* =========================
+   Scrollbar
+========================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 999px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+
+
+/* =========================
+   Utility polish
+========================= */
+
+.glass {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+}
+
+
+.card-hover {
+  transition:
+    transform 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+
+.card-hover:hover {
+  transform: translateY(-6px);
+}
+
+
+
+/* =========================
+   RTL Improvements
+========================= */
+
+[dir="rtl"] {
+  text-align: right;
+}
+
+
+[dir="ltr"] {
+  text-align: left;
+}
+
+
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+}
+
+
+[dir="ltr"] input,
+[dir="ltr"] textarea,
+[dir="ltr"] select {
+  text-align: left;
+}
+
+
+
+/* =========================
+   Print
+========================= */
+
 @media print {
+
   body {
     background: white !important;
     color: black !important;
   }
 
+
   .print\:hidden {
     display: none !important;
   }
+
 
   aside,
   nav,
@@ -43,11 +187,13 @@ body {
     display: none !important;
   }
 
+
   main,
   section,
   div {
     box-shadow: none !important;
   }
+
 
   * {
     color-adjust: exact !important;
@@ -55,24 +201,29 @@ body {
     -webkit-print-color-adjust: exact !important;
   }
 
+
   .bg-slate-950,
   .bg-slate-900,
   .bg-slate-800 {
     background: white !important;
   }
 
+
   .text-white {
     color: #020617 !important;
   }
+
 
   .text-slate-400,
   .text-slate-500 {
     color: #475569 !important;
   }
 
+
   .border-slate-800 {
     border-color: #cbd5e1 !important;
   }
+
 
   .rounded-3xl,
   .rounded-2xl,
@@ -80,26 +231,10 @@ body {
     border-radius: 12px !important;
   }
 
+
   @page {
     size: A4 landscape;
     margin: 12mm;
   }
-}
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #020617;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #475569;
 }

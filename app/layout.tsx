@@ -1,33 +1,51 @@
 import type { Metadata } from "next";
 import "./globals.css";
+
 import {
   Geist,
   Geist_Mono,
+  Vazirmatn,
 } from "next/font/google";
+
 import { NextIntlClientProvider } from "next-intl";
+
 import {
   getLocale,
   getMessages,
   getTranslations,
 } from "next-intl/server";
+
 import {
   isLocale,
   isRtl,
 } from "../lib/locale";
 
+
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
   "http://localhost:3000";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
+
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
+
+
+const vazir = Vazirmatn({
+  variable: "--font-vazir",
+  subsets: ["arabic"],
+  display: "swap",
+});
+
 
 const openGraphLocaleMap: Record<string, string> = {
   fa: "fa_IR",
@@ -44,6 +62,7 @@ const openGraphLocaleMap: Record<string, string> = {
   it: "it_IT",
 };
 
+
 export async function generateMetadata(): Promise<Metadata> {
   const requestedLocale = await getLocale();
 
@@ -51,13 +70,17 @@ export async function generateMetadata(): Promise<Metadata> {
     ? requestedLocale
     : "fa";
 
+
   const t = await getTranslations({
     locale,
     namespace: "rootMetadata",
   });
 
+
   const openGraphLocale =
-    openGraphLocaleMap[locale] || "fa_IR";
+    openGraphLocaleMap[locale] ||
+    "fa_IR";
+
 
   return {
     metadataBase: new URL(siteUrl),
@@ -126,6 +149,7 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: {
       index: true,
       follow: true,
+
       googleBot: {
         index: true,
         follow: true,
@@ -137,38 +161,54 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   const requestedLocale = await getLocale();
+
 
   const locale = isLocale(requestedLocale)
     ? requestedLocale
     : "fa";
 
+
   const messages = await getMessages();
+
 
   const direction = isRtl(locale)
     ? "rtl"
     : "ltr";
+
 
   return (
     <html
       lang={locale}
       dir={direction}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`
+        ${vazir.variable}
+        ${geistSans.variable}
+        ${geistMono.variable}
+        h-full
+        antialiased
+      `}
     >
+
       <body className="flex min-h-full flex-col">
+
         <NextIntlClientProvider
           locale={locale}
           messages={messages}
         >
           {children}
         </NextIntlClientProvider>
+
       </body>
+
     </html>
   );
 }
