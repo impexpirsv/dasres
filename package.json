@@ -13,6 +13,7 @@
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
+    "db:audit": "tsx scripts/audit-database.ts",
     "translate": "tsx scripts/translate.ts",
     "check": "npm run lint && npm run typecheck && npm run db:validate && npm run build"
   },

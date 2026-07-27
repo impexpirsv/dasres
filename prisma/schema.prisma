@@ -339,7 +339,7 @@ model ProjectTaskComment {
 model CaseProposal {
   id        Int            @id @default(autoincrement())
   caseId    Int
-  companyId Int?
+  companyId Int
   expertId  Int?
   message   String
   price     String?
@@ -347,7 +347,7 @@ model CaseProposal {
   createdAt DateTime       @default(now())
 
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  company   Company?  @relation(fields: [companyId], references: [id])
+  company   Company   @relation(fields: [companyId], references: [id])
   expert    Expert?   @relation(fields: [expertId], references: [id])
 
   @@index([caseId])
