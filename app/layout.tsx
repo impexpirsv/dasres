@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
-
+import { env } from "../lib/env";
 import {
   Geist,
   Geist_Mono,
@@ -22,8 +22,7 @@ import {
 
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  "http://localhost:3000";
+  env.NEXT_PUBLIC_SITE_URL;
 
 
 const geistSans = Geist({
@@ -63,12 +62,22 @@ const openGraphLocaleMap: Record<string, string> = {
 };
 
 
+
+export const viewport: Viewport = {
+  themeColor: "#020617",
+};
+
+
+
 export async function generateMetadata(): Promise<Metadata> {
+
   const requestedLocale = await getLocale();
 
-  const locale = isLocale(requestedLocale)
-    ? requestedLocale
-    : "fa";
+
+  const locale =
+    isLocale(requestedLocale)
+      ? requestedLocale
+      : "fa";
 
 
   const t = await getTranslations({
@@ -77,22 +86,22 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 
 
-  const openGraphLocale =
-    openGraphLocaleMap[locale] ||
-    "fa_IR";
-
-
   return {
+
     metadataBase: new URL(siteUrl),
+
 
     title: {
       default: t("title"),
       template: `%s | ${t("siteName")}`,
     },
 
+
     description: t("description"),
 
+
     applicationName: t("siteName"),
+
 
     keywords: [
       t("keywords.dasres"),
@@ -104,26 +113,41 @@ export async function generateMetadata(): Promise<Metadata> {
       t("keywords.international"),
     ],
 
+
     authors: [
       {
         name: t("siteName"),
       },
     ],
 
+
     creator: t("siteName"),
     publisher: t("siteName"),
+
 
     alternates: {
       canonical: "/",
     },
 
+
     openGraph: {
+
       title: t("openGraph.title"),
-      description: t("openGraph.description"),
+
+      description:
+        t("openGraph.description"),
+
       url: "/",
-      siteName: t("siteName"),
+
+      siteName:
+        t("siteName"),
+
       type: "website",
-      locale: openGraphLocale,
+
+      locale:
+        openGraphLocaleMap[locale] ||
+        "fa_IR",
+
       images: [
         {
           url: "/og-image.png",
@@ -134,32 +158,59 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
     },
 
+
     twitter: {
-      card: "summary_large_image",
-      title: t("twitter.title"),
-      description: t("twitter.description"),
-      images: ["/og-image.png"],
+
+      card:
+        "summary_large_image",
+
+      title:
+        t("twitter.title"),
+
+      description:
+        t("twitter.description"),
+
+      images:
+        ["/og-image.png"],
     },
+
 
     icons: {
       icon: "/favicon.ico",
       apple: "/apple-icon.png",
     },
 
+
     robots: {
+
       index: true,
+
       follow: true,
 
+
       googleBot: {
+
         index: true,
+
         follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-        "max-video-preview": -1,
+
+        "max-image-preview":
+          "large",
+
+        "max-snippet":
+          -1,
+
+        "max-video-preview":
+          -1,
+
       },
+
     },
+
   };
+
 }
+
 
 
 export default async function RootLayout({
@@ -168,27 +219,38 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const requestedLocale = await getLocale();
+
+  const requestedLocale =
+    await getLocale();
 
 
-  const locale = isLocale(requestedLocale)
-    ? requestedLocale
-    : "fa";
+  const locale =
+    isLocale(requestedLocale)
+      ? requestedLocale
+      : "fa";
 
 
-  const messages = await getMessages();
+  const messages =
+    await getMessages();
 
 
-  const direction = isRtl(locale)
-    ? "rtl"
-    : "ltr";
+  const direction =
+    isRtl(locale)
+      ? "rtl"
+      : "ltr";
+
 
 
   return (
+
     <html
+
       lang={locale}
+
       dir={direction}
+
       suppressHydrationWarning
+
       className={`
         ${vazir.variable}
         ${geistSans.variable}
@@ -196,19 +258,37 @@ export default async function RootLayout({
         h-full
         antialiased
       `}
+
     >
 
-      <body className="flex min-h-full flex-col">
+
+      <body
+
+        className="
+          flex
+          min-h-full
+          flex-col
+          bg-slate-950
+          text-slate-100
+        "
+
+      >
 
         <NextIntlClientProvider
           locale={locale}
           messages={messages}
         >
+
           {children}
+
         </NextIntlClientProvider>
+
 
       </body>
 
+
     </html>
+
   );
+
 }

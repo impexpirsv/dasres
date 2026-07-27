@@ -1,30 +1,37 @@
-import type { MetadataRoute } from "next";
+import type {
+  MetadataRoute,
+} from "next";
+import { env } from "../lib/env";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+export default function sitemap():
+  MetadataRoute.Sitemap {
+  const baseUrl =
+    env.NEXT_PUBLIC_SITE_URL;
 
-export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: siteUrl,
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
     },
+
     {
-      url: `${siteUrl}/experts`,
+      url: `${baseUrl}/companies`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
     },
+
     {
-      url: `${siteUrl}/companies`,
+      url: `${baseUrl}/experts`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
     },
+
     {
-      url: `${siteUrl}/opportunities`,
+      url: `${baseUrl}/opportunities`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
