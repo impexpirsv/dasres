@@ -1,9 +1,3158 @@
 {
   "common": {
-    "appName": "Dasres",
+    "years": "Années {count}",
+    "hours": "heures",
+    "countries": {
+      "iran": "L'Iran",
+      "uae": "Émirats arabes unis",
+      "UAE": "Émirats arabes unis",
+      "china": "Chine",
+      "Iran": "L'Iran"
+    },
+    "categories": {
+      "General": "Général",
+      "Shipping": "Expédition",
+      "Inspection": "Inspection",
+      "Customs Clearance": "Dédouanement",
+      "customs_clearance": "Dédouanement",
+      "shipping": "Expédition",
+      "inspection": "Inspection",
+      "insurance": "Assurance",
+      "sourcing": "Approvisionnement"
+    },
+    "specialties": {
+      "Shipping": "Expédition",
+      "Inspection": "Inspection",
+      "clearance": "Dédouanement",
+      "clearence": "Dédouanement",
+      "Customs Clearance": "Dédouanement",
+      "ticket_general": "Général",
+      "ticket_technical": "Technique",
+      "ticket_billing": "Facturation",
+      "ticket_support": "Soutien"
+    }
+  },
+  "navbar": {
+    "home": "Maison",
+    "experts": "Experts",
+    "companies": "Entreprises",
+    "opportunities": "Opportunités",
+    "topExperts": "Les meilleurs experts",
+    "topCompanies": "Principales entreprises",
     "dashboard": "Tableau de bord",
+    "login": "Se connecter",
+    "join": "Rejoindre",
+    "joinDasres": "Rejoignez Dasres",
+    "tagline": "Écosystème de confiance pour le commerce mondial",
+    "toggleMenu": "Changer de menu"
+  },
+  "hero": {
+    "platformValue": "Réseau commercial mondial",
+    "eyebrow": "Réseau commercial vérifié pour les services B2B mondiaux",
+    "titleLine1": "Instaurer la confiance",
+    "titleLine2": "commerce mondial",
+    "description": "Dasres connecte des entreprises vérifiées, des experts de confiance et des opportunités commerciales via une plateforme basée sur des cas pour le commerce international.",
+    "join": "Rejoignez Dasres",
+    "exploreExperts": "Découvrez les experts",
+    "browseCompanies": "Parcourir les entreprises",
+    "liveCaseLabel": "Cas commercial en direct",
+    "liveCaseTitle": "Dédouanement EAU",
+    "verified": "Vérifié",
+    "proposals": "Propositions",
+    "trust": "Confiance",
+    "status": "Statut",
+    "inProgress": "En cours",
+    "topCompany": "Meilleure entreprise",
+    "topExpert": "Expert de haut niveau",
+    "customsClearance": "Dédouanement",
+    "tradeConsultant": "Consultant commercial",
+    "rating": "Note {value}"
+  },
+  "liveStats": {
+    "eyebrow": "Métriques de la plateforme en direct",
+    "title": "Activité Dasres en temps réel",
+    "verifiedCompanies": "Entreprises vérifiées",
+    "trustedExperts": "Experts de confiance",
+    "tradeOpportunities": "Opportunités commerciales",
+    "tradeCases": "Cas commerciaux",
+    "caseSuccessRate": "Taux de réussite des dossiers"
+  },
+  "topRatedShowcase": {
+    "eyebrow": "Réseau de confiance",
+    "titleLine1": "Fournisseurs vérifiés.",
+    "titleLine2": "Classé par confiance.",
+    "description": "Dasres met en avant les entreprises et les experts à l'aide de vérifications, de notes, d'avis et de scores de confiance afin que les équipes commerciales puissent comparer les fournisseurs en toute confiance.",
+    "verifiedProfiles": "Profils vérifiés",
+    "reviewHistory": "Examiner l'historique",
+    "trustScoring": "Score de confiance",
+    "topCompany": "Meilleure entreprise",
+    "topExpert": "Meilleur expert",
+    "verified": "Vérifié",
+    "trust": "Confiance",
+    "rating": "Notation",
+    "reviews": "Avis",
+    "noReviews": "Aucun avis",
+    "viewCompany": "Voir l'entreprise",
+    "viewExpert": "Voir l'expert"
+  },
+  "services": {
+    "eyebrow": "Flux de travail de la plateforme",
+    "titleLine1": "De la demande à",
+    "titleLine2": "livraison fiable.",
+    "description": "Dasres n'est pas qu'un simple répertoire. Il s'agit d'une couche opérationnelle basée sur des cas pour les services, les propositions, les documents, la communication et la réputation du commerce international.",
+    "unifiedWorkflow": "Flux de travail unifié",
+    "caseVisibility": "Visibilité du cas",
+    "steps": {
+      "createCase": {
+        "title": "Créer un dossier commercial",
+        "description": "Soumettez votre demande d'échange avec les détails de la catégorie, de la portée et du service."
+      },
+      "matchProviders": {
+        "title": "Mise en relation avec les prestataires",
+        "description": "Dasres relie le cas à des entreprises vérifiées et à des experts par catégorie."
+      },
+      "receiveProposals": {
+        "title": "Recevoir des propositions",
+        "description": "Comparez le prix, le message, le profil du fournisseur, la vérification et la réputation."
+      },
+      "assignWinner": {
+        "title": "Attribuer le gagnant",
+        "description": "Acceptez une proposition, rejetez le reste et démarrez le flux de travail actif du dossier."
+      },
+      "manageDelivery": {
+        "title": "Gérer la livraison",
+        "description": "Conservez les messages, les documents, les étapes de la chronologie et les journaux d'activité au même endroit."
+      },
+      "completeReview": {
+        "title": "Compléter et réviser",
+        "description": "Clôturez le dossier, soumettez des avis et établissez la confiance pour les projets futurs."
+      }
+    }
+  },
+  "expertsSection": {
+    "eyebrow": "Réseau d'experts",
+    "title": "Experts en vedette",
+    "description": "Connectez-vous avec des professionnels vérifiés du commerce international dans les domaines des douanes, de l’approvisionnement, de la logistique, de l’inspection et du conseil commercial.",
+    "viewAll": "Tout afficher",
+    "verified": "Vérifié",
+    "available": "Disponible",
+    "viewProfile": "Voir le profil"
+  },
+  "companiesSection": {
+    "eyebrow": "Réseau d'entreprise",
+    "title": "Entreprises en vedette",
+    "description": "Découvrez des entreprises commerciales vérifiées dans les domaines du dédouanement, de l'expédition, de l'approvisionnement, de l'inspection et de la logistique internationale.",
+    "viewAll": "Tout afficher",
+    "verified": "Vérifié",
+    "acceptingProjects": "Accepter des projets",
+    "viewProfile": "Voir le profil"
+  },
+  "opportunitiesSection": {
+    "eyebrow": "Marché mondial",
+    "title": "Dernières opportunités commerciales",
+    "description": "Parcourez les demandes commerciales internationales, découvrez de nouvelles opportunités commerciales et connectez-vous avec des fournisseurs vérifiés dans le monde entier.",
+    "viewAll": "Tout afficher",
+    "statusOpen": "Ouvrir",
+    "openOpportunity": "Opportunité ouverte",
+    "viewDetails": "Afficher les détails",
+    "empty": "Aucune opportunité disponible pour le moment."
+  },
+  "footer": {
+    "ctaEyebrow": "Prêt à gérer vos échanges commerciaux en toute confiance ?",
+    "ctaTitle": "Démarrez votre premier dossier commercial Dasres.",
+    "ctaDescription": "Créez un dossier, comparez les fournisseurs vérifiés et gérez les propositions, les documents et les communications dans un flux de travail fiable.",
+    "createCase": "Créer un cas",
+    "exploreNetwork": "Explorer le réseau",
+    "description": "Écosystème de confiance basé sur des cas pour les services de commerce international, les fournisseurs vérifiés, les propositions, les documents et la réputation.",
+    "platformTitle": "Plate-forme",
+    "networkTitle": "Réseau",
+    "trustSignalsTitle": "Signaux de confiance",
+    "companies": "Entreprises",
+    "experts": "Experts",
+    "opportunities": "Opportunités",
+    "dashboard": "Tableau de bord",
+    "topCompanies": "Principales entreprises",
+    "topExperts": "Les meilleurs experts",
+    "openCases": "Dossiers ouverts",
+    "supportTickets": "Billets d'assistance",
+    "verifiedCompanies": "Entreprises vérifiées",
+    "trustedExperts": "Des experts de confiance",
+    "proposalWorkflow": "Flux de travail de proposition",
+    "reviewsReputation": "Avis et réputation",
+    "copyright": "© {year} Dasres. Tous droits réservés.",
+    "languagesAvailable": "Disponible en 12 langues"
+  },
+  "dashboardSidebar": {
+    "tagline": "Écosystème de confiance pour le commerce mondial",
+    "menu": "Menu",
+    "sections": {
+      "main": "Principal",
+      "tradeManagement": "Gestion commerciale",
+      "ownership": "Possession",
+      "admin": "Administrateur",
+      "communication": "Communication",
+      "subscription": "Abonnement",
+      "account": "Compte"
+    },
+    "links": {
+      "dashboard": "Tableau de bord",
+      "globalSearch": "Recherche globale",
+      "experts": "Experts",
+      "topExperts": "Les meilleurs experts",
+      "companies": "Entreprises",
+      "topCompanies": "Principales entreprises",
+      "opportunities": "Opportunités",
+      "submittedCases": "Cas soumis",
+      "activeWorkspaces": "Espaces de travail actifs",
+      "projects": "Projets",
+      "myTasks": "Mes tâches",
+      "myProposals": "Mes propositions",
+      "myReviews": "Mes avis",
+      "openCases": "Dossiers ouverts",
+      "savedCases": "Cas enregistrés",
+      "savedCompanies": "Entreprises sauvées",
+      "savedExperts": "Experts enregistrés",
+      "tickets": "Billets",
+      "myCompanies": "Mes entreprises",
+      "myExperts": "Mes Experts",
+      "users": "Utilisateurs",
+      "verifications": "Vérifications",
+      "notifications": "Notifications",
+      "subscription": "Abonnement",
+      "settings": "Paramètres",
+      "logout": "Déconnexion"
+    },
+    "premium": {
+      "title": "CARACTÉRISTIQUES PREMIUM",
+      "description": "Plans, limites et visibilité"
+    }
+  },
+  "dashboardQuickActions": {
+    "title": "Actions rapides",
+    "description": "Raccourcis fréquemment utilisés",
+    "createCase": {
+      "title": "Créer un cas",
+      "description": "Démarrez un nouveau projet de commerce international."
+    },
+    "openCases": {
+      "title": "Dossiers ouverts",
+      "description": "Parcourez les demandes d'échange disponibles."
+    },
+    "myCompanies": {
+      "title": "Mes entreprises",
+      "description": "Gérez les profils de votre entreprise."
+    },
+    "myExperts": {
+      "title": "Mes Experts",
+      "description": "Gérez vos profils d'experts."
+    }
+  },
+  "dashboardAttention": {
+    "title": "A besoin de votre attention",
+    "description": "Éléments importants à revoir",
+    "unreadNotifications": "Notifications non lues",
+    "openTickets": "Billets ouverts",
+    "openCases": "Dossiers ouverts",
+    "myProposals": "Mes propositions"
+  },
+  "dashboardAnalytics": {
+    "title": "Présentation de l'analyse",
+    "description": "Résumé des performances opérationnelles",
+    "casePipeline": {
+      "title": "Pipeline de cas",
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "completed": "Complété"
+    },
+    "proposalPerformance": {
+      "title": "Performances de la proposition",
+      "description": "Taux d'acceptation basé sur les propositions acceptées et rejetées.",
+      "accepted": "Accepté",
+      "rejected": "Rejeté"
+    },
+    "platformAttention": {
+      "title": "Attention à la plateforme",
+      "notifications": "Notifications",
+      "tickets": "Billets",
+      "reviews": "Avis",
+      "saved": "Enregistré"
+    }
+  },
+  "dashboardOverdueTasks": {
+    "title": "Tâches en retard",
+    "empty": {
+      "title": "Aucune tâche en retard",
+      "description": "Tout est dans les délais."
+    },
+    "dueDate": "Échéance : {date}"
+  },
+  "dashboardSubscriptionWidget": {
+    "currentPlan": "Forfait actuel",
+    "managePlan": "Gérer le forfait",
+    "activeCases": "Cas actifs",
+    "proposals": "Propositions",
+    "usageLimited": "{used} / {limit}",
+    "usageUnlimited": "{used} / Illimité"
+  },
+  "dashboardStatsGrid": {
+    "savedCases": {
+      "title": "Cas enregistrés",
+      "description": "Cas sauvegardés pour plus tard"
+    },
+    "savedCompanies": {
+      "title": "Entreprises sauvées",
+      "description": "Entreprises de votre réseau"
+    },
+    "savedExperts": {
+      "title": "Experts enregistrés",
+      "description": "Des experts dans votre réseau"
+    },
+    "experts": {
+      "adminTitle": "Experts",
+      "userTitle": "Mes Experts",
+      "adminDescription": "Experts vérifiés disponibles",
+      "userDescription": "Des experts que vous possédez"
+    },
+    "companies": {
+      "adminTitle": "Entreprises",
+      "userTitle": "Mes entreprises",
+      "adminDescription": "Entreprises enregistrées",
+      "userDescription": "Entreprises que vous possédez"
+    },
+    "opportunities": {
+      "title": "Opportunités",
+      "description": "Des opportunités commerciales actives"
+    },
+    "successRate": {
+      "title": "Taux de réussite des dossiers",
+      "description": "{completed} dossiers terminés sur {total}"
+    },
+    "tradeCases": {
+      "title": "Cas commerciaux",
+      "adminDescription": "Tous les projets commerciaux",
+      "userDescription": "Demandes d'échange soumises"
+    },
+    "openCases": {
+      "title": "Dossiers ouverts",
+      "description": "Opportunités disponibles"
+    },
+    "inProgress": {
+      "title": "En cours",
+      "description": "Projets commerciaux actifs"
+    },
+    "completed": {
+      "title": "Complété",
+      "description": "Projets terminés"
+    },
+    "proposals": "Propositions",
+    "accepted": "Accepté",
     "notifications": "Notifications",
-    "settings": "Paramètres",
-    "logout": "Déconnexion"
+    "openTickets": "Billets ouverts"
+  },
+  "dashboardMyTasksWidget": {
+    "title": "Mes tâches assignées",
+    "viewAll": "Voir tout",
+    "empty": "Aucune tâche assignée.",
+    "status": {
+      "TODO": "Faire",
+      "IN_PROGRESS": "En cours",
+      "REVIEW": "Revoir",
+      "COMPLETED": "Complété"
+    }
+  },
+  "dashboardTopRated": {
+    "countries": {
+      "iran": "L'Iran",
+      "uae": "Émirats arabes unis",
+      "china": "Chine"
+    },
+    "categories": {
+      "shipping": "Expédition",
+      "customs_clearance": "Dédouanement",
+      "inspection": "Inspection",
+      "insurance": "Assurance",
+      "sourcing": "Approvisionnement"
+    },
+    "viewAll": "Voir tout",
+    "reviewCount": "Basé sur {count, plural, one {# avis} other {# avis}}",
+    "experts": {
+      "title": "Experts les mieux notés",
+      "empty": "Aucun expert évalué pour l’instant."
+    },
+    "companies": {
+      "title": "Entreprises les mieux notées",
+      "empty": "Aucune entreprise notée pour l’instant."
+    }
+  },
+  "dashboardLatestItems": {
+    "viewAll": "Voir tout",
+    "experts": {
+      "adminTitle": "Derniers experts",
+      "userTitle": "Mes derniers experts",
+      "empty": "Aucun expert trouvé."
+    },
+    "companies": {
+      "adminTitle": "Dernières entreprises",
+      "userTitle": "Mes dernières entreprises",
+      "empty": "Aucune entreprise trouvée."
+    },
+    "opportunities": {
+      "title": "Dernières opportunités",
+      "empty": "Aucune opportunité trouvée."
+    },
+    "statuses": {
+      "open": "Ouvrir",
+      "closed": "Fermé",
+      "pending": "En attente"
+    }
+  },
+  "dashboardRecentActivity": {
+    "title": "Activité récente",
+    "empty": "Aucune activité trouvée.",
+    "system": "Système",
+    "actions": {
+      "proposalSubmitted": "Proposition soumise",
+      "proposalAccepted": "Proposition acceptée",
+      "proposalRejected": "Proposition rejetée",
+      "caseCompleted": "Affaire terminée",
+      "projectCompleted": "Projet terminé",
+      "documentUploaded": "Document téléchargé",
+      "projectTaskAttachmentUploaded": "Pièce jointe à la tâche du projet téléchargée",
+      "documentApproved": "Document approuvé",
+      "documentRejected": "Document rejeté",
+      "messageSent": "Message envoyé",
+      "projectMessageSent": "Message de projet envoyé",
+      "taskCommentAdded": "Commentaire de tâche ajouté",
+      "taskAssigned": "Tâche assignée",
+      "taskCompleted": "Tâche terminée",
+      "ticketUpdated": "Billet mis à jour",
+      "companyVerified": "Entreprise vérifiée",
+      "companyRejected": "Entreprise rejetée",
+      "projectTaskUpdated": "Tâche de projet mise à jour",
+      "projectTaskStatusUpdated": "Statut de la tâche du projet mis à jour",
+      "projectTaskChecklistToggled": "Liste de contrôle des tâches du projet mise à jour"
+    },
+    "details": {
+      "projectTaskStatusUpdated": "Le statut de la tâche « {title} » est devenu {status}.",
+      "projectTaskAttachmentUploaded": "Pièce jointe {file} téléchargée.",
+      "projectTaskUpdated": "La tâche de projet « {title} » a été mise à jour.",
+      "projectTaskChecklistToggled": "L'élément de la liste de contrôle « {item} » a été modifié.",
+      "projectTaskStatusUpdatedPrefix": "Statut de la tâche du projet mis à jour :",
+      "attachmentUploadedPrefix": "Pièce jointe téléchargée :",
+      "projectTaskUpdatedPrefix": "Tâche de projet mise à jour :"
+    },
+    "checklist": {
+      "completed": "Complété",
+      "incomplete": "Incomplet"
+    },
+    "statuses": {
+      "todo": "Faire",
+      "in_progress": "En cours",
+      "review": "Revoir",
+      "completed": "Complété"
+    }
+  },
+  "dashboardProfileCard": {
+    "title": "Profil utilisateur",
+    "name": "Nom",
+    "email": "E-mail",
+    "role": "Rôle",
+    "roles": {
+      "admin": "Administrateur",
+      "user": "Utilisateur"
+    }
+  },
+  "dashboardPage": {
+    "title": "Tableau de bord",
+    "badge": "Panneau de gestion d'entreprise",
+    "description": "Gérez votre compte Dasres, vos profils et vos activités commerciales.",
+    "roles": {
+      "admin": "Administrateur",
+      "user": "Utilisateur"
+    },
+    "admin": {
+      "title": "Gestion du système",
+      "commandCenter": "Centre de commande d'administration",
+      "description": "Présentation de l'état opérationnel de la plateforme Dasres",
+      "reviewVerifications": "Vérifier les vérifications",
+      "pendingVerifications": "Vérifications en attente",
+      "totalReviews": "Total des avis",
+      "reviews": "Avis",
+      "premiumUsers": "Utilisateurs Premium",
+      "openTickets": "Billets ouverts",
+      "panel": "Panneau d'administration",
+      "users": "Utilisateurs",
+      "experts": "Experts",
+      "companies": "Entreprises",
+      "opportunities": "Opportunités",
+      "latestUsers": "Derniers utilisateurs",
+      "manageUsers": "Gérer les utilisateurs"
+    }
+  },
+  "loginPage": {
+    "title": "Content de te revoir",
+    "description": "Connectez-vous à votre compte Dasres",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "login": "Se connecter",
+    "loginFailed": "La connexion a échoué."
+  },
+  "registerPage": {
+    "title": "Rejoignez Dasres",
+    "description": "Créez votre compte",
+    "name": {
+      "label": "Nom et prénom",
+      "placeholder": "Entrez votre nom complet"
+    },
+    "email": {
+      "label": "E-mail",
+      "placeholder": "Entrez votre adresse e-mail"
+    },
+    "password": {
+      "label": "Mot de passe",
+      "placeholder": "Entrez votre mot de passe",
+      "hint": "Votre mot de passe doit comporter au moins 6 caractères."
+    },
+    "submit": "Créer un compte",
+    "submitting": "Création d'un compte...",
+    "registrationFailed": "La création du compte a échoué.",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "login": "Se connecter"
+  },
+  "projectDetailPage": {
+    "backToProjects": "Retour aux projets"
+  },
+  "projectHeader": {
+    "progress": "Progrès"
+  },
+  "projectTabs": {
+    "overview": "Aperçu",
+    "tasks": "Tâches",
+    "board": "Conseil",
+    "calendar": "Calendrier",
+    "gantt": "Gantt",
+    "workload": "Charge de travail",
+    "documents": "Documents",
+    "timeline": "Chronologie",
+    "messages": "Messages",
+    "activity": "Activité"
+  },
+  "projectOverviewCards": {
+    "customer": "Client",
+    "category": "Catégorie",
+    "openTasks": "Tâches ouvertes",
+    "completedTasks": "Tâches terminées",
+    "steps": "Mesures",
+    "completed": "Complété"
+  },
+  "projectTimeSummary": {
+    "title": "Suivi du temps",
+    "description": "Résumé de la durée globale du projet.",
+    "estimated": "Estimé",
+    "logged": "Connecté",
+    "remaining": "Restant",
+    "distribution": "Répartition du temps"
+  },
+  "projectOverviewHeader": {
+    "description": "Centre de commande du projet avec tâches, charge de travail, chronologie, Gantt et suivi de l'exécution.",
+    "overallProgress": "Progrès global",
+    "status": {
+      "todo": "Faire",
+      "pending": "En attente",
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "review": "En cours de révision",
+      "completed": "Complété",
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "closed": "Fermé",
+      "active": "Actif",
+      "expired": "Expiré",
+      "cancelled": "Annulé"
+    },
+    "metrics": {
+      "tasks": "Tâches",
+      "completed": "Complété",
+      "inProgress": "En cours",
+      "review": "Revoir",
+      "blocked": "Bloqué",
+      "remaining": "Restant"
+    },
+    "hours": {
+      "estimated": "Heures estimées",
+      "logged": "Heures enregistrées",
+      "value": "{hours}h"
+    },
+    "features": {
+      "tasks": "Tâches",
+      "kanban": "Kanban",
+      "calendar": "Calendrier",
+      "timeline": "Chronologie",
+      "gantt": "Gantt",
+      "workload": "Charge de travail"
+    }
+  },
+  "projectHealthCard": {
+    "title": "Santé du projet",
+    "progress": "Progrès",
+    "hoursUsed": "Heures utilisées",
+    "utilization": "Utilisation",
+    "overdue": "En retard",
+    "noEstimate": "Aucune estimation",
+    "noOverdueTasks": "Aucune tâche en retard",
+    "overdueTasks": "Tâche(s) {count}"
+  },
+  "projectCriticalPathCard": {
+    "title": "Chemin critique",
+    "description": "Tâches pouvant directement retarder le calendrier du projet.",
+    "criticalTasks": "Tâches critiques",
+    "criticalDuration": "Durée critique",
+    "duration": "{count, plural, one {# jour} other {# jours}}",
+    "empty": "Aucune dépendance critique détectée.",
+    "dependsOn": "Dépend de : {task}",
+    "critical": "Critique",
+    "pathStart": "Début du chemin critique"
+  },
+  "projectAIInsights": {
+    "title": "Informations sur le copilote IA",
+    "description": "Analyse basée sur des règles préparée pour une future intégration GPT.",
+    "healthScore": "Score de santé de l'IA",
+    "progressLabel": "Progrès:",
+    "health": {
+      "excellent": "Excellent",
+      "stable": "Écurie",
+      "atRisk": "À risque",
+      "critical": "Critique"
+    },
+    "risks": {
+      "title": "Risques",
+      "overdueTasks": "{count, plural, one {# tâche en retard} other {# tâches en retard}}",
+      "blockedTasks": "{count, plural, one {# tâche bloquée} other {# tâches bloquées}}",
+      "pendingApprovals": "{count, plural, one {# en attente d'approbation} other {# en attente d'approbation}}"
+    },
+    "nextAction": "Action suivante",
+    "recommendation": "Recommandation",
+    "nextActions": {
+      "approveDocument": "Approuver {fileName}",
+      "resolveDependency": "Résoudre la dépendance pour {taskTitle}",
+      "reviewOverdueTask": "Vérifier la tâche en retard : {taskTitle}",
+      "continueExecution": "Continuer l'exécution et fermer la tâche suivante",
+      "completionReview": "Le projet est prêt pour l'examen d'achèvement"
+    },
+    "recommendations": {
+      "pendingApprovals": "L'approbation des documents constitue le principal goulot d'étranglement. Examinez les documents en attente avant de passer à l’expédition ou à la livraison.",
+      "blockedTasks": "Résolvez les dépendances des tâches avant de commencer l’exécution en aval.",
+      "overdueTasks": "Le risque lié au calendrier augmente. Révisez les délais et réaffectez les tâches retardées.",
+      "normalProgress": "Le projet avance normalement. Continuez à surveiller les documents et les étapes du flux de travail."
+    }
+  },
+  "projectAIAssistant": {
+    "title": "Dasres IA",
+    "subtitle": "Analyse de projet intelligente",
+    "risk": "Risque",
+    "progress": "Progrès",
+    "aiSuggestions": "Suggestions d'IA",
+    "riskLevels": {
+      "low": "Faible",
+      "medium": "Moyen",
+      "high": "Haut"
+    },
+    "suggestions": {
+      "resolveBlocked": "Résolvez les tâches bloquées.",
+      "reviewOverdue": "Passez en revue les tâches en retard.",
+      "increasePace": "Augmentez le rythme d’exécution.",
+      "normal": "Le projet avance normalement."
+    }
+  },
+  "projectTasksSection": {
+    "title": "Tâches du projet",
+    "description": "Gérez efficacement les tâches du projet.",
+    "searchPlaceholder": "Rechercher des tâches...",
+    "searchLabel": "Rechercher des tâches de projet",
+    "filteredCount": "{filtered} ou {total}",
+    "emptyState": "Sélectionnez une tâche pour afficher les détails.",
+    "noSearchResults": "Aucune tâche ne correspond à votre recherche."
+  },
+  "projectTaskList": {
+    "empty": "Aucune tâche trouvée.",
+    "unassigned": "Non attribué",
+    "progress": "Progrès",
+    "progressLabel": "Progrès pour {title}",
+    "noDueDate": "Pas de date d'échéance",
+    "priorities": {
+      "urgent": "Urgent",
+      "high": "Haut",
+      "medium": "Moyen",
+      "low": "Faible"
+    }
+  },
+  "projectTaskDetails": {
+    "emptyState": "Sélectionnez une tâche pour afficher les détails.",
+    "assignedTo": "Attribué à",
+    "unassigned": "Non attribué",
+    "startDate": "Date de début",
+    "dueDate": "Date d'échéance",
+    "noStartDate": "Pas de date de début",
+    "noDueDate": "Pas de date d'échéance",
+    "progress": "Progrès",
+    "estimated": "Estimé",
+    "logged": "Connecté",
+    "remaining": "Restant",
+    "hours": "{count}h",
+    "notSet": "Non défini",
+    "dependsOn": "Cela dépend de",
+    "blocks": "Blocs",
+    "attachments": "Pièces jointes",
+    "uploadedBy": "Téléchargé par {name}",
+    "unknown": "Inconnu",
+    "priorities": {
+      "urgent": "Urgent",
+      "high": "Haut",
+      "medium": "Moyen",
+      "low": "Faible"
+    },
+    "statuses": {
+      "todo": "Faire",
+      "in_progress": "En cours",
+      "review": "Revoir",
+      "completed": "Complété"
+    }
+  },
+  "projectTaskStatusSelect": {
+    "label": "Statut de la tâche",
+    "updating": "Mise à jour du statut...",
+    "updateError": "Impossible de mettre à jour l'état de la tâche.",
+    "networkError": "Une erreur réseau s'est produite lors de la mise à jour de l'état.",
+    "statuses": {
+      "todo": "Faire",
+      "in_progress": "En cours",
+      "review": "Revoir",
+      "completed": "Complété"
+    }
+  },
+  "assignTaskSelect": {
+    "label": "Attribuer une tâche",
+    "unassigned": "Non attribué",
+    "updating": "Mise à jour...",
+    "updateError": "Échec de l'attribution de la tâche.",
+    "networkError": "Une erreur réseau s'est produite lors de l'attribution de la tâche."
+  },
+  "editProjectTaskForm": {
+    "edit": "Modifier",
+    "title": "Modifier la tâche",
+    "taskTitle": "Titre de la tâche",
+    "titleRequired": "Le titre de la tâche est requis.",
+    "description": "Description",
+    "descriptionPlaceholder": "Ajouter une description de tâche...",
+    "priority": "Priorité",
+    "startDate": "Date de début",
+    "dueDate": "Date d'échéance",
+    "estimatedHours": "Heures estimées",
+    "estimatedHoursPlaceholder": "Heures estimées",
+    "loggedHours": "Heures enregistrées",
+    "loggedHoursPlaceholder": "Heures enregistrées",
+    "assignedTo": "Attribué à",
+    "unassigned": "Non attribué",
+    "dependsOn": "Cela dépend de",
+    "noDependency": "Aucune dépendance",
+    "save": "Sauvegarder",
+    "saving": "Économie...",
+    "cancel": "Annuler",
+    "updateError": "Impossible de mettre à jour la tâche.",
+    "networkError": "Une erreur réseau s'est produite lors de la mise à jour de la tâche.",
+    "invalidEstimatedHours": "Les heures estimées doivent être nulles ou supérieures.",
+    "invalidLoggedHours": "Les heures enregistrées doivent être nulles ou supérieures.",
+    "priorities": {
+      "low": "Faible",
+      "medium": "Moyen",
+      "high": "Haut",
+      "urgent": "Urgent"
+    }
+  },
+  "projectTaskChecklist": {
+    "title": "Liste de contrôle",
+    "empty": "Aucun élément de la liste de contrôle pour l'instant.",
+    "updating": "Mise à jour...",
+    "toggleError": "Impossible de mettre à jour l'élément de la liste de contrôle.",
+    "networkError": "Une erreur réseau s'est produite lors de la mise à jour de l'élément de la liste de contrôle.",
+    "markComplete": "Marquer {title} comme complet",
+    "markIncomplete": "Marquer {title} comme incomplet"
+  },
+  "createChecklistItemForm": {
+    "label": "Titre de l'élément de la liste de contrôle",
+    "placeholder": "Ajouter un élément de liste de contrôle...",
+    "add": "Ajouter",
+    "adding": "Ajout...",
+    "titleRequired": "Le titre de l’élément de la liste de contrôle est requis.",
+    "createError": "Impossible d'ajouter l'élément de la liste de contrôle.",
+    "invalidResponse": "L'élément de liste de contrôle a été créé, mais la réponse du serveur n'était pas valide.",
+    "networkError": "Une erreur réseau s'est produite lors de l'ajout de l'élément de la liste de contrôle."
+  },
+  "taskProgressBar": {
+    "title": "Progression de la tâche",
+    "ariaLabel": "Progression de la tâche",
+    "summary": "Éléments de la liste de contrôle {completed} sur {total} terminés"
+  },
+  "projectTaskComments": {
+    "title": "Commentaires",
+    "empty": "Pas encore de commentaires.",
+    "commentLabel": "Commentaire",
+    "placeholder": "Écrivez un commentaire...",
+    "postComment": "Publier un commentaire",
+    "posting": "Affectation...",
+    "edited": "édité",
+    "deletedComment": "Ce commentaire a été supprimé.",
+    "unknownAuthor": "Inconnu",
+    "unknownDate": "Date inconnue",
+    "commentRequired": "Un commentaire est requis.",
+    "createError": "Impossible de publier le commentaire.",
+    "networkError": "Une erreur réseau s'est produite lors de la publication du commentaire."
+  },
+  "projectTaskAttachmentUpload": {
+    "title": "Joindre un fichier",
+    "fileLabel": "Sélectionnez un fichier",
+    "helpText": "Formats pris en charge : JPG, PNG, WEBP, PDF, DOCX et XLSX. Taille maximale : 10 Mo.",
+    "fileSize": "{size} MB",
+    "upload": "Télécharger",
+    "uploading": "Téléchargement...",
+    "clear": "Clair",
+    "selectFile": "Veuillez sélectionner un fichier.",
+    "invalidType": "Ce type de fichier n'est pas pris en charge.",
+    "fileTooLarge": "Le fichier sélectionné doit faire 10 Mo ou moins.",
+    "uploadError": "Impossible de télécharger le fichier.",
+    "networkError": "Une erreur réseau s'est produite lors du téléchargement du fichier."
+  },
+  "createProjectTaskForm": {
+    "newTask": "+ Nouvelle tâche",
+    "modalTitle": "Créer une tâche",
+    "taskTitle": "Titre de la tâche",
+    "taskTitlePlaceholder": "Entrez le titre de la tâche",
+    "description": "Description",
+    "descriptionPlaceholder": "Description (facultatif)",
+    "priority": "Priorité",
+    "startDate": "Date de début",
+    "dueDate": "Date d'échéance",
+    "createTask": "Créer une tâche",
+    "creating": "Création...",
+    "cancel": "Annuler",
+    "titleRequired": "Le titre de la tâche est requis.",
+    "invalidDateRange": "La date d'échéance ne peut pas être antérieure à la date de début.",
+    "createError": "Impossible de créer la tâche.",
+    "networkError": "Une erreur réseau s'est produite lors de la création de la tâche.",
+    "priorities": {
+      "low": "Faible",
+      "medium": "Moyen",
+      "high": "Haut",
+      "urgent": "Urgent"
+    }
+  },
+  "projectBoard": {
+    "columns": {
+      "todo": "Faire",
+      "inProgress": "En cours",
+      "review": "Revoir",
+      "completed": "Complété"
+    },
+    "emptyColumn": "Aucune tâche",
+    "updateError": "Échec de la mise à jour de l'état de la tâche."
+  },
+  "kanbanColumn": {
+    "ariaLabel": "Colonne {title} avec tâches {count}",
+    "taskCount": "Tâches {count}"
+  },
+  "kanbanTaskCard": {
+    "assignee": "Cessionnaire",
+    "unassigned": "Non attribué",
+    "due": "Exigible",
+    "noDueDate": "Pas de date d'échéance",
+    "checklist": "Liste de contrôle",
+    "comments": "Commentaires",
+    "files": "Fichiers",
+    "dragLabel": "Faites glisser la tâche {title}",
+    "priorities": {
+      "low": "Faible",
+      "medium": "Moyen",
+      "high": "Haut",
+      "urgent": "Urgent"
+    }
+  },
+  "projectCalendarView": {
+    "title": "Calendrier du projet",
+    "description": "Affichez les délais des tâches et déplacez les tâches pour mettre à jour leurs dates d'échéance.",
+    "noEvents": "Aucune tâche planifiée.",
+    "updateError": "Impossible de mettre à jour la date de la tâche.",
+    "invalidTaskDate": "La tâche ou la date sélectionnée n'est pas valide.",
+    "buttons": {
+      "today": "Aujourd'hui",
+      "month": "Mois",
+      "week": "Semaine"
+    }
+  },
+  "projectGanttView": {
+    "title": "Diagramme de Gantt",
+    "description": "Chronologie visuelle des tâches et dépendances du projet.",
+    "emptyState": "Aucune tâche datée à afficher dans la vue Gantt.",
+    "taskColumn": "Tâche",
+    "timeline": "Chronologie",
+    "week": "Semaine",
+    "taskCount": "Tâches {count}",
+    "critical": "Critique",
+    "blocked": "Bloqué",
+    "dateRange": "{start} – {end}",
+    "zoom": {
+      "day": "Jour",
+      "week": "Semaine",
+      "month": "Mois"
+    },
+    "statuses": {
+      "todo": "Faire",
+      "in_progress": "En cours",
+      "review": "Revoir",
+      "completed": "Complété",
+      "unknown": "Inconnu"
+    },
+    "duration": {
+      "day": "{title} • {duration} jour(s)",
+      "week": "{title} • {duration} semaine(s)",
+      "month": "{title} • {duration} mois(s)"
+    },
+    "tooltips": {
+      "baseline": "Référence",
+      "dependencyInput": "Dépendance d'entrée",
+      "dependencyOutput": "Dépendance de sortie",
+      "duration": {
+        "day": "Durée : {duration} jours",
+        "week": "Durée : {duration} semaines",
+        "month": "Durée : {duration} mois"
+      }
+    }
+  },
+  "projectWorkloadView": {
+    "title": "Charge de travail de l'équipe",
+    "description": "Répartition des tâches, progression et charge de travail en retard par membre de l'équipe.",
+    "emptyState": "Aucune tâche n'est disponible pour l'analyse de la charge de travail.",
+    "unassigned": "Non attribué",
+    "totalTasks": "Tâches totales {count}",
+    "workload": "Charge de travail",
+    "active": "Actif",
+    "done": "Fait",
+    "overdue": "En retard",
+    "progressLabel": "Progression moyenne des tâches pour {name}",
+    "capacities": {
+      "high": "Haut",
+      "medium": "Moyen",
+      "low": "Faible"
+    },
+    "workloadStates": {
+      "needsAttention": "A besoin d'attention",
+      "highLoad": "Charge élevée",
+      "balanced": "Équilibré",
+      "available": "Disponible"
+    }
+  },
+  "projectTimeline": {
+    "title": "Étapes de la chronologie",
+    "completed": "Complété",
+    "pending": "En attente",
+    "notCompletedYet": "Pas encore terminé",
+    "unknownDate": "Date inconnue",
+    "emptyState": "Aucune étape de la chronologie n’est disponible.",
+    "steps": {
+      "requestSubmitted": "Demande soumise",
+      "providerMatching": "Correspondance des fournisseurs",
+      "documentsReview": "Examen des documents",
+      "serviceInProgress": "Service en cours",
+      "completed": "Complété"
+    }
+  },
+  "projectDocuments": {
+    "title": "Centre de documentation",
+    "description": "Espace de travail centralisé pour les projets et les documents commerciaux.",
+    "documentCount": "Documents {count}",
+    "required": "Requis",
+    "optional": "Facultatif",
+    "open": "Ouvrir",
+    "linkedTask": "Tâche liée : {title}",
+    "uploadedBy": "Téléchargé par {name}",
+    "unknownUser": "Utilisateur inconnu",
+    "unknownSize": "Taille inconnue",
+    "unknownDate": "Date inconnue",
+    "rejectionReason": "Motif du refus",
+    "rejectedByAdmin": "Rejeté par l'administrateur",
+    "approvalStatuses": {
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "pending": "En attente"
+    },
+    "requirements": {
+      "commercialInvoice": "Facture commerciale",
+      "packingList": "Liste de colisage",
+      "billOfLading": "Connaissement",
+      "insuranceCertificate": "Certificat d'assurance"
+    },
+    "fileSize": {
+      "bytes": "{size} B",
+      "kilobytes": "{size} Ko",
+      "megabytes": "{size} MB"
+    },
+    "emptyState": {
+      "title": "Aucun document téléchargé pour l'instant",
+      "description": "Les documents téléchargés dans les tâches du projet apparaîtront ici."
+    }
+  },
+  "approveDocumentButtons": {
+    "approve": "✓ Approuver",
+    "approving": "Approuver...",
+    "reject": "✕ Rejeter",
+    "rejecting": "Rejetant...",
+    "updateError": "Échec de la mise à jour du document.",
+    "networkError": "Une erreur réseau s'est produite lors de la mise à jour du document."
+  },
+  "addProjectMessageForm": {
+    "label": "Message du projet",
+    "placeholder": "Écrivez un message de projet...",
+    "send": "Envoyer un message",
+    "sending": "Envoi...",
+    "shortcutHint": "Appuyez sur Ctrl ou Commande + Entrée pour envoyer.",
+    "sendError": "Échec de l'envoi du message.",
+    "networkError": "Une erreur réseau s'est produite lors de l'envoi du message.",
+    "invalidResponse": "Le message a été envoyé, mais la réponse du serveur n'était pas valide."
+  },
+  "projectMessaging": {
+    "title": "Messagerie du projet",
+    "description": "Communication interne entre le client, le fournisseur et l'équipe projet.",
+    "conversationCount": "Conversations {count}",
+    "messageCount": "Messages {count}",
+    "defaultConversationTitle": "Conversation sur le projet",
+    "conversationListLabel": "Conversations sur le projet",
+    "noMessages": "Aucun message n'a encore été envoyé dans cette conversation.",
+    "unknownSender": "Expéditeur inconnu",
+    "unknownDate": "Date inconnue",
+    "you": "Toi",
+    "emptyState": {
+      "title": "Aucune conversation pour l'instant",
+      "description": "Envoyez le premier message pour démarrer la conversation sur le projet."
+    }
+  },
+  "projectActivitySection": {
+    "details": {
+      "taskStatusUpdated": "Le statut de la tâche « {title} » est devenu {status}.",
+      "documentUploaded": "Fichier {file} téléchargé."
+    },
+    "title": "Activités récentes",
+    "emptyState": "Aucune activité n'a encore été enregistrée.",
+    "unknownDate": "Date inconnue",
+    "actions": {
+      "project_created": "Projet créé",
+      "project_updated": "Projet mis à jour",
+      "task_created": "Tâche créée",
+      "task_updated": "Tâche mise à jour",
+      "task_assigned": "Tâche assignée",
+      "task_completed": "Tâche terminée",
+      "task_status_updated": "Statut de la tâche mis à jour",
+      "project_task_status_updated": "Statut de la tâche du projet mis à jour",
+      "comment_added": "Commentaire ajouté",
+      "document_uploaded": "Document téléchargé",
+      "document_approved": "Document approuvé",
+      "document_rejected": "Document rejeté",
+      "message_sent": "Message envoyé"
+    },
+    "statuses": {
+      "todo": "Faire",
+      "in_progress": "En cours",
+      "review": "Revoir",
+      "completed": "Complété"
+    }
+  },
+  "projectListProgress": {
+    "progress": "Progrès",
+    "progressLabel": "Avancement des tâches du projet",
+    "summary": "Tâches {completed} sur {total} terminées"
+  },
+  "projectPrintButton": {
+    "button": "Exporter / Imprimer PDF",
+    "tooltip": "Imprimez ou enregistrez cette page au format PDF",
+    "ariaLabel": "Exporter ou imprimer le projet au format PDF"
+  },
+  "projectProgressCard": {
+    "title": "Avancement du projet",
+    "progressLabel": "Avancement du projet",
+    "summary": "Tâches {completed} sur {total} terminées"
+  },
+  "projectTasksExportButton": {
+    "button": "Exporter vers Excel",
+    "ariaLabel": "Exporter les tâches du projet sous forme de fichier CSV compatible Excel",
+    "tooltip": "Téléchargez les tâches du projet sous forme de fichier CSV compatible avec Excel",
+    "emptyTooltip": "Il n'y a aucune tâche à exporter",
+    "unknown": "Inconnu",
+    "unknownDate": "Date inconnue",
+    "headers": {
+      "id": "IDENTIFIANT",
+      "title": "Titre",
+      "status": "Statut",
+      "priority": "Priorité",
+      "progress": "Progrès",
+      "startDate": "Date de début",
+      "dueDate": "Date d'échéance",
+      "estimatedHours": "Heures estimées",
+      "loggedHours": "Heures enregistrées",
+      "assignedTo": "Attribué à",
+      "assignedEmail": "E-mail attribué",
+      "dependsOn": "Cela dépend de",
+      "dependencyStatus": "Statut de dépendance"
+    },
+    "statuses": {
+      "todo": "Faire",
+      "inProgress": "En cours",
+      "review": "Revoir",
+      "completed": "Complété"
+    },
+    "priorities": {
+      "low": "Faible",
+      "medium": "Moyen",
+      "high": "Haut",
+      "urgent": "Urgent"
+    }
+  },
+  "statusBadge": {
+    "todo": "Faire",
+    "pending": "En attente",
+    "open": "Ouvrir",
+    "in_progress": "En cours",
+    "review": "Revoir",
+    "completed": "Complété",
+    "closed": "Fermé",
+    "approved": "Approuvé",
+    "rejected": "Rejeté",
+    "active": "Actif",
+    "expired": "Expiré",
+    "cancelled": "Annulé"
+  },
+  "casesPage": {
+    "adminTitle": "Tous les cas commerciaux",
+    "userTitle": "Mes cas",
+    "description": "Suivez vos demandes de services commerciaux soumises.",
+    "newCase": "Nouveau cas",
+    "emptyState": "Aucun cas trouvé.",
+    "unknownDate": "Date inconnue",
+    "caseNumber": "Cas n° {id}",
+    "timeline": "Chronologie",
+    "steps": "Étapes {completed} / {total}",
+    "winningProposal": "Proposition gagnante",
+    "proposalNumber": "#{id}",
+    "notSelected": "Non sélectionné",
+    "created": "Créé",
+    "updated": "Mis à jour",
+    "viewCase": "Voir le cas",
+    "stats": {
+      "total": "Total des cas",
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "completed": "Complété",
+      "cancelled": "Annulé"
+    },
+    "counts": {
+      "proposals": "Propositions {count}",
+      "documents": "Documents {count}",
+      "messages": "Messages {count}"
+    }
+  },
+  "openCasesPage": {
+    "title": "Dossiers ouverts",
+    "adminDescription": "Tous les dossiers commerciaux ouverts.",
+    "userDescription": "Cas correspondant aux catégories de votre entreprise.",
+    "myProposals": "Mes propositions",
+    "categoryLabel": "Catégorie:",
+    "allCategories": "Tous",
+    "unknownDate": "Date inconnue",
+    "requestedBy": "Demandé par :",
+    "created": "Créé : {date}",
+    "viewCase": "Voir le cas",
+    "categories": {
+      "general": "Général",
+      "customsClearance": "Dédouanement",
+      "shipping": "Expédition",
+      "inspection": "Inspection",
+      "insurance": "Assurance",
+      "sourcing": "Approvisionnement",
+      "documentation": "Documentation",
+      "payment": "Paiement"
+    },
+    "sort": {
+      "label": "Trier par:",
+      "newest": "Le plus récent",
+      "oldest": "Le plus ancien"
+    },
+    "stats": {
+      "matchingCases": "Cas correspondants",
+      "matchingCategories": "Catégories correspondantes",
+      "highCompetition": "Haute concurrence",
+      "myOpenProposals": "Mes propositions ouvertes",
+      "savedMatching": "Correspondance enregistrée"
+    },
+    "badges": {
+      "saved": "★ Enregistré",
+      "applied": "Appliqué",
+      "highCompetition": "Haute concurrence"
+    },
+    "metrics": {
+      "proposals": "Propositions",
+      "documents": "Documents",
+      "messages": "Messages"
+    },
+    "noCategories": {
+      "title": "Aucune catégorie d'entreprise trouvée",
+      "description": "Ajoutez d’abord un profil d’entreprise afin que Dasres puisse faire correspondre les dossiers ouverts à votre catégorie de service.",
+      "addCompany": "Ajouter une entreprise"
+    },
+    "emptyState": {
+      "title": "Aucun cas correspondant trouvé",
+      "adminDescription": "Il n’y a actuellement aucun dossier commercial ouvert.",
+      "userDescription": "Il n’y a actuellement aucun dossier ouvert correspondant aux catégories de votre entreprise. Réessayez plus tard ou développez les services de votre entreprise.",
+      "manageCompanies": "Gérer les entreprises"
+    }
+  },
+  "caseDetailPage": {
+    "backToCases": "Retour aux cas",
+    "caseNumber": "Cas n° {id}",
+    "unknownDate": "Date inconnue",
+    "unknown": "Inconnu",
+    "unknownUser": "Utilisateur inconnu",
+    "unknownCountry": "Pays inconnu",
+    "notAssigned": "Non attribué",
+    "notSelected": "Non sélectionné",
+    "notAvailable": "N/A",
+    "you": "Toi",
+    "system": "Système",
+    "customer": "Client",
+    "winningCompany": "Entreprise gagnante",
+    "winningExpert": "Expert gagnant",
+    "progress": "Progrès",
+    "timeline": "Chronologie de l'affaire",
+    "workflowProgress": "Progression du flux de travail",
+    "percentComplete": "{percent}% terminé",
+    "stepsSummary": "Étapes {completed} sur {total} terminées",
+    "caseInformation": "Informations sur le cas",
+    "status": "Statut",
+    "category": "Catégorie",
+    "created": "Créé",
+    "updated": "Dernière mise à jour",
+    "viewCompany": "Voir l'entreprise",
+    "viewExpert": "Voir l'expert",
+    "verified": "Vérifié",
+    "metrics": {
+      "proposals": "Propositions",
+      "messages": "Messages",
+      "documents": "Documents",
+      "activities": "Activités"
+    },
+    "timelineStep": {
+      "completed": "✓ Étape terminée",
+      "pending": "En attente d'achèvement"
+    },
+    "timelineEmpty": {
+      "title": "Aucune étape de chronologie",
+      "description": "Les étapes du flux de travail apparaîtront ici."
+    },
+    "proposals": {
+      "title": "Propositions",
+      "winnerSelected": "Une proposition gagnante a déjà été sélectionnée.",
+      "closed": "Cette affaire est déjà en cours. Les nouvelles propositions sont fermées.",
+      "ownCase": "Vous ne pouvez pas soumettre de proposition pour votre propre cas.",
+      "noMatchingCompany": "Vous n'avez pas d'entreprise correspondante pour cette catégorie de cas.",
+      "providerProposal": "Proposition du fournisseur",
+      "unknownCompany": "Entreprise inconnue",
+      "expertName": "Expert : {name}",
+      "noExpert": "Aucun expert désigné",
+      "price": "Prix",
+      "noPrice": "Pas de prix",
+      "company": "Entreprise",
+      "expert": "Expert",
+      "message": "Message de proposition",
+      "noMessage": "Aucun message fourni.",
+      "status": {
+        "accepted": "✓ Accepté",
+        "rejected": "Rejeté",
+        "pending": "En attente"
+      },
+      "empty": {
+        "title": "Aucune proposition pour l'instant",
+        "description": "Les entreprises correspondantes peuvent soumettre des propositions pendant que ce dossier est ouvert."
+      }
+    },
+    "messages": {
+      "title": "Messages",
+      "empty": {
+        "title": "Pas encore de messages",
+        "description": "Des messages apparaîtront ici une fois que le dossier sera en cours."
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "uploadedBy": "Téléchargé par {name}",
+      "download": "Télécharger",
+      "empty": {
+        "title": "Aucun document pour l'instant",
+        "description": "Les documents commerciaux téléchargés seront stockés ici."
+      }
+    },
+    "recommendedCompanies": {
+      "title": "Entreprises recommandées",
+      "empty": "Aucune entreprise correspondante vérifiée trouvée."
+    },
+    "assignedProvider": {
+      "title": "Fournisseur assigné",
+      "winningProposal": "Proposition gagnante",
+      "proposalSummary": "#{id} - {price}",
+      "proposalValue": "Valeur de la proposition",
+      "assignedAt": "Attribué à",
+      "empty": {
+        "title": "Aucun fournisseur attribué pour l'instant",
+        "description": "Une fois que le client accepte une proposition, l'entreprise ou l'expert sélectionné apparaîtra ici en tant que fournisseur désigné."
+      }
+    },
+    "activity": {
+      "title": "Activité de dossier ({count})",
+      "meta": "{actor} · {date}",
+      "actions": {
+        "proposalSubmitted": "Proposition soumise",
+        "proposalAccepted": "Proposition acceptée",
+        "proposalRejected": "Proposition rejetée",
+        "messageSent": "Message envoyé",
+        "documentUploaded": "Document téléchargé",
+        "caseCompleted": "Affaire terminée",
+        "reviewSubmitted": "Avis soumis"
+      },
+      "empty": {
+        "title": "Aucune activité pour le moment",
+        "description": "Les événements de cas, les propositions, les messages et les actions sur les documents apparaîtront ici."
+      }
+    },
+    "reviews": {
+      "title": "Avis",
+      "reviewProvider": "Examiner le fournisseur accepté",
+      "reviewCustomer": "Avis client",
+      "alreadySubmitted": "Votre avis a déjà été soumis.",
+      "permission": "Seuls le client et le fournisseur accepté peuvent soumettre des avis pour ce cas."
+    },
+    "errors": {
+      "accessDenied": {
+        "title": "Accès refusé",
+        "description": "Vous n'êtes pas autorisé à consulter ce dossier commercial.",
+        "back": "Retour aux dossiers ouverts"
+      }
+    }
+  },
+  "tickets": {
+    "form": {
+      "subject": "Sujet",
+      "category": "Catégorie",
+      "message": "Message",
+      "subjectPlaceholder": "Sujet",
+      "messagePlaceholder": "Décrivez votre problème...",
+      "create": "Créer un ticket",
+      "creating": "Création...",
+      "categories": {
+        "general": "Général",
+        "technical": "Technique",
+        "verification": "Vérification",
+        "billing": "Facturation",
+        "dispute": "Différend"
+      },
+      "errors": {
+        "createFailed": "Échec de la création du ticket."
+      }
+    },
+    "new": {
+      "title": "Nouveau billet",
+      "description": "Contactez l'assistance Dasres concernant la vérification, la facturation, les problèmes techniques ou les questions générales."
+    },
+    "list": {
+      "title": "Billets",
+      "description": "Gérez les demandes d’assistance, les problèmes de cas et l’assistance de la plateforme.",
+      "newTicket": "Nouveau billet",
+      "allTickets": "Tous les billets",
+      "myTickets": "Mes billets",
+      "empty": "Aucun billet trouvé.",
+      "created": "Créé",
+      "createdBy": "Créé par: {name}",
+      "ticketsFound": "{count, plural, =0 {Aucun billet trouvé} =1 {1 billet trouvé} other {# billets trouvés}}",
+      "statuses": {
+        "open": "Ouvrir",
+        "inProgress": "En cours",
+        "reopened": "Rouvert",
+        "closed": "Fermé"
+      }
+    },
+    "detail": {
+      "backToTickets": "← Retour à Billets",
+      "ticketNumber": "Billet #{id}",
+      "createdBy": "Créé par",
+      "createdAt": "Créé à",
+      "messages": "Messages",
+      "lastUpdate": "Dernière mise à jour",
+      "conversation": "Conversation",
+      "messageCount": "{count, plural, =0 {Aucun message} =1 {1 message} other {# messages}}",
+      "noMessages": "Aucun message pour l'instant.",
+      "closedNotice": "Ce ticket est fermé.",
+      "statuses": {
+        "open": "Ouvrir",
+        "inProgress": "En cours",
+        "closed": "Fermé",
+        "reopened": "Rouvert"
+      },
+      "categories": {
+        "general": "Général",
+        "technical": "Technique",
+        "verification": "Vérification",
+        "billing": "Facturation",
+        "dispute": "Différend"
+      },
+      "timeline": {
+        "title": "Chronologie des billets",
+        "created": "Billet créé",
+        "firstMessage": "Premier message",
+        "latestReply": "Dernière réponse",
+        "closed": "Billet fermé",
+        "closedDescription": "Le statut actuel est fermé.",
+        "reopened": "Billet réouvert",
+        "reopenedDescription": "Ce ticket nécessite à nouveau une attention particulière."
+      },
+      "rules": {
+        "title": "Règles d'assistance",
+        "focused": "Gardez les réponses ciblées et professionnelles.",
+        "caseDetails": "Joignez les détails du cas si nécessaire.",
+        "closedReplies": "Les tickets fermés ne peuvent pas recevoir de réponses.",
+        "adminReopen": "Les administrateurs peuvent rouvrir les tickets fermés."
+      },
+      "errors": {
+        "invalidId": "ID de billet invalide",
+        "notFound": "Billet introuvable",
+        "accessDenied": "Accès refusé"
+      }
+    },
+    "replyForm": {
+      "messageLabel": "Répondre",
+      "placeholder": "Écrivez une réponse...",
+      "send": "Envoyer la réponse",
+      "sending": "Envoi...",
+      "errors": {
+        "messageRequired": "Un message de réponse est requis.",
+        "sendFailed": "Échec de l'envoi de la réponse."
+      }
+    },
+    "closeButton": {
+      "confirm": "Êtes-vous sûr de vouloir fermer ce ticket ?",
+      "close": "Fermer le billet",
+      "closing": "Clôture...",
+      "errors": {
+        "closeFailed": "Échec de la clôture du ticket."
+      }
+    },
+    "reopenButton": {
+      "reopen": "Réouvrir le billet",
+      "reopening": "Réouverture...",
+      "errors": {
+        "reopenFailed": "Échec de la réouverture du ticket."
+      }
+    }
+  },
+  "notifications": {
+    "markAllRead": {
+      "markAll": "Marquer tout comme lu",
+      "updating": "Mise à jour...",
+      "errors": {
+        "updateFailed": "Échec de la mise à jour des notifications."
+      }
+    },
+    "list": {
+      "title": "Notifications",
+      "description": "Suivez les mises à jour des requêtes, des propositions, des messages, des documents et des alertes système.",
+      "total": "Total des notifications",
+      "unread": "Non lu",
+      "read": "Lire",
+      "centerTitle": "Centre de notifications",
+      "centerDescription": "Gérez les mises à jour des requêtes, des messages, des documents et des alertes système.",
+      "empty": "Aucune notification pour l'instant.",
+      "open": "Voir →",
+      "types": {
+        "proposal": "Proposition",
+        "accepted": "Accepté",
+        "rejected": "Rejeté",
+        "message": "Message",
+        "document": "Document",
+        "approved": "Approuvé",
+        "assigned": "Attribué",
+        "completed": "Complété",
+        "comment": "Commentaire",
+        "ticket": "Billet",
+        "deadline": "Date limite",
+        "projectDone": "Projet terminé",
+        "system": "Système"
+      },
+      "messages": {
+        "ticketCreated": "{user} a créé un nouveau ticket : {subject}",
+        "ticketReply": "{user} a répondu au ticket : {subject}",
+        "proposalReceived": "Une nouvelle proposition a été reçue.",
+        "projectCompleted": "Le projet est terminé."
+      }
+    }
+  },
+  "adminUsers": {
+    "deleteUser": {
+      "button": "Supprimer",
+      "deleting": "Suppression...",
+      "confirm": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+      "errors": {
+        "deleteFailed": "Échec de la suppression de l'utilisateur."
+      }
+    },
+    "makeAdmin": {
+      "button": "Faire administrateur",
+      "making": "Mise à jour...",
+      "confirm": "Êtes-vous sûr de vouloir faire de cet utilisateur un administrateur ?",
+      "errors": {
+        "makeAdminFailed": "Échec de la mise à jour du rôle de l'utilisateur."
+      }
+    },
+    "changePlan": {
+      "label": "Changer de forfait",
+      "plans": {
+        "free": "GRATUIT",
+        "gold": "OR",
+        "diamond": "DIAMANT",
+        "enterprise": "ENTREPRISE"
+      },
+      "errors": {
+        "updateFailed": "Échec de la mise à jour du plan."
+      }
+    },
+    "list": {
+      "title": "Gestion des utilisateurs",
+      "description": "Gérez les rôles des utilisateurs, les plans et l'accès aux comptes.",
+      "accountsTitle": "Comptes d'utilisateurs",
+      "accountsRegistered": "{count, plural, =0 {Aucun compte enregistré} =1 {1 compte enregistré} other {# comptes enregistrés}}",
+      "unnamedUser": "Utilisateur anonyme",
+      "stats": {
+        "totalUsers": "Nombre total d'utilisateurs",
+        "admins": "Administrateurs",
+        "users": "Utilisateurs",
+        "paidPlans": "Forfaits payants"
+      },
+      "roles": {
+        "admin": "Administrateur",
+        "user": "Utilisateur"
+      },
+      "plans": {
+        "free": "GRATUIT",
+        "gold": "OR",
+        "diamond": "DIAMANT",
+        "enterprise": "ENTREPRISE"
+      },
+      "table": {
+        "id": "IDENTIFIANT",
+        "user": "Utilisateur",
+        "role": "Rôle",
+        "currentPlan": "Forfait actuel",
+        "changePlan": "Changer de forfait",
+        "created": "Créé",
+        "actions": "Actes"
+      }
+    }
+  },
+  "expertReviews": {
+    "form": {
+      "title": "Notez cet expert",
+      "ratingLabel": "Notation",
+      "commentLabel": "Revoir",
+      "placeholder": "Écrivez votre avis...",
+      "submit": "Soumettre l'avis",
+      "submitting": "Soumission...",
+      "ratings": {
+        "1": "1 - Médiocre",
+        "2": "2 - Faible",
+        "3": "3 - Bien",
+        "4": "4 - Très bien",
+        "5": "5 - Excellent"
+      },
+      "errors": {
+        "submitFailed": "Échec de l'envoi de l'avis."
+      }
+    }
+  },
+  "companies": {
+    "edit": {
+      "title": "Modifier la société",
+      "description": "Mettre à jour les informations sur l'entreprise, la catégorie commerciale et le logo.",
+      "loading": "Chargement de l'entreprise...",
+      "currentLogo": "Logo actuel",
+      "currentLogoAlt": "Logo actuel de l'entreprise",
+      "update": "Mettre à jour la société",
+      "updating": "Mise à jour...",
+      "fields": {
+        "name": {
+          "label": "Nom de l'entreprise",
+          "placeholder": "Nom de l'entreprise"
+        },
+        "country": {
+          "label": "Pays",
+          "placeholder": "Pays"
+        },
+        "category": {
+          "label": "Catégorie commerciale"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Description"
+        },
+        "email": {
+          "label": "E-mail",
+          "placeholder": "E-mail"
+        },
+        "website": {
+          "label": "Site web",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "Remplacer le logo",
+          "help": "Laissez vide pour conserver le logo actuel. Formats pris en charge : JPG, PNG et WEBP."
+        }
+      },
+      "categories": {
+        "general": "Général",
+        "customsClearance": "Dédouanement",
+        "shipping": "Expédition",
+        "inspection": "Inspection",
+        "insurance": "Assurance",
+        "sourcing": "Approvisionnement",
+        "documentation": "Documentation",
+        "payment": "Paiement"
+      },
+      "errors": {
+        "loadFailed": "Erreur lors du chargement de l'entreprise.",
+        "updateFailed": "Erreur lors de la mise à jour de l'entreprise.",
+        "networkError": "Quelque chose s'est mal passé."
+      }
+    },
+    "new": {
+      "title": "Ajouter une entreprise",
+      "description": "Créez un profil d'entreprise et ajoutez-le au réseau commercial Dasres.",
+      "create": "Créer une entreprise",
+      "creating": "Création...",
+      "success": "Entreprise créée avec succès.",
+      "fields": {
+        "name": {
+          "label": "Nom de l'entreprise",
+          "placeholder": "Nom de l'entreprise"
+        },
+        "country": {
+          "label": "Pays",
+          "placeholder": "Pays"
+        },
+        "category": {
+          "label": "Catégorie commerciale"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Description"
+        },
+        "email": {
+          "label": "E-mail",
+          "placeholder": "E-mail"
+        },
+        "website": {
+          "label": "Site web",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "Logo de l'entreprise",
+          "help": "Formats pris en charge : JPG, PNG et WEBP."
+        }
+      },
+      "categories": {
+        "general": "Général",
+        "customsClearance": "Dédouanement",
+        "shipping": "Expédition",
+        "inspection": "Inspection",
+        "insurance": "Assurance",
+        "sourcing": "Approvisionnement",
+        "documentation": "Documentation",
+        "payment": "Paiement"
+      },
+      "errors": {
+        "createFailed": "Erreur lors de la création de l'entreprise.",
+        "networkError": "Quelque chose s'est mal passé."
+      }
+    },
+    "deleteButton": {
+      "button": "Supprimer l'entreprise",
+      "deleting": "Suppression...",
+      "confirm": "Êtes-vous sûr de vouloir supprimer cette entreprise ?",
+      "errors": {
+        "deleteFailed": "Échec de la suppression de l'entreprise."
+      }
+    },
+    "search": {
+      "searchLabel": "Rechercher des entreprises",
+      "searchPlaceholder": "🔍 Rechercher des entreprises...",
+      "countryLabel": "Pays",
+      "ratingFilterLabel": "Filtre de notation",
+      "allCountries": "Tous les pays",
+      "allRatings": "Toutes les notes",
+      "fiveStars": "5 étoiles",
+      "fourPlusStars": "4 étoiles ou plus",
+      "verifiedOnly": "Vérifié uniquement",
+      "viewProfile": "Voir le profil →",
+      "available": "Disponible",
+      "noRating": "Pas encore de note",
+      "notAvailable": "N/A",
+      "empty": "Aucune entreprise ne correspond aux filtres sélectionnés.",
+      "reviewCount": "{count, plural, =1 {1 avis} other {# avis}}",
+      "featured": {
+        "title": "Entreprises en vedette",
+        "description": "Entreprises commerciales haut de gamme avec une plus grande visibilité sur Dasres."
+      },
+      "verification": {
+        "verified": "Vérifié",
+        "rejected": "Rejeté",
+        "pending": "En attente"
+      },
+      "plans": {
+        "gold": "OR",
+        "diamond": "DIAMANT",
+        "enterprise": "ENTREPRISE"
+      },
+      "metrics": {
+        "trust": "Confiance",
+        "rating": "Notation",
+        "reviews": "Avis"
+      }
+    }
+  },
+  "experts": {
+    "edit": {
+      "title": "Modifier l'expert",
+      "description": "Mettez à jour les informations du profil d’expert et l’image du profil.",
+      "loading": "Expert en chargement...",
+      "currentImage": "Image de profil actuelle",
+      "currentImageAlt": "Image d'expert actuelle",
+      "update": "Expert en mise à jour",
+      "updating": "Mise à jour...",
+      "fields": {
+        "name": {
+          "label": "Nom",
+          "placeholder": "Nom et prénom"
+        },
+        "country": {
+          "label": "Pays",
+          "placeholder": "Pays"
+        },
+        "specialty": {
+          "label": "Spécialité",
+          "placeholder": "Spécialité commerciale"
+        },
+        "experience": {
+          "label": "Expérience",
+          "placeholder": "Décrire l'expérience professionnelle"
+        },
+        "email": {
+          "label": "E-mail",
+          "placeholder": "E-mail"
+        },
+        "image": {
+          "label": "Remplacer l'image",
+          "help": "Laissez vide pour conserver l’image actuelle. Formats pris en charge : JPG, PNG et WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "Erreur de chargement de l'expert.",
+        "updateFailed": "Erreur lors de la mise à jour de l'expert.",
+        "networkError": "Quelque chose s'est mal passé."
+      }
+    },
+    "new": {
+      "title": "Ajouter un expert",
+      "description": "Créez un profil d'expert et ajoutez-le au réseau commercial Dasres.",
+      "create": "Créer un expert",
+      "creating": "Création...",
+      "success": "Expert créé avec succès.",
+      "fields": {
+        "name": {
+          "label": "Nom",
+          "placeholder": "Nom et prénom"
+        },
+        "country": {
+          "label": "Pays",
+          "placeholder": "Pays"
+        },
+        "specialty": {
+          "label": "Spécialité",
+          "placeholder": "Spécialité commerciale"
+        },
+        "experience": {
+          "label": "Expérience",
+          "placeholder": "Décrire l'expérience professionnelle"
+        },
+        "email": {
+          "label": "E-mail",
+          "placeholder": "E-mail"
+        },
+        "image": {
+          "label": "Image de profil",
+          "help": "Formats pris en charge : JPG, PNG et WEBP."
+        }
+      },
+      "errors": {
+        "createFailed": "Erreur lors de la création de l'expert.",
+        "networkError": "Quelque chose s'est mal passé."
+      }
+    },
+    "search": {
+      "searchLabel": "Rechercher des experts",
+      "searchPlaceholder": "🔍 Rechercher des experts...",
+      "countryLabel": "Pays",
+      "ratingFilterLabel": "Filtre de notation",
+      "allCountries": "Tous les pays",
+      "allRatings": "Toutes les notes",
+      "fiveStars": "5 étoiles",
+      "fourPlusStars": "4 étoiles ou plus",
+      "verifiedOnly": "Vérifié uniquement",
+      "viewProfile": "Voir le profil →",
+      "available": "Disponible",
+      "noRating": "Pas encore de note",
+      "notAvailable": "N/A",
+      "empty": "Aucun expert ne correspond aux filtres sélectionnés.",
+      "reviewCount": "{count, plural, =1 {1 avis} other {# avis}}",
+      "featured": {
+        "title": "Experts en vedette",
+        "description": "Des experts premium avec une plus grande visibilité sur Dasres."
+      },
+      "verification": {
+        "verified": "Vérifié",
+        "rejected": "Rejeté",
+        "pending": "En attente"
+      },
+      "plans": {
+        "gold": "OR",
+        "diamond": "DIAMANT",
+        "enterprise": "ENTREPRISE"
+      },
+      "metrics": {
+        "trust": "Confiance",
+        "rating": "Notation",
+        "reviews": "Avis"
+      }
+    },
+    "deleteButton": {
+      "button": "Supprimer l'expert",
+      "deleting": "Suppression...",
+      "confirm": "Êtes-vous sûr de vouloir supprimer cet expert ?",
+      "errors": {
+        "deleteFailed": "Échec de la suppression de l'expert."
+      }
+    }
+  },
+  "opportunities": {
+    "dashboard": {
+      "title": "Gestion des opportunités",
+      "description": "Parcourez et gérez les opportunités de commerce international.",
+      "addOpportunity": "Ajouter une opportunité",
+      "latestOpportunity": "Dernière opportunité",
+      "stats": {
+        "total": "Total",
+        "active": "Actif",
+        "closed": "Fermé",
+        "countries": "Pays"
+      },
+      "pagination": {
+        "previous": "Précédent",
+        "next": "Suivant",
+        "page": "Page {current} de {total}"
+      }
+    },
+    "new": {
+      "title": "Ajouter une opportunité",
+      "description": "Créez une nouvelle opportunité commerciale et publiez-la sur le marché Dasres.",
+      "create": "Créer une opportunité",
+      "creating": "Création...",
+      "success": "Opportunité créée avec succès.",
+      "fields": {
+        "title": {
+          "label": "Titre",
+          "placeholder": "Titre de l'opportunité"
+        },
+        "country": {
+          "label": "Pays",
+          "placeholder": "Pays"
+        },
+        "image": {
+          "label": "Image d’opportunité",
+          "help": "Formats pris en charge : JPG, PNG et WEBP."
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Décrire l'opportunité commerciale"
+        }
+      },
+      "errors": {
+        "createFailed": "Erreur lors de la création de l'opportunité.",
+        "networkError": "Quelque chose s'est mal passé."
+      }
+    },
+    "edit": {
+      "title": "Modifier l'opportunité",
+      "description": "Mettre à jour les informations et l'image de l'opportunité.",
+      "loading": "Chargement de l'opportunité...",
+      "currentImage": "Image actuelle de l’opportunité",
+      "currentImageAlt": "Image de l'opportunité actuelle",
+      "update": "Opportunité de mise à jour",
+      "updating": "Mise à jour...",
+      "fields": {
+        "title": {
+          "label": "Titre",
+          "placeholder": "Titre de l'opportunité"
+        },
+        "country": {
+          "label": "Pays",
+          "placeholder": "Pays"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Décrire l'opportunité commerciale"
+        },
+        "image": {
+          "label": "Remplacer l'image",
+          "help": "Laissez vide pour conserver l’image actuelle. Formats pris en charge : JPG, PNG et WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "Erreur lors du chargement de l'opportunité.",
+        "updateFailed": "Erreur lors de la mise à jour de l'opportunité.",
+        "networkError": "Quelque chose s'est mal passé."
+      }
+    },
+    "search": {
+      "searchLabel": "Opportunités de recherche",
+      "searchPlaceholder": "🔍 Rechercher des opportunités...",
+      "countryLabel": "Pays",
+      "statusLabel": "Statut",
+      "allCountries": "Tous les pays",
+      "allStatuses": "Tous les statuts",
+      "viewOpportunity": "Voir l'opportunité →",
+      "statuses": {
+        "open": "Ouvrir",
+        "inProgress": "En cours",
+        "closed": "Fermé"
+      },
+      "featured": {
+        "title": "Opportunités en vedette",
+        "description": "Des opportunités commerciales actives sont actuellement ouvertes à la collaboration."
+      },
+      "empty": {
+        "title": "Aucune opportunité trouvée",
+        "description": "Essayez de modifier votre recherche ou vos filtres."
+      }
+    },
+    "deleteButton": {
+      "button": "Supprimer l'opportunité",
+      "deleting": "Suppression...",
+      "confirm": "Êtes-vous sûr de vouloir supprimer cette opportunité ?",
+      "errors": {
+        "deleteFailed": "Échec de la suppression de l'opportunité."
+      }
+    }
+  },
+  "tradeCases": {
+    "addProposal": {
+      "companyLabel": "Entreprise",
+      "expertLabel": "Expert",
+      "messageLabel": "Message de proposition",
+      "priceLabel": "Prix ​​de la proposition",
+      "selectCompany": "Sélectionnez une entreprise",
+      "noExpert": "Pas d'expert / facultatif",
+      "messagePlaceholder": "Rédiger un message de proposition...",
+      "pricePlaceholder": "Prix ​​par ex. 1 200 USD",
+      "submitting": "Soumission...",
+      "submit": "Ajouter une proposition",
+      "errors": {
+        "messageRequired": "Un message de proposition est requis.",
+        "companyRequired": "Veuillez sélectionner une entreprise.",
+        "submitFailed": "Échec de la soumission de la proposition."
+      }
+    },
+    "proposalActions": {
+      "accept": "Accepter",
+      "reject": "Rejeter",
+      "accepting": "Acceptant...",
+      "rejecting": "Rejetant...",
+      "errors": {
+        "acceptFailed": "N'a pas accepté la proposition.",
+        "rejectFailed": "N'a pas réussi à rejeter la proposition."
+      }
+    },
+    "addMessage": {
+      "contentLabel": "Message",
+      "placeholder": "Écrire un message...",
+      "sending": "Envoi...",
+      "submit": "Ajouter un message",
+      "errors": {
+        "contentRequired": "Le contenu du message est obligatoire.",
+        "submitFailed": "Échec de l'envoi du message."
+      }
+    },
+    "addDocument": {
+      "fileLabel": "Sélectionner un document",
+      "uploading": "Téléchargement...",
+      "submit": "Télécharger un document",
+      "errors": {
+        "fileRequired": "Veuillez sélectionner un document.",
+        "uploadFailed": "Échec du téléchargement du document."
+      }
+    },
+    "completeStep": {
+      "complete": "Complet",
+      "completing": "Terminer...",
+      "errors": {
+        "completeFailed": "Échec de la réalisation de cette étape."
+      }
+    },
+    "completeCase": {
+      "confirm": "Êtes-vous sûr de vouloir marquer ce dossier comme terminé ?",
+      "complete": "Marquer comme terminé",
+      "completing": "Terminer...",
+      "errors": {
+        "completeFailed": "Échec de la finalisation du dossier."
+      }
+    },
+    "addReview": {
+      "ratingLabel": "Notation",
+      "commentLabel": "Revoir",
+      "placeholder": "Écrivez votre avis...",
+      "submit": "Soumettre l'avis",
+      "submitting": "Soumission...",
+      "ratings": {
+        "1": "1 - Mauvais",
+        "2": "2 - Médiocre",
+        "3": "3 - Moyen",
+        "4": "4 - Bien",
+        "5": "5 - Excellent"
+      },
+      "errors": {
+        "submitFailed": "Échec de l'envoi de l'avis."
+      }
+    },
+    "workflow": {
+      "title": "Flux de travail commercial",
+      "steps": {
+        "inquiry": "Enquête",
+        "quotation": "Citation",
+        "negotiation": "Négociation",
+        "contract": "Contracter",
+        "documents": "Documents",
+        "customs": "Douane",
+        "shipping": "Expédition",
+        "inspection": "Inspection",
+        "insurance": "Assurance",
+        "delivery": "Livraison",
+        "completed": "Complété"
+      }
+    }
+  },
+  "createCaseForm": {
+    "titleLabel": "Titre du dossier",
+    "titlePlaceholder": "Besoin d'un dédouanement à Dubaï",
+    "categoryLabel": "Catégorie de cas",
+    "categoryHelp": "Cela permet à Dasres de faire correspondre le cas avec les entreprises et les experts concernés.",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Décrivez l'expédition, le service requis, le pays, les documents, le calendrier et toute exigence particulière...",
+    "create": "Créer un cas",
+    "creating": "Création...",
+    "categories": {
+      "general": "Général",
+      "customsClearance": "Dédouanement",
+      "shipping": "Expédition",
+      "inspection": "Inspection",
+      "insurance": "Assurance",
+      "sourcing": "Approvisionnement",
+      "documentation": "Documentation",
+      "payment": "Paiement"
+    },
+    "backToCases": "← Retour aux Cas",
+    "pageTitle": "Créer un nouveau dossier commercial",
+    "pageDescription": "Soumettez une nouvelle demande de service commercial. Un prestataire ou un expert pourra être désigné ultérieurement.",
+    "plans": {
+      "free": "Gratuit",
+      "gold": "Or",
+      "diamond": "Diamant",
+      "enterprise": "Entreprise"
+    },
+    "errors": {
+      "planLimit": "Votre plan {plan} autorise jusqu'à {limit} dossiers commerciaux actifs. Mettez à niveau votre plan pour créer davantage de requêtes.",
+      "titleAndDescriptionRequired": "Le titre et la description sont requis.",
+      "invalidCategory": "Catégorie de cas non valide."
+    }
+  },
+  "dashboardSearch": {
+    "eyebrow": "Recherche globale",
+    "title": "Rechercher Dasres",
+    "description": "Trouvez des entreprises, des experts, des opportunités et des dossiers commerciaux dans votre espace de travail.",
+    "searchLabel": "Rechercher Dasres",
+    "searchPlaceholder": "Rechercher des entreprises, des experts, des opportunités, des cas...",
+    "searchButton": "Recherche",
+    "initialState": "Entrez un mot-clé pour effectuer une recherche sur Dasres.",
+    "resultsSummary": "{count, plural, =0 {Aucun résultat trouvé pour} =1 {1 résultat trouvé pour} other {# résultats trouvés pour}}",
+    "sections": {
+      "companies": {
+        "title": "Entreprises",
+        "empty": "Aucune entreprise trouvée."
+      },
+      "experts": {
+        "title": "Experts",
+        "empty": "Aucun expert trouvé."
+      },
+      "opportunities": {
+        "title": "Opportunités",
+        "empty": "Aucune opportunité trouvée."
+      },
+      "tradeCases": {
+        "title": "Cas commerciaux",
+        "empty": "Aucun cas trouvé."
+      }
+    },
+    "statuses": {
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "completed": "Complété",
+      "closed": "Fermé",
+      "pending": "En attente",
+      "cancelled": "Annulé"
+    }
+  },
+  "companyProfile": {
+    "metadata": {
+      "notFoundTitle": "Entreprise introuvable",
+      "notFoundDescription": "Le profil d'entreprise demandé est introuvable.",
+      "description": "{name} est une société {category} de {country}. Découvrez ce profil d'entreprise sur Dasres."
+    },
+    "notFound": "Entreprise introuvable",
+    "backToCompanies": "← Retour aux Entreprises",
+    "statusLabel": "Statut",
+    "notAvailable": "N/A",
+    "notProvided": "Non fourni",
+    "companyRating": "Évaluation de l'entreprise",
+    "companyDescription": "Description de l'entreprise",
+    "recentReviews": "Commentaires récents",
+    "companyInformation": "Informations sur l'entreprise",
+    "noReviews": "Aucun avis pour l'instant.",
+    "noCommentProvided": "Aucun commentaire fourni.",
+    "basedOnReviews": "{count, plural, =1 {Basé sur 1 avis} other {Basé sur # avis}}",
+    "trustScoreValue": "Score de confiance : {score}/100",
+    "completedCasesValue": "Cas terminés : {count}",
+    "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {1 avis} other {# avis}})",
+    "sendEmail": "Envoyer un e-mail",
+    "visitWebsite": "Visitez le site Web",
+    "verificationStatus": "Statut de vérification",
+    "editCompany": "Modifier la société",
+    "metrics": {
+      "trustScore": "Score de confiance",
+      "rating": "Notation",
+      "reviews": "Avis",
+      "verification": "Vérification",
+      "country": "Pays"
+    },
+    "fields": {
+      "email": "E-mail",
+      "website": "Site web",
+      "country": "Pays",
+      "category": "Catégorie",
+      "reputation": "Réputation"
+    },
+    "verificationBadges": {
+      "verified": "Entreprise vérifiée",
+      "rejected": "Rejeté",
+      "pending": "En attente de vérification"
+    },
+    "verificationStatuses": {
+      "verified": "Vérifié",
+      "rejected": "Rejeté",
+      "pending": "En attente"
+    },
+    "plans": {
+      "gold": "OR",
+      "diamond": "DIAMANT",
+      "enterprise": "ENTREPRISE"
+    },
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "open": "Ouvrir",
+      "pending": "En attente",
+      "verified": "Vérifié",
+      "rejected": "Rejeté",
+      "completed": "Complété",
+      "inProgress": "En cours"
+    },
+    "schema": {
+      "status": "Statut",
+      "category": "Catégorie"
+    }
+  },
+  "dashboardCompanies": {
+    "title": "Gestion des entreprises",
+    "description": "Gérez et parcourez les entreprises de commerce international.",
+    "addCompany": "Ajouter une entreprise",
+    "stats": {
+      "total": "Total",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté",
+      "premium": "Prime"
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {current} de {total}"
+    }
+  },
+  "dashboardExperts": {
+    "title": "Gestion des Experts",
+    "description": "Gérez et parcourez les experts du commerce international.",
+    "addExpert": "Ajouter un expert",
+    "stats": {
+      "total": "Total",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté",
+      "premium": "Prime"
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {current} de {total}"
+    }
+  },
+  "dashboardMyCases": {
+    "title": "Mes dossiers actifs",
+    "description": "Cas où la proposition de votre entreprise a été acceptée.",
+    "notAvailable": "N/A",
+    "notAssigned": "Non attribué",
+    "caseNumber": "Cas n° {id}",
+    "documentCount": "{count, plural, =1 {1 Document} other {# Documents}}",
+    "messageCount": "{count, plural, =1 {1 Message} other {# Messages}}",
+    "stepsCompleted": "Étapes {completed} / {total} terminées",
+    "updated": "{date} mis à jour",
+    "viewCase": "Voir le cas →",
+    "stats": {
+      "assignedCases": "Cas assignés",
+      "inProgress": "En cours",
+      "completed": "Complété",
+      "workload": "Charge de travail",
+      "workloadDescription": "Messages + Documents"
+    },
+    "empty": {
+      "title": "Aucun dossier actif pour l'instant",
+      "description": "Une fois l’une des propositions de votre entreprise acceptée, le dossier commercial attribué apparaîtra ici.",
+      "browseOpenCases": "Parcourir les dossiers ouverts"
+    },
+    "fields": {
+      "acceptedCompany": "Entreprise acceptée",
+      "assignedExpert": "Expert désigné",
+      "proposalPrice": "Prix ​​de la proposition",
+      "timelineProgress": "Progression de la chronologie"
+    },
+    "statuses": {
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "completed": "Complété",
+      "cancelled": "Annulé"
+    }
+  },
+  "dashboardMyCompanies": {
+    "title": "Mes entreprises",
+    "description": "Gérez les profils d'entreprise que vous possédez, leur statut de vérification et leur niveau de visibilité.",
+    "addCompany": "Ajouter une entreprise",
+    "created": "Créé le {date}",
+    "viewCompany": "Voir l'entreprise →",
+    "categories": {
+      "general": "Général",
+      "customsClearance": "Dédouanement",
+      "shipping": "Expédition",
+      "inspection": "Inspection",
+      "insurance": "Assurance",
+      "sourcing": "Approvisionnement",
+      "documentation": "Documentation",
+      "payment": "Paiement"
+    },
+    "countries": {
+      "iran": "L'Iran"
+    },
+    "stats": {
+      "total": "Total",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté",
+      "premium": "Prime"
+    },
+    "empty": {
+      "title": "Vous n'avez pas encore de sociétés",
+      "description": "Créez votre premier profil d'entreprise pour participer à des opportunités commerciales et soumettre des propositions.",
+      "button": "Ajouter une entreprise"
+    },
+    "verification": {
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté"
+    },
+    "plans": {
+      "free": "Gratuit",
+      "gold": "Or",
+      "diamond": "Diamant",
+      "enterprise": "Entreprise"
+    },
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "suspended": "Suspendu"
+    }
+  },
+  "dashboardMyExperts": {
+    "title": "Mes Experts",
+    "description": "Gérez vos profils d'experts, le statut de vérification et la visibilité du plan.",
+    "addExpert": "Ajouter un expert",
+    "created": "Créé : {date}",
+    "viewExpert": "Voir Expert →",
+    "stats": {
+      "total": "Total",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté",
+      "premium": "Prime"
+    },
+    "empty": {
+      "title": "Pas encore d'experts",
+      "description": "Créez votre premier profil d'expert pour présenter votre expérience et recevoir des demandes d'échange.",
+      "button": "Ajouter un expert"
+    },
+    "verification": {
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté"
+    },
+    "plans": {
+      "free": "GRATUIT",
+      "gold": "OR",
+      "diamond": "DIAMANT",
+      "enterprise": "ENTREPRISE"
+    },
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "suspended": "Suspendu"
+    }
+  },
+  "dashboardMyProposals": {
+    "title": "Mes propositions",
+    "description": "Suivez les performances des propositions, le taux de réussite et la valeur soumise.",
+    "findOpenCases": "Rechercher des dossiers ouverts",
+    "empty": "Aucune proposition pour l'instant.",
+    "notAvailable": "N/A",
+    "notAssigned": "Non attribué",
+    "proposalNumber": "Proposition #{id}",
+    "submittedOn": "Soumis le {date}",
+    "caseStatus": "Statut du dossier : {status}",
+    "viewCase": "Voir le cas →",
+    "stats": {
+      "totalProposals": "Total des propositions",
+      "pending": "En attente",
+      "accepted": "Accepté",
+      "rejected": "Rejeté",
+      "winRate": "Taux de victoire",
+      "acceptedValue": "Valeur acceptée",
+      "submittedValue": "Soumis : ${value}"
+    },
+    "filters": {
+      "all": "Tous : {count}",
+      "pending": "En attente : {count}",
+      "accepted": "Accepté : {count}",
+      "rejected": "Rejeté : {count}"
+    },
+    "fields": {
+      "case": "Cas",
+      "company": "Entreprise",
+      "expert": "Expert",
+      "price": "Prix"
+    },
+    "statuses": {
+      "pending": "En attente",
+      "accepted": "Accepté",
+      "rejected": "Rejeté"
+    },
+    "caseStatuses": {
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "completed": "Complété",
+      "cancelled": "Annulé"
+    }
+  },
+  "dashboardMyTasks": {
+    "eyebrow": "Mes tâches",
+    "title": "Travail assigné",
+    "assignedSummary": "{count, plural, =0 {Aucune tâche assignée} =1 {1 tâche assignée} other {# tâches assignées}}",
+    "noDueDate": "Pas de date d'échéance",
+    "viewProject": "Voir le projet",
+    "stats": {
+      "assigned": "Attribué",
+      "completed": "Complété",
+      "inProgress": "En cours",
+      "overdue": "En retard"
+    },
+    "empty": {
+      "title": "Aucune tâche assignée",
+      "description": "Vous n'avez pas encore de travail assigné."
+    },
+    "fields": {
+      "project": "Projet",
+      "projectStatus": "Statut du projet",
+      "dueDate": "Date d'échéance"
+    },
+    "taskStatuses": {
+      "todo": "Faire",
+      "inProgress": "En cours",
+      "review": "Revoir",
+      "completed": "Complété"
+    },
+    "projectStatuses": {
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "completed": "Complété",
+      "cancelled": "Annulé"
+    },
+    "priorities": {
+      "low": "Faible",
+      "medium": "Moyen",
+      "high": "Haut",
+      "urgent": "Urgent"
+    }
+  },
+  "dashboardProjects": {
+    "eyebrow": "Projets",
+    "title": "Projets commerciaux",
+    "description": "Gérez les dossiers commerciaux acceptés et suivez la progression de l’exécution.",
+    "customer": "Client",
+    "empty": {
+      "title": "Aucun projet pour l'instant",
+      "description": "Les projets sont créés automatiquement lorsqu'une proposition est acceptée.",
+      "browseOpenCases": "Parcourir les dossiers ouverts"
+    },
+    "statuses": {
+      "active": "Actif",
+      "pending": "En attente",
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "completed": "Complété",
+      "cancelled": "Annulé"
+    }
+  },
+  "dashboardSavedCases": {
+    "title": "Cas enregistrés",
+    "description": "Échangez des dossiers que vous avez enregistrés pour un examen ultérieur.",
+    "savedOn": "Enregistré : {date}",
+    "viewCase": "Voir le cas →",
+    "empty": {
+      "title": "Aucun cas enregistré pour l'instant",
+      "description": "Enregistrez des dossiers commerciaux intéressants pour y accéder plus tard.",
+      "button": "Parcourir les dossiers ouverts"
+    },
+    "metrics": {
+      "proposals": "Propositions",
+      "documents": "Documents",
+      "messages": "Messages"
+    },
+    "statuses": {
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "completed": "Complété",
+      "cancelled": "Annulé"
+    }
+  },
+  "dashboardSavedCompanies": {
+    "title": "Entreprises sauvées",
+    "description": "Entreprises que vous avez enregistrées pour les examiner et les contacter ultérieurement.",
+    "viewProfile": "Voir le profil",
+    "empty": {
+      "title": "Aucune entreprise enregistrée pour l'instant",
+      "description": "Enregistrez des entreprises de confiance pour construire votre réseau commercial.",
+      "button": "Parcourir les entreprises"
+    }
+  },
+  "dashboardSavedExperts": {
+    "title": "Experts enregistrés",
+    "description": "Experts que vous avez enregistrés pour les examiner et les contacter ultérieurement.",
+    "viewProfile": "Voir le profil",
+    "empty": {
+      "title": "Aucun expert enregistré pour l'instant",
+      "description": "Enregistrez des professionnels expérimentés pour les contacter rapidement pour de futurs projets commerciaux.",
+      "button": "Parcourir les experts"
+    }
+  },
+  "dashboardSettings": {
+    "eyebrow": "Paramètres du compte",
+    "title": "Paramètres",
+    "description": "Gérez les informations de votre compte, de votre forfait et de votre profil Dasres.",
+    "unlimited": "Illimité",
+    "profileInformation": {
+      "title": "Informations sur le profil",
+      "notProvided": "Non fourni",
+      "fields": {
+        "name": "Nom",
+        "email": "E-mail",
+        "role": "Rôle",
+        "plan": "Plan"
+      }
+    },
+    "planLimits": {
+      "title": "Limites du régime",
+      "caseLimit": "Limite de cas",
+      "proposalLimit": "Limite de proposition"
+    },
+    "quickLinks": {
+      "title": "Liens rapides",
+      "manageSubscription": "Gérer l'abonnement",
+      "myCompanies": "Mes entreprises",
+      "myExperts": "Mes Experts"
+    },
+    "security": {
+      "title": "Sécurité",
+      "description": "Les changements de mot de passe, l'authentification à deux facteurs et l'historique de connexion seront ajoutés dans la phase de sécurité de production."
+    },
+    "roles": {
+      "admin": "Administrateur",
+      "user": "Utilisateur"
+    },
+    "plans": {
+      "free": "GRATUIT",
+      "gold": "OR",
+      "diamond": "DIAMANT",
+      "enterprise": "ENTREPRISE"
+    }
+  },
+  "dashboardSubscription": {
+    "title": "Abonnement",
+    "usageUnlimited": "Illimité (utilisé : {used})",
+    "premiumBadge": "Prime",
+    "description": "Gérez votre forfait Dasres, vos limites d'utilisation et votre visibilité premium. Les paiements ne sont pas encore activés ; les plans sont actuellement gérés par l'administrateur.",
+    "currentBadge": "ACTUEL",
+    "managePlan": "Gérer le forfait",
+    "currentPlan": "Forfait actuel",
+    "usageLimited": "Limite d'utilisation",
+    "proposals": "Propositions",
+    "activeCases": "Cas actifs",
+    "usage": {
+      "currentPlan": "Forfait actuel",
+      "activeCasesUsed": "Cas actifs utilisés",
+      "proposalsUsed": "Propositions utilisées",
+      "limitedValue": "{used} / {limit}",
+      "unlimitedValue": "{used} / Illimité"
+    },
+    "planLabels": {
+      "free": "GRATUIT",
+      "gold": "OR",
+      "diamond": "DIAMANT",
+      "enterprise": "ENTREPRISE"
+    },
+    "actions": {
+      "currentPlan": "Forfait actuel",
+      "contactSales": "Contacter le service commercial",
+      "notAvailable": "Pas disponible",
+      "requestUpgrade": "Demander une mise à niveau"
+    },
+    "plans": {
+      "free": {
+        "title": "Gratuit",
+        "description": "Pour tester le Dasres et démarrer une activité commerciale de base.",
+        "price": "$0",
+        "features": {
+          "activeCases": "3 dossiers commerciaux actifs",
+          "proposals": "5 proposals",
+          "companyProfile": "Profil de base de l'entreprise",
+          "expertProfile": "Profil d'expert de base"
+        }
+      },
+      "gold": {
+        "title": "Or",
+        "description": "Pour les équipes en pleine croissance qui ont besoin de plus de visibilité et de capacité.",
+        "price": "29 $/mois",
+        "features": {
+          "activeCases": "20 dossiers commerciaux actifs",
+          "proposals": "20 proposals",
+          "badge": "Insigne d'or",
+          "priorityListing": "Liste prioritaire"
+        }
+      },
+      "diamond": {
+        "title": "Diamant",
+        "description": "Pour prestataires sérieux et opérateurs commerciaux fréquents.",
+        "price": "99 $/mois",
+        "features": {
+          "activeCases": "Dossiers commerciaux actifs illimités",
+          "proposals": "Propositions illimitées",
+          "badge": "Insigne de diamant",
+          "featuredListing": "Liste en vedette"
+        }
+      },
+      "enterprise": {
+        "title": "Entreprise",
+        "description": "Pour les grandes entreprises commerciales, les agences et les équipes d'entreprise.",
+        "price": "Tarification personnalisée",
+        "features": {
+          "activeCases": "Dossiers commerciaux actifs illimités",
+          "proposals": "Propositions illimitées",
+          "badge": "Insigne d'entreprise",
+          "visibility": "Visibilité la plus élevée",
+          "accountManager": "Accès futur au gestionnaire de compte"
+        }
+      }
+    },
+    "upgradeNotice": {
+      "title": "Besoin d'un plan supérieur ?",
+      "description": "Les paiements ne sont pas encore actifs. Pour l’instant, les administrateurs peuvent mettre à niveau manuellement les forfaits utilisateur à partir du panneau de gestion des utilisateurs.",
+      "back": "Retour au tableau de bord"
+    }
+  },
+  "dashboardVerifications": {
+    "title": "Centre de vérification",
+    "description": "Examiner et gérer les demandes de vérification des entreprises et des experts.",
+    "created": "Créé : {date}",
+    "stats": {
+      "pending": {
+        "title": "En attente",
+        "description": "Entreprises + Experts"
+      },
+      "verified": {
+        "title": "Vérifié",
+        "description": "Profils approuvés"
+      },
+      "rejected": {
+        "title": "Rejeté",
+        "description": "Profils rejetés"
+      }
+    },
+    "companies": {
+      "title": "Entreprises en attente",
+      "description": "Profils d'entreprise en attente d'examen par l'administrateur.",
+      "empty": "Aucune entreprise en attente."
+    },
+    "experts": {
+      "title": "Experts en attente",
+      "description": "Profils d'experts en attente d'examen par l'administrateur.",
+      "empty": "Aucun expert en attente."
+    },
+    "plans": {
+      "free": "GRATUIT",
+      "gold": "OR",
+      "diamond": "DIAMANT",
+      "enterprise": "ENTREPRISE"
+    }
+  },
+  "publicCompanyProfile": {
+    "categories": {
+      "general": "Général",
+      "customsClearance": "Dédouanement",
+      "shipping": "Expédition",
+      "inspection": "Inspection",
+      "insurance": "Assurance",
+      "sourcing": "Approvisionnement",
+      "documentation": "Documentation",
+      "payment": "Paiement"
+    },
+    "countries": {
+      "iran": "L'Iran"
+    },
+    "metadata": {
+      "notFoundTitle": "Entreprise introuvable",
+      "notFoundDescription": "Le profil d'entreprise demandé est introuvable.",
+      "description": "{name} est une société {category} située à {country}."
+    },
+    "notFound": "Entreprise introuvable",
+    "backToCompanies": "← Retour aux Entreprises",
+    "statusLabel": "Statut",
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "open": "Ouvrir",
+      "pending": "En attente",
+      "verified": "Vérifié",
+      "rejected": "Rejeté",
+      "completed": "Complété",
+      "inProgress": "En cours"
+    },
+    "verificationStatuses": {
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté"
+    },
+    "verificationBadges": {
+      "verified": "Vérifié",
+      "pending": "En attente de vérification",
+      "rejected": "Rejeté"
+    },
+    "plans": {
+      "free": "Gratuit",
+      "gold": "Or",
+      "diamond": "Diamant",
+      "enterprise": "Entreprise"
+    },
+    "metrics": {
+      "trustScore": "Score de confiance",
+      "rating": "Notation",
+      "reviews": "Avis",
+      "verification": "Vérification",
+      "country": "Pays"
+    },
+    "companyRating": "Évaluation de l'entreprise",
+    "basedOnReviews": "Basé sur les avis {count}",
+    "trustScoreValue": "Score de confiance : {score}/100",
+    "completedCasesValue": "{count} dossiers commerciaux terminés",
+    "companyDescription": "Description de l'entreprise",
+    "recentReviews": "Commentaires récents",
+    "noReviews": "Aucun avis pour l'instant.",
+    "noCommentProvided": "Aucun commentaire fourni.",
+    "notAvailable": "N/A",
+    "notProvided": "Non fourni",
+    "companyInformation": "Informations sur l'entreprise",
+    "fields": {
+      "email": "E-mail",
+      "website": "Site web",
+      "country": "Pays",
+      "category": "Catégorie",
+      "reputation": "Réputation"
+    },
+    "ratingWithReviews": "{rating} / 5 ({count} avis)",
+    "sendEmail": "Envoyer un e-mail",
+    "visitWebsite": "Visitez le site Web",
+    "relatedExperts": {
+      "title": "Experts associés",
+      "empty": "Aucun expert associé trouvé.",
+      "verified": "Expert Vérifié"
+    },
+    "verificationStatus": "Statut de vérification",
+    "editCompany": "Modifier la société",
+    "schema": {
+      "status": "Statut",
+      "category": "Catégorie"
+    }
+  },
+  "publicExpertProfile": {
+    "metadata": {
+      "notFoundTitle": "Expert introuvable",
+      "notFoundDescription": "Le profil d'expert demandé est introuvable.",
+      "description": "{name} est un {specialty} de {country} sur Dasres."
+    },
+    "notFound": "Expert introuvable",
+    "backToExperts": "← Retour aux Experts",
+    "plans": {
+      "free": "Gratuit",
+      "gold": "Or",
+      "diamond": "Diamant",
+      "enterprise": "Entreprise"
+    },
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "pending": "En attente",
+      "verified": "Vérifié",
+      "rejected": "Rejeté",
+      "suspended": "Suspendu"
+    },
+    "metrics": {
+      "trustScore": "Score de confiance",
+      "rating": "Notation",
+      "reviews": "Avis",
+      "specialty": "Spécialité",
+      "country": "Pays"
+    },
+    "experience": "Expérience",
+    "recentReviews": "Commentaires récents",
+    "noReviews": "Aucun avis pour l'instant.",
+    "anonymousUser": "Utilisateur anonyme",
+    "noCommentProvided": "Aucun commentaire fourni.",
+    "contactExpert": "Contacter un expert",
+    "fields": {
+      "email": "E-mail",
+      "country": "Pays",
+      "specialty": "Spécialité",
+      "reputation": "Réputation"
+    },
+    "ratingWithReviews": "{rating}/5 ({count} avis)",
+    "completedCases": "Cas terminés",
+    "sendEmail": "Envoyer un e-mail",
+    "relatedCompanies": {
+      "title": "Sociétés liées",
+      "empty": "Aucune société associée trouvée.",
+      "verified": "Vérifié"
+    },
+    "adminActions": "Actions d'administration",
+    "editExpert": "Modifier l'expert",
+    "reviewNotice": "Les notes et avis ne sont collectés qu’à partir des dossiers commerciaux terminés.",
+    "notAvailable": "N/A"
+  },
+  "publicOpportunityProfile": {
+    "metadata": {
+      "notFoundTitle": "Opportunité introuvable",
+      "notFoundDescription": "L'opportunité demandée n'a pas pu être trouvée."
+    },
+    "notFound": "Opportunité introuvable",
+    "backToOpportunities": "← Retour aux opportunités",
+    "tradeOpportunity": "Opportunité commerciale",
+    "statuses": {
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "closed": "Fermé"
+    },
+    "metrics": {
+      "status": "Statut",
+      "country": "Pays",
+      "visibility": "Visibilité",
+      "platform": "Plate-forme",
+      "category": "Catégorie",
+      "trust": "Confiance"
+    },
+    "values": {
+      "public": "Publique",
+      "trade": "Commerce",
+      "verified": "Vérifié"
+    },
+    "opportunityDescription": "Description de l'opportunité",
+    "howToRespond": {
+      "title": "Comment répondre",
+      "review": {
+        "title": "Revoir",
+        "description": "Lisez attentivement les exigences complètes de l’opportunité."
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "Contactez-nous via Dasres ou les coordonnées fournies."
+      },
+      "collaborate": {
+        "title": "Collaborer",
+        "description": "Construisez un partenariat commercial international de confiance."
+      }
+    },
+    "editOpportunity": "Modifier l'opportunité",
+    "summary": {
+      "title": "Résumé de l'opportunité",
+      "country": "Pays",
+      "status": "Statut",
+      "type": "Taper"
+    },
+    "actions": {
+      "openTradeCase": "Dossier commercial ouvert",
+      "findCompanies": "Trouver des entreprises",
+      "findExperts": "Trouver des experts"
+    },
+    "relatedCompanies": {
+      "title": "Sociétés liées",
+      "empty": "Aucune entreprise vérifiée trouvée pour ce pays pour le moment.",
+      "verified": "Entreprise vérifiée"
+    },
+    "relatedExperts": {
+      "title": "Experts associés",
+      "empty": "Aucun expert vérifié n'a encore été trouvé pour ce pays.",
+      "verified": "Expert Vérifié"
+    },
+    "trustNotice": {
+      "title": "Avis de confiance",
+      "description": "Vérifiez toujours les détails de la transaction, les documents et les contreparties avant de conclure un accord commercial."
+    }
+  },
+  "dashboardTopCompanies": {
+    "title": "Entreprises les mieux notées",
+    "description": "Entreprises classées en fonction de la vérification, du score de confiance et des avis.",
+    "empty": "Aucune entreprise trouvée.",
+    "verified": "Vérifié",
+    "notAvailable": "N/A",
+    "metrics": {
+      "trust": "Confiance",
+      "rating": "Notation",
+      "reviews": "Avis"
+    },
+    "plans": {
+      "free": "GRATUIT",
+      "gold": "OR",
+      "diamond": "DIAMANT",
+      "enterprise": "ENTREPRISE"
+    }
+  },
+  "topExperts": {
+    "title": "Experts les mieux notés",
+    "description": "Experts classés en fonction de la vérification, du score de confiance et des avis.",
+    "empty": "Aucun expert trouvé.",
+    "verified": "Vérifié",
+    "trust": "Confiance",
+    "rating": "Notation",
+    "reviews": "Avis",
+    "notAvailable": "N/A",
+    "plans": {
+      "FREE": "Gratuit",
+      "GOLD": "Or",
+      "DIAMOND": "Diamant",
+      "ENTERPRISE": "Entreprise"
+    }
+  },
+  "publicExperts": {
+    "eyebrow": "Réseau d'experts vérifiés",
+    "title": "Trouvez des experts commerciaux de confiance",
+    "description": "Connectez-vous avec des professionnels vérifiés du commerce international dans les domaines des douanes, de l’approvisionnement, de la logistique, de l’inspection et des services commerciaux mondiaux.",
+    "notAvailable": "N/A",
+    "featured": {
+      "title": "Expert en vedette",
+      "empty": "Aucun expert vedette n'est actuellement disponible.",
+      "viewProfile": "Voir le profil"
+    },
+    "metrics": {
+      "trust": "Confiance",
+      "rating": "Notation",
+      "reviews": "Avis"
+    },
+    "statistics": {
+      "total": "Experts totaux",
+      "verified": "Experts vérifiés",
+      "rated": "Experts notés"
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {current} de {total}"
+    }
+  },
+  "myReviews": {
+    "title": "Mes avis",
+    "description": "Consultez les avis que vous avez reçus et les avis que vous avez soumis.",
+    "fallbackUser": "Utilisateur",
+    "ratingOutOfFive": "{rating}/5",
+    "statistics": {
+      "averageRating": "Note moyenne",
+      "received": "Commentaires reçus",
+      "given": "Avis donnés",
+      "basedOn": "Basé sur les avis reçus sur {count}"
+    },
+    "received": {
+      "title": "Commentaires que j'ai reçus",
+      "empty": "Vous n'avez pas encore reçu d'avis.",
+      "from": "De {name}"
+    },
+    "given": {
+      "title": "Commentaires que j'ai donnés",
+      "empty": "Vous n'avez pas encore soumis d'avis.",
+      "to": "À {name}"
+    }
+  },
+  "dashboardExpertProfile": {
+    "notFound": "Expert introuvable.",
+    "backToExperts": "← Retour aux Experts",
+    "notAvailable": "N/A",
+    "experience": "Expérience",
+    "reviewNotice": "Les avis ne peuvent être soumis qu’après un dossier commercial terminé.",
+    "trustScoreValue": "{score}/{maximum}",
+    "metadata": {
+      "notFoundTitle": "Expert introuvable",
+      "notFoundDescription": "Le profil d'expert demandé est introuvable.",
+      "title": "{name} | {specialty}",
+      "description": "{name} est un expert en {specialty} de {country}. Découvrez ce profil expert sur Dasres."
+    },
+    "plans": {
+      "free": "Gratuit",
+      "gold": "Or",
+      "diamond": "Diamant",
+      "enterprise": "Entreprise"
+    },
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "pending": "En attente",
+      "verified": "Vérifié",
+      "rejected": "Rejeté"
+    },
+    "metrics": {
+      "trustScore": "Score de confiance",
+      "rating": "Notation",
+      "reviews": "Avis",
+      "specialty": "Spécialité",
+      "country": "Pays"
+    },
+    "recentReviews": {
+      "title": "Commentaires récents",
+      "empty": "Aucun avis pour l'instant.",
+      "fallbackUser": "Utilisateur",
+      "noComment": "Aucun commentaire fourni.",
+      "rating": "{rating}/{maximum}"
+    },
+    "contact": {
+      "title": "Contacter un expert",
+      "email": "E-mail",
+      "country": "Pays",
+      "specialty": "Spécialité",
+      "reputation": "Réputation",
+      "trustScore": "Score de confiance",
+      "completedCases": "Cas terminés",
+      "sendEmail": "Envoyer un e-mail",
+      "noReviews": "Aucun avis pour l'instant",
+      "reputationValue": "⭐ {rating} (avis {count})"
+    },
+    "management": {
+      "title": "Mesures de gestion",
+      "edit": "Modifier l'expert"
+    }
+  },
+  "rootMetadata": {
+    "siteName": "Dasres",
+    "title": "Dasres | Écosystème de confiance pour le commerce mondial",
+    "description": "Dasres connecte des entreprises vérifiées, des experts de confiance et des opportunités de commerce international via une seule plateforme basée sur des cas.",
+    "keywords": {
+      "dasres": "Dasres",
+      "experts": "experts en commerce",
+      "companies": "entreprises vérifiées",
+      "opportunities": "opportunités commerciales",
+      "trade": "commerce international",
+      "business": "plateforme commerciale mondiale",
+      "international": "réseau d'affaires international"
+    },
+    "openGraph": {
+      "title": "Dasres | Écosystème de confiance pour le commerce mondial",
+      "description": "Découvrez des entreprises vérifiées, des experts de confiance et des opportunités de commerce international sur Dasres.",
+      "imageAlt": "Plateforme de commerce mondial Dasres"
+    },
+    "twitter": {
+      "title": "Dasres | Écosystème de confiance pour le commerce mondial",
+      "description": "Connectez-vous avec des entreprises vérifiées et des experts de confiance pour le commerce international."
+    }
+  },
+  "publicCompanies": {
+    "eyebrow": "Réseau d'entreprise vérifié",
+    "title": "Découvrez des entreprises commerciales de confiance",
+    "description": "Parcourez les entreprises internationales vérifiées dans les domaines des services de douane, d’expédition, d’inspection, d’approvisionnement, de logistique et de commerce mondial.",
+    "statistics": {
+      "total": "Total des entreprises",
+      "verified": "Entreprises vérifiées",
+      "rated": "Entreprises notées"
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {current} de {total}"
+    }
+  },
+  "publicOpportunities": {
+    "eyebrow": "Marché du commerce mondial",
+    "title": "Découvrez les opportunités à l'international",
+    "description": "Explorez les opportunités commerciales vérifiées d'entreprises du monde entier, connectez-vous avec des acheteurs et des fournisseurs et développez vos activités internationales.",
+    "statistics": {
+      "total": "Opportunités totales",
+      "open": "Opportunités ouvertes",
+      "countries": "Pays"
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {current} de {total}"
+    }
+  },
+  "companyVerificationButtons": {
+    "verify": "Vérifier",
+    "reject": "Rejeter"
+  },
+  "verificationExpertActions": {
+    "verify": "Vérifier",
+    "reject": "Rejeter"
+  },
+  "verificationCompanyActions": {
+    "verify": "Vérifier",
+    "reject": "Rejeter"
+  },
+  "countryFilter": {
+    "allCountries": "Tous les pays"
+  },
+  "notFound": {
+    "label": "Page introuvable",
+    "title": "Cette page n'existe pas.",
+    "description": "La page que vous recherchez a peut-être été déplacée, supprimée ou n'existe pas dans Dasres.",
+    "goHome": "Rentrer à la maison",
+    "goDashboard": "Aller au tableau de bord"
+  },
+  "saveCaseButton": {
+    "saving": "Économie...",
+    "unsave": "Annuler l'enregistrement",
+    "save": "☆ Enregistrer le cas"
+  },
+  "saveCompanyButton": {
+    "saved": "Enregistré ★",
+    "save": "Enregistrer ☆"
+  },
+  "saveExpertButton": {
+    "saved": "Enregistré ★",
+    "save": "Enregistrer ☆"
+  },
+  "dashboardOpportunityDetail": {
+    "backToDashboardOpportunities": "← Retour aux opportunités du tableau de bord",
+    "tradeOpportunity": "Opportunité commerciale",
+    "globalMarketplace": "Marché mondial",
+    "status": "Statut",
+    "country": "Pays",
+    "visibility": "Visibilité",
+    "dashboard": "Tableau de bord",
+    "opportunityDescription": "Description de l'opportunité",
+    "adminActions": "Actions d'administration",
+    "editOpportunity": "Modifier l'opportunité",
+    "opportunitySummary": "Résumé de l'opportunité",
+    "type": "Taper",
+    "viewPublicPage": "Afficher la page publique",
+    "backToManagement": "Retour à la gestion",
+    "adminNote": "Remarque de l'administrateur",
+    "adminNoteDescription": "Cette page est utilisée pour gérer les opportunités commerciales dans le tableau de bord. Les visiteurs publics voient la page d’opportunité publique distincte.",
+    "statuses": {
+      "open": "Ouvrir",
+      "inProgress": "En cours",
+      "closed": "Fermé"
+    }
+  },
+  "ticketCategories": {
+    "general": "Général",
+    "technical": "Technique",
+    "billing": "Facturation",
+    "support": "Soutien"
+  },
+  "statuses": {
+    "open": "Ouvrir",
+    "in_progress": "En cours",
+    "completed": "Complété",
+    "cancelled": "Annulé",
+    "pending": "En attente",
+    "accepted": "Accepté",
+    "rejected": "Rejeté",
+    "active": "Actif",
+    "on_hold": "En attente",
+    "todo": "Faire",
+    "review": "Revoir"
+  },
+  "categories": {
+    "general": "Général",
+    "customs_clearance": "Dédouanement",
+    "shipping": "Expédition",
+    "inspection": "Inspection",
+    "insurance": "Assurance",
+    "sourcing": "Approvisionnement",
+    "documentation": "Documentation",
+    "payment": "Paiement"
+  },
+  "plans": {
+    "free": "Gratuit",
+    "gold": "Or",
+    "diamond": "Diamant",
+    "enterprise": "Entreprise"
+  },
+  "verification": {
+    "pending": "En attente",
+    "verified": "Vérifié",
+    "rejected": "Rejeté"
   }
 }
