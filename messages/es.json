@@ -770,7 +770,7 @@
     }
   },
   "projectTaskChecklist": {
-    "title": "Checklist",
+    "title": "Lista de verificación",
     "empty": "Aún no hay elementos en la lista.",
     "updating": "Actualizando...",
     "toggleError": "No se pudo actualizar el elemento de la checklist.",
@@ -865,7 +865,7 @@
     "unassigned": "Sin asignar",
     "due": "Vence",
     "noDueDate": "Sin fecha de vencimiento",
-    "checklist": "Checklist",
+    "checklist": "Lista de verificación",
     "comments": "Comentarios",
     "files": "Archivos",
     "dragLabel": "Arrastrar tarea {title}",

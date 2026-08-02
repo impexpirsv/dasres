@@ -1,9 +1,3158 @@
 {
   "common": {
-    "appName": "Dasres",
+    "years": "{count}年",
+    "hours": "時間",
+    "countries": {
+      "iran": "イラン",
+      "uae": "アラブ首長国連邦",
+      "UAE": "アラブ首長国連邦",
+      "china": "中国",
+      "Iran": "イラン"
+    },
+    "categories": {
+      "General": "一般的な",
+      "Shipping": "配送",
+      "Inspection": "検査",
+      "Customs Clearance": "通関",
+      "customs_clearance": "通関",
+      "shipping": "配送",
+      "inspection": "検査",
+      "insurance": "保険",
+      "sourcing": "調達"
+    },
+    "specialties": {
+      "Shipping": "配送",
+      "Inspection": "検査",
+      "clearance": "通関",
+      "clearence": "通関",
+      "Customs Clearance": "通関",
+      "ticket_general": "一般的な",
+      "ticket_technical": "テクニカル",
+      "ticket_billing": "請求する",
+      "ticket_support": "サポート"
+    }
+  },
+  "navbar": {
+    "home": "家",
+    "experts": "専門家",
+    "companies": "企業",
+    "opportunities": "機会",
+    "topExperts": "トップエキスパート",
+    "topCompanies": "トップ企業",
     "dashboard": "ダッシュボード",
+    "login": "ログイン",
+    "join": "参加する",
+    "joinDasres": "Dasresに参加する",
+    "tagline": "世界貿易のための信頼エコシステム",
+    "toggleMenu": "メニューの切り替え"
+  },
+  "hero": {
+    "platformValue": "世界貿易ネットワーク",
+    "eyebrow": "グローバルなB2Bサービスのための検証済みの取引ネットワーク",
+    "titleLine1": "～の信頼を築く",
+    "titleLine2": "世界貿易",
+    "description": "Dasres は、国際ビジネス向けの 1 つのケースベースのプラットフォームを通じて、検証済みの企業、信頼できる専門家、貿易機会を結び付けます。",
+    "join": "Dasresに参加する",
+    "exploreExperts": "専門家を探索する",
+    "browseCompanies": "企業を閲覧する",
+    "liveCaseLabel": "ライブトレードケース",
+    "liveCaseTitle": "アラブ首長国連邦の通関",
+    "verified": "確認済み",
+    "proposals": "提案",
+    "trust": "信頼",
+    "status": "状態",
+    "inProgress": "進行中",
+    "topCompany": "トップ企業",
+    "topExpert": "トップエキスパート",
+    "customsClearance": "通関",
+    "tradeConsultant": "貿易コンサルタント",
+    "rating": "{value}の評価"
+  },
+  "liveStats": {
+    "eyebrow": "ライブプラットフォームメトリクス",
+    "title": "リアルタイムのDasresアクティビティ",
+    "verifiedCompanies": "検証された企業",
+    "trustedExperts": "信頼できる専門家",
+    "tradeOpportunities": "貿易の機会",
+    "tradeCases": "取引事例",
+    "caseSuccessRate": "ケースの成功率"
+  },
+  "topRatedShowcase": {
+    "eyebrow": "トラストネットワーク",
+    "titleLine1": "検証済みのプロバイダー。",
+    "titleLine2": "信頼度によってランク付けされます。",
+    "description": "Dasres は、検証、評価、レビュー、信頼スコアリングを使用して企業や専門家を強調し、取引チームが自信を持ってプロバイダーを比較できるようにします。",
+    "verifiedProfiles": "検証済みのプロファイル",
+    "reviewHistory": "レビュー履歴",
+    "trustScoring": "信頼スコアリング",
+    "topCompany": "トップ企業",
+    "topExpert": "トップエキスパート",
+    "verified": "確認済み",
+    "trust": "信頼",
+    "rating": "評価",
+    "reviews": "レビュー",
+    "noReviews": "レビューはありません",
+    "viewCompany": "会社を見る",
+    "viewExpert": "エキスパートを見る"
+  },
+  "services": {
+    "eyebrow": "プラットフォームのワークフロー",
+    "titleLine1": "リクエストから",
+    "titleLine2": "信頼できる配送。",
+    "description": "Dasres は単なるディレクトリではありません。これは、国際貿易サービス、提案、文書、コミュニケーション、評判のためのケースベースのオペレーティング層です。",
+    "unifiedWorkflow": "統合されたワークフロー",
+    "caseVisibility": "ケースの可視性",
+    "steps": {
+      "createCase": {
+        "title": "トレードケースを作成する",
+        "description": "カテゴリ、範囲、サービスの詳細を記載して取引リクエストを送信してください。"
+      },
+      "matchProviders": {
+        "title": "プロバイダーとのマッチング",
+        "description": "Dasres は、ケースをカテゴリごとに検証済みの企業や専門家に結び付けます。"
+      },
+      "receiveProposals": {
+        "title": "提案を受ける",
+        "description": "価格、メッセージ、プロバイダーのプロフィール、検証、評判を比較します。"
+      },
+      "assignWinner": {
+        "title": "勝者を割り当てる",
+        "description": "1 つの提案を受け入れ、残りを拒否し、アクティブなケースのワークフローを開始します。"
+      },
+      "manageDelivery": {
+        "title": "配送の管理",
+        "description": "メッセージ、ドキュメント、タイムラインのステップ、アクティビティ ログを 1 か所に保管します。"
+      },
+      "completeReview": {
+        "title": "完了してレビューする",
+        "description": "ケースをクローズし、レビューを送信し、将来のプロジェクトの信頼を築きます。"
+      }
+    }
+  },
+  "expertsSection": {
+    "eyebrow": "専門家ネットワーク",
+    "title": "注目の専門家",
+    "description": "税関、調達、物流、検査、貿易コンサルティングにわたる認定された国際貿易専門家とつながります。",
+    "viewAll": "すべて見る",
+    "verified": "確認済み",
+    "available": "利用可能",
+    "viewProfile": "プロフィールを見る"
+  },
+  "companiesSection": {
+    "eyebrow": "社内ネットワーク",
+    "title": "注目の企業",
+    "description": "通関、出荷、調達、検査、国際物流の分野で認証済みの貿易会社を見つけてください。",
+    "viewAll": "すべて見る",
+    "verified": "確認済み",
+    "acceptingProjects": "プロジェクトの受け入れ",
+    "viewProfile": "プロフィールを見る"
+  },
+  "opportunitiesSection": {
+    "eyebrow": "グローバルマーケットプレイス",
+    "title": "最新の取引機会",
+    "description": "国際貿易リクエストを閲覧し、新しいビジネスチャンスを発見し、世界中の検証済みプロバイダーとつながります。",
+    "viewAll": "すべて見る",
+    "statusOpen": "開ける",
+    "openOpportunity": "開かれた機会",
+    "viewDetails": "詳細を見る",
+    "empty": "現時点ではチャンスはありません。"
+  },
+  "footer": {
+    "ctaEyebrow": "自信を持って取引を管理する準備はできていますか?",
+    "ctaTitle": "最初の Dasres 取引ケースを開始します。",
+    "ctaDescription": "ケースを作成し、検証済みのプロバイダーを比較し、提案、文書、コミュニケーションを 1 つの信頼できるワークフローで管理します。",
+    "createCase": "ケースの作成",
+    "exploreNetwork": "ネットワークを探索する",
+    "description": "国際貿易サービス、検証されたプロバイダー、提案、文書、評判のためのケースベースの信頼エコシステム。",
+    "platformTitle": "プラットフォーム",
+    "networkTitle": "ネットワーク",
+    "trustSignalsTitle": "トラストシグナル",
+    "companies": "企業",
+    "experts": "専門家",
+    "opportunities": "機会",
+    "dashboard": "ダッシュボード",
+    "topCompanies": "トップ企業",
+    "topExperts": "トップエキスパート",
+    "openCases": "オープンケース",
+    "supportTickets": "サポートチケット",
+    "verifiedCompanies": "認証済み企業",
+    "trustedExperts": "信頼できる専門家",
+    "proposalWorkflow": "提案ワークフロー",
+    "reviewsReputation": "口コミ・評判",
+    "copyright": "© {year} Dasres.無断転載を禁じます。",
+    "languagesAvailable": "12 か国語で利用可能"
+  },
+  "dashboardSidebar": {
+    "tagline": "世界貿易のための信頼エコシステム",
+    "menu": "メニュー",
+    "sections": {
+      "main": "主要",
+      "tradeManagement": "貿易管理",
+      "ownership": "所有",
+      "admin": "管理者",
+      "communication": "コミュニケーション",
+      "subscription": "サブスクリプション",
+      "account": "アカウント"
+    },
+    "links": {
+      "dashboard": "ダッシュボード",
+      "globalSearch": "グローバル検索",
+      "experts": "専門家",
+      "topExperts": "トップエキスパート",
+      "companies": "企業",
+      "topCompanies": "トップ企業",
+      "opportunities": "機会",
+      "submittedCases": "提出された事件",
+      "activeWorkspaces": "アクティブなワークスペース",
+      "projects": "プロジェクト",
+      "myTasks": "私のタスク",
+      "myProposals": "私の提案",
+      "myReviews": "私のレビュー",
+      "openCases": "オープンケース",
+      "savedCases": "保存されたケース",
+      "savedCompanies": "保存された会社",
+      "savedExperts": "保存されたエキスパート",
+      "tickets": "チケット",
+      "myCompanies": "私の会社",
+      "myExperts": "私の専門家",
+      "users": "ユーザー",
+      "verifications": "検証",
+      "notifications": "通知",
+      "subscription": "サブスクリプション",
+      "settings": "設定",
+      "logout": "ログアウト"
+    },
+    "premium": {
+      "title": "プレミアム機能",
+      "description": "計画、制限、可視性"
+    }
+  },
+  "dashboardQuickActions": {
+    "title": "クイックアクション",
+    "description": "よく使うショートカット",
+    "createCase": {
+      "title": "ケースの作成",
+      "description": "新しい国際貿易プロジェクトを開始します。"
+    },
+    "openCases": {
+      "title": "オープンケース",
+      "description": "利用可能な取引リクエストを参照します。"
+    },
+    "myCompanies": {
+      "title": "私の会社",
+      "description": "会社プロフィールを管理します。"
+    },
+    "myExperts": {
+      "title": "私の専門家",
+      "description": "専門家プロフィールを管理します。"
+    }
+  },
+  "dashboardAttention": {
+    "title": "注意が必要です",
+    "description": "確認すべき重要な項目",
+    "unreadNotifications": "未読の通知",
+    "openTickets": "オープンチケット",
+    "openCases": "オープンケース",
+    "myProposals": "私の提案"
+  },
+  "dashboardAnalytics": {
+    "title": "分析の概要",
+    "description": "運用パフォーマンスの概要",
+    "casePipeline": {
+      "title": "ケースパイプライン",
+      "open": "開ける",
+      "inProgress": "進行中",
+      "completed": "完了"
+    },
+    "proposalPerformance": {
+      "title": "提案実績",
+      "description": "承認された提案と拒否された提案に基づく承認率。",
+      "accepted": "承認されました",
+      "rejected": "拒否されました"
+    },
+    "platformAttention": {
+      "title": "プラットフォームの注目",
+      "notifications": "通知",
+      "tickets": "チケット",
+      "reviews": "レビュー",
+      "saved": "保存されました"
+    }
+  },
+  "dashboardOverdueTasks": {
+    "title": "期限を過ぎたタスク",
+    "empty": {
+      "title": "期限を過ぎたタスクはありません",
+      "description": "すべて予定通りです。"
+    },
+    "dueDate": "期限: {date}"
+  },
+  "dashboardSubscriptionWidget": {
+    "currentPlan": "現在の計画",
+    "managePlan": "計画の管理",
+    "activeCases": "現在の感染者（数",
+    "proposals": "提案",
+    "usageLimited": "{used} / {limit}",
+    "usageUnlimited": "{used} / 無制限"
+  },
+  "dashboardStatsGrid": {
+    "savedCases": {
+      "title": "保存されたケース",
+      "description": "後で使用するためにケースを保存"
+    },
+    "savedCompanies": {
+      "title": "保存された会社",
+      "description": "ネットワーク内の企業"
+    },
+    "savedExperts": {
+      "title": "保存されたエキスパート",
+      "description": "ネットワーク内の専門家"
+    },
+    "experts": {
+      "adminTitle": "専門家",
+      "userTitle": "私の専門家",
+      "adminDescription": "検証済みの専門家が利用可能",
+      "userDescription": "あなたが所有する専門家"
+    },
+    "companies": {
+      "adminTitle": "企業",
+      "userTitle": "私の会社",
+      "adminDescription": "登録企業",
+      "userDescription": "あなたが所有する会社"
+    },
+    "opportunities": {
+      "title": "機会",
+      "description": "活発な取引機会"
+    },
+    "successRate": {
+      "title": "ケースの成功率",
+      "description": "{total}件中{completed}件が完了"
+    },
+    "tradeCases": {
+      "title": "取引事例",
+      "adminDescription": "すべての貿易プロジェクト",
+      "userDescription": "送信された取引リクエスト"
+    },
+    "openCases": {
+      "title": "オープンケース",
+      "description": "利用可能な機会"
+    },
+    "inProgress": {
+      "title": "進行中",
+      "description": "活発な貿易プロジェクト"
+    },
+    "completed": {
+      "title": "完了",
+      "description": "完了したプロジェクト"
+    },
+    "proposals": "提案",
+    "accepted": "承認されました",
     "notifications": "通知",
-    "settings": "設定",
-    "logout": "ログアウト"
+    "openTickets": "オープンチケット"
+  },
+  "dashboardMyTasksWidget": {
+    "title": "私に割り当てられたタスク",
+    "viewAll": "すべて見る",
+    "empty": "割り当てられたタスクはありません。",
+    "status": {
+      "TODO": "やるべきこと",
+      "IN_PROGRESS": "進行中",
+      "REVIEW": "レビュー",
+      "COMPLETED": "完了"
+    }
+  },
+  "dashboardTopRated": {
+    "countries": {
+      "iran": "イラン",
+      "uae": "アラブ首長国連邦",
+      "china": "中国"
+    },
+    "categories": {
+      "shipping": "配送",
+      "customs_clearance": "通関",
+      "inspection": "検査",
+      "insurance": "保険",
+      "sourcing": "調達"
+    },
+    "viewAll": "すべて見る",
+    "reviewCount": "{count, plural, one {#件のレビューに基づく} other {#件のレビューに基づく}}",
+    "experts": {
+      "title": "最高評価の専門家",
+      "empty": "評価された専門家はまだいません。"
+    },
+    "companies": {
+      "title": "上位評価の企業",
+      "empty": "まだ評価されている企業はありません。"
+    }
+  },
+  "dashboardLatestItems": {
+    "viewAll": "すべて見る",
+    "experts": {
+      "adminTitle": "最新の専門家",
+      "userTitle": "私の最新の専門家",
+      "empty": "専門家は見つかりませんでした。"
+    },
+    "companies": {
+      "adminTitle": "最新の企業",
+      "userTitle": "私の最近の会社",
+      "empty": "会社が見つかりませんでした。"
+    },
+    "opportunities": {
+      "title": "最新の機会",
+      "empty": "機会が見つかりませんでした。"
+    },
+    "statuses": {
+      "open": "開ける",
+      "closed": "閉店",
+      "pending": "保留中"
+    }
+  },
+  "dashboardRecentActivity": {
+    "title": "最近の活動",
+    "empty": "アクティビティが見つかりませんでした。",
+    "system": "システム",
+    "actions": {
+      "proposalSubmitted": "提案書が提出されました",
+      "proposalAccepted": "提案は承認されました",
+      "proposalRejected": "提案は拒否されました",
+      "caseCompleted": "ケースが完了しました",
+      "projectCompleted": "プロジェクトが完了しました",
+      "documentUploaded": "ドキュメントがアップロードされました",
+      "projectTaskAttachmentUploaded": "プロジェクト タスクの添付ファイルがアップロードされました",
+      "documentApproved": "文書が承認されました",
+      "documentRejected": "拒否された文書",
+      "messageSent": "メッセージを送信しました",
+      "projectMessageSent": "プロジェクトメッセージが送信されました",
+      "taskCommentAdded": "タスクコメントの追加",
+      "taskAssigned": "割り当てられたタスク",
+      "taskCompleted": "タスクが完了しました",
+      "ticketUpdated": "チケットが更新されました",
+      "companyVerified": "企業認証済み",
+      "companyRejected": "会社が拒否されました",
+      "projectTaskUpdated": "プロジェクトタスクが更新されました",
+      "projectTaskStatusUpdated": "プロジェクトタスクのステータスが更新されました",
+      "projectTaskChecklistToggled": "プロジェクト タスクのチェックリストが更新されました"
+    },
+    "details": {
+      "projectTaskStatusUpdated": "タスク「{title}」のステータスが {status} に変更されました。",
+      "projectTaskAttachmentUploaded": "添付ファイル {file} がアップロードされました。",
+      "projectTaskUpdated": "プロジェクトタスク「{title}」が更新されました。",
+      "projectTaskChecklistToggled": "チェックリスト項目「{item}」が変更されました。",
+      "projectTaskStatusUpdatedPrefix": "プロジェクト タスクのステータスが更新されました:",
+      "attachmentUploadedPrefix": "添付ファイルがアップロードされました:",
+      "projectTaskUpdatedPrefix": "プロジェクトタスクが更新されました:"
+    },
+    "checklist": {
+      "completed": "完了",
+      "incomplete": "不完全"
+    },
+    "statuses": {
+      "todo": "やるべきこと",
+      "in_progress": "進行中",
+      "review": "レビュー",
+      "completed": "完了"
+    }
+  },
+  "dashboardProfileCard": {
+    "title": "ユーザープロフィール",
+    "name": "名前",
+    "email": "電子メール",
+    "role": "役割",
+    "roles": {
+      "admin": "管理者",
+      "user": "ユーザー"
+    }
+  },
+  "dashboardPage": {
+    "title": "ダッシュボード",
+    "badge": "経営管理パネル",
+    "description": "Dasres アカウント、プロフィール、取引活動を管理します。",
+    "roles": {
+      "admin": "管理者",
+      "user": "ユーザー"
+    },
+    "admin": {
+      "title": "システム管理",
+      "commandCenter": "管理コマンドセンター",
+      "description": "Dasres プラットフォームの運用状況の概要",
+      "reviewVerifications": "検証のレビュー",
+      "pendingVerifications": "保留中の検証",
+      "totalReviews": "総レビュー数",
+      "reviews": "レビュー",
+      "premiumUsers": "プレミアムユーザー",
+      "openTickets": "オープンチケット",
+      "panel": "管理者パネル",
+      "users": "ユーザー",
+      "experts": "専門家",
+      "companies": "企業",
+      "opportunities": "機会",
+      "latestUsers": "最新のユーザー",
+      "manageUsers": "ユーザーの管理"
+    }
+  },
+  "loginPage": {
+    "title": "おかえり",
+    "description": "Dasres アカウントにサインインします",
+    "email": "電子メール",
+    "password": "パスワード",
+    "login": "ログイン",
+    "loginFailed": "ログインに失敗しました。"
+  },
+  "registerPage": {
+    "title": "Dasresに参加する",
+    "description": "アカウントを作成する",
+    "name": {
+      "label": "フルネーム",
+      "placeholder": "フルネームを入力してください"
+    },
+    "email": {
+      "label": "電子メール",
+      "placeholder": "メールアドレスを入力してください"
+    },
+    "password": {
+      "label": "パスワード",
+      "placeholder": "パスワードを入力してください",
+      "hint": "パスワードは 6 文字以上である必要があります。"
+    },
+    "submit": "アカウントを作成する",
+    "submitting": "アカウントを作成しています...",
+    "registrationFailed": "アカウントの作成に失敗しました。",
+    "alreadyHaveAccount": "すでにアカウントをお持ちですか?",
+    "login": "ログイン"
+  },
+  "projectDetailPage": {
+    "backToProjects": "プロジェクトに戻る"
+  },
+  "projectHeader": {
+    "progress": "進捗"
+  },
+  "projectTabs": {
+    "overview": "概要",
+    "tasks": "タスク",
+    "board": "ボード",
+    "calendar": "カレンダー",
+    "gantt": "ガントチャート",
+    "workload": "ワークロード",
+    "documents": "書類",
+    "timeline": "タイムライン",
+    "messages": "メッセージ",
+    "activity": "活動"
+  },
+  "projectOverviewCards": {
+    "customer": "お客様",
+    "category": "カテゴリ",
+    "openTasks": "開いているタスク",
+    "completedTasks": "完了したタスク",
+    "steps": "ステップ",
+    "completed": "完了"
+  },
+  "projectTimeSummary": {
+    "title": "時間の追跡",
+    "description": "プロジェクト全体の時間の概要。",
+    "estimated": "推定",
+    "logged": "記録済み",
+    "remaining": "残り",
+    "distribution": "時間配分"
+  },
+  "projectOverviewHeader": {
+    "description": "タスク、ワークロード、タイムライン、ガント、実行追跡を備えたプロジェクト コマンド センター。",
+    "overallProgress": "全体的な進捗状況",
+    "status": {
+      "todo": "やるべきこと",
+      "pending": "保留中",
+      "open": "開ける",
+      "inProgress": "進行中",
+      "review": "検討中",
+      "completed": "完了",
+      "approved": "承認された",
+      "rejected": "拒否されました",
+      "closed": "閉店",
+      "active": "アクティブ",
+      "expired": "期限切れ",
+      "cancelled": "キャンセル"
+    },
+    "metrics": {
+      "tasks": "タスク",
+      "completed": "完了",
+      "inProgress": "進行中",
+      "review": "レビュー",
+      "blocked": "ブロックされました",
+      "remaining": "残り"
+    },
+    "hours": {
+      "estimated": "推定営業時間",
+      "logged": "記録された時間数",
+      "value": "{hours}h"
+    },
+    "features": {
+      "tasks": "タスク",
+      "kanban": "カンバン",
+      "calendar": "カレンダー",
+      "timeline": "タイムライン",
+      "gantt": "ガントチャート",
+      "workload": "ワークロード"
+    }
+  },
+  "projectHealthCard": {
+    "title": "プロジェクトの健全性",
+    "progress": "進捗",
+    "hoursUsed": "使用時間",
+    "utilization": "利用",
+    "overdue": "期限を過ぎました",
+    "noEstimate": "見積りなし",
+    "noOverdueTasks": "期限を過ぎたタスクはありません",
+    "overdueTasks": "{count} タスク"
+  },
+  "projectCriticalPathCard": {
+    "title": "クリティカル パス",
+    "description": "プロジェクトのスケジュールを直接遅らせる可能性のあるタスク。",
+    "criticalTasks": "重要なタスク",
+    "criticalDuration": "クリティカル持続時間",
+    "duration": "{count, plural, one {#日} other {#日}}",
+    "empty": "重大な依存関係は検出されませんでした。",
+    "dependsOn": "依存: {task}",
+    "critical": "致命的",
+    "pathStart": "クリティカル パスの開始"
+  },
+  "projectAIInsights": {
+    "title": "AI 副操縦士の洞察",
+    "description": "将来の GPT 統合に備えて準備されたルールベースの分析。",
+    "healthScore": "AI 健康スコア",
+    "progressLabel": "進捗：",
+    "health": {
+      "excellent": "素晴らしい",
+      "stable": "安定した",
+      "atRisk": "危険にさらされています",
+      "critical": "致命的"
+    },
+    "risks": {
+      "title": "リスク",
+      "overdueTasks": "{count, plural, one {期限超過タスク #件} other {期限超過タスク #件}}",
+      "blockedTasks": "{count, plural, one {ブロック中のタスク #件} other {ブロック中のタスク #件}}",
+      "pendingApprovals": "{count, plural, one {承認待ち #件} other {承認待ち #件}}"
+    },
+    "nextAction": "次のアクション",
+    "recommendation": "おすすめ",
+    "nextActions": {
+      "approveDocument": "{fileName}を承認する",
+      "resolveDependency": "{taskTitle} の依存関係を解決する",
+      "reviewOverdueTask": "期限を過ぎたタスクを確認します: {taskTitle}",
+      "continueExecution": "実行を続行し、次のタスクを閉じます",
+      "completionReview": "プロジェクトは完了レビューの準備ができています"
+    },
+    "recommendations": {
+      "pendingApprovals": "文書の承認が主なボトルネックです。出荷または配達に移る前に、保留中の文書を確認してください。",
+      "blockedTasks": "ダウンストリーム実行を開始する前にタスクの依存関係を解決します。",
+      "overdueTasks": "スケジュールのリスクが増大しています。期限を確認し、遅れたタスクを再割り当てします。",
+      "normalProgress": "プロジェクトは順調に進んでいます。ドキュメントとワークフローのマイルストーンを監視し続けます。"
+    }
+  },
+  "projectAIAssistant": {
+    "title": "Dasres AI",
+    "subtitle": "スマートプロジェクト分析",
+    "risk": "リスク",
+    "progress": "進捗",
+    "aiSuggestions": "AIによる提案",
+    "riskLevels": {
+      "low": "低い",
+      "medium": "中くらい",
+      "high": "高い"
+    },
+    "suggestions": {
+      "resolveBlocked": "ブロックされたタスクを解決します。",
+      "reviewOverdue": "期限を過ぎたタスクを確認します。",
+      "increasePace": "実行ペースを上げます。",
+      "normal": "プロジェクトは順調に進んでいます。"
+    }
+  },
+  "projectTasksSection": {
+    "title": "プロジェクトのタスク",
+    "description": "プロジェクトのタスクを効率的に管理します。",
+    "searchPlaceholder": "タスクを検索...",
+    "searchLabel": "プロジェクトタスクの検索",
+    "filteredCount": "{filtered}/{total}",
+    "emptyState": "タスクを選択して詳細を表示します。",
+    "noSearchResults": "検索に一致するタスクはありません。"
+  },
+  "projectTaskList": {
+    "empty": "タスクが見つかりません。",
+    "unassigned": "未割り当て",
+    "progress": "進捗",
+    "progressLabel": "{title} の進捗状況",
+    "noDueDate": "期限なし",
+    "priorities": {
+      "urgent": "緊急",
+      "high": "高い",
+      "medium": "中くらい",
+      "low": "低い"
+    }
+  },
+  "projectTaskDetails": {
+    "emptyState": "タスクを選択して詳細を表示します。",
+    "assignedTo": "担当者",
+    "unassigned": "未割り当て",
+    "startDate": "開始日",
+    "dueDate": "期日",
+    "noStartDate": "開始日なし",
+    "noDueDate": "期限なし",
+    "progress": "進捗",
+    "estimated": "推定",
+    "logged": "記録済み",
+    "remaining": "残り",
+    "hours": "{count}h",
+    "notSet": "未設定",
+    "dependsOn": "依存する",
+    "blocks": "ブロック",
+    "attachments": "添付ファイル",
+    "uploadedBy": "{name}によってアップロードされました",
+    "unknown": "未知",
+    "priorities": {
+      "urgent": "緊急",
+      "high": "高い",
+      "medium": "中くらい",
+      "low": "低い"
+    },
+    "statuses": {
+      "todo": "藤堂",
+      "in_progress": "進行中",
+      "review": "レビュー",
+      "completed": "完了"
+    }
+  },
+  "projectTaskStatusSelect": {
+    "label": "タスクのステータス",
+    "updating": "ステータスを更新中...",
+    "updateError": "タスクのステータスを更新できませんでした。",
+    "networkError": "ステータスの更新中にネットワークエラーが発生しました。",
+    "statuses": {
+      "todo": "藤堂",
+      "in_progress": "進行中",
+      "review": "レビュー",
+      "completed": "完了"
+    }
+  },
+  "assignTaskSelect": {
+    "label": "タスクの割り当て",
+    "unassigned": "未割り当て",
+    "updating": "更新中...",
+    "updateError": "タスクの割り当てに失敗しました。",
+    "networkError": "タスクの割り当て中にネットワーク エラーが発生しました。"
+  },
+  "editProjectTaskForm": {
+    "edit": "編集",
+    "title": "タスクの編集",
+    "taskTitle": "タスクのタイトル",
+    "titleRequired": "タスクのタイトルは必須です。",
+    "description": "説明",
+    "descriptionPlaceholder": "タスクの説明を追加...",
+    "priority": "優先度",
+    "startDate": "開始日",
+    "dueDate": "期日",
+    "estimatedHours": "推定営業時間",
+    "estimatedHoursPlaceholder": "推定時間",
+    "loggedHours": "記録された時間数",
+    "loggedHoursPlaceholder": "記録された時間",
+    "assignedTo": "担当者",
+    "unassigned": "未割り当て",
+    "dependsOn": "依存する",
+    "noDependency": "依存関係なし",
+    "save": "保存",
+    "saving": "保存中...",
+    "cancel": "キャンセル",
+    "updateError": "タスクを更新できませんでした。",
+    "networkError": "タスクの更新中にネットワーク エラーが発生しました。",
+    "invalidEstimatedHours": "推定時間はゼロ以上である必要があります。",
+    "invalidLoggedHours": "記録される時間はゼロ以上である必要があります。",
+    "priorities": {
+      "low": "低い",
+      "medium": "中くらい",
+      "high": "高い",
+      "urgent": "緊急"
+    }
+  },
+  "projectTaskChecklist": {
+    "title": "チェックリスト",
+    "empty": "チェックリスト項目はまだありません。",
+    "updating": "更新中...",
+    "toggleError": "チェックリスト項目を更新できませんでした。",
+    "networkError": "チェックリスト項目の更新中にネットワーク エラーが発生しました。",
+    "markComplete": "{title} を完了としてマークします",
+    "markIncomplete": "{title} を不完全としてマークします"
+  },
+  "createChecklistItemForm": {
+    "label": "チェックリスト項目のタイトル",
+    "placeholder": "チェックリスト項目を追加...",
+    "add": "追加",
+    "adding": "追加中...",
+    "titleRequired": "チェックリスト項目のタイトルは必須です。",
+    "createError": "チェックリスト項目を追加できませんでした。",
+    "invalidResponse": "チェックリスト項目は作成されましたが、サーバーの応答が無効でした。",
+    "networkError": "チェックリスト項目の追加中にネットワーク エラーが発生しました。"
+  },
+  "taskProgressBar": {
+    "title": "タスクの進行状況",
+    "ariaLabel": "タスクの進捗状況",
+    "summary": "チェックリスト：{total}件中{completed}件が完了"
+  },
+  "projectTaskComments": {
+    "title": "コメント",
+    "empty": "コメントはまだありません。",
+    "commentLabel": "コメント",
+    "placeholder": "コメントを書いてください...",
+    "postComment": "コメントを投稿する",
+    "posting": "投稿中...",
+    "edited": "編集済み",
+    "deletedComment": "このコメントは削除されました。",
+    "unknownAuthor": "未知",
+    "unknownDate": "日付不明",
+    "commentRequired": "コメントは必須です。",
+    "createError": "コメントを投稿できませんでした。",
+    "networkError": "コメントの投稿中にネットワーク エラーが発生しました。"
+  },
+  "projectTaskAttachmentUpload": {
+    "title": "ファイルを添付",
+    "fileLabel": "ファイルを選択してください",
+    "helpText": "サポートされている形式: JPG、PNG、WEBP、PDF、DOCX、XLSX。最大サイズ: 10MB。",
+    "fileSize": "{size} MB",
+    "upload": "アップロード",
+    "uploading": "アップロード中...",
+    "clear": "クリア",
+    "selectFile": "ファイルを選択してください。",
+    "invalidType": "このファイル形式はサポートされていません。",
+    "fileTooLarge": "選択したファイルは 10 MB 以下である必要があります。",
+    "uploadError": "ファイルをアップロードできませんでした。",
+    "networkError": "ファイルのアップロード中にネットワーク エラーが発生しました。"
+  },
+  "createProjectTaskForm": {
+    "newTask": "+ 新しいタスク",
+    "modalTitle": "タスクの作成",
+    "taskTitle": "タスクのタイトル",
+    "taskTitlePlaceholder": "タスクのタイトルを入力してください",
+    "description": "説明",
+    "descriptionPlaceholder": "説明 (オプション)",
+    "priority": "優先度",
+    "startDate": "開始日",
+    "dueDate": "期日",
+    "createTask": "タスクの作成",
+    "creating": "作成...",
+    "cancel": "キャンセル",
+    "titleRequired": "タスクのタイトルは必須です。",
+    "invalidDateRange": "期日を開始日より前にすることはできません。",
+    "createError": "タスクを作成できませんでした。",
+    "networkError": "タスクの作成中にネットワーク エラーが発生しました。",
+    "priorities": {
+      "low": "低い",
+      "medium": "中くらい",
+      "high": "高い",
+      "urgent": "緊急"
+    }
+  },
+  "projectBoard": {
+    "columns": {
+      "todo": "藤堂",
+      "inProgress": "進行中",
+      "review": "レビュー",
+      "completed": "完了"
+    },
+    "emptyColumn": "タスクがありません",
+    "updateError": "タスクのステータスの更新に失敗しました。"
+  },
+  "kanbanColumn": {
+    "ariaLabel": "{count} タスクを含む {title} 列",
+    "taskCount": "{count} タスク"
+  },
+  "kanbanTaskCard": {
+    "assignee": "譲受人",
+    "unassigned": "未割り当て",
+    "due": "期限",
+    "noDueDate": "期限なし",
+    "checklist": "チェックリスト",
+    "comments": "コメント",
+    "files": "ファイル",
+    "dragLabel": "タスク {title} をドラッグします",
+    "priorities": {
+      "low": "低い",
+      "medium": "中くらい",
+      "high": "高い",
+      "urgent": "緊急"
+    }
+  },
+  "projectCalendarView": {
+    "title": "プロジェクトカレンダー",
+    "description": "タスクの期限を表示し、タスクを移動して期限を更新します。",
+    "noEvents": "スケジュールされたタスクはありません。",
+    "updateError": "タスクの日付を更新できませんでした。",
+    "invalidTaskDate": "選択したタスクまたは日付が無効です。",
+    "buttons": {
+      "today": "今日",
+      "month": "月",
+      "week": "週"
+    }
+  },
+  "projectGanttView": {
+    "title": "ガントチャート",
+    "description": "プロジェクトのタスクと依存関係の視覚的なタイムライン。",
+    "emptyState": "ガント ビューに表示する日付付きタスクはありません。",
+    "taskColumn": "タスク",
+    "timeline": "タイムライン",
+    "week": "週",
+    "taskCount": "{count} タスク",
+    "critical": "致命的",
+    "blocked": "ブロックされました",
+    "dateRange": "{start} – {end}",
+    "zoom": {
+      "day": "日",
+      "week": "週",
+      "month": "月"
+    },
+    "statuses": {
+      "todo": "藤堂",
+      "in_progress": "進行中",
+      "review": "レビュー",
+      "completed": "完了",
+      "unknown": "未知"
+    },
+    "duration": {
+      "day": "{title} • {duration} 日",
+      "week": "{title} • {duration} 週",
+      "month": "{title} • {duration} 月"
+    },
+    "tooltips": {
+      "baseline": "ベースライン",
+      "dependencyInput": "入力の依存関係",
+      "dependencyOutput": "出力の依存関係",
+      "duration": {
+        "day": "期間: {duration} 日",
+        "week": "期間: {duration} 週間",
+        "month": "期間: {duration} か月"
+      }
+    }
+  },
+  "projectWorkloadView": {
+    "title": "チームの仕事量",
+    "description": "チームメンバーごとのタスクの分散、進捗状況、期限超過の作業量。",
+    "emptyState": "ワークロード分析に使用できるタスクはありません。",
+    "unassigned": "未割り当て",
+    "totalTasks": "{count} 合計タスク数",
+    "workload": "ワークロード",
+    "active": "アクティブ",
+    "done": "終わり",
+    "overdue": "期限を過ぎました",
+    "progressLabel": "{name} のタスクの平均進行状況",
+    "capacities": {
+      "high": "高い",
+      "medium": "中くらい",
+      "low": "低い"
+    },
+    "workloadStates": {
+      "needsAttention": "注意が必要です",
+      "highLoad": "高負荷",
+      "balanced": "バランスの取れた",
+      "available": "利用可能"
+    }
+  },
+  "projectTimeline": {
+    "title": "タイムラインのステップ",
+    "completed": "完了",
+    "pending": "保留中",
+    "notCompletedYet": "まだ完成していません",
+    "unknownDate": "日付不明",
+    "emptyState": "使用できるタイムライン ステップはありません。",
+    "steps": {
+      "requestSubmitted": "リクエストが送信されました",
+      "providerMatching": "プロバイダーのマッチング",
+      "documentsReview": "書類審査",
+      "serviceInProgress": "サービス中",
+      "completed": "完了"
+    }
+  },
+  "projectDocuments": {
+    "title": "ドキュメントセンター",
+    "description": "一元化されたプロジェクトおよび貿易文書ワークスペース。",
+    "documentCount": "{count} ドキュメント",
+    "required": "必須",
+    "optional": "オプション",
+    "open": "開ける",
+    "linkedTask": "リンクされたタスク: {title}",
+    "uploadedBy": "{name}によってアップロードされました",
+    "unknownUser": "不明なユーザー",
+    "unknownSize": "不明なサイズ",
+    "unknownDate": "日付不明",
+    "rejectionReason": "拒否理由",
+    "rejectedByAdmin": "管理者によって拒否されました",
+    "approvalStatuses": {
+      "approved": "承認された",
+      "rejected": "拒否されました",
+      "pending": "保留中"
+    },
+    "requirements": {
+      "commercialInvoice": "商業送り状",
+      "packingList": "包装内容明細書",
+      "billOfLading": "船荷証券",
+      "insuranceCertificate": "保険証"
+    },
+    "fileSize": {
+      "bytes": "{size} B",
+      "kilobytes": "{size} KB",
+      "megabytes": "{size} MB"
+    },
+    "emptyState": {
+      "title": "まだドキュメントがアップロードされていません",
+      "description": "プロジェクト タスク内でアップロードされたドキュメントがここに表示されます。"
+    }
+  },
+  "approveDocumentButtons": {
+    "approve": "✓ 承認する",
+    "approving": "承認中...",
+    "reject": "✕ 拒否",
+    "rejecting": "拒否しています...",
+    "updateError": "ドキュメントの更新に失敗しました。",
+    "networkError": "ドキュメントの更新中にネットワーク エラーが発生しました。"
+  },
+  "addProjectMessageForm": {
+    "label": "プロジェクトメッセージ",
+    "placeholder": "プロジェクトメッセージを書いてください...",
+    "send": "メッセージを送信する",
+    "sending": "送信中...",
+    "shortcutHint": "Ctrl キーまたは Command + Enter キーを押して送信します。",
+    "sendError": "メッセージの送信に失敗しました。",
+    "networkError": "メッセージの送信中にネットワーク エラーが発生しました。",
+    "invalidResponse": "メッセージは送信されましたが、サーバーの応答が無効でした。"
+  },
+  "projectMessaging": {
+    "title": "プロジェクトのメッセージング",
+    "description": "顧客、プロバイダー、プロジェクト チーム間の内部コミュニケーション。",
+    "conversationCount": "{count} の会話",
+    "messageCount": "{count} メッセージ",
+    "defaultConversationTitle": "プロジェクトの会話",
+    "conversationListLabel": "プロジェクトの会話",
+    "noMessages": "この会話ではまだメッセージが送信されていません。",
+    "unknownSender": "不明な送信者",
+    "unknownDate": "日付不明",
+    "you": "あなた",
+    "emptyState": {
+      "title": "まだ会話はありません",
+      "description": "最初のメッセージを送信して、プロジェクトの会話を開始します。"
+    }
+  },
+  "projectActivitySection": {
+    "details": {
+      "taskStatusUpdated": "タスク「{title}」のステータスが {status} に変更されました。",
+      "documentUploaded": "ファイル {file} がアップロードされました。"
+    },
+    "title": "最近の活動",
+    "emptyState": "アクティビティはまだ記録されていません。",
+    "unknownDate": "日付不明",
+    "actions": {
+      "project_created": "プロジェクトが作成されました",
+      "project_updated": "プロジェクトが更新されました",
+      "task_created": "タスクが作成されました",
+      "task_updated": "タスクが更新されました",
+      "task_assigned": "割り当てられたタスク",
+      "task_completed": "タスクが完了しました",
+      "task_status_updated": "タスクのステータスが更新されました",
+      "project_task_status_updated": "プロジェクトタスクのステータスが更新されました",
+      "comment_added": "コメント追加",
+      "document_uploaded": "ドキュメントがアップロードされました",
+      "document_approved": "文書が承認されました",
+      "document_rejected": "文書が拒否されました",
+      "message_sent": "メッセージが送信されました"
+    },
+    "statuses": {
+      "todo": "やるべきこと",
+      "in_progress": "進行中",
+      "review": "レビュー",
+      "completed": "完了"
+    }
+  },
+  "projectListProgress": {
+    "progress": "進捗",
+    "progressLabel": "プロジェクトタスクの進捗状況",
+    "summary": "{total}件のタスク中{completed}件が完了"
+  },
+  "projectPrintButton": {
+    "button": "PDFのエクスポート/印刷",
+    "tooltip": "このページを印刷または PDF として保存します",
+    "ariaLabel": "プロジェクトを PDF としてエクスポートまたは印刷する"
+  },
+  "projectProgressCard": {
+    "title": "プロジェクトの進捗状況",
+    "progressLabel": "プロジェクトの進捗状況",
+    "summary": "{total}件のタスク中{completed}件が完了"
+  },
+  "projectTasksExportButton": {
+    "button": "Excel にエクスポート",
+    "ariaLabel": "プロジェクト タスクを Excel 互換の CSV ファイルとしてエクスポート",
+    "tooltip": "プロジェクトタスクを Excel と互換性のある CSV ファイルとしてダウンロード",
+    "emptyTooltip": "エクスポートするタスクはありません",
+    "unknown": "未知",
+    "unknownDate": "日付不明",
+    "headers": {
+      "id": "ID",
+      "title": "タイトル",
+      "status": "状態",
+      "priority": "優先度",
+      "progress": "進捗",
+      "startDate": "開始日",
+      "dueDate": "期日",
+      "estimatedHours": "推定営業時間",
+      "loggedHours": "記録された時間数",
+      "assignedTo": "担当者",
+      "assignedEmail": "割り当てられたメールアドレス",
+      "dependsOn": "依存する",
+      "dependencyStatus": "依存関係のステータス"
+    },
+    "statuses": {
+      "todo": "藤堂",
+      "inProgress": "進行中",
+      "review": "レビュー",
+      "completed": "完了"
+    },
+    "priorities": {
+      "low": "低い",
+      "medium": "中くらい",
+      "high": "高い",
+      "urgent": "緊急"
+    }
+  },
+  "statusBadge": {
+    "todo": "やるべきこと",
+    "pending": "保留中",
+    "open": "開ける",
+    "in_progress": "進行中",
+    "review": "レビュー",
+    "completed": "完了",
+    "closed": "閉店",
+    "approved": "承認された",
+    "rejected": "拒否されました",
+    "active": "アクティブ",
+    "expired": "期限切れ",
+    "cancelled": "キャンセル"
+  },
+  "casesPage": {
+    "adminTitle": "すべての取引事例",
+    "userTitle": "私のケース",
+    "description": "送信された取引サービスリクエストを追跡します。",
+    "newCase": "新しいケース",
+    "emptyState": "ケースは見つかりませんでした。",
+    "unknownDate": "日付不明",
+    "caseNumber": "ケース番号 #{id}",
+    "timeline": "タイムライン",
+    "steps": "ステップ：{completed} / {total}",
+    "winningProposal": "落札された提案書",
+    "proposalNumber": "#{id}",
+    "notSelected": "未選択",
+    "created": "作成されました",
+    "updated": "更新されました",
+    "viewCase": "事例を見る",
+    "stats": {
+      "total": "総症例数",
+      "open": "開ける",
+      "inProgress": "進行中",
+      "completed": "完了",
+      "cancelled": "キャンセル"
+    },
+    "counts": {
+      "proposals": "{count}提案",
+      "documents": "{count} ドキュメント",
+      "messages": "{count} メッセージ"
+    }
+  },
+  "openCasesPage": {
+    "title": "オープンケース",
+    "adminDescription": "すべての未解決の取引ケース。",
+    "userDescription": "貴社のカテゴリーにマッチしたケース。",
+    "myProposals": "私の提案",
+    "categoryLabel": "カテゴリ：",
+    "allCategories": "全て",
+    "unknownDate": "日付不明",
+    "requestedBy": "リクエスト者:",
+    "created": "作成者: {date}",
+    "viewCase": "事例を見る",
+    "categories": {
+      "general": "一般的な",
+      "customsClearance": "通関",
+      "shipping": "配送",
+      "inspection": "検査",
+      "insurance": "保険",
+      "sourcing": "調達",
+      "documentation": "ドキュメント",
+      "payment": "支払い"
+    },
+    "sort": {
+      "label": "並べ替え：",
+      "newest": "最新",
+      "oldest": "最古の"
+    },
+    "stats": {
+      "matchingCases": "一致するケース",
+      "matchingCategories": "一致するカテゴリ",
+      "highCompetition": "激しい競争",
+      "myOpenProposals": "私の公開提案",
+      "savedMatching": "保存されたマッチング"
+    },
+    "badges": {
+      "saved": "★ 保存しました",
+      "applied": "適用済み",
+      "highCompetition": "激しい競争"
+    },
+    "metrics": {
+      "proposals": "提案",
+      "documents": "書類",
+      "messages": "メッセージ"
+    },
+    "noCategories": {
+      "title": "会社カテゴリが見つかりませんでした",
+      "description": "Dasres がオープン ケースをサービス カテゴリに一致させることができるように、最初に会社プロフィールを追加します。",
+      "addCompany": "会社を追加"
+    },
+    "emptyState": {
+      "title": "一致するケースが見つかりませんでした",
+      "adminDescription": "現在、オープンな取引案件はありません。",
+      "userDescription": "現在、貴社のカテゴリに一致するオープンケースはありません。後でもう一度試すか、会社のサービスを拡張してください。",
+      "manageCompanies": "会社の管理"
+    }
+  },
+  "caseDetailPage": {
+    "backToCases": "ケースに戻る",
+    "caseNumber": "ケース番号 #{id}",
+    "unknownDate": "日付不明",
+    "unknown": "未知",
+    "unknownUser": "不明なユーザー",
+    "unknownCountry": "未知の国",
+    "notAssigned": "割り当てられていません",
+    "notSelected": "未選択",
+    "notAvailable": "N/A",
+    "you": "あなた",
+    "system": "システム",
+    "customer": "お客様",
+    "winningCompany": "受賞企業",
+    "winningExpert": "勝利のエキスパート",
+    "progress": "進捗",
+    "timeline": "事件のタイムライン",
+    "workflowProgress": "ワークフローの進行状況",
+    "percentComplete": "{percent}% 完了",
+    "stepsSummary": "{total}ステップ中{completed}ステップが完了",
+    "caseInformation": "症例情報",
+    "status": "状態",
+    "category": "カテゴリ",
+    "created": "作成されました",
+    "updated": "最終更新日",
+    "viewCompany": "会社を見る",
+    "viewExpert": "エキスパートを見る",
+    "verified": "確認済み",
+    "metrics": {
+      "proposals": "提案",
+      "messages": "メッセージ",
+      "documents": "書類",
+      "activities": "活動内容"
+    },
+    "timelineStep": {
+      "completed": "✓ ステップが完了しました",
+      "pending": "完了を待っています"
+    },
+    "timelineEmpty": {
+      "title": "タイムラインステップはありません",
+      "description": "ワークフローのステップがここに表示されます。"
+    },
+    "proposals": {
+      "title": "提案",
+      "winnerSelected": "優秀な提案はすでに選択されています。",
+      "closed": "この訴訟はすでに進行中です。新規提案は終了しました。",
+      "ownCase": "自分自身のケースについて提案を提出することはできません。",
+      "noMatchingCompany": "このケース カテゴリに一致する会社はありません。",
+      "providerProposal": "プロバイダーの提案",
+      "unknownCompany": "不明な会社",
+      "expertName": "エキスパート: {name}",
+      "noExpert": "専門家が割り当てられていない",
+      "price": "価格",
+      "noPrice": "価格なし",
+      "company": "会社",
+      "expert": "専門家",
+      "message": "提案メッセージ",
+      "noMessage": "メッセージは提供されていません。",
+      "status": {
+        "accepted": "✓ 承認されました",
+        "rejected": "拒否されました",
+        "pending": "保留中"
+      },
+      "empty": {
+        "title": "まだ提案はありません",
+        "description": "このケースがオープンしている間、マッチング企業は提案を提出できます。"
+      }
+    },
+    "messages": {
+      "title": "メッセージ",
+      "empty": {
+        "title": "まだメッセージはありません",
+        "description": "ケースが進行すると、ここにメッセージが表示されます。"
+      }
+    },
+    "documents": {
+      "title": "書類",
+      "uploadedBy": "{name}によってアップロードされました",
+      "download": "ダウンロード",
+      "empty": {
+        "title": "まだ書類がありません",
+        "description": "アップロードされた貿易書類はここに保管されます。"
+      }
+    },
+    "recommendedCompanies": {
+      "title": "おすすめの会社",
+      "empty": "確認された一致する企業は見つかりませんでした。"
+    },
+    "assignedProvider": {
+      "title": "割り当てられたプロバイダー",
+      "winningProposal": "落札された提案書",
+      "proposalSummary": "#{id} - {price}",
+      "proposalValue": "提案価値",
+      "assignedAt": "割り当て先",
+      "empty": {
+        "title": "まだプロバイダーが割り当てられていません",
+        "description": "顧客が提案を受け入れると、選択した企業または専門家が割り当てられたプロバイダーとしてここに表示されます。"
+      }
+    },
+    "activity": {
+      "title": "ケースアクティビティ ({count})",
+      "meta": "{actor}・{date}",
+      "actions": {
+        "proposalSubmitted": "提案書が提出されました",
+        "proposalAccepted": "提案は承認されました",
+        "proposalRejected": "提案は拒否されました",
+        "messageSent": "メッセージを送信しました",
+        "documentUploaded": "ドキュメントがアップロードされました",
+        "caseCompleted": "ケースが完了しました",
+        "reviewSubmitted": "レビューが送信されました"
+      },
+      "empty": {
+        "title": "まだ活動はありません",
+        "description": "ケースイベント、提案、メッセージ、文書アクションがここに表示されます。"
+      }
+    },
+    "reviews": {
+      "title": "レビュー",
+      "reviewProvider": "承認されたプロバイダーを確認する",
+      "reviewCustomer": "顧客のレビュー",
+      "alreadySubmitted": "あなたのレビューはすでに送信されています。",
+      "permission": "このケースのレビューを送信できるのは、顧客と承認されたプロバイダーのみです。"
+    },
+    "errors": {
+      "accessDenied": {
+        "title": "アクセスが拒否されました",
+        "description": "このトレードケースを表示する権限がありません。",
+        "back": "未解決のケースに戻る"
+      }
+    }
+  },
+  "tickets": {
+    "form": {
+      "subject": "主題",
+      "category": "カテゴリ",
+      "message": "メッセージ",
+      "subjectPlaceholder": "主題",
+      "messagePlaceholder": "問題について説明してください...",
+      "create": "チケットの作成",
+      "creating": "作成...",
+      "categories": {
+        "general": "一般的な",
+        "technical": "テクニカル",
+        "verification": "検証",
+        "billing": "請求する",
+        "dispute": "紛争"
+      },
+      "errors": {
+        "createFailed": "チケットの作成に失敗しました。"
+      }
+    },
+    "new": {
+      "title": "新しいチケット",
+      "description": "検証、請求、技術的な問題、または一般的な質問については、Dasres サポートにお問い合わせください。"
+    },
+    "list": {
+      "title": "チケット",
+      "description": "サポート リクエスト、ケースの問題、プラットフォーム サポートを管理します。",
+      "newTicket": "新しいチケット",
+      "allTickets": "すべてのチケット",
+      "myTickets": "私のチケット",
+      "empty": "チケットが見つかりませんでした。",
+      "created": "作成されました",
+      "createdBy": "作成者: {name}",
+      "ticketsFound": "{count, plural, =0 {チケットが見つかりません} =1 {1件のチケットが見つかりました} other {#件のチケットが見つかりました}}",
+      "statuses": {
+        "open": "開ける",
+        "inProgress": "進行中",
+        "reopened": "再開しました",
+        "closed": "閉店"
+      }
+    },
+    "detail": {
+      "backToTickets": "← チケットに戻る",
+      "ticketNumber": "チケット#{id}",
+      "createdBy": "作成者",
+      "createdAt": "作成日",
+      "messages": "メッセージ",
+      "lastUpdate": "最終更新",
+      "conversation": "会話",
+      "messageCount": "{count, plural, =0 {メッセージはありません} =1 {1件のメッセージ} other {#件のメッセージ}}",
+      "noMessages": "まだメッセージはありません。",
+      "closedNotice": "このチケットはクローズされています。",
+      "statuses": {
+        "open": "開ける",
+        "inProgress": "進行中",
+        "closed": "閉店",
+        "reopened": "再開しました"
+      },
+      "categories": {
+        "general": "一般的な",
+        "technical": "テクニカル",
+        "verification": "検証",
+        "billing": "請求する",
+        "dispute": "紛争"
+      },
+      "timeline": {
+        "title": "チケットタイムライン",
+        "created": "チケットが作成されました",
+        "firstMessage": "最初のメッセージ",
+        "latestReply": "最新の返信",
+        "closed": "チケットは終了しました",
+        "closedDescription": "現在のステータスはクローズされています。",
+        "reopened": "チケットが再開されました",
+        "reopenedDescription": "このチケットは再度注意が必要です。"
+      },
+      "rules": {
+        "title": "サポートルール",
+        "focused": "返信は焦点を絞ったプロフェッショナルなものにしてください。",
+        "caseDetails": "必要に応じてケースの詳細を添付します。",
+        "closedReplies": "クローズされたチケットは返信を受け取ることができません。",
+        "adminReopen": "管理者は閉じたチケットを再度開くことができます。"
+      },
+      "errors": {
+        "invalidId": "無効なチケットID",
+        "notFound": "チケットが見つかりません",
+        "accessDenied": "アクセスが拒否されました"
+      }
+    },
+    "replyForm": {
+      "messageLabel": "返事",
+      "placeholder": "返信を書いてください...",
+      "send": "返信を送信",
+      "sending": "送信中...",
+      "errors": {
+        "messageRequired": "返信メッセージは必須です。",
+        "sendFailed": "返信の送信に失敗しました。"
+      }
+    },
+    "closeButton": {
+      "confirm": "このチケットを閉じてもよろしいですか?",
+      "close": "チケットを閉じる",
+      "closing": "閉会中...",
+      "errors": {
+        "closeFailed": "チケットをクローズできませんでした。"
+      }
+    },
+    "reopenButton": {
+      "reopen": "チケットを再開する",
+      "reopening": "再開...",
+      "errors": {
+        "reopenFailed": "チケットを再度開くことができませんでした。"
+      }
+    }
+  },
+  "notifications": {
+    "markAllRead": {
+      "markAll": "すべて既読としてマークする",
+      "updating": "更新中...",
+      "errors": {
+        "updateFailed": "通知の更新に失敗しました。"
+      }
+    },
+    "list": {
+      "title": "通知",
+      "description": "ケース、提案、メッセージ、ドキュメント、システム アラートの最新情報を追跡します。",
+      "total": "合計通知数",
+      "unread": "未読",
+      "read": "読む",
+      "centerTitle": "通知センター",
+      "centerDescription": "ケース、メッセージ、ドキュメント、システム アラートの更新を管理します。",
+      "empty": "まだ通知はありません。",
+      "open": "見る→",
+      "types": {
+        "proposal": "提案",
+        "accepted": "承認されました",
+        "rejected": "拒否されました",
+        "message": "メッセージ",
+        "document": "書類",
+        "approved": "承認された",
+        "assigned": "割り当て済み",
+        "completed": "完了",
+        "comment": "コメント",
+        "ticket": "チケット",
+        "deadline": "締め切り",
+        "projectDone": "プロジェクトが完了しました",
+        "system": "システム"
+      },
+      "messages": {
+        "ticketCreated": "{user} が新しいチケットを作成しました: {subject}",
+        "ticketReply": "{user} がチケットに返信しました: {subject}",
+        "proposalReceived": "新しい提案が届きました。",
+        "projectCompleted": "プロジェクトは完了しました。"
+      }
+    }
+  },
+  "adminUsers": {
+    "deleteUser": {
+      "button": "消去",
+      "deleting": "削除中...",
+      "confirm": "このユーザーを削除してもよろしいですか?",
+      "errors": {
+        "deleteFailed": "ユーザーの削除に失敗しました。"
+      }
+    },
+    "makeAdmin": {
+      "button": "管理者にする",
+      "making": "更新中...",
+      "confirm": "このユーザーを管理者にしてもよろしいですか?",
+      "errors": {
+        "makeAdminFailed": "ユーザーの役割の更新に失敗しました。"
+      }
+    },
+    "changePlan": {
+      "label": "計画変更",
+      "plans": {
+        "free": "無料",
+        "gold": "金",
+        "diamond": "ダイヤモンド",
+        "enterprise": "企業"
+      },
+      "errors": {
+        "updateFailed": "プランの更新に失敗しました。"
+      }
+    },
+    "list": {
+      "title": "ユーザー管理",
+      "description": "ユーザーの役割、プラン、アカウント アクセスを管理します。",
+      "accountsTitle": "ユーザーアカウント",
+      "accountsRegistered": "{count, plural, =0 {登録済みアカウントはありません} =1 {1件のアカウントが登録されています} other {#件のアカウントが登録されています}}",
+      "unnamedUser": "名前のないユーザー",
+      "stats": {
+        "totalUsers": "総ユーザー数",
+        "admins": "管理者",
+        "users": "ユーザー",
+        "paidPlans": "有料プラン"
+      },
+      "roles": {
+        "admin": "管理者",
+        "user": "ユーザー"
+      },
+      "plans": {
+        "free": "無料",
+        "gold": "金",
+        "diamond": "ダイヤモンド",
+        "enterprise": "企業"
+      },
+      "table": {
+        "id": "ID",
+        "user": "ユーザー",
+        "role": "役割",
+        "currentPlan": "現在の計画",
+        "changePlan": "計画の変更",
+        "created": "作成されました",
+        "actions": "アクション"
+      }
+    }
+  },
+  "expertReviews": {
+    "form": {
+      "title": "この専門家を評価する",
+      "ratingLabel": "評価",
+      "commentLabel": "レビュー",
+      "placeholder": "レビューを書いてください...",
+      "submit": "レビューを送信する",
+      "submitting": "送信中...",
+      "ratings": {
+        "1": "1 - 不満",
+        "2": "2 - やや不満",
+        "3": "3 - 良い",
+        "4": "4 - とても良い",
+        "5": "5 - 非常に良い"
+      },
+      "errors": {
+        "submitFailed": "レビューの送信に失敗しました。"
+      }
+    }
+  },
+  "companies": {
+    "edit": {
+      "title": "会社の編集",
+      "description": "会社情報、取引カテゴリー、ロゴを更新します。",
+      "loading": "会社を読み込んでいます...",
+      "currentLogo": "現在のロゴ",
+      "currentLogoAlt": "現在の会社ロゴ",
+      "update": "会社を更新する",
+      "updating": "更新中...",
+      "fields": {
+        "name": {
+          "label": "会社名",
+          "placeholder": "会社名"
+        },
+        "country": {
+          "label": "国",
+          "placeholder": "国"
+        },
+        "category": {
+          "label": "貿易カテゴリー"
+        },
+        "description": {
+          "label": "説明",
+          "placeholder": "説明"
+        },
+        "email": {
+          "label": "電子メール",
+          "placeholder": "電子メール"
+        },
+        "website": {
+          "label": "Webサイト",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "ロゴを置き換える",
+          "help": "現在のロゴを維持するには、空白のままにします。サポートされている形式: JPG、PNG、WEBP。"
+        }
+      },
+      "categories": {
+        "general": "一般的な",
+        "customsClearance": "通関",
+        "shipping": "配送",
+        "inspection": "検査",
+        "insurance": "保険",
+        "sourcing": "調達",
+        "documentation": "ドキュメント",
+        "payment": "支払い"
+      },
+      "errors": {
+        "loadFailed": "会社の読み込みエラー。",
+        "updateFailed": "会社の更新中にエラーが発生しました。",
+        "networkError": "何か問題が発生しました。"
+      }
+    },
+    "new": {
+      "title": "会社を追加",
+      "description": "会社プロファイルを作成し、Dasres 取引ネットワークに追加します。",
+      "create": "会社の作成",
+      "creating": "作成...",
+      "success": "会社が正常に作成されました。",
+      "fields": {
+        "name": {
+          "label": "会社名",
+          "placeholder": "会社名"
+        },
+        "country": {
+          "label": "国",
+          "placeholder": "国"
+        },
+        "category": {
+          "label": "貿易カテゴリー"
+        },
+        "description": {
+          "label": "説明",
+          "placeholder": "説明"
+        },
+        "email": {
+          "label": "電子メール",
+          "placeholder": "電子メール"
+        },
+        "website": {
+          "label": "Webサイト",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "会社ロゴ",
+          "help": "サポートされている形式: JPG、PNG、WEBP。"
+        }
+      },
+      "categories": {
+        "general": "一般的な",
+        "customsClearance": "通関",
+        "shipping": "配送",
+        "inspection": "検査",
+        "insurance": "保険",
+        "sourcing": "調達",
+        "documentation": "ドキュメント",
+        "payment": "支払い"
+      },
+      "errors": {
+        "createFailed": "会社作成中にエラーが発生しました。",
+        "networkError": "何か問題が発生しました。"
+      }
+    },
+    "deleteButton": {
+      "button": "会社の削除",
+      "deleting": "削除中...",
+      "confirm": "この会社を削除してもよろしいですか?",
+      "errors": {
+        "deleteFailed": "会社の削除に失敗しました。"
+      }
+    },
+    "search": {
+      "searchLabel": "会社を探す",
+      "searchPlaceholder": "🔍 企業を検索...",
+      "countryLabel": "国",
+      "ratingFilterLabel": "評価フィルター",
+      "allCountries": "すべての国",
+      "allRatings": "すべての評価",
+      "fiveStars": "5つ星",
+      "fourPlusStars": "4つ星以上",
+      "verifiedOnly": "検証済みのみ",
+      "viewProfile": "プロフィールを見る→",
+      "available": "利用可能",
+      "noRating": "まだ評価がありません",
+      "notAvailable": "N/A",
+      "empty": "選択したフィルターに一致する企業はありません。",
+      "reviewCount": "{count, plural, =1 {1件のレビュー} other {#件のレビュー}}",
+      "featured": {
+        "title": "注目の企業",
+        "description": "Dasres での知名度が高いプレミアム貿易会社。"
+      },
+      "verification": {
+        "verified": "確認済み",
+        "rejected": "拒否されました",
+        "pending": "保留中"
+      },
+      "plans": {
+        "gold": "金",
+        "diamond": "ダイヤモンド",
+        "enterprise": "企業"
+      },
+      "metrics": {
+        "trust": "信頼",
+        "rating": "評価",
+        "reviews": "レビュー"
+      }
+    }
+  },
+  "experts": {
+    "edit": {
+      "title": "編集エキスパート",
+      "description": "専門家のプロフィール情報とプロフィール画像を更新します。",
+      "loading": "エキスパートを読み込み中...",
+      "currentImage": "現在のプロフィール画像",
+      "currentImageAlt": "現在の専門家のイメージ",
+      "update": "アップデートエキスパート",
+      "updating": "更新中...",
+      "fields": {
+        "name": {
+          "label": "名前",
+          "placeholder": "フルネーム"
+        },
+        "country": {
+          "label": "国",
+          "placeholder": "国"
+        },
+        "specialty": {
+          "label": "専門",
+          "placeholder": "貿易専門"
+        },
+        "experience": {
+          "label": "経験",
+          "placeholder": "専門的な経験について説明する"
+        },
+        "email": {
+          "label": "電子メール",
+          "placeholder": "電子メール"
+        },
+        "image": {
+          "label": "画像を置き換える",
+          "help": "現在のイメージを保持するには、空のままにしておきます。サポートされている形式: JPG、PNG、WEBP。"
+        }
+      },
+      "errors": {
+        "loadFailed": "エキスパートの読み込みエラー。",
+        "updateFailed": "エキスパートの更新中にエラーが発生しました。",
+        "networkError": "何か問題が発生しました。"
+      }
+    },
+    "new": {
+      "title": "エキスパートの追加",
+      "description": "専門家プロフィールを作成し、Dasres 取引ネットワークに追加します。",
+      "create": "エキスパートの作成",
+      "creating": "作成...",
+      "success": "エキスパートが正常に作成されました。",
+      "fields": {
+        "name": {
+          "label": "名前",
+          "placeholder": "フルネーム"
+        },
+        "country": {
+          "label": "国",
+          "placeholder": "国"
+        },
+        "specialty": {
+          "label": "専門",
+          "placeholder": "貿易専門"
+        },
+        "experience": {
+          "label": "経験",
+          "placeholder": "専門的な経験について説明する"
+        },
+        "email": {
+          "label": "電子メール",
+          "placeholder": "電子メール"
+        },
+        "image": {
+          "label": "プロフィール画像",
+          "help": "サポートされている形式: JPG、PNG、WEBP。"
+        }
+      },
+      "errors": {
+        "createFailed": "エキスパートの作成中にエラーが発生しました。",
+        "networkError": "何か問題が発生しました。"
+      }
+    },
+    "search": {
+      "searchLabel": "専門家を探す",
+      "searchPlaceholder": "🔍 専門家を検索...",
+      "countryLabel": "国",
+      "ratingFilterLabel": "評価フィルター",
+      "allCountries": "すべての国",
+      "allRatings": "すべての評価",
+      "fiveStars": "5つ星",
+      "fourPlusStars": "4つ星以上",
+      "verifiedOnly": "検証済みのみ",
+      "viewProfile": "プロフィールを見る→",
+      "available": "利用可能",
+      "noRating": "まだ評価がありません",
+      "notAvailable": "N/A",
+      "empty": "選択したフィルターに一致する専門家はいません。",
+      "reviewCount": "{count, plural, =1 {1件のレビュー} other {#件のレビュー}}",
+      "featured": {
+        "title": "注目の専門家",
+        "description": "Dasres での可視性が高いプレミアム エキスパート。"
+      },
+      "verification": {
+        "verified": "確認済み",
+        "rejected": "拒否されました",
+        "pending": "保留中"
+      },
+      "plans": {
+        "gold": "金",
+        "diamond": "ダイヤモンド",
+        "enterprise": "企業"
+      },
+      "metrics": {
+        "trust": "信頼",
+        "rating": "評価",
+        "reviews": "レビュー"
+      }
+    },
+    "deleteButton": {
+      "button": "エキスパートの削除",
+      "deleting": "削除中...",
+      "confirm": "このエキスパートを削除してもよろしいですか?",
+      "errors": {
+        "deleteFailed": "エキスパートの削除に失敗しました。"
+      }
+    }
+  },
+  "opportunities": {
+    "dashboard": {
+      "title": "機会管理",
+      "description": "国際貿易の機会を閲覧および管理します。",
+      "addOpportunity": "機会の追加",
+      "latestOpportunity": "最新の機会",
+      "stats": {
+        "total": "合計",
+        "active": "アクティブ",
+        "closed": "閉店",
+        "countries": "国"
+      },
+      "pagination": {
+        "previous": "前の",
+        "next": "次",
+        "page": "ページ {current}/{total}"
+      }
+    },
+    "new": {
+      "title": "機会の追加",
+      "description": "新しい取引機会を作成し、Dasres マーケットプレイスに公開します。",
+      "create": "機会を創出する",
+      "creating": "作成...",
+      "success": "商談が正常に作成されました。",
+      "fields": {
+        "title": {
+          "label": "タイトル",
+          "placeholder": "機会のタイトル"
+        },
+        "country": {
+          "label": "国",
+          "placeholder": "国"
+        },
+        "image": {
+          "label": "チャンスイメージ",
+          "help": "サポートされている形式: JPG、PNG、WEBP。"
+        },
+        "description": {
+          "label": "説明",
+          "placeholder": "取引機会について説明する"
+        }
+      },
+      "errors": {
+        "createFailed": "オポチュニティーの作成中にエラーが発生しました。",
+        "networkError": "何か問題が発生しました。"
+      }
+    },
+    "edit": {
+      "title": "商談の編集",
+      "description": "案件情報と画像を更新します。",
+      "loading": "チャンスを読み込んでいます...",
+      "currentImage": "現在の機会イメージ",
+      "currentImageAlt": "現在の商談イメージ",
+      "update": "アップデートの機会",
+      "updating": "更新中...",
+      "fields": {
+        "title": {
+          "label": "タイトル",
+          "placeholder": "機会のタイトル"
+        },
+        "country": {
+          "label": "国",
+          "placeholder": "国"
+        },
+        "description": {
+          "label": "説明",
+          "placeholder": "取引機会について説明する"
+        },
+        "image": {
+          "label": "画像を置き換える",
+          "help": "現在のイメージを保持するには、空のままにしておきます。サポートされている形式: JPG、PNG、WEBP。"
+        }
+      },
+      "errors": {
+        "loadFailed": "チャンスの読み込みエラー。",
+        "updateFailed": "オポチュニティの更新中にエラーが発生しました。",
+        "networkError": "何か問題が発生しました。"
+      }
+    },
+    "search": {
+      "searchLabel": "検索の機会",
+      "searchPlaceholder": "🔍 検索の機会...",
+      "countryLabel": "国",
+      "statusLabel": "状態",
+      "allCountries": "すべての国",
+      "allStatuses": "すべてのステータス",
+      "viewOpportunity": "機会を見る→",
+      "statuses": {
+        "open": "開ける",
+        "inProgress": "進行中",
+        "closed": "閉店"
+      },
+      "featured": {
+        "title": "注目の機会",
+        "description": "現在、コラボレーションのために活発な取引の機会が開かれています。"
+      },
+      "empty": {
+        "title": "機会が見つかりませんでした",
+        "description": "検索またはフィルターを変更してみてください。"
+      }
+    },
+    "deleteButton": {
+      "button": "商談の削除",
+      "deleting": "削除中...",
+      "confirm": "この機会を削除してもよろしいですか?",
+      "errors": {
+        "deleteFailed": "オポチュニティーの削除に失敗しました。"
+      }
+    }
+  },
+  "tradeCases": {
+    "addProposal": {
+      "companyLabel": "会社",
+      "expertLabel": "専門家",
+      "messageLabel": "提案メッセージ",
+      "priceLabel": "提案価格",
+      "selectCompany": "会社を選択してください",
+      "noExpert": "専門家なし/オプション",
+      "messagePlaceholder": "プロポーズメッセージを書く...",
+      "pricePlaceholder": "価格 例: 1200ドル",
+      "submitting": "送信中...",
+      "submit": "提案の追加",
+      "errors": {
+        "messageRequired": "提案メッセージは必須です。",
+        "companyRequired": "会社を選択してください。",
+        "submitFailed": "提案の提出に失敗しました。"
+      }
+    },
+    "proposalActions": {
+      "accept": "受け入れる",
+      "reject": "拒否する",
+      "accepting": "受け付け中...",
+      "rejecting": "拒否しています...",
+      "errors": {
+        "acceptFailed": "提案を受け入れることができませんでした。",
+        "rejectFailed": "提案を拒否できませんでした。"
+      }
+    },
+    "addMessage": {
+      "contentLabel": "メッセージ",
+      "placeholder": "メッセージを書いてください...",
+      "sending": "送信中...",
+      "submit": "メッセージを追加",
+      "errors": {
+        "contentRequired": "メッセージの内容は必須です。",
+        "submitFailed": "メッセージの送信に失敗しました。"
+      }
+    },
+    "addDocument": {
+      "fileLabel": "ドキュメントを選択",
+      "uploading": "アップロード中...",
+      "submit": "ドキュメントのアップロード",
+      "errors": {
+        "fileRequired": "文書を選択してください。",
+        "uploadFailed": "ドキュメントのアップロードに失敗しました。"
+      }
+    },
+    "completeStep": {
+      "complete": "完了",
+      "completing": "完了中...",
+      "errors": {
+        "completeFailed": "このステップを完了できませんでした。"
+      }
+    },
+    "completeCase": {
+      "confirm": "このケースを完了としてマークしてもよろしいですか?",
+      "complete": "完了としてマーク",
+      "completing": "完了中...",
+      "errors": {
+        "completeFailed": "ケースを完了できませんでした。"
+      }
+    },
+    "addReview": {
+      "ratingLabel": "評価",
+      "commentLabel": "レビュー",
+      "placeholder": "レビューを書いてください...",
+      "submit": "レビューを送信する",
+      "submitting": "送信中...",
+      "ratings": {
+        "1": "1 - 悪い",
+        "2": "2 - やや悪い",
+        "3": "3 - 普通",
+        "4": "4 - 良い",
+        "5": "5 - 非常に良い"
+      },
+      "errors": {
+        "submitFailed": "レビューの送信に失敗しました。"
+      }
+    },
+    "workflow": {
+      "title": "取引ワークフロー",
+      "steps": {
+        "inquiry": "問い合わせ",
+        "quotation": "引用",
+        "negotiation": "交渉",
+        "contract": "契約",
+        "documents": "書類",
+        "customs": "税関",
+        "shipping": "配送",
+        "inspection": "検査",
+        "insurance": "保険",
+        "delivery": "配達",
+        "completed": "完了"
+      }
+    }
+  },
+  "createCaseForm": {
+    "titleLabel": "事件のタイトル",
+    "titlePlaceholder": "ドバイでの通関手続きが必要",
+    "categoryLabel": "症例カテゴリー",
+    "categoryHelp": "これは、Dasres が関連企業や専門家とケースを照合するのに役立ちます。",
+    "descriptionLabel": "説明",
+    "descriptionPlaceholder": "出荷、必要なサービス、国、書類、スケジュール、および特別な要件について説明します...",
+    "create": "ケースの作成",
+    "creating": "作成...",
+    "categories": {
+      "general": "一般的な",
+      "customsClearance": "通関",
+      "shipping": "配送",
+      "inspection": "検査",
+      "insurance": "保険",
+      "sourcing": "調達",
+      "documentation": "ドキュメント",
+      "payment": "支払い"
+    },
+    "backToCases": "← ケースに戻る",
+    "pageTitle": "新しいトレードケースの作成",
+    "pageDescription": "新しい取引サービス リクエストを送信します。プロバイダーまたはエキスパートは後で割り当てることができます。",
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    },
+    "errors": {
+      "planLimit": "{plan} プランでは、最大 {limit} のアクティブな取引ケースが許可されます。プランをアップグレードして、より多くのケースを作成します。",
+      "titleAndDescriptionRequired": "タイトルと説明は必須です。",
+      "invalidCategory": "無効なケースカテゴリです。"
+    }
+  },
+  "dashboardSearch": {
+    "eyebrow": "グローバル検索",
+    "title": "Dasresを検索",
+    "description": "ワークスペース全体で企業、専門家、機会、取引事例を見つけます。",
+    "searchLabel": "Dasresを検索",
+    "searchPlaceholder": "企業、専門家、機会、事例を検索...",
+    "searchButton": "検索",
+    "initialState": "キーワードを入力してDasres全体を検索します。",
+    "resultsSummary": "{count, plural, =0 {検索結果はありません：} =1 {1件の検索結果：} other {#件の検索結果：}}",
+    "sections": {
+      "companies": {
+        "title": "企業",
+        "empty": "会社が見つかりませんでした。"
+      },
+      "experts": {
+        "title": "専門家",
+        "empty": "専門家は見つかりませんでした。"
+      },
+      "opportunities": {
+        "title": "機会",
+        "empty": "機会が見つかりませんでした。"
+      },
+      "tradeCases": {
+        "title": "取引事例",
+        "empty": "ケースは見つかりませんでした。"
+      }
+    },
+    "statuses": {
+      "open": "開ける",
+      "inProgress": "進行中",
+      "completed": "完了",
+      "closed": "閉店",
+      "pending": "保留中",
+      "cancelled": "キャンセル"
+    }
+  },
+  "companyProfile": {
+    "metadata": {
+      "notFoundTitle": "会社が見つかりません",
+      "notFoundDescription": "要求された会社概要は見つかりませんでした。",
+      "description": "{name}は{country}を拠点とする{category}企業です。Dasresで企業プロフィールをご覧ください。"
+    },
+    "notFound": "会社が見つかりません",
+    "backToCompanies": "← 企業に戻る",
+    "statusLabel": "状態",
+    "notAvailable": "N/A",
+    "notProvided": "提供されません",
+    "companyRating": "企業評価",
+    "companyDescription": "会社概要",
+    "recentReviews": "最近のレビュー",
+    "companyInformation": "会社情報",
+    "noReviews": "まだレビューはありません。",
+    "noCommentProvided": "コメントはありません。",
+    "basedOnReviews": "{count, plural, =1 {1件のレビューに基づく} other {#件のレビューに基づく}}",
+    "trustScoreValue": "信頼スコア: {score}/100",
+    "completedCasesValue": "完了したケース: {count}",
+    "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {1件のレビュー} other {#件のレビュー}})",
+    "sendEmail": "電子メールを送信する",
+    "visitWebsite": "ウェブサイトにアクセス",
+    "verificationStatus": "検証ステータス",
+    "editCompany": "会社の編集",
+    "metrics": {
+      "trustScore": "トラストスコア",
+      "rating": "評価",
+      "reviews": "レビュー",
+      "verification": "検証",
+      "country": "国"
+    },
+    "fields": {
+      "email": "電子メール",
+      "website": "Webサイト",
+      "country": "国",
+      "category": "カテゴリ",
+      "reputation": "評判"
+    },
+    "verificationBadges": {
+      "verified": "認証済み企業",
+      "rejected": "拒否されました",
+      "pending": "検証保留中"
+    },
+    "verificationStatuses": {
+      "verified": "確認済み",
+      "rejected": "拒否されました",
+      "pending": "保留中"
+    },
+    "plans": {
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    },
+    "statuses": {
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "open": "開ける",
+      "pending": "保留中",
+      "verified": "確認済み",
+      "rejected": "拒否されました",
+      "completed": "完了",
+      "inProgress": "進行中"
+    },
+    "schema": {
+      "status": "状態",
+      "category": "カテゴリ"
+    }
+  },
+  "dashboardCompanies": {
+    "title": "会社経営",
+    "description": "国際貿易会社を管理および閲覧します。",
+    "addCompany": "会社を追加",
+    "stats": {
+      "total": "合計",
+      "verified": "確認済み",
+      "pending": "保留中",
+      "rejected": "拒否されました",
+      "premium": "プレミアム"
+    },
+    "pagination": {
+      "previous": "前の",
+      "next": "次",
+      "page": "ページ {current}/{total}"
+    }
+  },
+  "dashboardExperts": {
+    "title": "専門家による管理",
+    "description": "国際貿易の専門家を管理および閲覧します。",
+    "addExpert": "エキスパートの追加",
+    "stats": {
+      "total": "合計",
+      "verified": "確認済み",
+      "pending": "保留中",
+      "rejected": "拒否されました",
+      "premium": "プレミアム"
+    },
+    "pagination": {
+      "previous": "前の",
+      "next": "次",
+      "page": "ページ {current}/{total}"
+    }
+  },
+  "dashboardMyCases": {
+    "title": "私のアクティブなケース",
+    "description": "貴社提案が採用された事例。",
+    "notAvailable": "N/A",
+    "notAssigned": "割り当てられていません",
+    "caseNumber": "ケース番号 #{id}",
+    "documentCount": "{count, plural, =1 {1件のドキュメント} other {#件のドキュメント}}",
+    "messageCount": "{count, plural, =1 {1件のメッセージ} other {#件のメッセージ}}",
+    "stepsCompleted": "{completed} / {total} の手順が完了しました",
+    "updated": "{date}を更新しました",
+    "viewCase": "事例を見る→",
+    "stats": {
+      "assignedCases": "割り当てられたケース",
+      "inProgress": "進行中",
+      "completed": "完了",
+      "workload": "ワークロード",
+      "workloadDescription": "メッセージ + ドキュメント"
+    },
+    "empty": {
+      "title": "まだアクティブなケースはありません",
+      "description": "会社の提案の 1 つが受け入れられると、割り当てられたトレード ケースがここに表示されます。",
+      "browseOpenCases": "オープンケースを参照する"
+    },
+    "fields": {
+      "acceptedCompany": "採択企業",
+      "assignedExpert": "割り当てられた専門家",
+      "proposalPrice": "提案価格",
+      "timelineProgress": "タイムラインの進捗状況"
+    },
+    "statuses": {
+      "open": "開ける",
+      "inProgress": "進行中",
+      "completed": "完了",
+      "cancelled": "キャンセル"
+    }
+  },
+  "dashboardMyCompanies": {
+    "title": "私の会社",
+    "description": "所有する会社プロファイル、その検証ステータス、公開レベルを管理します。",
+    "addCompany": "会社を追加",
+    "created": "{date} で作成されました",
+    "viewCompany": "会社を見る →",
+    "categories": {
+      "general": "一般的な",
+      "customsClearance": "通関",
+      "shipping": "配送",
+      "inspection": "検査",
+      "insurance": "保険",
+      "sourcing": "調達",
+      "documentation": "ドキュメント",
+      "payment": "支払い"
+    },
+    "countries": {
+      "iran": "イラン"
+    },
+    "stats": {
+      "total": "合計",
+      "verified": "確認済み",
+      "pending": "保留中",
+      "rejected": "拒否されました",
+      "premium": "プレミアム"
+    },
+    "empty": {
+      "title": "まだ会社がありません",
+      "description": "ビジネスチャンスに参加し、提案を提出するための最初の会社プロフィールを作成します。",
+      "button": "会社を追加"
+    },
+    "verification": {
+      "verified": "確認済み",
+      "pending": "保留中",
+      "rejected": "拒否されました"
+    },
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    },
+    "statuses": {
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "suspended": "一時停止中"
+    }
+  },
+  "dashboardMyExperts": {
+    "title": "私の専門家",
+    "description": "所有する専門家プロファイル、検証ステータス、計画の可視性を管理します。",
+    "addExpert": "エキスパートの追加",
+    "created": "作成者: {date}",
+    "viewExpert": "エキスパートを見る→",
+    "stats": {
+      "total": "合計",
+      "verified": "確認済み",
+      "pending": "保留中",
+      "rejected": "拒否されました",
+      "premium": "プレミアム"
+    },
+    "empty": {
+      "title": "まだ専門家がいない",
+      "description": "あなたの経験を紹介し、取引リクエストを受け取るための最初の専門家プロフィールを作成します。",
+      "button": "エキスパートの追加"
+    },
+    "verification": {
+      "verified": "確認済み",
+      "pending": "保留中",
+      "rejected": "拒否されました"
+    },
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    },
+    "statuses": {
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "suspended": "一時停止中"
+    }
+  },
+  "dashboardMyProposals": {
+    "title": "私の提案",
+    "description": "提案のパフォーマンス、勝率、提出された金額を追跡します。",
+    "findOpenCases": "未解決のケースを探す",
+    "empty": "まだ提案はありません。",
+    "notAvailable": "N/A",
+    "notAssigned": "割り当てられていません",
+    "proposalNumber": "提案 #{id}",
+    "submittedOn": "{date} に送信されました",
+    "caseStatus": "ケースステータス: {status}",
+    "viewCase": "事例を見る→",
+    "stats": {
+      "totalProposals": "提案総数",
+      "pending": "保留中",
+      "accepted": "承認されました",
+      "rejected": "拒否されました",
+      "winRate": "勝率",
+      "acceptedValue": "受け入れられた値",
+      "submittedValue": "提出済み: ${value}"
+    },
+    "filters": {
+      "all": "すべて: {count}",
+      "pending": "保留中: {count}",
+      "accepted": "受け入れられました: {count}",
+      "rejected": "拒否されました: {count}"
+    },
+    "fields": {
+      "case": "場合",
+      "company": "会社",
+      "expert": "専門家",
+      "price": "価格"
+    },
+    "statuses": {
+      "pending": "保留中",
+      "accepted": "承認されました",
+      "rejected": "拒否されました"
+    },
+    "caseStatuses": {
+      "open": "開ける",
+      "inProgress": "進行中",
+      "completed": "完了",
+      "cancelled": "キャンセル"
+    }
+  },
+  "dashboardMyTasks": {
+    "eyebrow": "私のタスク",
+    "title": "割り当てられた仕事",
+    "assignedSummary": "{count, plural, =0 {割り当て済みタスクはありません} =1 {割り当て済みタスク 1件} other {割り当て済みタスク #件}}",
+    "noDueDate": "期限なし",
+    "viewProject": "プロジェクトを見る",
+    "stats": {
+      "assigned": "割り当て済み",
+      "completed": "完了",
+      "inProgress": "進行中",
+      "overdue": "期限を過ぎました"
+    },
+    "empty": {
+      "title": "割り当てられたタスクがありません",
+      "description": "まだ割り当てられた仕事がありません。"
+    },
+    "fields": {
+      "project": "プロジェクト",
+      "projectStatus": "プロジェクトのステータス",
+      "dueDate": "期日"
+    },
+    "taskStatuses": {
+      "todo": "藤堂",
+      "inProgress": "進行中",
+      "review": "レビュー",
+      "completed": "完了"
+    },
+    "projectStatuses": {
+      "open": "開ける",
+      "inProgress": "進行中",
+      "completed": "完了",
+      "cancelled": "キャンセル"
+    },
+    "priorities": {
+      "low": "低い",
+      "medium": "中くらい",
+      "high": "高い",
+      "urgent": "緊急"
+    }
+  },
+  "dashboardProjects": {
+    "eyebrow": "プロジェクト",
+    "title": "貿易プロジェクト",
+    "description": "受け入れられた取引ケースを管理し、実行の進捗状況を追跡します。",
+    "customer": "お客様",
+    "empty": {
+      "title": "まだプロジェクトはありません",
+      "description": "提案が受け入れられると、プロジェクトが自動的に作成されます。",
+      "browseOpenCases": "オープンケースを参照する"
+    },
+    "statuses": {
+      "active": "アクティブ",
+      "pending": "保留中",
+      "open": "開ける",
+      "inProgress": "進行中",
+      "completed": "完了",
+      "cancelled": "キャンセル"
+    }
+  },
+  "dashboardSavedCases": {
+    "title": "保存されたケース",
+    "description": "後で確認できるように保存した取引ケース。",
+    "savedOn": "保存済み: {date}",
+    "viewCase": "事例を見る→",
+    "empty": {
+      "title": "保存されたケースはまだありません",
+      "description": "興味深い取引ケースを保存して、後でアクセスできるようにします。",
+      "button": "オープンケースを参照する"
+    },
+    "metrics": {
+      "proposals": "提案",
+      "documents": "書類",
+      "messages": "メッセージ"
+    },
+    "statuses": {
+      "open": "開ける",
+      "inProgress": "進行中",
+      "completed": "完了",
+      "cancelled": "キャンセル"
+    }
+  },
+  "dashboardSavedCompanies": {
+    "title": "保存された会社",
+    "description": "後で確認して連絡できるように保存した会社。",
+    "viewProfile": "プロフィールを見る",
+    "empty": {
+      "title": "まだ保存された会社はありません",
+      "description": "信頼できる企業を保存して貿易ネットワークを構築しましょう。",
+      "button": "企業を閲覧する"
+    }
+  },
+  "dashboardSavedExperts": {
+    "title": "保存されたエキスパート",
+    "description": "後で確認して連絡できるように保存した専門家。",
+    "viewProfile": "プロフィールを見る",
+    "empty": {
+      "title": "保存されたエキスパートはまだいません",
+      "description": "経験豊富な専門家を保存して、将来の貿易プロジェクトのためにすぐに連絡できるようにします。",
+      "button": "専門家を参照する"
+    }
+  },
+  "dashboardSettings": {
+    "eyebrow": "アカウント設定",
+    "title": "設定",
+    "description": "Dasres アカウント、プラン、プロフィール情報を管理します。",
+    "unlimited": "無制限",
+    "profileInformation": {
+      "title": "プロフィール情報",
+      "notProvided": "提供されません",
+      "fields": {
+        "name": "名前",
+        "email": "電子メール",
+        "role": "役割",
+        "plan": "プラン"
+      }
+    },
+    "planLimits": {
+      "title": "プランの制限",
+      "caseLimit": "ケースリミット",
+      "proposalLimit": "提案制限"
+    },
+    "quickLinks": {
+      "title": "クイックリンク",
+      "manageSubscription": "サブスクリプションの管理",
+      "myCompanies": "私の会社",
+      "myExperts": "私の専門家"
+    },
+    "security": {
+      "title": "安全",
+      "description": "パスワードの変更、2 要素認証、ログイン履歴は、運用セキュリティ フェーズで追加されます。"
+    },
+    "roles": {
+      "admin": "管理者",
+      "user": "ユーザー"
+    },
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    }
+  },
+  "dashboardSubscription": {
+    "title": "サブスクリプション",
+    "usageUnlimited": "無制限 (使用: {used})",
+    "premiumBadge": "プレミアム",
+    "description": "Dasres プラン、使用制限、プレミアム可視性を管理します。支払いはまだ有効になっていません。計画は現在管理者によって管理されています。",
+    "currentBadge": "現在",
+    "managePlan": "計画の管理",
+    "currentPlan": "現在の計画",
+    "usageLimited": "使用制限",
+    "proposals": "提案",
+    "activeCases": "現在の感染者（数",
+    "usage": {
+      "currentPlan": "現在の計画",
+      "activeCasesUsed": "使用されているアクティブなケース",
+      "proposalsUsed": "使用された提案",
+      "limitedValue": "{used} / {limit}",
+      "unlimitedValue": "{used} / 無制限"
+    },
+    "planLabels": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    },
+    "actions": {
+      "currentPlan": "現在の計画",
+      "contactSales": "営業担当者へのお問い合わせ",
+      "notAvailable": "利用不可",
+      "requestUpgrade": "アップグレードのリクエスト"
+    },
+    "plans": {
+      "free": {
+        "title": "無料",
+        "description": "Dasres をテストし、基本的な取引活動を開始するため。",
+        "price": "$0",
+        "features": {
+          "activeCases": "アクティブな取引案件3件",
+          "proposals": "提案5件",
+          "companyProfile": "基本的な会社概要",
+          "expertProfile": "基本的な専門家プロフィール"
+        }
+      },
+      "gold": {
+        "title": "金",
+        "description": "より多くの可視性と能力を必要とする成長中のチーム向け。",
+        "price": "$29/月",
+        "features": {
+          "activeCases": "アクティブな取引案件20件",
+          "proposals": "提案20件",
+          "badge": "ゴールドバッジ",
+          "priorityListing": "優先リスト"
+        }
+      },
+      "diamond": {
+        "title": "ダイヤモンド",
+        "description": "本格的なプロバイダーや頻繁に取引を行うオペレーター向け。",
+        "price": "$99/月",
+        "features": {
+          "activeCases": "無制限のアクティブな取引ケース",
+          "proposals": "無制限の提案",
+          "badge": "ダイヤモンドバッジ",
+          "featuredListing": "注目のリスト"
+        }
+      },
+      "enterprise": {
+        "title": "企業",
+        "description": "大手貿易会社、代理店、エンタープライズ チーム向け。",
+        "price": "カスタム価格設定",
+        "features": {
+          "activeCases": "無制限のアクティブな取引ケース",
+          "proposals": "無制限の提案",
+          "badge": "エンタープライズバッジ",
+          "visibility": "最高の視認性",
+          "accountManager": "将来のアカウントマネージャーへのアクセス"
+        }
+      }
+    },
+    "upgradeNotice": {
+      "title": "より高いプランが必要ですか?",
+      "description": "支払いはまだ有効になっていません。現時点では、管理者はユーザー管理パネルからユーザー プランを手動でアップグレードできます。",
+      "back": "ダッシュボードに戻る"
+    }
+  },
+  "dashboardVerifications": {
+    "title": "検証センター",
+    "description": "企業および専門家の検証リクエストを確認および管理します。",
+    "created": "作成者: {date}",
+    "stats": {
+      "pending": {
+        "title": "保留中",
+        "description": "企業 + 専門家"
+      },
+      "verified": {
+        "title": "確認済み",
+        "description": "承認されたプロファイル"
+      },
+      "rejected": {
+        "title": "拒否されました",
+        "description": "拒否されたプロファイル"
+      }
+    },
+    "companies": {
+      "title": "保留中の企業",
+      "description": "会社プロフィールは管理者のレビューを待っています。",
+      "empty": "保留中の会社はありません。"
+    },
+    "experts": {
+      "title": "保留中の専門家",
+      "description": "専門家プロフィールは管理者のレビューを待っています。",
+      "empty": "保留中の専門家はいません。"
+    },
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    }
+  },
+  "publicCompanyProfile": {
+    "categories": {
+      "general": "一般的な",
+      "customsClearance": "通関",
+      "shipping": "配送",
+      "inspection": "検査",
+      "insurance": "保険",
+      "sourcing": "調達",
+      "documentation": "ドキュメント",
+      "payment": "支払い"
+    },
+    "countries": {
+      "iran": "イラン"
+    },
+    "metadata": {
+      "notFoundTitle": "会社が見つかりません",
+      "notFoundDescription": "要求された会社概要は見つかりませんでした。",
+      "description": "{name} は、{country} にある {category} の会社です。"
+    },
+    "notFound": "会社が見つかりません",
+    "backToCompanies": "← 企業に戻る",
+    "statusLabel": "状態",
+    "statuses": {
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "open": "開ける",
+      "pending": "保留中",
+      "verified": "確認済み",
+      "rejected": "拒否されました",
+      "completed": "完了",
+      "inProgress": "進行中"
+    },
+    "verificationStatuses": {
+      "verified": "確認済み",
+      "pending": "保留中",
+      "rejected": "拒否されました"
+    },
+    "verificationBadges": {
+      "verified": "確認済み",
+      "pending": "検証保留中",
+      "rejected": "拒否されました"
+    },
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    },
+    "metrics": {
+      "trustScore": "トラストスコア",
+      "rating": "評価",
+      "reviews": "レビュー",
+      "verification": "検証",
+      "country": "国"
+    },
+    "companyRating": "企業評価",
+    "basedOnReviews": "{count}件のレビューに基づく",
+    "trustScoreValue": "信頼スコア: {score}/100",
+    "completedCasesValue": "{count} 完了した取引ケース",
+    "companyDescription": "会社概要",
+    "recentReviews": "最近のレビュー",
+    "noReviews": "まだレビューはありません。",
+    "noCommentProvided": "コメントはありません。",
+    "notAvailable": "N/A",
+    "notProvided": "提供されません",
+    "companyInformation": "会社情報",
+    "fields": {
+      "email": "電子メール",
+      "website": "Webサイト",
+      "country": "国",
+      "category": "カテゴリ",
+      "reputation": "評判"
+    },
+    "ratingWithReviews": "{rating} / 5（{count}件のレビュー）",
+    "sendEmail": "電子メールを送信する",
+    "visitWebsite": "ウェブサイトにアクセス",
+    "relatedExperts": {
+      "title": "関連する専門家",
+      "empty": "関連する専門家は見つかりませんでした。",
+      "verified": "認定された専門家"
+    },
+    "verificationStatus": "検証ステータス",
+    "editCompany": "会社の編集",
+    "schema": {
+      "status": "状態",
+      "category": "カテゴリ"
+    }
+  },
+  "publicExpertProfile": {
+    "metadata": {
+      "notFoundTitle": "専門家が見つかりません",
+      "notFoundDescription": "要求された専門家プロファイルが見つかりませんでした。",
+      "description": "{name}は{country}を拠点とする{specialty}の専門家で、Dasresに登録されています。"
+    },
+    "notFound": "専門家が見つかりません",
+    "backToExperts": "← 専門家に戻る",
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    },
+    "statuses": {
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "pending": "保留中",
+      "verified": "確認済み",
+      "rejected": "拒否されました",
+      "suspended": "一時停止中"
+    },
+    "metrics": {
+      "trustScore": "トラストスコア",
+      "rating": "評価",
+      "reviews": "レビュー",
+      "specialty": "専門",
+      "country": "国"
+    },
+    "experience": "経験",
+    "recentReviews": "最近のレビュー",
+    "noReviews": "まだレビューはありません。",
+    "anonymousUser": "匿名ユーザー",
+    "noCommentProvided": "コメントはありません。",
+    "contactExpert": "専門家に連絡する",
+    "fields": {
+      "email": "電子メール",
+      "country": "国",
+      "specialty": "専門",
+      "reputation": "評判"
+    },
+    "ratingWithReviews": "{rating}/5（{count}件のレビュー）",
+    "completedCases": "完了したケース",
+    "sendEmail": "電子メールを送信する",
+    "relatedCompanies": {
+      "title": "関連会社",
+      "empty": "関連会社は見つかりませんでした。",
+      "verified": "確認済み"
+    },
+    "adminActions": "管理者のアクション",
+    "editExpert": "編集エキスパート",
+    "reviewNotice": "評価とレビューは、完了した取引事例からのみ収集されます。",
+    "notAvailable": "N/A"
+  },
+  "publicOpportunityProfile": {
+    "metadata": {
+      "notFoundTitle": "機会が見つかりませんでした",
+      "notFoundDescription": "要求された機会が見つかりませんでした。"
+    },
+    "notFound": "機会が見つかりませんでした",
+    "backToOpportunities": "← 機会に戻る",
+    "tradeOpportunity": "貿易の機会",
+    "statuses": {
+      "open": "開ける",
+      "inProgress": "進行中",
+      "closed": "閉店"
+    },
+    "metrics": {
+      "status": "状態",
+      "country": "国",
+      "visibility": "可視性",
+      "platform": "プラットフォーム",
+      "category": "カテゴリ",
+      "trust": "信頼"
+    },
+    "values": {
+      "public": "公共",
+      "trade": "貿易",
+      "verified": "確認済み"
+    },
+    "opportunityDescription": "機会の説明",
+    "howToRespond": {
+      "title": "対応方法",
+      "review": {
+        "title": "レビュー",
+        "description": "機会要件をすべて注意深くお読みください。"
+      },
+      "contact": {
+        "title": "接触",
+        "description": "Dasres または指定された連絡先詳細を通じてご連絡ください。"
+      },
+      "collaborate": {
+        "title": "協力する",
+        "description": "信頼できる国際貿易パートナーシップを構築します。"
+      }
+    },
+    "editOpportunity": "商談の編集",
+    "summary": {
+      "title": "機会の概要",
+      "country": "国",
+      "status": "状態",
+      "type": "タイプ"
+    },
+    "actions": {
+      "openTradeCase": "オープントレードケース",
+      "findCompanies": "企業を探す",
+      "findExperts": "専門家を探す"
+    },
+    "relatedCompanies": {
+      "title": "関連会社",
+      "empty": "この国では認証済みの企業がまだ見つかりません。",
+      "verified": "認証済み企業"
+    },
+    "relatedExperts": {
+      "title": "関連する専門家",
+      "empty": "この国に関する検証済みの専門家はまだ見つかりません。",
+      "verified": "認定された専門家"
+    },
+    "trustNotice": {
+      "title": "信託通知",
+      "description": "商業契約を締結する前に、必ず取引の詳細、書類、取引相手を確認してください。"
+    }
+  },
+  "dashboardTopCompanies": {
+    "title": "上位評価の企業",
+    "description": "検証、信頼スコア、レビューに基づいて企業をランク付けします。",
+    "empty": "会社が見つかりませんでした。",
+    "verified": "確認済み",
+    "notAvailable": "N/A",
+    "metrics": {
+      "trust": "信頼",
+      "rating": "評価",
+      "reviews": "レビュー"
+    },
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    }
+  },
+  "topExperts": {
+    "title": "最高評価の専門家",
+    "description": "検証、信頼スコア、レビューに基づいて専門家をランク付けします。",
+    "empty": "専門家は見つかりませんでした。",
+    "verified": "確認済み",
+    "trust": "信頼",
+    "rating": "評価",
+    "reviews": "レビュー",
+    "notAvailable": "N/A",
+    "plans": {
+      "FREE": "無料",
+      "GOLD": "金",
+      "DIAMOND": "ダイヤモンド",
+      "ENTERPRISE": "企業"
+    }
+  },
+  "publicExperts": {
+    "eyebrow": "検証済みの専門家ネットワーク",
+    "title": "信頼できる貿易専門家を見つける",
+    "description": "税関、調達、物流、検査、グローバル ビジネス サービスにわたって、認定された国際貿易専門家とつながります。",
+    "notAvailable": "N/A",
+    "featured": {
+      "title": "注目の専門家",
+      "empty": "現在、注目の専門家はいません。",
+      "viewProfile": "プロフィールを見る"
+    },
+    "metrics": {
+      "trust": "信頼",
+      "rating": "評価",
+      "reviews": "レビュー"
+    },
+    "statistics": {
+      "total": "トータルエキスパート",
+      "verified": "検証済みの専門家",
+      "rated": "評価された専門家"
+    },
+    "pagination": {
+      "previous": "前の",
+      "next": "次",
+      "page": "ページ {current}/{total}"
+    }
+  },
+  "myReviews": {
+    "title": "私のレビュー",
+    "description": "受け取ったレビューと送信したレビューを表示します。",
+    "fallbackUser": "ユーザー",
+    "ratingOutOfFive": "{rating}/5",
+    "statistics": {
+      "averageRating": "平均評価",
+      "received": "受け取ったレビュー",
+      "given": "与えられたレビュー",
+      "basedOn": "{count} が受け取ったレビューに基づく"
+    },
+    "received": {
+      "title": "私が受け取ったレビュー",
+      "empty": "まだレビューを受け取っていません。",
+      "from": "{name}から"
+    },
+    "given": {
+      "title": "私が与えたレビュー",
+      "empty": "まだレビューを送信していません。",
+      "to": "{name}へ"
+    }
+  },
+  "dashboardExpertProfile": {
+    "notFound": "専門家が見つかりません。",
+    "backToExperts": "← 専門家に戻る",
+    "notAvailable": "N/A",
+    "experience": "経験",
+    "reviewNotice": "レビューは、取引ケースが完了した後にのみ送信できます。",
+    "trustScoreValue": "{score}/{maximum}",
+    "metadata": {
+      "notFoundTitle": "専門家が見つかりません",
+      "notFoundDescription": "要求された専門家プロファイルが見つかりませんでした。",
+      "title": "{name} | {specialty}",
+      "description": "{name}は{country}を拠点とする{specialty}の専門家です。Dasresでプロフィールをご覧ください。"
+    },
+    "plans": {
+      "free": "無料",
+      "gold": "金",
+      "diamond": "ダイヤモンド",
+      "enterprise": "企業"
+    },
+    "statuses": {
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "pending": "保留中",
+      "verified": "確認済み",
+      "rejected": "拒否されました"
+    },
+    "metrics": {
+      "trustScore": "トラストスコア",
+      "rating": "評価",
+      "reviews": "レビュー",
+      "specialty": "専門",
+      "country": "国"
+    },
+    "recentReviews": {
+      "title": "最近のレビュー",
+      "empty": "まだレビューはありません。",
+      "fallbackUser": "ユーザー",
+      "noComment": "コメントはありません。",
+      "rating": "{rating}/{maximum}"
+    },
+    "contact": {
+      "title": "専門家に連絡する",
+      "email": "電子メール",
+      "country": "国",
+      "specialty": "専門",
+      "reputation": "評判",
+      "trustScore": "トラストスコア",
+      "completedCases": "完了したケース",
+      "sendEmail": "電子メールを送信する",
+      "noReviews": "まだレビューはありません",
+      "reputationValue": "⭐ {rating}（{count}件のレビュー）"
+    },
+    "management": {
+      "title": "管理アクション",
+      "edit": "編集エキスパート"
+    }
+  },
+  "rootMetadata": {
+    "siteName": "Dasres",
+    "title": "Dasres |世界貿易のための信頼エコシステム",
+    "description": "Dasres は、1 つのケースベースのプラットフォームを通じて、検証済みの企業、信頼できる専門家、国際貿易の機会を結び付けます。",
+    "keywords": {
+      "dasres": "Dasres",
+      "experts": "貿易専門家",
+      "companies": "検証済みの企業",
+      "opportunities": "貿易の機会",
+      "trade": "国際貿易",
+      "business": "グローバルなビジネスプラットフォーム",
+      "international": "国際的なビジネスネットワーク"
+    },
+    "openGraph": {
+      "title": "Dasres |世界貿易のための信頼エコシステム",
+      "description": "Dasres で、検証済みの企業、信頼できる専門家、国際貿易の機会を見つけてください。",
+      "imageAlt": "Dasres グローバル貿易プラットフォーム"
+    },
+    "twitter": {
+      "title": "Dasres |世界貿易のための信頼エコシステム",
+      "description": "国際貿易に関して検証済みの企業や信頼できる専門家とつながりましょう。"
+    }
+  },
+  "publicCompanies": {
+    "eyebrow": "検証済みの企業ネットワーク",
+    "title": "信頼できる貿易会社を見つける",
+    "description": "税関、出荷、検査、調達、物流、国際貿易サービスにわたる認証済みの国際企業を閲覧します。",
+    "statistics": {
+      "total": "会社の合計",
+      "verified": "検証された企業",
+      "rated": "評価された企業"
+    },
+    "pagination": {
+      "previous": "前の",
+      "next": "次",
+      "page": "ページ {current}/{total}"
+    }
+  },
+  "publicOpportunities": {
+    "eyebrow": "グローバルトレードマーケットプレイス",
+    "title": "国際的な機会を発見する",
+    "description": "世界中の企業からの検証済みの取引機会を探索し、バイヤーやサプライヤーとつながり、国際ビジネスを拡大します。",
+    "statistics": {
+      "total": "合計の機会",
+      "open": "開かれた機会",
+      "countries": "国"
+    },
+    "pagination": {
+      "previous": "前の",
+      "next": "次",
+      "page": "ページ {current}/{total}"
+    }
+  },
+  "companyVerificationButtons": {
+    "verify": "確認する",
+    "reject": "拒否する"
+  },
+  "verificationExpertActions": {
+    "verify": "確認する",
+    "reject": "拒否する"
+  },
+  "verificationCompanyActions": {
+    "verify": "確認する",
+    "reject": "拒否する"
+  },
+  "countryFilter": {
+    "allCountries": "すべての国"
+  },
+  "notFound": {
+    "label": "ページが見つかりません",
+    "title": "このページは存在しません。",
+    "description": "お探しのページは移動、削除されたか、Dasres に存在しない可能性があります。",
+    "goHome": "家に帰れ",
+    "goDashboard": "ダッシュボードに移動"
+  },
+  "saveCaseButton": {
+    "saving": "保存中...",
+    "unsave": "保存しない",
+    "save": "☆セーブケース"
+  },
+  "saveCompanyButton": {
+    "saved": "保存しました ★",
+    "save": "保存☆"
+  },
+  "saveExpertButton": {
+    "saved": "保存しました ★",
+    "save": "保存☆"
+  },
+  "dashboardOpportunityDetail": {
+    "backToDashboardOpportunities": "← ダッシュボードの機会に戻る",
+    "tradeOpportunity": "貿易の機会",
+    "globalMarketplace": "グローバルマーケットプレイス",
+    "status": "状態",
+    "country": "国",
+    "visibility": "可視性",
+    "dashboard": "ダッシュボード",
+    "opportunityDescription": "機会の説明",
+    "adminActions": "管理者のアクション",
+    "editOpportunity": "商談の編集",
+    "opportunitySummary": "機会の概要",
+    "type": "タイプ",
+    "viewPublicPage": "公開ページを見る",
+    "backToManagement": "管理に戻る",
+    "adminNote": "管理者メモ",
+    "adminNoteDescription": "このページは、ダッシュボード内で取引機会を管理するために使用されます。一般の訪問者は、別の公開機会ページを参照してください。",
+    "statuses": {
+      "open": "開ける",
+      "inProgress": "進行中",
+      "closed": "閉店"
+    }
+  },
+  "ticketCategories": {
+    "general": "一般的な",
+    "technical": "テクニカル",
+    "billing": "請求する",
+    "support": "サポート"
+  },
+  "statuses": {
+    "open": "開ける",
+    "in_progress": "進行中",
+    "completed": "完了",
+    "cancelled": "キャンセル",
+    "pending": "保留中",
+    "accepted": "承認されました",
+    "rejected": "拒否されました",
+    "active": "アクティブ",
+    "on_hold": "保留中",
+    "todo": "やるべきこと",
+    "review": "レビュー"
+  },
+  "categories": {
+    "general": "一般的な",
+    "customs_clearance": "通関",
+    "shipping": "配送",
+    "inspection": "検査",
+    "insurance": "保険",
+    "sourcing": "調達",
+    "documentation": "ドキュメント",
+    "payment": "支払い"
+  },
+  "plans": {
+    "free": "無料",
+    "gold": "金",
+    "diamond": "ダイヤモンド",
+    "enterprise": "企業"
+  },
+  "verification": {
+    "pending": "保留中",
+    "verified": "確認済み",
+    "rejected": "拒否されました"
   }
 }

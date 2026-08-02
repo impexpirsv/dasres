@@ -1,9 +1,3158 @@
 {
   "common": {
-    "appName": "Dasres",
+    "years": "{count} лет",
+    "hours": "часы",
+    "countries": {
+      "iran": "Иран",
+      "uae": "Объединенные Арабские Эмираты",
+      "UAE": "Объединенные Арабские Эмираты",
+      "china": "Китай",
+      "Iran": "Иран"
+    },
+    "categories": {
+      "General": "Общий",
+      "Shipping": "Перевозки",
+      "Inspection": "Инспекция",
+      "Customs Clearance": "Таможенное оформление",
+      "customs_clearance": "Таможенное оформление",
+      "shipping": "Перевозки",
+      "inspection": "Инспекция",
+      "insurance": "Страхование",
+      "sourcing": "Поиск"
+    },
+    "specialties": {
+      "Shipping": "Перевозки",
+      "Inspection": "Инспекция",
+      "clearance": "Таможенное оформление",
+      "clearence": "Таможенное оформление",
+      "Customs Clearance": "Таможенное оформление",
+      "ticket_general": "Общий",
+      "ticket_technical": "Технический",
+      "ticket_billing": "Биллинг",
+      "ticket_support": "Поддерживать"
+    }
+  },
+  "navbar": {
+    "home": "Дом",
+    "experts": "Эксперты",
+    "companies": "Компании",
+    "opportunities": "Возможности",
+    "topExperts": "Лучшие эксперты",
+    "topCompanies": "Лучшие компании",
     "dashboard": "Панель управления",
+    "login": "Авторизоваться",
+    "join": "Присоединиться",
+    "joinDasres": "Присоединяйтесь к Dasres",
+    "tagline": "Доверительная экосистема для глобальной торговли",
+    "toggleMenu": "Переключить меню"
+  },
+  "hero": {
+    "platformValue": "Глобальная торговая сеть",
+    "eyebrow": "Проверенная торговая сеть для глобальных услуг B2B",
+    "titleLine1": "Укрепить доверие к",
+    "titleLine2": "глобальная торговля",
+    "description": "Dasres объединяет проверенные компании, проверенных экспертов и торговые возможности через единую платформу для международного бизнеса.",
+    "join": "Присоединяйтесь к Dasres",
+    "exploreExperts": "Изучите экспертов",
+    "browseCompanies": "Просмотр компаний",
+    "liveCaseLabel": "Живой торговый кейс",
+    "liveCaseTitle": "Таможенное оформление ОАЭ",
+    "verified": "Проверено",
+    "proposals": "Предложения",
+    "trust": "Доверять",
+    "status": "Статус",
+    "inProgress": "В ходе выполнения",
+    "topCompany": "Лучшая компания",
+    "topExpert": "Топ эксперт",
+    "customsClearance": "Таможенное оформление",
+    "tradeConsultant": "Торговый консультант",
+    "rating": "Рейтинг {value}"
+  },
+  "liveStats": {
+    "eyebrow": "Показатели живой платформы",
+    "title": "Dasres активность в режиме реального времени",
+    "verifiedCompanies": "Проверенные компании",
+    "trustedExperts": "Доверенные эксперты",
+    "tradeOpportunities": "Торговые возможности",
+    "tradeCases": "Торговые случаи",
+    "caseSuccessRate": "Уровень успеха дела"
+  },
+  "topRatedShowcase": {
+    "eyebrow": "Доверительная сеть",
+    "titleLine1": "Проверенные поставщики.",
+    "titleLine2": "Рейтинг по доверию.",
+    "description": "Dasres выделяет компании и экспертов, использующих проверку, рейтинги, обзоры и оценку доверия, чтобы торговые команды могли с уверенностью сравнивать поставщиков.",
+    "verifiedProfiles": "Проверенные профили",
+    "reviewHistory": "История просмотра",
+    "trustScoring": "Оценка доверия",
+    "topCompany": "Лучшая компания",
+    "topExpert": "Лучший эксперт",
+    "verified": "Проверено",
+    "trust": "Доверять",
+    "rating": "Рейтинг",
+    "reviews": "Отзывы",
+    "noReviews": "Нет отзывов",
+    "viewCompany": "Посмотреть компанию",
+    "viewExpert": "Посмотреть эксперта"
+  },
+  "services": {
+    "eyebrow": "Рабочий процесс платформы",
+    "titleLine1": "От запроса до",
+    "titleLine2": "надежная доставка.",
+    "description": "Dasres — это не просто каталог. Это операционный уровень для международных торговых услуг, предложений, документов, коммуникаций и репутации.",
+    "unifiedWorkflow": "Единый рабочий процесс",
+    "caseVisibility": "Видимость дела",
+    "steps": {
+      "createCase": {
+        "title": "Создать торговое предложение",
+        "description": "Отправьте свой торговый запрос с указанием категории, объема и деталей услуги."
+      },
+      "matchProviders": {
+        "title": "Согласование с поставщиками",
+        "description": "Dasres связывает дело с проверенными компаниями и экспертами по категориям."
+      },
+      "receiveProposals": {
+        "title": "Получать предложения",
+        "description": "Сравните цену, сообщение, профиль поставщика, проверку и репутацию."
+      },
+      "assignWinner": {
+        "title": "Назначьте победителя",
+        "description": "Примите одно предложение, отклоните остальные и начните рабочий процесс активного дела."
+      },
+      "manageDelivery": {
+        "title": "Управление доставкой",
+        "description": "Храните сообщения, документы, этапы временной шкалы и журналы активности в одном месте."
+      },
+      "completeReview": {
+        "title": "Завершить и просмотреть",
+        "description": "Закройте дело, отправьте отзывы и завоевывайте доверие для будущих проектов."
+      }
+    }
+  },
+  "expertsSection": {
+    "eyebrow": "Экспертная сеть",
+    "title": "Рекомендуемые эксперты",
+    "description": "Свяжитесь с проверенными специалистами в области международной торговли в области таможни, снабжения, логистики, инспекций и торгового консалтинга.",
+    "viewAll": "Посмотреть все",
+    "verified": "Проверено",
+    "available": "Доступный",
+    "viewProfile": "Посмотреть профиль"
+  },
+  "companiesSection": {
+    "eyebrow": "Сеть компаний",
+    "title": "Рекомендуемые компании",
+    "description": "Откройте для себя проверенные торговые компании, занимающиеся таможенным оформлением, доставкой, снабжением, инспекцией и международной логистикой.",
+    "viewAll": "Посмотреть все",
+    "verified": "Проверено",
+    "acceptingProjects": "Принятие проектов",
+    "viewProfile": "Посмотреть профиль"
+  },
+  "opportunitiesSection": {
+    "eyebrow": "Глобальный рынок",
+    "title": "Последние торговые возможности",
+    "description": "Просматривайте запросы международной торговли, открывайте новые возможности для бизнеса и общайтесь с проверенными поставщиками по всему миру.",
+    "viewAll": "Посмотреть все",
+    "statusOpen": "Открыть",
+    "openOpportunity": "Открытая возможность",
+    "viewDetails": "Посмотреть детали",
+    "empty": "Возможностей на данный момент нет."
+  },
+  "footer": {
+    "ctaEyebrow": "Готовы уверенно управлять торговлей?",
+    "ctaTitle": "Начните свое первое торговое дело Dasres.",
+    "ctaDescription": "Создайте заявку, сравните проверенных поставщиков и управляйте предложениями, документами и общением в одном надежном рабочем процессе.",
+    "createCase": "Создать дело",
+    "exploreNetwork": "Исследуйте сеть",
+    "description": "Экосистема доверия на основе конкретных случаев для услуг международной торговли, проверенных поставщиков, предложений, документов и репутации.",
+    "platformTitle": "Платформа",
+    "networkTitle": "Сеть",
+    "trustSignalsTitle": "Сигналы доверия",
+    "companies": "Компании",
+    "experts": "Эксперты",
+    "opportunities": "Возможности",
+    "dashboard": "Панель управления",
+    "topCompanies": "Лучшие компании",
+    "topExperts": "Лучшие эксперты",
+    "openCases": "Открытые дела",
+    "supportTickets": "Билеты в службу поддержки",
+    "verifiedCompanies": "Проверенные компании",
+    "trustedExperts": "Доверенные эксперты",
+    "proposalWorkflow": "Рабочий процесс предложения",
+    "reviewsReputation": "Отзывы и репутация",
+    "copyright": "© {year} Dasres. Все права защищены.",
+    "languagesAvailable": "Доступно на 12 языках"
+  },
+  "dashboardSidebar": {
+    "tagline": "Доверительная экосистема для глобальной торговли",
+    "menu": "Меню",
+    "sections": {
+      "main": "Основной",
+      "tradeManagement": "Управление торговлей",
+      "ownership": "Право собственности",
+      "admin": "Админ",
+      "communication": "Коммуникация",
+      "subscription": "Подписка",
+      "account": "Счет"
+    },
+    "links": {
+      "dashboard": "Панель управления",
+      "globalSearch": "Глобальный поиск",
+      "experts": "Эксперты",
+      "topExperts": "Лучшие эксперты",
+      "companies": "Компании",
+      "topCompanies": "Лучшие компании",
+      "opportunities": "Возможности",
+      "submittedCases": "Представленные дела",
+      "activeWorkspaces": "Активные рабочие пространства",
+      "projects": "Проекты",
+      "myTasks": "Мои задачи",
+      "myProposals": "Мои предложения",
+      "myReviews": "Мои отзывы",
+      "openCases": "Открытые дела",
+      "savedCases": "Сохраненные дела",
+      "savedCompanies": "Сохраненные компании",
+      "savedExperts": "Сохраненные эксперты",
+      "tickets": "Билеты",
+      "myCompanies": "Мои компании",
+      "myExperts": "Мои эксперты",
+      "users": "Пользователи",
+      "verifications": "Проверки",
+      "notifications": "Уведомления",
+      "subscription": "Подписка",
+      "settings": "Настройки",
+      "logout": "Выход из системы"
+    },
+    "premium": {
+      "title": "ПРЕМИУМ ФУНКЦИИ",
+      "description": "Планы, ограничения и видимость"
+    }
+  },
+  "dashboardQuickActions": {
+    "title": "Быстрые действия",
+    "description": "Часто используемые сочетания клавиш",
+    "createCase": {
+      "title": "Создать дело",
+      "description": "Начните новый международный торговый проект."
+    },
+    "openCases": {
+      "title": "Открытые дела",
+      "description": "Просмотрите доступные торговые запросы."
+    },
+    "myCompanies": {
+      "title": "Мои компании",
+      "description": "Управляйте профилями вашей компании."
+    },
+    "myExperts": {
+      "title": "Мои эксперты",
+      "description": "Управляйте своими экспертными профилями."
+    }
+  },
+  "dashboardAttention": {
+    "title": "Требует вашего внимания",
+    "description": "Важные элементы для рассмотрения",
+    "unreadNotifications": "Непрочитанные уведомления",
+    "openTickets": "Открытые билеты",
+    "openCases": "Открытые дела",
+    "myProposals": "Мои предложения"
+  },
+  "dashboardAnalytics": {
+    "title": "Обзор аналитики",
+    "description": "Обзор операционных показателей",
+    "casePipeline": {
+      "title": "Конвейер дел",
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный"
+    },
+    "proposalPerformance": {
+      "title": "Эффективность предложения",
+      "description": "Уровень принятия основан на принятых и отклоненных предложениях.",
+      "accepted": "Принял",
+      "rejected": "Отклоненный"
+    },
+    "platformAttention": {
+      "title": "Внимание платформы",
+      "notifications": "Уведомления",
+      "tickets": "Билеты",
+      "reviews": "Отзывы",
+      "saved": "Сохранено"
+    }
+  },
+  "dashboardOverdueTasks": {
+    "title": "Просроченные задачи",
+    "empty": {
+      "title": "Нет просроченных задач",
+      "description": "Все по графику."
+    },
+    "dueDate": "Срок погашения: {date}"
+  },
+  "dashboardSubscriptionWidget": {
+    "currentPlan": "Текущий план",
+    "managePlan": "Управление планом",
+    "activeCases": "Активные случаи [заболевания",
+    "proposals": "Предложения",
+    "usageLimited": "{used} / {limit}",
+    "usageUnlimited": "{used} / Без ограничений"
+  },
+  "dashboardStatsGrid": {
+    "savedCases": {
+      "title": "Сохраненные дела",
+      "description": "Дела сохранены на потом"
+    },
+    "savedCompanies": {
+      "title": "Сохраненные компании",
+      "description": "Компании в вашей сети"
+    },
+    "savedExperts": {
+      "title": "Сохраненные эксперты",
+      "description": "Эксперты в вашей сети"
+    },
+    "experts": {
+      "adminTitle": "Эксперты",
+      "userTitle": "Мои эксперты",
+      "adminDescription": "Наличие проверенных экспертов",
+      "userDescription": "Эксперты, которыми вы владеете"
+    },
+    "companies": {
+      "adminTitle": "Компании",
+      "userTitle": "Мои компании",
+      "adminDescription": "Зарегистрированные компании",
+      "userDescription": "Компании, которыми вы владеете"
+    },
+    "opportunities": {
+      "title": "Возможности",
+      "description": "Активные торговые возможности"
+    },
+    "successRate": {
+      "title": "Уровень успеха дела",
+      "description": "Завершено дел: {completed} из {total}"
+    },
+    "tradeCases": {
+      "title": "Торговые случаи",
+      "adminDescription": "Все торговые проекты",
+      "userDescription": "Отправленные торговые запросы"
+    },
+    "openCases": {
+      "title": "Открытые дела",
+      "description": "Доступные возможности"
+    },
+    "inProgress": {
+      "title": "В ходе выполнения",
+      "description": "Активные торговые проекты"
+    },
+    "completed": {
+      "title": "Завершенный",
+      "description": "Готовые проекты"
+    },
+    "proposals": "Предложения",
+    "accepted": "Принял",
     "notifications": "Уведомления",
-    "settings": "Настройки",
-    "logout": "Выйти"
+    "openTickets": "Открытые билеты"
+  },
+  "dashboardMyTasksWidget": {
+    "title": "Мои назначенные задачи",
+    "viewAll": "Посмотреть все",
+    "empty": "Нет поставленных задач.",
+    "status": {
+      "TODO": "Сделать",
+      "IN_PROGRESS": "В ходе выполнения",
+      "REVIEW": "Обзор",
+      "COMPLETED": "Завершенный"
+    }
+  },
+  "dashboardTopRated": {
+    "countries": {
+      "iran": "Иран",
+      "uae": "ОАЭ",
+      "china": "Китай"
+    },
+    "categories": {
+      "shipping": "Перевозки",
+      "customs_clearance": "Таможенное оформление",
+      "inspection": "Инспекция",
+      "insurance": "Страхование",
+      "sourcing": "Поиск"
+    },
+    "viewAll": "Посмотреть все",
+    "reviewCount": "На основе обзора {count, plural, one {#} other {# отзывов}}",
+    "experts": {
+      "title": "Эксперты с самым высоким рейтингом",
+      "empty": "Пока нет рейтинговых экспертов."
+    },
+    "companies": {
+      "title": "Компании с самым высоким рейтингом",
+      "empty": "Рейтинговых компаний пока нет."
+    }
+  },
+  "dashboardLatestItems": {
+    "viewAll": "Посмотреть все",
+    "experts": {
+      "adminTitle": "Последние эксперты",
+      "userTitle": "Мои последние эксперты",
+      "empty": "Экспертов не найдено."
+    },
+    "companies": {
+      "adminTitle": "Последние компании",
+      "userTitle": "Мои последние компании",
+      "empty": "Компании не найдены."
+    },
+    "opportunities": {
+      "title": "Последние возможности",
+      "empty": "Возможностей не обнаружено."
+    },
+    "statuses": {
+      "open": "Открыть",
+      "closed": "Закрыто",
+      "pending": "В ожидании"
+    }
+  },
+  "dashboardRecentActivity": {
+    "title": "Недавняя активность",
+    "empty": "Никакой активности не обнаружено.",
+    "system": "Система",
+    "actions": {
+      "proposalSubmitted": "Предложение отправлено",
+      "proposalAccepted": "Предложение принято",
+      "proposalRejected": "Предложение отклонено",
+      "caseCompleted": "Дело завершено",
+      "projectCompleted": "Проект завершен",
+      "documentUploaded": "Документ загружен",
+      "projectTaskAttachmentUploaded": "Приложение к задаче проекта загружено",
+      "documentApproved": "Документ одобрен",
+      "documentRejected": "Документ отклонен",
+      "messageSent": "Сообщение отправлено",
+      "projectMessageSent": "Сообщение проекта отправлено",
+      "taskCommentAdded": "Комментарий к задаче добавлен",
+      "taskAssigned": "Задача назначена",
+      "taskCompleted": "Задача выполнена",
+      "ticketUpdated": "Билет обновлен",
+      "companyVerified": "Компания проверена",
+      "companyRejected": "Компания отклонена",
+      "projectTaskUpdated": "Задача проекта обновлена",
+      "projectTaskStatusUpdated": "Статус задачи проекта обновлен",
+      "projectTaskChecklistToggled": "Обновлен контрольный список задач проекта"
+    },
+    "details": {
+      "projectTaskStatusUpdated": "Статус задачи «{title}» изменен на {status}.",
+      "projectTaskAttachmentUploaded": "Приложение {file} загружено.",
+      "projectTaskUpdated": "Задача проекта «{title}» обновлена.",
+      "projectTaskChecklistToggled": "Пункт контрольного списка «{item}» был изменен.",
+      "projectTaskStatusUpdatedPrefix": "Статус задачи проекта обновлен:",
+      "attachmentUploadedPrefix": "Вложение загружено:",
+      "projectTaskUpdatedPrefix": "Задача проекта обновлена:"
+    },
+    "checklist": {
+      "completed": "Завершенный",
+      "incomplete": "Неполный"
+    },
+    "statuses": {
+      "todo": "Сделать",
+      "in_progress": "В ходе выполнения",
+      "review": "Обзор",
+      "completed": "Завершенный"
+    }
+  },
+  "dashboardProfileCard": {
+    "title": "Профиль пользователя",
+    "name": "Имя",
+    "email": "Электронная почта",
+    "role": "Роль",
+    "roles": {
+      "admin": "Админ",
+      "user": "Пользователь"
+    }
+  },
+  "dashboardPage": {
+    "title": "Панель управления",
+    "badge": "Панель управления бизнесом",
+    "description": "Управляйте своей учетной записью Dasres, профилями и торговой деятельностью.",
+    "roles": {
+      "admin": "Админ",
+      "user": "Пользователь"
+    },
+    "admin": {
+      "title": "Управление системой",
+      "commandCenter": "Административный командный центр",
+      "description": "Обзор рабочего состояния платформы Dasres",
+      "reviewVerifications": "Обзор проверок",
+      "pendingVerifications": "Ожидающие проверки",
+      "totalReviews": "Всего отзывов",
+      "reviews": "Отзывы",
+      "premiumUsers": "Премиум-пользователи",
+      "openTickets": "Открытые билеты",
+      "panel": "Панель администратора",
+      "users": "Пользователи",
+      "experts": "Эксперты",
+      "companies": "Компании",
+      "opportunities": "Возможности",
+      "latestUsers": "Последние пользователи",
+      "manageUsers": "Управление пользователями"
+    }
+  },
+  "loginPage": {
+    "title": "Добро пожаловать",
+    "description": "Войдите в свою учетную запись Dasres.",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "login": "Авторизоваться",
+    "loginFailed": "Ошибка входа."
+  },
+  "registerPage": {
+    "title": "Присоединяйтесь к Dasres",
+    "description": "Создайте свою учетную запись",
+    "name": {
+      "label": "Полное имя",
+      "placeholder": "Введите свое полное имя"
+    },
+    "email": {
+      "label": "Электронная почта",
+      "placeholder": "Введите свой адрес электронной почты"
+    },
+    "password": {
+      "label": "Пароль",
+      "placeholder": "Введите свой пароль",
+      "hint": "Ваш пароль должен состоять как минимум из 6 символов."
+    },
+    "submit": "Зарегистрироваться",
+    "submitting": "Создание учетной записи...",
+    "registrationFailed": "Создание учетной записи не удалось.",
+    "alreadyHaveAccount": "У вас уже есть аккаунт?",
+    "login": "Авторизоваться"
+  },
+  "projectDetailPage": {
+    "backToProjects": "Вернуться к проектам"
+  },
+  "projectHeader": {
+    "progress": "Прогресс"
+  },
+  "projectTabs": {
+    "overview": "Обзор",
+    "tasks": "Задачи",
+    "board": "Доска",
+    "calendar": "Календарь",
+    "gantt": "Гантт",
+    "workload": "Рабочая нагрузка",
+    "documents": "Документы",
+    "timeline": "Хронология",
+    "messages": "Сообщения",
+    "activity": "Активность"
+  },
+  "projectOverviewCards": {
+    "customer": "Клиент",
+    "category": "Категория",
+    "openTasks": "Открытые задачи",
+    "completedTasks": "Выполненные задачи",
+    "steps": "Шаги",
+    "completed": "Завершенный"
+  },
+  "projectTimeSummary": {
+    "title": "Учет времени",
+    "description": "Общий обзор времени проекта.",
+    "estimated": "Оцененный",
+    "logged": "Зарегистрировано",
+    "remaining": "Оставшийся",
+    "distribution": "Распределение времени"
+  },
+  "projectOverviewHeader": {
+    "description": "Центр управления проектом с задачами, рабочей нагрузкой, графиком времени, диаграммой Ганта и отслеживанием выполнения.",
+    "overallProgress": "Общий прогресс",
+    "status": {
+      "todo": "Сделать",
+      "pending": "В ожидании",
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "review": "На рассмотрении",
+      "completed": "Завершенный",
+      "approved": "Одобренный",
+      "rejected": "Отклоненный",
+      "closed": "Закрыто",
+      "active": "Активный",
+      "expired": "Истекший",
+      "cancelled": "Отменено"
+    },
+    "metrics": {
+      "tasks": "Задачи",
+      "completed": "Завершенный",
+      "inProgress": "В ходе выполнения",
+      "review": "Обзор",
+      "blocked": "Заблокировано",
+      "remaining": "Оставшийся"
+    },
+    "hours": {
+      "estimated": "Расчетное количество часов",
+      "logged": "Записано часов",
+      "value": "{hours}h"
+    },
+    "features": {
+      "tasks": "Задачи",
+      "kanban": "Канбан",
+      "calendar": "Календарь",
+      "timeline": "Хронология",
+      "gantt": "Гантт",
+      "workload": "Рабочая нагрузка"
+    }
+  },
+  "projectHealthCard": {
+    "title": "Здоровье проекта",
+    "progress": "Прогресс",
+    "hoursUsed": "Часы работы",
+    "utilization": "Использование",
+    "overdue": "Просрочено",
+    "noEstimate": "Нет оценки",
+    "noOverdueTasks": "Никаких просроченных задач",
+    "overdueTasks": "Задачи {count}"
+  },
+  "projectCriticalPathCard": {
+    "title": "Критический путь",
+    "description": "Задачи, которые могут напрямую задержать график проекта.",
+    "criticalTasks": "Критические задачи",
+    "criticalDuration": "Критическая длительность",
+    "duration": "{count, plural, one {# день} other {# дней}}",
+    "empty": "Критической зависимости не обнаружено.",
+    "dependsOn": "Зависит от: {task}",
+    "critical": "Критический",
+    "pathStart": "Начало критического пути"
+  },
+  "projectAIInsights": {
+    "title": "Анализ ИИ второго пилота",
+    "description": "Анализ на основе правил, подготовленный для будущей интеграции GPT.",
+    "healthScore": "Оценка здоровья ИИ",
+    "progressLabel": "Прогресс:",
+    "health": {
+      "excellent": "Отличный",
+      "stable": "Стабильный",
+      "atRisk": "В зоне риска",
+      "critical": "Критический"
+    },
+    "risks": {
+      "title": "Риски",
+      "overdueTasks": "{count, plural, one {# просроченная задача} other {# просроченная задача}}",
+      "blockedTasks": "{count, plural, one {# заблокированная задача} other {# заблокированная задача}}",
+      "pendingApprovals": "{count, plural, one {# в ожидании утверждения} other {# в ожидании утверждения}}"
+    },
+    "nextAction": "Следующее действие",
+    "recommendation": "Рекомендация",
+    "nextActions": {
+      "approveDocument": "Утвердить {fileName}",
+      "resolveDependency": "Устранить зависимость для {taskTitle}",
+      "reviewOverdueTask": "Просмотр просроченной задачи: {taskTitle}",
+      "continueExecution": "Продолжить выполнение и закрыть следующую задачу",
+      "completionReview": "Проект готов к рассмотрению завершения"
+    },
+    "recommendations": {
+      "pendingApprovals": "Утверждение документов является основным узким местом. Просмотрите ожидающие документы, прежде чем переходить к отправке или доставке.",
+      "blockedTasks": "Устраните зависимости задач перед началом последующего выполнения.",
+      "overdueTasks": "Риск расписания возрастает. Пересматривайте сроки и переназначайте отложенные задачи.",
+      "normalProgress": "Проект развивается нормально. Продолжайте отслеживать документы и этапы рабочего процесса."
+    }
+  },
+  "projectAIAssistant": {
+    "title": "Dasres ИИ",
+    "subtitle": "Умный анализ проекта",
+    "risk": "Риск",
+    "progress": "Прогресс",
+    "aiSuggestions": "Предложения ИИ",
+    "riskLevels": {
+      "low": "Низкий",
+      "medium": "Середина",
+      "high": "Высокий"
+    },
+    "suggestions": {
+      "resolveBlocked": "Решайте заблокированные задачи.",
+      "reviewOverdue": "Просмотрите просроченные задачи.",
+      "increasePace": "Увеличьте темп выполнения.",
+      "normal": "Проект развивается нормально."
+    }
+  },
+  "projectTasksSection": {
+    "title": "Задачи проекта",
+    "description": "Эффективно управляйте задачами проекта.",
+    "searchPlaceholder": "Поиск задач...",
+    "searchLabel": "Поиск задач проекта",
+    "filteredCount": "{filtered} из {total}",
+    "emptyState": "Выберите задачу, чтобы просмотреть подробности.",
+    "noSearchResults": "Нет задач, соответствующих вашему запросу."
+  },
+  "projectTaskList": {
+    "empty": "Задачи не найдены.",
+    "unassigned": "Неназначенный",
+    "progress": "Прогресс",
+    "progressLabel": "Прогресс для {title}",
+    "noDueDate": "Нет срока сдачи",
+    "priorities": {
+      "urgent": "Срочный",
+      "high": "Высокий",
+      "medium": "Середина",
+      "low": "Низкий"
+    }
+  },
+  "projectTaskDetails": {
+    "emptyState": "Выберите задачу, чтобы просмотреть подробности.",
+    "assignedTo": "Назначено",
+    "unassigned": "Неназначенный",
+    "startDate": "Дата начала",
+    "dueDate": "Срок оплаты",
+    "noStartDate": "Нет даты начала",
+    "noDueDate": "Нет срока сдачи",
+    "progress": "Прогресс",
+    "estimated": "Оцененный",
+    "logged": "Зарегистрировано",
+    "remaining": "Оставшийся",
+    "hours": "{count}h",
+    "notSet": "Не установлено",
+    "dependsOn": "Зависит от",
+    "blocks": "Блоки",
+    "attachments": "Вложения",
+    "uploadedBy": "Загружено пользователем {name}",
+    "unknown": "Неизвестный",
+    "priorities": {
+      "urgent": "Срочный",
+      "high": "Высокий",
+      "medium": "Середина",
+      "low": "Низкий"
+    },
+    "statuses": {
+      "todo": "Тодо",
+      "in_progress": "В ходе выполнения",
+      "review": "Обзор",
+      "completed": "Завершенный"
+    }
+  },
+  "projectTaskStatusSelect": {
+    "label": "Статус задачи",
+    "updating": "Обновление статуса...",
+    "updateError": "Не удалось обновить статус задачи.",
+    "networkError": "При обновлении статуса произошла сетевая ошибка.",
+    "statuses": {
+      "todo": "Тодо",
+      "in_progress": "В ходе выполнения",
+      "review": "Обзор",
+      "completed": "Завершенный"
+    }
+  },
+  "assignTaskSelect": {
+    "label": "Назначить задачу",
+    "unassigned": "Неназначенный",
+    "updating": "Обновление...",
+    "updateError": "Не удалось назначить задачу.",
+    "networkError": "При назначении задачи произошла сетевая ошибка."
+  },
+  "editProjectTaskForm": {
+    "edit": "Редактировать",
+    "title": "Редактировать задачу",
+    "taskTitle": "Название задачи",
+    "titleRequired": "Необходимо указать название задачи.",
+    "description": "Описание",
+    "descriptionPlaceholder": "Добавить описание задачи...",
+    "priority": "Приоритет",
+    "startDate": "Дата начала",
+    "dueDate": "Срок оплаты",
+    "estimatedHours": "Расчетное количество часов",
+    "estimatedHoursPlaceholder": "Расчетное время",
+    "loggedHours": "Записано часов",
+    "loggedHoursPlaceholder": "Зарегистрированные часы",
+    "assignedTo": "Назначено",
+    "unassigned": "Неназначенный",
+    "dependsOn": "Зависит от",
+    "noDependency": "Нет зависимости",
+    "save": "Сохранять",
+    "saving": "Сохранение...",
+    "cancel": "Отмена",
+    "updateError": "Не удалось обновить задачу.",
+    "networkError": "При обновлении задачи произошла сетевая ошибка.",
+    "invalidEstimatedHours": "Расчетное количество часов должно быть равно нулю или больше.",
+    "invalidLoggedHours": "Зарегистрированные часы должны быть равны нулю или больше.",
+    "priorities": {
+      "low": "Низкий",
+      "medium": "Середина",
+      "high": "Высокий",
+      "urgent": "Срочный"
+    }
+  },
+  "projectTaskChecklist": {
+    "title": "Контрольный список",
+    "empty": "Пунктов контрольного списка пока нет.",
+    "updating": "Обновление...",
+    "toggleError": "Не удалось обновить элемент контрольного списка.",
+    "networkError": "Произошла сетевая ошибка при обновлении элемента контрольного списка.",
+    "markComplete": "Отметить {title} как завершенный",
+    "markIncomplete": "Пометить {title} как незавершенный"
+  },
+  "createChecklistItemForm": {
+    "label": "Название пункта контрольного списка",
+    "placeholder": "Добавить элемент контрольного списка...",
+    "add": "Добавлять",
+    "adding": "Добавление...",
+    "titleRequired": "Укажите название пункта контрольного списка.",
+    "createError": "Не удалось добавить элемент контрольного списка.",
+    "invalidResponse": "Элемент контрольного списка был создан, но ответ сервера недействителен.",
+    "networkError": "При добавлении элемента контрольного списка произошла сетевая ошибка."
+  },
+  "taskProgressBar": {
+    "title": "Ход выполнения задачи",
+    "ariaLabel": "Ход выполнения задачи",
+    "summary": "Выполнено пунктов: {completed} из {total}"
+  },
+  "projectTaskComments": {
+    "title": "Комментарии",
+    "empty": "Комментариев пока нет.",
+    "commentLabel": "Комментарий",
+    "placeholder": "Напишите комментарий...",
+    "postComment": "Опубликовать комментарий",
+    "posting": "Публикация...",
+    "edited": "отредактировано",
+    "deletedComment": "Этот комментарий был удален.",
+    "unknownAuthor": "Неизвестный",
+    "unknownDate": "Неизвестная дата",
+    "commentRequired": "Комментарий обязателен.",
+    "createError": "Не удалось опубликовать комментарий.",
+    "networkError": "При публикации комментария произошла сетевая ошибка."
+  },
+  "projectTaskAttachmentUpload": {
+    "title": "Прикрепить файл",
+    "fileLabel": "Выберите файл",
+    "helpText": "Поддерживаемые форматы: JPG, PNG, WEBP, PDF, DOCX и XLSX. Максимальный размер: 10 МБ.",
+    "fileSize": "{size} МБ",
+    "upload": "Загрузить",
+    "uploading": "Загрузка...",
+    "clear": "Прозрачный",
+    "selectFile": "Пожалуйста, выберите файл.",
+    "invalidType": "Этот тип файла не поддерживается.",
+    "fileTooLarge": "Размер выбранного файла должен составлять 10 МБ или меньше.",
+    "uploadError": "Не удалось загрузить файл.",
+    "networkError": "При загрузке файла произошла сетевая ошибка."
+  },
+  "createProjectTaskForm": {
+    "newTask": "+ Новое задание",
+    "modalTitle": "Создать задачу",
+    "taskTitle": "Название задачи",
+    "taskTitlePlaceholder": "Введите название задачи",
+    "description": "Описание",
+    "descriptionPlaceholder": "Описание (необязательно)",
+    "priority": "Приоритет",
+    "startDate": "Дата начала",
+    "dueDate": "Срок оплаты",
+    "createTask": "Создать задачу",
+    "creating": "Создание...",
+    "cancel": "Отмена",
+    "titleRequired": "Необходимо указать название задачи.",
+    "invalidDateRange": "Дата сдачи не может быть раньше даты начала.",
+    "createError": "Не удалось создать задачу.",
+    "networkError": "При создании задачи произошла сетевая ошибка.",
+    "priorities": {
+      "low": "Низкий",
+      "medium": "Середина",
+      "high": "Высокий",
+      "urgent": "Срочный"
+    }
+  },
+  "projectBoard": {
+    "columns": {
+      "todo": "Тодо",
+      "inProgress": "В ходе выполнения",
+      "review": "Обзор",
+      "completed": "Завершенный"
+    },
+    "emptyColumn": "Нет задач",
+    "updateError": "Не удалось обновить статус задачи."
+  },
+  "kanbanColumn": {
+    "ariaLabel": "Столбец {title} с задачами {count}",
+    "taskCount": "{count} задачи"
+  },
+  "kanbanTaskCard": {
+    "assignee": "Правопреемник",
+    "unassigned": "Неназначенный",
+    "due": "Должный",
+    "noDueDate": "Нет срока сдачи",
+    "checklist": "Контрольный список",
+    "comments": "Комментарии",
+    "files": "Файлы",
+    "dragLabel": "Перетащите задачу {title}",
+    "priorities": {
+      "low": "Низкий",
+      "medium": "Середина",
+      "high": "Высокий",
+      "urgent": "Срочный"
+    }
+  },
+  "projectCalendarView": {
+    "title": "Календарь проектов",
+    "description": "Просматривайте сроки выполнения задач и перемещайте задачи, чтобы обновить сроки их выполнения.",
+    "noEvents": "Нет запланированных задач.",
+    "updateError": "Не удалось обновить дату задачи.",
+    "invalidTaskDate": "Выбранная задача или дата недействительны.",
+    "buttons": {
+      "today": "Сегодня",
+      "month": "Месяц",
+      "week": "Неделя"
+    }
+  },
+  "projectGanttView": {
+    "title": "Диаграмма Ганта",
+    "description": "Визуальная временная шкала задач и зависимостей проекта.",
+    "emptyState": "Нет датированных задач для отображения в представлении Ганта.",
+    "taskColumn": "Задача",
+    "timeline": "Хронология",
+    "week": "Неделя",
+    "taskCount": "{count} задачи",
+    "critical": "Критический",
+    "blocked": "Заблокировано",
+    "dateRange": "{start} – {end}",
+    "zoom": {
+      "day": "День",
+      "week": "Неделя",
+      "month": "Месяц"
+    },
+    "statuses": {
+      "todo": "Тодо",
+      "in_progress": "В ходе выполнения",
+      "review": "Обзор",
+      "completed": "Завершенный",
+      "unknown": "Неизвестный"
+    },
+    "duration": {
+      "day": "{title} • {duration} день(а)",
+      "week": "{title} • {duration} неделя(и)",
+      "month": "{title} • {duration} месяц(а)"
+    },
+    "tooltips": {
+      "baseline": "Базовый уровень",
+      "dependencyInput": "Входная зависимость",
+      "dependencyOutput": "Выходная зависимость",
+      "duration": {
+        "day": "Продолжительность: {duration} дней",
+        "week": "Продолжительность: {duration} недель",
+        "month": "Продолжительность: {duration} месяцев"
+      }
+    }
+  },
+  "projectWorkloadView": {
+    "title": "Рабочая нагрузка команды",
+    "description": "Распределение задач, прогресс и просроченная рабочая нагрузка по участникам команды.",
+    "emptyState": "Нет доступных задач для анализа рабочей нагрузки.",
+    "unassigned": "Неназначенный",
+    "totalTasks": "{count} общее количество задач",
+    "workload": "Рабочая нагрузка",
+    "active": "Активный",
+    "done": "Сделанный",
+    "overdue": "Просрочено",
+    "progressLabel": "Средний прогресс задачи для {name}",
+    "capacities": {
+      "high": "Высокий",
+      "medium": "Середина",
+      "low": "Низкий"
+    },
+    "workloadStates": {
+      "needsAttention": "Требует внимания",
+      "highLoad": "Высокая нагрузка",
+      "balanced": "Сбалансированный",
+      "available": "Доступный"
+    }
+  },
+  "projectTimeline": {
+    "title": "Шаги временной шкалы",
+    "completed": "Завершенный",
+    "pending": "В ожидании",
+    "notCompletedYet": "Еще не завершено",
+    "unknownDate": "Неизвестная дата",
+    "emptyState": "Шаги временной шкалы недоступны.",
+    "steps": {
+      "requestSubmitted": "Запрос отправлен",
+      "providerMatching": "Сопоставление поставщиков",
+      "documentsReview": "Обзор документов",
+      "serviceInProgress": "Обслуживание в процессе",
+      "completed": "Завершенный"
+    }
+  },
+  "projectDocuments": {
+    "title": "Центр документов",
+    "description": "Централизованное рабочее пространство для проектов и торговых документов.",
+    "documentCount": "Документы {count}",
+    "required": "Необходимый",
+    "optional": "Необязательный",
+    "open": "Открыть",
+    "linkedTask": "Связанная задача: {title}.",
+    "uploadedBy": "Загружено пользователем {name}",
+    "unknownUser": "Неизвестный пользователь",
+    "unknownSize": "Неизвестный размер",
+    "unknownDate": "Неизвестная дата",
+    "rejectionReason": "Причина отклонения",
+    "rejectedByAdmin": "Отклонено администратором",
+    "approvalStatuses": {
+      "approved": "Одобренный",
+      "rejected": "Отклоненный",
+      "pending": "В ожидании"
+    },
+    "requirements": {
+      "commercialInvoice": "Счет-фактура",
+      "packingList": "Товарная накладная",
+      "billOfLading": "Коносамент",
+      "insuranceCertificate": "Страховой сертификат"
+    },
+    "fileSize": {
+      "bytes": "{size} Б",
+      "kilobytes": "{size} КБ",
+      "megabytes": "{size} МБ"
+    },
+    "emptyState": {
+      "title": "Документы еще не загружены",
+      "description": "Здесь появятся документы, загруженные в задачи проекта."
+    }
+  },
+  "approveDocumentButtons": {
+    "approve": "✓ Утвердить",
+    "approving": "Одобрение...",
+    "reject": "✕ Отклонить",
+    "rejecting": "Отказ...",
+    "updateError": "Не удалось обновить документ.",
+    "networkError": "При обновлении документа произошла сетевая ошибка."
+  },
+  "addProjectMessageForm": {
+    "label": "Сообщение проекта",
+    "placeholder": "Напишите сообщение о проекте...",
+    "send": "Отправить сообщение",
+    "sending": "Отправка...",
+    "shortcutHint": "Нажмите Ctrl или Command + Enter, чтобы отправить.",
+    "sendError": "Не удалось отправить сообщение.",
+    "networkError": "При отправке сообщения произошла сетевая ошибка.",
+    "invalidResponse": "Сообщение было отправлено, но ответ сервера недействителен."
+  },
+  "projectMessaging": {
+    "title": "Обмен сообщениями проекта",
+    "description": "Внутренняя коммуникация между заказчиком, поставщиком и командой проекта.",
+    "conversationCount": "{count} разговоры",
+    "messageCount": "Сообщения {count}",
+    "defaultConversationTitle": "Беседа о проекте",
+    "conversationListLabel": "Беседа по проекту",
+    "noMessages": "В этом диалоге пока не было отправлено ни одного сообщения.",
+    "unknownSender": "Неизвестный отправитель",
+    "unknownDate": "Неизвестная дата",
+    "you": "Ты",
+    "emptyState": {
+      "title": "Пока нет разговоров",
+      "description": "Отправьте первое сообщение, чтобы начать обсуждение проекта."
+    }
+  },
+  "projectActivitySection": {
+    "details": {
+      "taskStatusUpdated": "Статус задачи «{title}» изменен на {status}.",
+      "documentUploaded": "Файл {file} загружен."
+    },
+    "title": "Недавние действия",
+    "emptyState": "Никаких действий пока не зарегистрировано.",
+    "unknownDate": "Неизвестная дата",
+    "actions": {
+      "project_created": "Проект создан",
+      "project_updated": "Проект обновлен",
+      "task_created": "Задача создана",
+      "task_updated": "Задача обновлена",
+      "task_assigned": "Задача назначена",
+      "task_completed": "Задача выполнена",
+      "task_status_updated": "Статус задачи обновлен",
+      "project_task_status_updated": "Статус задачи проекта обновлен.",
+      "comment_added": "Комментарий добавлен",
+      "document_uploaded": "Документ загружен",
+      "document_approved": "Документ одобрен",
+      "document_rejected": "Документ отклонен",
+      "message_sent": "Сообщение отправлено"
+    },
+    "statuses": {
+      "todo": "Сделать",
+      "in_progress": "В ходе выполнения",
+      "review": "Обзор",
+      "completed": "Завершенный"
+    }
+  },
+  "projectListProgress": {
+    "progress": "Прогресс",
+    "progressLabel": "Ход выполнения задачи проекта",
+    "summary": "{completed} из {total} задач выполнено"
+  },
+  "projectPrintButton": {
+    "button": "Экспорт/Печать PDF",
+    "tooltip": "Распечатайте или сохраните эту страницу в формате PDF",
+    "ariaLabel": "Экспортируйте или распечатайте проект в формате PDF"
+  },
+  "projectProgressCard": {
+    "title": "Ход проекта",
+    "progressLabel": "Ход проекта",
+    "summary": "{completed} из {total} задач выполнено"
+  },
+  "projectTasksExportButton": {
+    "button": "Экспорт в Excel",
+    "ariaLabel": "Экспорт задач проекта в виде CSV-файла, совместимого с Excel.",
+    "tooltip": "Загрузите задачи проекта в виде файла CSV, совместимого с Excel.",
+    "emptyTooltip": "Нет задач для экспорта",
+    "unknown": "Неизвестный",
+    "unknownDate": "Неизвестная дата",
+    "headers": {
+      "id": "ИДЕНТИФИКАТОР",
+      "title": "Заголовок",
+      "status": "Статус",
+      "priority": "Приоритет",
+      "progress": "Прогресс",
+      "startDate": "Дата начала",
+      "dueDate": "Срок оплаты",
+      "estimatedHours": "Расчетное количество часов",
+      "loggedHours": "Записано часов",
+      "assignedTo": "Назначено",
+      "assignedEmail": "Назначенный адрес электронной почты",
+      "dependsOn": "Зависит от",
+      "dependencyStatus": "Статус зависимости"
+    },
+    "statuses": {
+      "todo": "Тодо",
+      "inProgress": "В ходе выполнения",
+      "review": "Обзор",
+      "completed": "Завершенный"
+    },
+    "priorities": {
+      "low": "Низкий",
+      "medium": "Середина",
+      "high": "Высокий",
+      "urgent": "Срочный"
+    }
+  },
+  "statusBadge": {
+    "todo": "Сделать",
+    "pending": "В ожидании",
+    "open": "Открыть",
+    "in_progress": "В ходе выполнения",
+    "review": "Обзор",
+    "completed": "Завершенный",
+    "closed": "Закрыто",
+    "approved": "Одобренный",
+    "rejected": "Отклоненный",
+    "active": "Активный",
+    "expired": "Истекший",
+    "cancelled": "Отменено"
+  },
+  "casesPage": {
+    "adminTitle": "Все торговые случаи",
+    "userTitle": "Мои дела",
+    "description": "Отслеживайте отправленные вами запросы на торговые услуги.",
+    "newCase": "Новое дело",
+    "emptyState": "Случаев не обнаружено.",
+    "unknownDate": "Неизвестная дата",
+    "caseNumber": "Дело #{id}",
+    "timeline": "Хронология",
+    "steps": "Шаги: {completed} / {total}",
+    "winningProposal": "Выигравшее предложение",
+    "proposalNumber": "#{id}",
+    "notSelected": "Не выбрано",
+    "created": "Созданный",
+    "updated": "Обновлено",
+    "viewCase": "Посмотреть дело",
+    "stats": {
+      "total": "Всего случаев",
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный",
+      "cancelled": "Отменено"
+    },
+    "counts": {
+      "proposals": "{count} предложения",
+      "documents": "Документы {count}",
+      "messages": "Сообщения {count}"
+    }
+  },
+  "openCasesPage": {
+    "title": "Открытые дела",
+    "adminDescription": "Все открытые торговые дела.",
+    "userDescription": "Кейсы, соответствующие категориям вашей компании.",
+    "myProposals": "Мои предложения",
+    "categoryLabel": "Категория:",
+    "allCategories": "Все",
+    "unknownDate": "Неизвестная дата",
+    "requestedBy": "Запрошено:",
+    "created": "Создано: {date}",
+    "viewCase": "Посмотреть дело",
+    "categories": {
+      "general": "Общий",
+      "customsClearance": "Таможенное оформление",
+      "shipping": "Перевозки",
+      "inspection": "Инспекция",
+      "insurance": "Страхование",
+      "sourcing": "Поиск",
+      "documentation": "Документация",
+      "payment": "Оплата"
+    },
+    "sort": {
+      "label": "Сортировать по:",
+      "newest": "Новейший",
+      "oldest": "Самый старый"
+    },
+    "stats": {
+      "matchingCases": "Соответствующие случаи",
+      "matchingCategories": "Соответствующие категории",
+      "highCompetition": "Высокая конкуренция",
+      "myOpenProposals": "Мои открытые предложения",
+      "savedMatching": "Сохраненное соответствие"
+    },
+    "badges": {
+      "saved": "★ Сохранено",
+      "applied": "Применяемый",
+      "highCompetition": "Высокая конкуренция"
+    },
+    "metrics": {
+      "proposals": "Предложения",
+      "documents": "Документы",
+      "messages": "Сообщения"
+    },
+    "noCategories": {
+      "title": "Категории компаний не найдены",
+      "description": "Сначала добавьте профиль компании, чтобы Dasres мог сопоставлять открытые обращения с вашей категорией услуг.",
+      "addCompany": "Добавить компанию"
+    },
+    "emptyState": {
+      "title": "Подходящих случаев не найдено",
+      "adminDescription": "На данный момент открытых торговых дел нет.",
+      "userDescription": "На данный момент нет открытых дел, соответствующих категориям вашей компании. Повторите попытку позже или расширьте услуги своей компании.",
+      "manageCompanies": "Управление компаниями"
+    }
+  },
+  "caseDetailPage": {
+    "backToCases": "Вернуться к делам",
+    "caseNumber": "Дело #{id}",
+    "unknownDate": "Неизвестная дата",
+    "unknown": "Неизвестный",
+    "unknownUser": "Неизвестный пользователь",
+    "unknownCountry": "Неизвестная страна",
+    "notAssigned": "Не назначено",
+    "notSelected": "Не выбрано",
+    "notAvailable": "N/A",
+    "you": "Ты",
+    "system": "Система",
+    "customer": "Клиент",
+    "winningCompany": "Компания-победитель",
+    "winningExpert": "Победивший эксперт",
+    "progress": "Прогресс",
+    "timeline": "Хронология дела",
+    "workflowProgress": "Ход рабочего процесса",
+    "percentComplete": "{percent}% Завершено",
+    "stepsSummary": "Выполнено шагов: {completed} из {total}",
+    "caseInformation": "Информация о деле",
+    "status": "Статус",
+    "category": "Категория",
+    "created": "Созданный",
+    "updated": "Последнее обновление",
+    "viewCompany": "Посмотреть компанию",
+    "viewExpert": "Посмотреть эксперта",
+    "verified": "Проверено",
+    "metrics": {
+      "proposals": "Предложения",
+      "messages": "Сообщения",
+      "documents": "Документы",
+      "activities": "Деятельность"
+    },
+    "timelineStep": {
+      "completed": "✓ Шаг завершен",
+      "pending": "Ожидание завершения"
+    },
+    "timelineEmpty": {
+      "title": "Нет этапов временной шкалы",
+      "description": "Здесь будут отображаться этапы рабочего процесса."
+    },
+    "proposals": {
+      "title": "Предложения",
+      "winnerSelected": "Победившее предложение уже выбрано.",
+      "closed": "Это дело уже находится в стадии рассмотрения. Новые предложения закрыты.",
+      "ownCase": "Вы не можете подать предложение по своему делу.",
+      "noMatchingCompany": "У вас нет подходящей компании для этой категории дел.",
+      "providerProposal": "Предложение поставщика",
+      "unknownCompany": "Неизвестная компания",
+      "expertName": "Эксперт: {name}",
+      "noExpert": "Эксперт не назначен",
+      "price": "Цена",
+      "noPrice": "Нет цены",
+      "company": "Компания",
+      "expert": "Эксперт",
+      "message": "Сообщение о предложении",
+      "noMessage": "Сообщение не предоставлено.",
+      "status": {
+        "accepted": "✓ Принято",
+        "rejected": "Отклоненный",
+        "pending": "В ожидании"
+      },
+      "empty": {
+        "title": "Пока нет предложений",
+        "description": "Соответствующие компании могут подавать предложения, пока дело открыто."
+      }
+    },
+    "messages": {
+      "title": "Сообщения",
+      "empty": {
+        "title": "Сообщений пока нет",
+        "description": "Сообщения появятся здесь, когда дело будет в процессе."
+      }
+    },
+    "documents": {
+      "title": "Документы",
+      "uploadedBy": "Загружено пользователем {name}",
+      "download": "Скачать",
+      "empty": {
+        "title": "Документов пока нет",
+        "description": "Загруженные торговые документы будут храниться здесь."
+      }
+    },
+    "recommendedCompanies": {
+      "title": "Рекомендуемые компании",
+      "empty": "Подтвержденных подходящих компаний не найдено."
+    },
+    "assignedProvider": {
+      "title": "Назначенный поставщик",
+      "winningProposal": "Выигравшее предложение",
+      "proposalSummary": "#{id} - {price}",
+      "proposalValue": "Стоимость предложения",
+      "assignedAt": "Назначено в",
+      "empty": {
+        "title": "Поставщик еще не назначен",
+        "description": "Как только клиент примет предложение, выбранная компания или эксперт появится здесь в качестве назначенного поставщика."
+      }
+    },
+    "activity": {
+      "title": "Действия по делу ({count})",
+      "meta": "{actor} · {date}",
+      "actions": {
+        "proposalSubmitted": "Предложение отправлено",
+        "proposalAccepted": "Предложение принято",
+        "proposalRejected": "Предложение отклонено",
+        "messageSent": "Сообщение отправлено",
+        "documentUploaded": "Документ загружен",
+        "caseCompleted": "Дело завершено",
+        "reviewSubmitted": "Отзыв отправлен"
+      },
+      "empty": {
+        "title": "Пока нет активности",
+        "description": "Здесь будут появляться события дела, предложения, сообщения и действия по документам."
+      }
+    },
+    "reviews": {
+      "title": "Отзывы",
+      "reviewProvider": "Проверьте принятого поставщика",
+      "reviewCustomer": "Отзыв о клиенте",
+      "alreadySubmitted": "Ваш отзыв уже отправлен.",
+      "permission": "Только клиент и утвержденный поставщик могут отправлять отзывы по этому случаю."
+    },
+    "errors": {
+      "accessDenied": {
+        "title": "Доступ запрещен",
+        "description": "У вас нет разрешения на просмотр этого коммерческого предложения.",
+        "back": "Вернуться к открытым кейсам"
+      }
+    }
+  },
+  "tickets": {
+    "form": {
+      "subject": "Предмет",
+      "category": "Категория",
+      "message": "Сообщение",
+      "subjectPlaceholder": "Предмет",
+      "messagePlaceholder": "Опишите вашу проблему...",
+      "create": "Создать билет",
+      "creating": "Создание...",
+      "categories": {
+        "general": "Общий",
+        "technical": "Технический",
+        "verification": "Проверка",
+        "billing": "Биллинг",
+        "dispute": "Спор"
+      },
+      "errors": {
+        "createFailed": "Не удалось создать билет."
+      }
+    },
+    "new": {
+      "title": "Новый билет",
+      "description": "Свяжитесь со службой поддержки Dasres по вопросам проверки, выставления счетов, технических проблем или общих вопросов."
+    },
+    "list": {
+      "title": "Билеты",
+      "description": "Управляйте запросами на поддержку, проблемами обращений и помощью платформы.",
+      "newTicket": "Новый билет",
+      "allTickets": "Все билеты",
+      "myTickets": "Мои билеты",
+      "empty": "Билеты не найдены.",
+      "created": "Созданный",
+      "createdBy": "Создатель: {name}",
+      "ticketsFound": "{count, plural, =0 { Билеты не найдены} =1 {1 билет найден} other {# найдено билетов}}",
+      "statuses": {
+        "open": "Открыть",
+        "inProgress": "В ходе выполнения",
+        "reopened": "вновь открыт",
+        "closed": "Закрыто"
+      }
+    },
+    "detail": {
+      "backToTickets": "← Назад к Билеты",
+      "ticketNumber": "Билет №{id}",
+      "createdBy": "Создано",
+      "createdAt": "Создано в",
+      "messages": "Сообщения",
+      "lastUpdate": "Последнее обновление",
+      "conversation": "Беседа",
+      "messageCount": "{count, plural, =0 {Нет сообщений} =1 {1 сообщение} other {# сообщений}}",
+      "noMessages": "Сообщений пока нет.",
+      "closedNotice": "Этот билет закрыт.",
+      "statuses": {
+        "open": "Открыть",
+        "inProgress": "В ходе выполнения",
+        "closed": "Закрыто",
+        "reopened": "вновь открыт"
+      },
+      "categories": {
+        "general": "Общий",
+        "technical": "Технический",
+        "verification": "Проверка",
+        "billing": "Биллинг",
+        "dispute": "Спор"
+      },
+      "timeline": {
+        "title": "Хронология билетов",
+        "created": "Заявка создана",
+        "firstMessage": "Первое сообщение",
+        "latestReply": "Последний ответ",
+        "closed": "Билет закрыт",
+        "closedDescription": "Текущий статус закрыт.",
+        "reopened": "Билет вновь открыт",
+        "reopenedDescription": "Этот билет снова требует внимания."
+      },
+      "rules": {
+        "title": "Правила поддержки",
+        "focused": "Ответы должны быть сосредоточенными и профессиональными.",
+        "caseDetails": "При необходимости прикрепите детали дела.",
+        "closedReplies": "Закрытые заявки не могут получать ответы.",
+        "adminReopen": "Администраторы могут повторно открыть закрытые заявки."
+      },
+      "errors": {
+        "invalidId": "Неверный идентификатор билета",
+        "notFound": "Билет не найден",
+        "accessDenied": "Доступ запрещен"
+      }
+    },
+    "replyForm": {
+      "messageLabel": "Отвечать",
+      "placeholder": "Напишите ответ...",
+      "send": "Отправить ответ",
+      "sending": "Отправка...",
+      "errors": {
+        "messageRequired": "Требуется ответное сообщение.",
+        "sendFailed": "Не удалось отправить ответ."
+      }
+    },
+    "closeButton": {
+      "confirm": "Вы уверены, что хотите закрыть этот тикет?",
+      "close": "Закрыть тикет",
+      "closing": "Закрытие...",
+      "errors": {
+        "closeFailed": "Не удалось закрыть тикет."
+      }
+    },
+    "reopenButton": {
+      "reopen": "Заявка на повторное открытие",
+      "reopening": "Возобновление открытия...",
+      "errors": {
+        "reopenFailed": "Не удалось повторно открыть билет."
+      }
+    }
+  },
+  "notifications": {
+    "markAllRead": {
+      "markAll": "Отметить все как прочитанное",
+      "updating": "Обновление...",
+      "errors": {
+        "updateFailed": "Не удалось обновить уведомления."
+      }
+    },
+    "list": {
+      "title": "Уведомления",
+      "description": "Следите за обновлениями дел, предложений, сообщений, документов и системных оповещений.",
+      "total": "Всего уведомлений",
+      "unread": "Непрочитано",
+      "read": "Читать",
+      "centerTitle": "Центр уведомлений",
+      "centerDescription": "Управляйте обновлениями дел, сообщений, документов и системных оповещений.",
+      "empty": "Уведомлений пока нет.",
+      "open": "Посмотреть →",
+      "types": {
+        "proposal": "Предложение",
+        "accepted": "Принял",
+        "rejected": "Отклоненный",
+        "message": "Сообщение",
+        "document": "Документ",
+        "approved": "Одобренный",
+        "assigned": "Назначенный",
+        "completed": "Завершенный",
+        "comment": "Комментарий",
+        "ticket": "Билет",
+        "deadline": "Крайний срок",
+        "projectDone": "Проект завершен",
+        "system": "Система"
+      },
+      "messages": {
+        "ticketCreated": "{user} создал новое обращение в поддержку: {subject}",
+        "ticketReply": "{user} ответил на обращение: {subject}",
+        "proposalReceived": "Поступило новое предложение.",
+        "projectCompleted": "Проект завершен."
+      }
+    }
+  },
+  "adminUsers": {
+    "deleteUser": {
+      "button": "Удалить",
+      "deleting": "Удаление...",
+      "confirm": "Вы уверены, что хотите удалить этого пользователя?",
+      "errors": {
+        "deleteFailed": "Не удалось удалить пользователя."
+      }
+    },
+    "makeAdmin": {
+      "button": "Сделать администратором",
+      "making": "Обновление...",
+      "confirm": "Вы уверены, что хотите сделать этого пользователя администратором?",
+      "errors": {
+        "makeAdminFailed": "Не удалось обновить роль пользователя."
+      }
+    },
+    "changePlan": {
+      "label": "Изменить план",
+      "plans": {
+        "free": "БЕСПЛАТНО",
+        "gold": "ЗОЛОТО",
+        "diamond": "АЛМАЗ",
+        "enterprise": "ПРЕДПРИЯТИЕ"
+      },
+      "errors": {
+        "updateFailed": "Не удалось обновить план."
+      }
+    },
+    "list": {
+      "title": "Управление пользователями",
+      "description": "Управляйте ролями пользователей, планами и доступом к учетной записи.",
+      "accountsTitle": "Учетные записи пользователей",
+      "accountsRegistered": "{count, plural, =0 {Нет зарегистрированных аккаунтов} =1 {1 зарегистрированный аккаунт} other {# зарегистрированных аккаунтов}}",
+      "unnamedUser": "Неназванный пользователь",
+      "stats": {
+        "totalUsers": "Всего пользователей",
+        "admins": "Админы",
+        "users": "Пользователи",
+        "paidPlans": "Платные планы"
+      },
+      "roles": {
+        "admin": "Админ",
+        "user": "Пользователь"
+      },
+      "plans": {
+        "free": "БЕСПЛАТНО",
+        "gold": "ЗОЛОТО",
+        "diamond": "АЛМАЗ",
+        "enterprise": "ПРЕДПРИЯТИЕ"
+      },
+      "table": {
+        "id": "ИДЕНТИФИКАТОР",
+        "user": "Пользователь",
+        "role": "Роль",
+        "currentPlan": "Текущий план",
+        "changePlan": "Изменить план",
+        "created": "Созданный",
+        "actions": "Действия"
+      }
+    }
+  },
+  "expertReviews": {
+    "form": {
+      "title": "Оцените этого эксперта",
+      "ratingLabel": "Рейтинг",
+      "commentLabel": "Обзор",
+      "placeholder": "Напишите свой отзыв...",
+      "submit": "Отправить отзыв",
+      "submitting": "Отправка...",
+      "ratings": {
+        "1": "1 - Плохо",
+        "2": "2 - Слабо",
+        "3": "3 - Хорошо",
+        "4": "4 - Очень хорошо",
+        "5": "5 - Отлично"
+      },
+      "errors": {
+        "submitFailed": "Не удалось отправить отзыв."
+      }
+    }
+  },
+  "companies": {
+    "edit": {
+      "title": "Редактировать компанию",
+      "description": "Обновите информацию о компании, торговую категорию и логотип.",
+      "loading": "Загрузка компании...",
+      "currentLogo": "Текущий логотип",
+      "currentLogoAlt": "Текущий логотип компании",
+      "update": "Обновить компанию",
+      "updating": "Обновление...",
+      "fields": {
+        "name": {
+          "label": "Название компании",
+          "placeholder": "Название компании"
+        },
+        "country": {
+          "label": "Страна",
+          "placeholder": "Страна"
+        },
+        "category": {
+          "label": "Торговая категория"
+        },
+        "description": {
+          "label": "Описание",
+          "placeholder": "Описание"
+        },
+        "email": {
+          "label": "Электронная почта",
+          "placeholder": "Электронная почта"
+        },
+        "website": {
+          "label": "Веб-сайт",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "Заменить логотип",
+          "help": "Оставьте пустым, чтобы сохранить текущий логотип. Поддерживаемые форматы: JPG, PNG и WEBP."
+        }
+      },
+      "categories": {
+        "general": "Общий",
+        "customsClearance": "Таможенное оформление",
+        "shipping": "Перевозки",
+        "inspection": "Инспекция",
+        "insurance": "Страхование",
+        "sourcing": "Поиск",
+        "documentation": "Документация",
+        "payment": "Оплата"
+      },
+      "errors": {
+        "loadFailed": "Ошибка загрузки компании.",
+        "updateFailed": "Ошибка обновления компании.",
+        "networkError": "Что-то пошло не так."
+      }
+    },
+    "new": {
+      "title": "Добавить компанию",
+      "description": "Создайте профиль компании и добавьте его в торговую сеть Dasres.",
+      "create": "Создать компанию",
+      "creating": "Создание...",
+      "success": "Компания создана успешно.",
+      "fields": {
+        "name": {
+          "label": "Название компании",
+          "placeholder": "Название компании"
+        },
+        "country": {
+          "label": "Страна",
+          "placeholder": "Страна"
+        },
+        "category": {
+          "label": "Торговая категория"
+        },
+        "description": {
+          "label": "Описание",
+          "placeholder": "Описание"
+        },
+        "email": {
+          "label": "Электронная почта",
+          "placeholder": "Электронная почта"
+        },
+        "website": {
+          "label": "Веб-сайт",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "Логотип компании",
+          "help": "Поддерживаемые форматы: JPG, PNG и WEBP."
+        }
+      },
+      "categories": {
+        "general": "Общий",
+        "customsClearance": "Таможенное оформление",
+        "shipping": "Перевозки",
+        "inspection": "Инспекция",
+        "insurance": "Страхование",
+        "sourcing": "Поиск",
+        "documentation": "Документация",
+        "payment": "Оплата"
+      },
+      "errors": {
+        "createFailed": "Ошибка при создании компании.",
+        "networkError": "Что-то пошло не так."
+      }
+    },
+    "deleteButton": {
+      "button": "Удалить компанию",
+      "deleting": "Удаление...",
+      "confirm": "Вы уверены, что хотите удалить эту компанию?",
+      "errors": {
+        "deleteFailed": "Не удалось удалить компанию."
+      }
+    },
+    "search": {
+      "searchLabel": "Поиск компаний",
+      "searchPlaceholder": "🔍 Поиск компаний...",
+      "countryLabel": "Страна",
+      "ratingFilterLabel": "Рейтинговый фильтр",
+      "allCountries": "Все страны",
+      "allRatings": "Все рейтинги",
+      "fiveStars": "5 звёзд",
+      "fourPlusStars": "4 звезды и выше",
+      "verifiedOnly": "Только проверенные",
+      "viewProfile": "Посмотреть профиль →",
+      "available": "Доступный",
+      "noRating": "Рейтинга пока нет",
+      "notAvailable": "N/A",
+      "empty": "Ни одна компания не соответствует выбранным фильтрам.",
+      "reviewCount": "{count, plural, =1 {1 обзор} other {#отзывов}}",
+      "featured": {
+        "title": "Рекомендуемые компании",
+        "description": "Торговые компании премиум-класса с более высокой видимостью на Dasres."
+      },
+      "verification": {
+        "verified": "Проверено",
+        "rejected": "Отклоненный",
+        "pending": "В ожидании"
+      },
+      "plans": {
+        "gold": "ЗОЛОТО",
+        "diamond": "АЛМАЗ",
+        "enterprise": "ПРЕДПРИЯТИЕ"
+      },
+      "metrics": {
+        "trust": "Доверять",
+        "rating": "Рейтинг",
+        "reviews": "Отзывы"
+      }
+    }
+  },
+  "experts": {
+    "edit": {
+      "title": "Редактировать эксперта",
+      "description": "Обновите информацию профиля эксперта и изображение профиля.",
+      "loading": "Эксперт по загрузке...",
+      "currentImage": "Текущее изображение профиля",
+      "currentImageAlt": "Текущий экспертный имидж",
+      "update": "Обновление эксперта",
+      "updating": "Обновление...",
+      "fields": {
+        "name": {
+          "label": "Имя",
+          "placeholder": "Полное имя"
+        },
+        "country": {
+          "label": "Страна",
+          "placeholder": "Страна"
+        },
+        "specialty": {
+          "label": "Специальность",
+          "placeholder": "Торговая специальность"
+        },
+        "experience": {
+          "label": "Опыт",
+          "placeholder": "Опишите профессиональный опыт"
+        },
+        "email": {
+          "label": "Электронная почта",
+          "placeholder": "Электронная почта"
+        },
+        "image": {
+          "label": "Заменить изображение",
+          "help": "Оставьте пустым, чтобы сохранить текущее изображение. Поддерживаемые форматы: JPG, PNG и WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "Ошибка загрузки эксперта.",
+        "updateFailed": "Ошибка обновления эксперта.",
+        "networkError": "Что-то пошло не так."
+      }
+    },
+    "new": {
+      "title": "Добавить эксперта",
+      "description": "Создайте профиль эксперта и добавьте его в торговую сеть Dasres.",
+      "create": "Создать эксперта",
+      "creating": "Создание...",
+      "success": "Эксперт успешно создан.",
+      "fields": {
+        "name": {
+          "label": "Имя",
+          "placeholder": "Полное имя"
+        },
+        "country": {
+          "label": "Страна",
+          "placeholder": "Страна"
+        },
+        "specialty": {
+          "label": "Специальность",
+          "placeholder": "Торговая специальность"
+        },
+        "experience": {
+          "label": "Опыт",
+          "placeholder": "Опишите профессиональный опыт"
+        },
+        "email": {
+          "label": "Электронная почта",
+          "placeholder": "Электронная почта"
+        },
+        "image": {
+          "label": "Изображение профиля",
+          "help": "Поддерживаемые форматы: JPG, PNG и WEBP."
+        }
+      },
+      "errors": {
+        "createFailed": "Ошибка создания эксперта.",
+        "networkError": "Что-то пошло не так."
+      }
+    },
+    "search": {
+      "searchLabel": "Поиск экспертов",
+      "searchPlaceholder": "🔍 Поиск экспертов...",
+      "countryLabel": "Страна",
+      "ratingFilterLabel": "Рейтинговый фильтр",
+      "allCountries": "Все страны",
+      "allRatings": "Все рейтинги",
+      "fiveStars": "5 звёзд",
+      "fourPlusStars": "4 звезды и выше",
+      "verifiedOnly": "Только проверенные",
+      "viewProfile": "Посмотреть профиль →",
+      "available": "Доступный",
+      "noRating": "Рейтинга пока нет",
+      "notAvailable": "N/A",
+      "empty": "Ни один эксперт не соответствует выбранным фильтрам.",
+      "reviewCount": "{count, plural, =1 {1 обзор} other {#отзывов}}",
+      "featured": {
+        "title": "Рекомендуемые эксперты",
+        "description": "Эксперты премиум-класса с более высокой видимостью на Dasres."
+      },
+      "verification": {
+        "verified": "Проверено",
+        "rejected": "Отклоненный",
+        "pending": "В ожидании"
+      },
+      "plans": {
+        "gold": "ЗОЛОТО",
+        "diamond": "АЛМАЗ",
+        "enterprise": "ПРЕДПРИЯТИЕ"
+      },
+      "metrics": {
+        "trust": "Доверять",
+        "rating": "Рейтинг",
+        "reviews": "Отзывы"
+      }
+    },
+    "deleteButton": {
+      "button": "Удалить эксперта",
+      "deleting": "Удаление...",
+      "confirm": "Вы уверены, что хотите удалить этого эксперта?",
+      "errors": {
+        "deleteFailed": "Не удалось удалить эксперта."
+      }
+    }
+  },
+  "opportunities": {
+    "dashboard": {
+      "title": "Управление возможностями",
+      "description": "Просматривайте и управляйте возможностями международной торговли.",
+      "addOpportunity": "Добавить возможность",
+      "latestOpportunity": "Последняя возможность",
+      "stats": {
+        "total": "Общий",
+        "active": "Активный",
+        "closed": "Закрыто",
+        "countries": "Страны"
+      },
+      "pagination": {
+        "previous": "Предыдущий",
+        "next": "Следующий",
+        "page": "Страница {current} из {total}"
+      }
+    },
+    "new": {
+      "title": "Добавить возможность",
+      "description": "Создайте новую торговую возможность и опубликуйте ее на торговой площадке Dasres.",
+      "create": "Создать возможность",
+      "creating": "Создание...",
+      "success": "Возможность успешно создана.",
+      "fields": {
+        "title": {
+          "label": "Заголовок",
+          "placeholder": "Название возможности"
+        },
+        "country": {
+          "label": "Страна",
+          "placeholder": "Страна"
+        },
+        "image": {
+          "label": "Изображение возможности",
+          "help": "Поддерживаемые форматы: JPG, PNG и WEBP."
+        },
+        "description": {
+          "label": "Описание",
+          "placeholder": "Опишите торговую возможность"
+        }
+      },
+      "errors": {
+        "createFailed": "Ошибка создания возможности.",
+        "networkError": "Что-то пошло не так."
+      }
+    },
+    "edit": {
+      "title": "Изменить возможность",
+      "description": "Обновите информацию о возможности и изображение.",
+      "loading": "Загрузка возможности...",
+      "currentImage": "Изображение текущей возможности",
+      "currentImageAlt": "Изображение текущей возможности",
+      "update": "Обновить возможность",
+      "updating": "Обновление...",
+      "fields": {
+        "title": {
+          "label": "Заголовок",
+          "placeholder": "Название возможности"
+        },
+        "country": {
+          "label": "Страна",
+          "placeholder": "Страна"
+        },
+        "description": {
+          "label": "Описание",
+          "placeholder": "Опишите торговую возможность"
+        },
+        "image": {
+          "label": "Заменить изображение",
+          "help": "Оставьте пустым, чтобы сохранить текущее изображение. Поддерживаемые форматы: JPG, PNG и WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "Ошибка загрузки возможности.",
+        "updateFailed": "Ошибка обновления возможности.",
+        "networkError": "Что-то пошло не так."
+      }
+    },
+    "search": {
+      "searchLabel": "Возможности поиска",
+      "searchPlaceholder": "🔍Возможности поиска...",
+      "countryLabel": "Страна",
+      "statusLabel": "Статус",
+      "allCountries": "Все страны",
+      "allStatuses": "Все статусы",
+      "viewOpportunity": "Посмотреть возможность →",
+      "statuses": {
+        "open": "Открыть",
+        "inProgress": "В ходе выполнения",
+        "closed": "Закрыто"
+      },
+      "featured": {
+        "title": "Рекомендуемые возможности",
+        "description": "Активные торговые возможности в настоящее время открыты для сотрудничества."
+      },
+      "empty": {
+        "title": "Возможностей не найдено",
+        "description": "Попробуйте изменить поиск или фильтры."
+      }
+    },
+    "deleteButton": {
+      "button": "Удалить возможность",
+      "deleting": "Удаление...",
+      "confirm": "Вы уверены, что хотите удалить эту возможность?",
+      "errors": {
+        "deleteFailed": "Не удалось удалить возможность."
+      }
+    }
+  },
+  "tradeCases": {
+    "addProposal": {
+      "companyLabel": "Компания",
+      "expertLabel": "Эксперт",
+      "messageLabel": "Сообщение о предложении",
+      "priceLabel": "Цена предложения",
+      "selectCompany": "Выберите компанию",
+      "noExpert": "Нет эксперта/опционально",
+      "messagePlaceholder": "Напишите сообщение с предложением...",
+      "pricePlaceholder": "Цена, например 1200 долларов США",
+      "submitting": "Отправка...",
+      "submit": "Добавить предложение",
+      "errors": {
+        "messageRequired": "Требуется сообщение с предложением.",
+        "companyRequired": "Пожалуйста, выберите компанию.",
+        "submitFailed": "Не удалось отправить предложение."
+      }
+    },
+    "proposalActions": {
+      "accept": "Принимать",
+      "reject": "Отклонять",
+      "accepting": "Принятие...",
+      "rejecting": "Отказ...",
+      "errors": {
+        "acceptFailed": "Не удалось принять предложение.",
+        "rejectFailed": "Не удалось отклонить предложение."
+      }
+    },
+    "addMessage": {
+      "contentLabel": "Сообщение",
+      "placeholder": "Напишите сообщение...",
+      "sending": "Отправка...",
+      "submit": "Добавить сообщение",
+      "errors": {
+        "contentRequired": "Требуется содержание сообщения.",
+        "submitFailed": "Не удалось отправить сообщение."
+      }
+    },
+    "addDocument": {
+      "fileLabel": "Выберите документ",
+      "uploading": "Загрузка...",
+      "submit": "Загрузить документ",
+      "errors": {
+        "fileRequired": "Пожалуйста, выберите документ.",
+        "uploadFailed": "Не удалось загрузить документ."
+      }
+    },
+    "completeStep": {
+      "complete": "Полный",
+      "completing": "Завершение...",
+      "errors": {
+        "completeFailed": "Не удалось выполнить этот шаг."
+      }
+    },
+    "completeCase": {
+      "confirm": "Вы уверены, что хотите пометить это дело как завершенное?",
+      "complete": "Отметить как завершенное",
+      "completing": "Завершение...",
+      "errors": {
+        "completeFailed": "Не удалось завершить дело."
+      }
+    },
+    "addReview": {
+      "ratingLabel": "Рейтинг",
+      "commentLabel": "Обзор",
+      "placeholder": "Напишите свой отзыв...",
+      "submit": "Отправить отзыв",
+      "submitting": "Отправка...",
+      "ratings": {
+        "1": "1 - Очень плохо",
+        "2": "2 - Плохо",
+        "3": "3 - Удовлетворительно",
+        "4": "4 - Хорошо",
+        "5": "5 - Отлично"
+      },
+      "errors": {
+        "submitFailed": "Не удалось отправить отзыв."
+      }
+    },
+    "workflow": {
+      "title": "Торговый процесс",
+      "steps": {
+        "inquiry": "Расследование",
+        "quotation": "Цитата",
+        "negotiation": "Переговоры",
+        "contract": "Договор",
+        "documents": "Документы",
+        "customs": "Таможня",
+        "shipping": "Перевозки",
+        "inspection": "Инспекция",
+        "insurance": "Страхование",
+        "delivery": "Доставка",
+        "completed": "Завершенный"
+      }
+    }
+  },
+  "createCaseForm": {
+    "titleLabel": "Название дела",
+    "titlePlaceholder": "Требуется таможенное оформление в Дубае.",
+    "categoryLabel": "Категория дела",
+    "categoryHelp": "Это помогает Dasres согласовывать ситуацию с соответствующими компаниями и экспертами.",
+    "descriptionLabel": "Описание",
+    "descriptionPlaceholder": "Опишите отгрузку, необходимую услугу, страну, документы, сроки и любые особые требования...",
+    "create": "Создать дело",
+    "creating": "Создание...",
+    "categories": {
+      "general": "Общий",
+      "customsClearance": "Таможенное оформление",
+      "shipping": "Перевозки",
+      "inspection": "Инспекция",
+      "insurance": "Страхование",
+      "sourcing": "Поиск",
+      "documentation": "Документация",
+      "payment": "Оплата"
+    },
+    "backToCases": "← Назад к Кейсы",
+    "pageTitle": "Создать новое торговое дело",
+    "pageDescription": "Отправьте новый запрос на торговую услугу. Поставщика или эксперта можно назначить позже.",
+    "plans": {
+      "free": "Бесплатно",
+      "gold": "Золото",
+      "diamond": "Алмаз",
+      "enterprise": "Предприятие"
+    },
+    "errors": {
+      "planLimit": "Ваш план {plan} допускает до {limit} активных сделок. Обновите свой план, чтобы создавать больше обращений.",
+      "titleAndDescriptionRequired": "Необходимо указать заголовок и описание.",
+      "invalidCategory": "Недопустимая категория обращения."
+    }
+  },
+  "dashboardSearch": {
+    "eyebrow": "Глобальный поиск",
+    "title": "Поиск Dasres",
+    "description": "Найдите компании, экспертов, возможности и торговые примеры в своем рабочем пространстве.",
+    "searchLabel": "Поиск Dasres",
+    "searchPlaceholder": "Ищите компании, экспертов, возможности, кейсы...",
+    "searchButton": "Поиск",
+    "initialState": "Введите ключевое слово для поиска по Dasres.",
+    "resultsSummary": "{count, plural, =0 {Нет результатов для} =1 {1 найден результат для} other {# результатов найдено для}}",
+    "sections": {
+      "companies": {
+        "title": "Компании",
+        "empty": "Компании не найдены."
+      },
+      "experts": {
+        "title": "Эксперты",
+        "empty": "Экспертов не найдено."
+      },
+      "opportunities": {
+        "title": "Возможности",
+        "empty": "Возможностей не обнаружено."
+      },
+      "tradeCases": {
+        "title": "Торговые случаи",
+        "empty": "Случаев не обнаружено."
+      }
+    },
+    "statuses": {
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный",
+      "closed": "Закрыто",
+      "pending": "В ожидании",
+      "cancelled": "Отменено"
+    }
+  },
+  "companyProfile": {
+    "metadata": {
+      "notFoundTitle": "Компания не найдена",
+      "notFoundDescription": "Запрошенный профиль компании не найден.",
+      "description": "{name} — это компания {category} из {country}. Откройте для себя профиль этой компании на Dasres."
+    },
+    "notFound": "Компания не найдена",
+    "backToCompanies": "← Назад к Компании",
+    "statusLabel": "Статус",
+    "notAvailable": "N/A",
+    "notProvided": "Не предусмотрено",
+    "companyRating": "Рейтинг компании",
+    "companyDescription": "Описание компании",
+    "recentReviews": "Недавние обзоры",
+    "companyInformation": "Информация о компании",
+    "noReviews": "Пока нет отзывов.",
+    "noCommentProvided": "Комментарий не предоставлен.",
+    "basedOnReviews": "{count, plural, =1 {На основе 1 отзыва} other {На основе # отзывов}}",
+    "trustScoreValue": "Оценка доверия: {score}/100",
+    "completedCasesValue": "Завершенные дела: {count}",
+    "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {1 отзыв} other {# отзывов}})",
+    "sendEmail": "Отправить электронное письмо",
+    "visitWebsite": "Посетите веб-сайт",
+    "verificationStatus": "Статус проверки",
+    "editCompany": "Редактировать компанию",
+    "metrics": {
+      "trustScore": "Оценка доверия",
+      "rating": "Рейтинг",
+      "reviews": "Отзывы",
+      "verification": "Проверка",
+      "country": "Страна"
+    },
+    "fields": {
+      "email": "Электронная почта",
+      "website": "Веб-сайт",
+      "country": "Страна",
+      "category": "Категория",
+      "reputation": "Репутация"
+    },
+    "verificationBadges": {
+      "verified": "Проверенная компания",
+      "rejected": "Отклоненный",
+      "pending": "Ожидает проверки"
+    },
+    "verificationStatuses": {
+      "verified": "Проверено",
+      "rejected": "Отклоненный",
+      "pending": "В ожидании"
+    },
+    "plans": {
+      "gold": "ЗОЛОТО",
+      "diamond": "АЛМАЗ",
+      "enterprise": "ПРЕДПРИЯТИЕ"
+    },
+    "statuses": {
+      "active": "Активный",
+      "inactive": "Неактивный",
+      "open": "Открыть",
+      "pending": "В ожидании",
+      "verified": "Проверено",
+      "rejected": "Отклоненный",
+      "completed": "Завершенный",
+      "inProgress": "В ходе выполнения"
+    },
+    "schema": {
+      "status": "Статус",
+      "category": "Категория"
+    }
+  },
+  "dashboardCompanies": {
+    "title": "Управление компаниями",
+    "description": "Управляйте и просматривайте международные торговые компании.",
+    "addCompany": "Добавить компанию",
+    "stats": {
+      "total": "Общий",
+      "verified": "Проверено",
+      "pending": "В ожидании",
+      "rejected": "Отклоненный",
+      "premium": "Премиум"
+    },
+    "pagination": {
+      "previous": "Предыдущий",
+      "next": "Следующий",
+      "page": "Страница {current} из {total}"
+    }
+  },
+  "dashboardExperts": {
+    "title": "Эксперты Менеджмент",
+    "description": "Управляйте и просматривайте экспертов по международной торговле.",
+    "addExpert": "Добавить эксперта",
+    "stats": {
+      "total": "Общий",
+      "verified": "Проверено",
+      "pending": "В ожидании",
+      "rejected": "Отклоненный",
+      "premium": "Премиум"
+    },
+    "pagination": {
+      "previous": "Предыдущий",
+      "next": "Следующий",
+      "page": "Страница {current} из {total}"
+    }
+  },
+  "dashboardMyCases": {
+    "title": "Мои активные дела",
+    "description": "Случаи, когда предложение вашей компании было принято.",
+    "notAvailable": "N/A",
+    "notAssigned": "Не назначено",
+    "caseNumber": "Дело #{id}",
+    "documentCount": "{count, plural, =1 {1 Документ} other {# Документы}}",
+    "messageCount": "{count, plural, =1 {1 Сообщение} other {# Сообщения}}",
+    "stepsCompleted": "Шаги {completed}/{total} выполнены.",
+    "updated": "Обновлен {date}",
+    "viewCase": "Посмотреть дело →",
+    "stats": {
+      "assignedCases": "Назначенные дела",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный",
+      "workload": "Рабочая нагрузка",
+      "workloadDescription": "Сообщения + Документы"
+    },
+    "empty": {
+      "title": "Активных случаев пока нет",
+      "description": "Как только одно из предложений вашей компании будет принято, здесь появится назначенное торговое предложение.",
+      "browseOpenCases": "Просмотреть открытые дела"
+    },
+    "fields": {
+      "acceptedCompany": "Принятая компания",
+      "assignedExpert": "Назначенный эксперт",
+      "proposalPrice": "Цена предложения",
+      "timelineProgress": "Хронология прогресса"
+    },
+    "statuses": {
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный",
+      "cancelled": "Отменено"
+    }
+  },
+  "dashboardMyCompanies": {
+    "title": "Мои компании",
+    "description": "Управляйте принадлежащими вам профилями компаний, их статусом проверки и уровнем видимости.",
+    "addCompany": "Добавить компанию",
+    "created": "Создано {date}",
+    "viewCompany": "Посмотреть компанию →",
+    "categories": {
+      "general": "Общий",
+      "customsClearance": "Таможенное оформление",
+      "shipping": "Перевозки",
+      "inspection": "Инспекция",
+      "insurance": "Страхование",
+      "sourcing": "Поиск",
+      "documentation": "Документация",
+      "payment": "Оплата"
+    },
+    "countries": {
+      "iran": "Иран"
+    },
+    "stats": {
+      "total": "Общий",
+      "verified": "Проверено",
+      "pending": "В ожидании",
+      "rejected": "Отклоненный",
+      "premium": "Премиум"
+    },
+    "empty": {
+      "title": "У вас пока нет компаний",
+      "description": "Создайте свой первый профиль компании, чтобы участвовать в деловых возможностях и подавать предложения.",
+      "button": "Добавить компанию"
+    },
+    "verification": {
+      "verified": "Проверено",
+      "pending": "В ожидании",
+      "rejected": "Отклоненный"
+    },
+    "plans": {
+      "free": "Бесплатно",
+      "gold": "Золото",
+      "diamond": "Алмаз",
+      "enterprise": "Предприятие"
+    },
+    "statuses": {
+      "active": "Активный",
+      "inactive": "Неактивный",
+      "suspended": "Приостановленный"
+    }
+  },
+  "dashboardMyExperts": {
+    "title": "Мои эксперты",
+    "description": "Управляйте своими экспертными профилями, статусом проверки и видимостью плана.",
+    "addExpert": "Добавить эксперта",
+    "created": "Создано: {date}",
+    "viewExpert": "Просмотреть эксперт →",
+    "stats": {
+      "total": "Общий",
+      "verified": "Проверено",
+      "pending": "В ожидании",
+      "rejected": "Отклоненный",
+      "premium": "Премиум"
+    },
+    "empty": {
+      "title": "Экспертов пока нет",
+      "description": "Создайте свой первый профиль эксперта, чтобы продемонстрировать свой опыт и получать торговые запросы.",
+      "button": "Добавить эксперта"
+    },
+    "verification": {
+      "verified": "Проверено",
+      "pending": "В ожидании",
+      "rejected": "Отклоненный"
+    },
+    "plans": {
+      "free": "БЕСПЛАТНО",
+      "gold": "ЗОЛОТО",
+      "diamond": "АЛМАЗ",
+      "enterprise": "ПРЕДПРИЯТИЕ"
+    },
+    "statuses": {
+      "active": "Активный",
+      "inactive": "Неактивный",
+      "suspended": "Приостановленный"
+    }
+  },
+  "dashboardMyProposals": {
+    "title": "Мои предложения",
+    "description": "Отслеживайте эффективность предложения, процент побед и представленную ценность.",
+    "findOpenCases": "Найти открытые дела",
+    "empty": "Предложений пока нет.",
+    "notAvailable": "N/A",
+    "notAssigned": "Не назначено",
+    "proposalNumber": "Предложение №{id}",
+    "submittedOn": "Отправлено {date}",
+    "caseStatus": "Статус дела: {status}",
+    "viewCase": "Посмотреть дело →",
+    "stats": {
+      "totalProposals": "Всего предложений",
+      "pending": "В ожидании",
+      "accepted": "Принял",
+      "rejected": "Отклоненный",
+      "winRate": "Процент побед",
+      "acceptedValue": "Принятое значение",
+      "submittedValue": "Отправлено: ${value}"
+    },
+    "filters": {
+      "all": "Все: {count}",
+      "pending": "В ожидании: {count}",
+      "accepted": "Принято: {count}",
+      "rejected": "Отклонено: {count}"
+    },
+    "fields": {
+      "case": "Случай",
+      "company": "Компания",
+      "expert": "Эксперт",
+      "price": "Цена"
+    },
+    "statuses": {
+      "pending": "В ожидании",
+      "accepted": "Принял",
+      "rejected": "Отклоненный"
+    },
+    "caseStatuses": {
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный",
+      "cancelled": "Отменено"
+    }
+  },
+  "dashboardMyTasks": {
+    "eyebrow": "Мои задачи",
+    "title": "Порученная работа",
+    "assignedSummary": "{count, plural, =0 {Нет назначенных задач} =1 {1 назначенная задача} other {# назначенных задач}}",
+    "noDueDate": "Нет срока сдачи",
+    "viewProject": "Посмотреть проект",
+    "stats": {
+      "assigned": "Назначенный",
+      "completed": "Завершенный",
+      "inProgress": "В ходе выполнения",
+      "overdue": "Просрочено"
+    },
+    "empty": {
+      "title": "Нет назначенных задач",
+      "description": "У вас пока нет назначенной работы."
+    },
+    "fields": {
+      "project": "Проект",
+      "projectStatus": "Статус проекта",
+      "dueDate": "Срок оплаты"
+    },
+    "taskStatuses": {
+      "todo": "Тодо",
+      "inProgress": "В ходе выполнения",
+      "review": "Обзор",
+      "completed": "Завершенный"
+    },
+    "projectStatuses": {
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный",
+      "cancelled": "Отменено"
+    },
+    "priorities": {
+      "low": "Низкий",
+      "medium": "Середина",
+      "high": "Высокий",
+      "urgent": "Срочный"
+    }
+  },
+  "dashboardProjects": {
+    "eyebrow": "Проекты",
+    "title": "Торговые проекты",
+    "description": "Управляйте принятыми торговыми делами и отслеживайте ход выполнения.",
+    "customer": "Клиент",
+    "empty": {
+      "title": "Пока нет проектов",
+      "description": "Проекты создаются автоматически после принятия предложения.",
+      "browseOpenCases": "Просмотреть открытые дела"
+    },
+    "statuses": {
+      "active": "Активный",
+      "pending": "В ожидании",
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный",
+      "cancelled": "Отменено"
+    }
+  },
+  "dashboardSavedCases": {
+    "title": "Сохраненные дела",
+    "description": "Торговые дела, которые вы сохранили для последующего просмотра.",
+    "savedOn": "Сохранено: {date}",
+    "viewCase": "Посмотреть дело →",
+    "empty": {
+      "title": "Сохраненных случаев пока нет.",
+      "description": "Сохраняйте интересные торговые случаи, чтобы получить к ним доступ позже.",
+      "button": "Просмотреть открытые дела"
+    },
+    "metrics": {
+      "proposals": "Предложения",
+      "documents": "Документы",
+      "messages": "Сообщения"
+    },
+    "statuses": {
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "completed": "Завершенный",
+      "cancelled": "Отменено"
+    }
+  },
+  "dashboardSavedCompanies": {
+    "title": "Сохраненные компании",
+    "description": "Компании, которые вы сохранили, чтобы просмотреть и связаться позже.",
+    "viewProfile": "Посмотреть профиль",
+    "empty": {
+      "title": "Сохраненных компаний пока нет.",
+      "description": "Сохраняйте проверенные компании, чтобы построить свою торговую сеть.",
+      "button": "Просмотр компаний"
+    }
+  },
+  "dashboardSavedExperts": {
+    "title": "Сохраненные эксперты",
+    "description": "Эксперты, которых вы сохранили, чтобы просмотреть и связаться с ними позже.",
+    "viewProfile": "Посмотреть профиль",
+    "empty": {
+      "title": "Сохраненных экспертов пока нет.",
+      "description": "Сохраняйте опытных специалистов, чтобы быстро связываться с ними для будущих торговых проектов.",
+      "button": "Обзор экспертов"
+    }
+  },
+  "dashboardSettings": {
+    "eyebrow": "Настройки учетной записи",
+    "title": "Настройки",
+    "description": "Управляйте своей учетной записью Dasres, планом и информацией профиля.",
+    "unlimited": "Безлимитный",
+    "profileInformation": {
+      "title": "Информация профиля",
+      "notProvided": "Не предусмотрено",
+      "fields": {
+        "name": "Имя",
+        "email": "Электронная почта",
+        "role": "Роль",
+        "plan": "План"
+      }
+    },
+    "planLimits": {
+      "title": "Ограничения плана",
+      "caseLimit": "Лимит случаев",
+      "proposalLimit": "Лимит предложения"
+    },
+    "quickLinks": {
+      "title": "Быстрые ссылки",
+      "manageSubscription": "Управление подпиской",
+      "myCompanies": "Мои компании",
+      "myExperts": "Мои эксперты"
+    },
+    "security": {
+      "title": "Безопасность",
+      "description": "Изменение паролей, двухфакторная аутентификация и история входов будут добавлены на этапе производственной безопасности."
+    },
+    "roles": {
+      "admin": "Админ",
+      "user": "Пользователь"
+    },
+    "plans": {
+      "free": "БЕСПЛАТНО",
+      "gold": "ЗОЛОТО",
+      "diamond": "АЛМАЗ",
+      "enterprise": "ПРЕДПРИЯТИЕ"
+    }
+  },
+  "dashboardSubscription": {
+    "title": "Подписка",
+    "usageUnlimited": "Без ограничений (используется: {used})",
+    "premiumBadge": "Премиум",
+    "description": "Управляйте своим планом Dasres, лимитами использования и видимостью премиум-класса. Платежи еще не включены; планы в настоящее время управляются администратором.",
+    "currentBadge": "ТЕКУЩИЙ",
+    "managePlan": "Управление планом",
+    "currentPlan": "Текущий план",
+    "usageLimited": "Лимит использования",
+    "proposals": "Предложения",
+    "activeCases": "Активные случаи [заболевания",
+    "usage": {
+      "currentPlan": "Текущий план",
+      "activeCasesUsed": "Использовано активных случаев",
+      "proposalsUsed": "Использованные предложения",
+      "limitedValue": "{used} / {limit}",
+      "unlimitedValue": "{used} / Без ограничений"
+    },
+    "planLabels": {
+      "free": "БЕСПЛАТНО",
+      "gold": "ЗОЛОТО",
+      "diamond": "АЛМАЗ",
+      "enterprise": "ПРЕДПРИЯТИЕ"
+    },
+    "actions": {
+      "currentPlan": "Текущий план",
+      "contactSales": "Свяжитесь с отделом продаж",
+      "notAvailable": "Нет в наличии",
+      "requestUpgrade": "Запросить обновление"
+    },
+    "plans": {
+      "free": {
+        "title": "Бесплатно",
+        "description": "Для тестирования Dasres и начала базовой торговой деятельности.",
+        "price": "$0",
+        "features": {
+          "activeCases": "3 активных торговых дела",
+          "proposals": "5 предложений",
+          "companyProfile": "Основной профиль компании",
+          "expertProfile": "Базовый экспертный профиль"
+        }
+      },
+      "gold": {
+        "title": "Золото",
+        "description": "Для растущих команд, которым требуется больше прозрачности и возможностей.",
+        "price": "29 $/мес.",
+        "features": {
+          "activeCases": "20 активных торговых дел",
+          "proposals": "20 предложений",
+          "badge": "Золотой значок",
+          "priorityListing": "Приоритетный листинг"
+        }
+      },
+      "diamond": {
+        "title": "Алмаз",
+        "description": "Для серьезных провайдеров и постоянных торговых операторов.",
+        "price": "99 $/мес.",
+        "features": {
+          "activeCases": "Неограниченное количество активных торговых случаев",
+          "proposals": "Неограниченные предложения",
+          "badge": "Бриллиантовый значок",
+          "featuredListing": "Рекомендуемый список"
+        }
+      },
+      "enterprise": {
+        "title": "Предприятие",
+        "description": "Для крупных торговых компаний, агентств и коллективов предприятий.",
+        "price": "Индивидуальные цены",
+        "features": {
+          "activeCases": "Неограниченное количество активных торговых случаев",
+          "proposals": "Неограниченные предложения",
+          "badge": "Значок предприятия",
+          "visibility": "Высочайшая видимость",
+          "accountManager": "Будущий доступ менеджера по работе с клиентами"
+        }
+      }
+    },
+    "upgradeNotice": {
+      "title": "Нужен более высокий план?",
+      "description": "Платежи еще не активны. На данный момент администраторы могут вручную обновлять планы пользователей из панели управления пользователями.",
+      "back": "Вернуться к панели управления"
+    }
+  },
+  "dashboardVerifications": {
+    "title": "Верификационный центр",
+    "description": "Просматривайте и управляйте запросами на проверку компаний и экспертов.",
+    "created": "Создано: {date}",
+    "stats": {
+      "pending": {
+        "title": "В ожидании",
+        "description": "Компании + Эксперты"
+      },
+      "verified": {
+        "title": "Проверено",
+        "description": "Утвержденные профили"
+      },
+      "rejected": {
+        "title": "Отклоненный",
+        "description": "Отклоненные профили"
+      }
+    },
+    "companies": {
+      "title": "Ожидающие компании",
+      "description": "Профили компаний ждут рассмотрения администратором.",
+      "empty": "Нет незавершенных компаний."
+    },
+    "experts": {
+      "title": "Ожидаемые эксперты",
+      "description": "Профили экспертов ждут рассмотрения администратором.",
+      "empty": "Ожидаемых экспертов нет."
+    },
+    "plans": {
+      "free": "БЕСПЛАТНО",
+      "gold": "ЗОЛОТО",
+      "diamond": "АЛМАЗ",
+      "enterprise": "ПРЕДПРИЯТИЕ"
+    }
+  },
+  "publicCompanyProfile": {
+    "categories": {
+      "general": "Общий",
+      "customsClearance": "Таможенное оформление",
+      "shipping": "Перевозки",
+      "inspection": "Инспекция",
+      "insurance": "Страхование",
+      "sourcing": "Поиск",
+      "documentation": "Документация",
+      "payment": "Оплата"
+    },
+    "countries": {
+      "iran": "Иран"
+    },
+    "metadata": {
+      "notFoundTitle": "Компания не найдена",
+      "notFoundDescription": "Запрошенный профиль компании не найден.",
+      "description": "{name} — это компания {category}, расположенная в {country}."
+    },
+    "notFound": "Компания не найдена",
+    "backToCompanies": "← Назад к Компании",
+    "statusLabel": "Статус",
+    "statuses": {
+      "active": "Активный",
+      "inactive": "Неактивный",
+      "open": "Открыть",
+      "pending": "В ожидании",
+      "verified": "Проверено",
+      "rejected": "Отклоненный",
+      "completed": "Завершенный",
+      "inProgress": "В ходе выполнения"
+    },
+    "verificationStatuses": {
+      "verified": "Проверено",
+      "pending": "В ожидании",
+      "rejected": "Отклоненный"
+    },
+    "verificationBadges": {
+      "verified": "Проверено",
+      "pending": "Ожидает проверки",
+      "rejected": "Отклоненный"
+    },
+    "plans": {
+      "free": "Бесплатно",
+      "gold": "Золото",
+      "diamond": "Алмаз",
+      "enterprise": "Предприятие"
+    },
+    "metrics": {
+      "trustScore": "Оценка доверия",
+      "rating": "Рейтинг",
+      "reviews": "Отзывы",
+      "verification": "Проверка",
+      "country": "Страна"
+    },
+    "companyRating": "Рейтинг компании",
+    "basedOnReviews": "На основе обзоров {count}",
+    "trustScoreValue": "Оценка доверия: {score}/100",
+    "completedCasesValue": "{count} завершенные торговые дела",
+    "companyDescription": "Описание компании",
+    "recentReviews": "Недавние обзоры",
+    "noReviews": "Пока нет отзывов.",
+    "noCommentProvided": "Комментарий не предоставлен.",
+    "notAvailable": "N/A",
+    "notProvided": "Не предусмотрено",
+    "companyInformation": "Информация о компании",
+    "fields": {
+      "email": "Электронная почта",
+      "website": "Веб-сайт",
+      "country": "Страна",
+      "category": "Категория",
+      "reputation": "Репутация"
+    },
+    "ratingWithReviews": "{rating}/5 (отзывов: {count})",
+    "sendEmail": "Отправить электронное письмо",
+    "visitWebsite": "Посетите веб-сайт",
+    "relatedExperts": {
+      "title": "Соответствующие эксперты",
+      "empty": "Соответствующие эксперты не найдены.",
+      "verified": "Проверенный эксперт"
+    },
+    "verificationStatus": "Статус проверки",
+    "editCompany": "Редактировать компанию",
+    "schema": {
+      "status": "Статус",
+      "category": "Категория"
+    }
+  },
+  "publicExpertProfile": {
+    "metadata": {
+      "notFoundTitle": "Эксперт не найден",
+      "notFoundDescription": "Запрошенный профиль эксперта не найден.",
+      "description": "{name} — специалист по {specialty} из {country}, представленный на Dasres."
+    },
+    "notFound": "Эксперт не найден",
+    "backToExperts": "← Назад к Эксперты",
+    "plans": {
+      "free": "Бесплатно",
+      "gold": "Золото",
+      "diamond": "Алмаз",
+      "enterprise": "Предприятие"
+    },
+    "statuses": {
+      "active": "Активный",
+      "inactive": "Неактивный",
+      "pending": "В ожидании",
+      "verified": "Проверено",
+      "rejected": "Отклоненный",
+      "suspended": "Приостановленный"
+    },
+    "metrics": {
+      "trustScore": "Оценка доверия",
+      "rating": "Рейтинг",
+      "reviews": "Отзывы",
+      "specialty": "Специальность",
+      "country": "Страна"
+    },
+    "experience": "Опыт",
+    "recentReviews": "Недавние обзоры",
+    "noReviews": "Пока нет отзывов.",
+    "anonymousUser": "Анонимный пользователь",
+    "noCommentProvided": "Комментарий не предоставлен.",
+    "contactExpert": "Связаться с экспертом",
+    "fields": {
+      "email": "Электронная почта",
+      "country": "Страна",
+      "specialty": "Специальность",
+      "reputation": "Репутация"
+    },
+    "ratingWithReviews": "{rating}/5 (отзывов: {count})",
+    "completedCases": "Завершенные дела",
+    "sendEmail": "Отправить электронное письмо",
+    "relatedCompanies": {
+      "title": "Связанные компании",
+      "empty": "Связанных компаний не найдено.",
+      "verified": "Проверено"
+    },
+    "adminActions": "Действия администратора",
+    "editExpert": "Редактировать эксперта",
+    "reviewNotice": "Рейтинги и обзоры собираются только по завершенным торговым делам.",
+    "notAvailable": "N/A"
+  },
+  "publicOpportunityProfile": {
+    "metadata": {
+      "notFoundTitle": "Возможность не найдена",
+      "notFoundDescription": "Запрошенная возможность не найдена."
+    },
+    "notFound": "Возможность не найдена",
+    "backToOpportunities": "← Назад к Возможности",
+    "tradeOpportunity": "Торговые возможности",
+    "statuses": {
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "closed": "Закрыто"
+    },
+    "metrics": {
+      "status": "Статус",
+      "country": "Страна",
+      "visibility": "Видимость",
+      "platform": "Платформа",
+      "category": "Категория",
+      "trust": "Доверять"
+    },
+    "values": {
+      "public": "Общественный",
+      "trade": "Торговля",
+      "verified": "Проверено"
+    },
+    "opportunityDescription": "Описание возможности",
+    "howToRespond": {
+      "title": "Как реагировать",
+      "review": {
+        "title": "Обзор",
+        "description": "Внимательно прочтите полные требования к возможностям."
+      },
+      "contact": {
+        "title": "Контакт",
+        "description": "Свяжитесь с нами через Dasres или по указанным контактным данным."
+      },
+      "collaborate": {
+        "title": "Сотрудничать",
+        "description": "Постройте надежное международное торговое партнерство."
+      }
+    },
+    "editOpportunity": "Изменить возможность",
+    "summary": {
+      "title": "Краткое описание возможностей",
+      "country": "Страна",
+      "status": "Статус",
+      "type": "Тип"
+    },
+    "actions": {
+      "openTradeCase": "Открытое торговое дело",
+      "findCompanies": "Найти компании",
+      "findExperts": "Найдите экспертов"
+    },
+    "relatedCompanies": {
+      "title": "Связанные компании",
+      "empty": "Для этой страны пока не найдено проверенных компаний.",
+      "verified": "Проверенная компания"
+    },
+    "relatedExperts": {
+      "title": "Соответствующие эксперты",
+      "empty": "Для этой страны проверенных экспертов пока не найдено.",
+      "verified": "Проверенный эксперт"
+    },
+    "trustNotice": {
+      "title": "Уведомление о доверительном управлении",
+      "description": "Всегда проверяйте детали сделки, документы и контрагентов перед заключением любого коммерческого соглашения."
+    }
+  },
+  "dashboardTopCompanies": {
+    "title": "Компании с самым высоким рейтингом",
+    "description": "Рейтинг компаний основан на проверке, рейтинге доверия и отзывах.",
+    "empty": "Компании не найдены.",
+    "verified": "Проверено",
+    "notAvailable": "N/A",
+    "metrics": {
+      "trust": "Доверять",
+      "rating": "Рейтинг",
+      "reviews": "Отзывы"
+    },
+    "plans": {
+      "free": "БЕСПЛАТНО",
+      "gold": "ЗОЛОТО",
+      "diamond": "АЛМАЗ",
+      "enterprise": "ПРЕДПРИЯТИЕ"
+    }
+  },
+  "topExperts": {
+    "title": "Эксперты с самым высоким рейтингом",
+    "description": "Рейтинг экспертов на основе проверки, оценки доверия и отзывов.",
+    "empty": "Экспертов не найдено.",
+    "verified": "Проверено",
+    "trust": "Доверять",
+    "rating": "Рейтинг",
+    "reviews": "Отзывы",
+    "notAvailable": "N/A",
+    "plans": {
+      "FREE": "Бесплатно",
+      "GOLD": "Золото",
+      "DIAMOND": "Алмаз",
+      "ENTERPRISE": "Предприятие"
+    }
+  },
+  "publicExperts": {
+    "eyebrow": "Проверенная экспертная сеть",
+    "title": "Найдите надежных торговых экспертов",
+    "description": "Свяжитесь с проверенными специалистами в области международной торговли в сфере таможни, снабжения, логистики, инспекции и глобальных бизнес-услуг.",
+    "notAvailable": "N/A",
+    "featured": {
+      "title": "Рекомендуемый эксперт",
+      "empty": "Ни один избранный эксперт в настоящее время не доступен.",
+      "viewProfile": "Посмотреть профиль"
+    },
+    "metrics": {
+      "trust": "Доверять",
+      "rating": "Рейтинг",
+      "reviews": "Отзывы"
+    },
+    "statistics": {
+      "total": "Всего экспертов",
+      "verified": "Проверенные эксперты",
+      "rated": "Рейтинг экспертов"
+    },
+    "pagination": {
+      "previous": "Предыдущий",
+      "next": "Следующий",
+      "page": "Страница {current} из {total}"
+    }
+  },
+  "myReviews": {
+    "title": "Мои отзывы",
+    "description": "Просмотрите отзывы, которые вы получили, и отзывы, которые вы отправили.",
+    "fallbackUser": "Пользователь",
+    "ratingOutOfFive": "{rating}/5",
+    "statistics": {
+      "averageRating": "Средний рейтинг",
+      "received": "Полученные отзывы",
+      "given": "Отзывы предоставлены",
+      "basedOn": "На основе {count} получены отзывы"
+    },
+    "received": {
+      "title": "Отзывы, которые я получил",
+      "empty": "Вы еще не получили ни одного отзыва.",
+      "from": "От {name}"
+    },
+    "given": {
+      "title": "Отзывы, которые я дал",
+      "empty": "Вы еще не отправили ни одного отзыва.",
+      "to": "К {name}"
+    }
+  },
+  "dashboardExpertProfile": {
+    "notFound": "Эксперт не найден.",
+    "backToExperts": "← Назад к Эксперты",
+    "notAvailable": "N/A",
+    "experience": "Опыт",
+    "reviewNotice": "Отзывы могут быть отправлены только после завершения торгового дела.",
+    "trustScoreValue": "{score}/{maximum}",
+    "metadata": {
+      "notFoundTitle": "Эксперт не найден",
+      "notFoundDescription": "Запрошенный профиль эксперта не найден.",
+      "title": "{name} | {specialty}",
+      "description": "{name} — эксперт по {specialty} из {country}. Ознакомьтесь с профилем эксперта на Dasres."
+    },
+    "plans": {
+      "free": "Бесплатно",
+      "gold": "Золото",
+      "diamond": "Алмаз",
+      "enterprise": "Предприятие"
+    },
+    "statuses": {
+      "active": "Активный",
+      "inactive": "Неактивный",
+      "pending": "В ожидании",
+      "verified": "Проверено",
+      "rejected": "Отклоненный"
+    },
+    "metrics": {
+      "trustScore": "Оценка доверия",
+      "rating": "Рейтинг",
+      "reviews": "Отзывы",
+      "specialty": "Специальность",
+      "country": "Страна"
+    },
+    "recentReviews": {
+      "title": "Недавние обзоры",
+      "empty": "Пока нет отзывов.",
+      "fallbackUser": "Пользователь",
+      "noComment": "Комментарий не предоставлен.",
+      "rating": "{rating}/{maximum}"
+    },
+    "contact": {
+      "title": "Связаться с экспертом",
+      "email": "Электронная почта",
+      "country": "Страна",
+      "specialty": "Специальность",
+      "reputation": "Репутация",
+      "trustScore": "Оценка доверия",
+      "completedCases": "Завершенные дела",
+      "sendEmail": "Отправить электронное письмо",
+      "noReviews": "Пока нет отзывов",
+      "reputationValue": "⭐ {rating} (отзывов: {count})"
+    },
+    "management": {
+      "title": "Действия руководства",
+      "edit": "Редактировать эксперта"
+    }
+  },
+  "rootMetadata": {
+    "siteName": "Dasres",
+    "title": "Dasres | Доверительная экосистема для глобальной торговли",
+    "description": "Dasres объединяет проверенные компании, проверенных экспертов и возможности международной торговли через одну платформу, основанную на конкретных случаях.",
+    "keywords": {
+      "dasres": "Dasres",
+      "experts": "торговые эксперты",
+      "companies": "проверенные компании",
+      "opportunities": "торговые возможности",
+      "trade": "международная торговля",
+      "business": "глобальная бизнес-платформа",
+      "international": "международная деловая сеть"
+    },
+    "openGraph": {
+      "title": "Dasres | Доверительная экосистема для глобальной торговли",
+      "description": "Откройте для себя проверенные компании, проверенных экспертов и возможности международной торговли на Dasres.",
+      "imageAlt": "Глобальная торговая платформа Dasres"
+    },
+    "twitter": {
+      "title": "Dasres | Доверительная экосистема для глобальной торговли",
+      "description": "Свяжитесь с проверенными компаниями и проверенными экспертами по международной торговле."
+    }
+  },
+  "publicCompanies": {
+    "eyebrow": "Проверенная сеть компаний",
+    "title": "Откройте для себя проверенные торговые компании",
+    "description": "Просмотрите проверенные международные компании, предоставляющие таможенные, транспортные, инспекционные, снабженческие, логистические и глобальные торговые услуги.",
+    "statistics": {
+      "total": "Всего компаний",
+      "verified": "Проверенные компании",
+      "rated": "Рейтинговые компании"
+    },
+    "pagination": {
+      "previous": "Предыдущий",
+      "next": "Следующий",
+      "page": "Страница {current} из {total}"
+    }
+  },
+  "publicOpportunities": {
+    "eyebrow": "Глобальная торговая площадка",
+    "title": "Откройте для себя международные возможности",
+    "description": "Изучите проверенные торговые возможности от компаний по всему миру, общайтесь с покупателями и поставщиками и расширяйте свой международный бизнес.",
+    "statistics": {
+      "total": "Всего возможностей",
+      "open": "Открытые возможности",
+      "countries": "Страны"
+    },
+    "pagination": {
+      "previous": "Предыдущий",
+      "next": "Следующий",
+      "page": "Страница {current} из {total}"
+    }
+  },
+  "companyVerificationButtons": {
+    "verify": "Проверять",
+    "reject": "Отклонять"
+  },
+  "verificationExpertActions": {
+    "verify": "Проверять",
+    "reject": "Отклонять"
+  },
+  "verificationCompanyActions": {
+    "verify": "Проверять",
+    "reject": "Отклонять"
+  },
+  "countryFilter": {
+    "allCountries": "Все страны"
+  },
+  "notFound": {
+    "label": "Страница не найдена",
+    "title": "Эта страница не существует.",
+    "description": "Страница, которую вы ищете, возможно, была перемещена, удалена или не существует в Dasres.",
+    "goHome": "Иди домой",
+    "goDashboard": "Перейти на панель управления"
+  },
+  "saveCaseButton": {
+    "saving": "Сохранение...",
+    "unsave": "Удалить сохранение",
+    "save": "☆ Сохранить дело"
+  },
+  "saveCompanyButton": {
+    "saved": "Сохранено ★",
+    "save": "Сохрани ☆"
+  },
+  "saveExpertButton": {
+    "saved": "Сохранено ★",
+    "save": "Сохрани ☆"
+  },
+  "dashboardOpportunityDetail": {
+    "backToDashboardOpportunities": "← Назад к Возможности информационной панели",
+    "tradeOpportunity": "Торговые возможности",
+    "globalMarketplace": "Глобальный рынок",
+    "status": "Статус",
+    "country": "Страна",
+    "visibility": "Видимость",
+    "dashboard": "Панель управления",
+    "opportunityDescription": "Описание возможности",
+    "adminActions": "Действия администратора",
+    "editOpportunity": "Изменить возможность",
+    "opportunitySummary": "Краткое описание возможностей",
+    "type": "Тип",
+    "viewPublicPage": "Просмотреть общедоступную страницу",
+    "backToManagement": "Вернуться к управлению",
+    "adminNote": "Примечание администратора",
+    "adminNoteDescription": "Эта страница используется для управления торговыми возможностями внутри панели управления. Публичные посетители видят отдельную страницу публичных возможностей.",
+    "statuses": {
+      "open": "Открыть",
+      "inProgress": "В ходе выполнения",
+      "closed": "Закрыто"
+    }
+  },
+  "ticketCategories": {
+    "general": "Общий",
+    "technical": "Технический",
+    "billing": "Биллинг",
+    "support": "Поддерживать"
+  },
+  "statuses": {
+    "open": "Открыть",
+    "in_progress": "В ходе выполнения",
+    "completed": "Завершенный",
+    "cancelled": "Отменено",
+    "pending": "В ожидании",
+    "accepted": "Принял",
+    "rejected": "Отклоненный",
+    "active": "Активный",
+    "on_hold": "На удерживании",
+    "todo": "Сделать",
+    "review": "Обзор"
+  },
+  "categories": {
+    "general": "Общий",
+    "customs_clearance": "Таможенное оформление",
+    "shipping": "Перевозки",
+    "inspection": "Инспекция",
+    "insurance": "Страхование",
+    "sourcing": "Поиск",
+    "documentation": "Документация",
+    "payment": "Оплата"
+  },
+  "plans": {
+    "free": "Бесплатно",
+    "gold": "Золото",
+    "diamond": "Алмаз",
+    "enterprise": "Предприятие"
+  },
+  "verification": {
+    "pending": "В ожидании",
+    "verified": "Проверено",
+    "rejected": "Отклоненный"
   }
 }

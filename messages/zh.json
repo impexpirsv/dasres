@@ -1,9 +1,3158 @@
 {
   "common": {
-    "appName": "Dasres",
-    "dashboard": "控制面板",
+    "years": "{count}年",
+    "hours": "小时",
+    "countries": {
+      "iran": "伊朗",
+      "uae": "阿拉伯联合酋长国",
+      "UAE": "阿拉伯联合酋长国",
+      "china": "中国",
+      "Iran": "伊朗"
+    },
+    "categories": {
+      "General": "一般的",
+      "Shipping": "船运",
+      "Inspection": "检查",
+      "Customs Clearance": "报关",
+      "customs_clearance": "报关",
+      "shipping": "船运",
+      "inspection": "检查",
+      "insurance": "保险",
+      "sourcing": "采购"
+    },
+    "specialties": {
+      "Shipping": "船运",
+      "Inspection": "检查",
+      "clearance": "报关",
+      "clearence": "报关",
+      "Customs Clearance": "报关",
+      "ticket_general": "一般的",
+      "ticket_technical": "技术的",
+      "ticket_billing": "计费",
+      "ticket_support": "支持"
+    }
+  },
+  "navbar": {
+    "home": "家",
+    "experts": "专家",
+    "companies": "公司",
+    "opportunities": "机会",
+    "topExperts": "顶尖专家",
+    "topCompanies": "顶级公司",
+    "dashboard": "仪表板",
+    "login": "登录",
+    "join": "加入",
+    "joinDasres": "加入Dasres",
+    "tagline": "全球贸易信任生态系统",
+    "toggleMenu": "切换菜单"
+  },
+  "hero": {
+    "platformValue": "全球贸易网络",
+    "eyebrow": "经过验证的全球 B2B 服务贸易网络",
+    "titleLine1": "建立信任",
+    "titleLine2": "全球贸易",
+    "description": "Dasres 通过一个基于案例的国际业务平台将经过验证的公司、值得信赖的专家和贸易机会联系起来。",
+    "join": "加入Dasres",
+    "exploreExperts": "探索专家",
+    "browseCompanies": "浏览公司",
+    "liveCaseLabel": "现场交易案例",
+    "liveCaseTitle": "阿联酋清关",
+    "verified": "已验证",
+    "proposals": "提案",
+    "trust": "相信",
+    "status": "地位",
+    "inProgress": "进行中",
+    "topCompany": "顶级公司",
+    "topExpert": "顶级专家",
+    "customsClearance": "报关",
+    "tradeConsultant": "贸易顾问",
+    "rating": "{value} 评级"
+  },
+  "liveStats": {
+    "eyebrow": "实时平台指标",
+    "title": "Dasres 实时活动",
+    "verifiedCompanies": "已验证公司",
+    "trustedExperts": "值得信赖的专家",
+    "tradeOpportunities": "贸易机会",
+    "tradeCases": "贸易案例",
+    "caseSuccessRate": "案件成功率"
+  },
+  "topRatedShowcase": {
+    "eyebrow": "信任网络",
+    "titleLine1": "经过验证的提供商。",
+    "titleLine2": "按信任度排名。",
+    "description": "Dasres 使用验证、评级、评论和信任评分来突出显示公司和专家，以便贸易团队可以自信地比较提供商。",
+    "verifiedProfiles": "已验证的个人资料",
+    "reviewHistory": "回顾历史",
+    "trustScoring": "信任评分",
+    "topCompany": "顶级公司",
+    "topExpert": "顶级专家",
+    "verified": "已验证",
+    "trust": "相信",
+    "rating": "等级",
+    "reviews": "评论",
+    "noReviews": "没有评论",
+    "viewCompany": "查看公司",
+    "viewExpert": "查看专家"
+  },
+  "services": {
+    "eyebrow": "平台工作流程",
+    "titleLine1": "从请求到",
+    "titleLine2": "值得信赖的交付。",
+    "description": "Dasres 不仅仅是一个目录。它是一个基于案例的国际贸易服务、建议、文件、沟通和声誉的操作层。",
+    "unifiedWorkflow": "统一工作流程",
+    "caseVisibility": "案例可见度",
+    "steps": {
+      "createCase": {
+        "title": "创建贸易案例",
+        "description": "提交您的贸易请求，其中包含类别、范围和服务详细信息。"
+      },
+      "matchProviders": {
+        "title": "与供应商匹配",
+        "description": "Dasres 将案例按类别连接到经过验证的公司和专家。"
+      },
+      "receiveProposals": {
+        "title": "接收提案",
+        "description": "比较价格、消息、提供商简介、验证和声誉。"
+      },
+      "assignWinner": {
+        "title": "指定获胜者",
+        "description": "接受一项提案，拒绝其余提案并启动活动案例工作流程。"
+      },
+      "manageDelivery": {
+        "title": "管理交付",
+        "description": "将消息、文档、时间线步骤和活动日志保存在一处。"
+      },
+      "completeReview": {
+        "title": "完成并审核",
+        "description": "结案、提交评论并为未来的项目建立信任。"
+      }
+    }
+  },
+  "expertsSection": {
+    "eyebrow": "专家网络",
+    "title": "特邀专家",
+    "description": "与海关、采购、物流、检验和贸易咨询领域经过验证的国际贸易专业人士建立联系。",
+    "viewAll": "查看全部",
+    "verified": "已验证",
+    "available": "可用的",
+    "viewProfile": "查看资料"
+  },
+  "companiesSection": {
+    "eyebrow": "公司网络",
+    "title": "特色公司",
+    "description": "发现经过认证的清关、运输、采购、检验和国际物流贸易公司。",
+    "viewAll": "查看全部",
+    "verified": "已验证",
+    "acceptingProjects": "接受项目",
+    "viewProfile": "查看资料"
+  },
+  "opportunitiesSection": {
+    "eyebrow": "全球市场",
+    "title": "最新贸易机会",
+    "description": "浏览国际贸易请求，发现新的商机并与世界各地经过验证的供应商建立联系。",
+    "viewAll": "查看全部",
+    "statusOpen": "打开",
+    "openOpportunity": "开放机会",
+    "viewDetails": "查看详情",
+    "empty": "目前没有机会。"
+  },
+  "footer": {
+    "ctaEyebrow": "准备好自信地管理贸易了吗？",
+    "ctaTitle": "开始您的第一个 Dasres 贸易案例。",
+    "ctaDescription": "在一个可信的工作流程中创建案例、比较经过验证的提供商并管理提案、文档和通信。",
+    "createCase": "创建案例",
+    "exploreNetwork": "探索网络",
+    "description": "基于案例的国际贸易服务信任生态系统、经过验证的提供商、建议、文件和声誉。",
+    "platformTitle": "平台",
+    "networkTitle": "网络",
+    "trustSignalsTitle": "信任信号",
+    "companies": "公司",
+    "experts": "专家",
+    "opportunities": "机会",
+    "dashboard": "仪表板",
+    "topCompanies": "顶级公司",
+    "topExperts": "顶尖专家",
+    "openCases": "开放案例",
+    "supportTickets": "支持票",
+    "verifiedCompanies": "经过验证的公司",
+    "trustedExperts": "值得信赖的专家",
+    "proposalWorkflow": "提案工作流程",
+    "reviewsReputation": "评论和声誉",
+    "copyright": "© {year} Dasres。版权所有。",
+    "languagesAvailable": "有 12 种语言版本"
+  },
+  "dashboardSidebar": {
+    "tagline": "全球贸易信任生态系统",
+    "menu": "菜单",
+    "sections": {
+      "main": "主要的",
+      "tradeManagement": "贸易管理",
+      "ownership": "所有权",
+      "admin": "行政",
+      "communication": "沟通",
+      "subscription": "订阅",
+      "account": "帐户"
+    },
+    "links": {
+      "dashboard": "仪表板",
+      "globalSearch": "全球搜索",
+      "experts": "专家",
+      "topExperts": "顶尖专家",
+      "companies": "公司",
+      "topCompanies": "顶级公司",
+      "opportunities": "机会",
+      "submittedCases": "提交案例",
+      "activeWorkspaces": "活跃的工作空间",
+      "projects": "项目",
+      "myTasks": "我的任务",
+      "myProposals": "我的建议",
+      "myReviews": "我的评论",
+      "openCases": "开放案例",
+      "savedCases": "已保存案例",
+      "savedCompanies": "已保存的公司",
+      "savedExperts": "已保存的专家",
+      "tickets": "门票",
+      "myCompanies": "我的公司",
+      "myExperts": "我的专家",
+      "users": "用户",
+      "verifications": "验证",
+      "notifications": "通知",
+      "subscription": "订阅",
+      "settings": "设置",
+      "logout": "退出"
+    },
+    "premium": {
+      "title": "高级功能",
+      "description": "计划、限制和可见性"
+    }
+  },
+  "dashboardQuickActions": {
+    "title": "快速行动",
+    "description": "常用快捷键",
+    "createCase": {
+      "title": "创建案例",
+      "description": "启动一个新的国际贸易项目。"
+    },
+    "openCases": {
+      "title": "开放案例",
+      "description": "浏览可用的贸易请求。"
+    },
+    "myCompanies": {
+      "title": "我的公司",
+      "description": "管理您的公司资料。"
+    },
+    "myExperts": {
+      "title": "我的专家",
+      "description": "管理您的专家档案。"
+    }
+  },
+  "dashboardAttention": {
+    "title": "需要您的关注",
+    "description": "需要审查的重要事项",
+    "unreadNotifications": "未读通知",
+    "openTickets": "公开门票",
+    "openCases": "开放案例",
+    "myProposals": "我的建议"
+  },
+  "dashboardAnalytics": {
+    "title": "分析概述",
+    "description": "经营业绩总结",
+    "casePipeline": {
+      "title": "案例管道",
+      "open": "打开",
+      "inProgress": "进行中",
+      "completed": "完全的"
+    },
+    "proposalPerformance": {
+      "title": "提案绩效",
+      "description": "接受率基于接受和拒绝的提案。",
+      "accepted": "公认",
+      "rejected": "被拒绝"
+    },
+    "platformAttention": {
+      "title": "平台关注",
+      "notifications": "通知",
+      "tickets": "门票",
+      "reviews": "评论",
+      "saved": "已保存"
+    }
+  },
+  "dashboardOverdueTasks": {
+    "title": "逾期任务",
+    "empty": {
+      "title": "无逾期任务",
+      "description": "一切都按计划进行。"
+    },
+    "dueDate": "到期时间：{date}"
+  },
+  "dashboardSubscriptionWidget": {
+    "currentPlan": "当前计划",
+    "managePlan": "管理计划",
+    "activeCases": "现有病例",
+    "proposals": "提案",
+    "usageLimited": "{used} / {limit}",
+    "usageUnlimited": "{used} / 无限"
+  },
+  "dashboardStatsGrid": {
+    "savedCases": {
+      "title": "已保存案例",
+      "description": "保存供以后使用的案例"
+    },
+    "savedCompanies": {
+      "title": "已保存的公司",
+      "description": "您网络中的公司"
+    },
+    "savedExperts": {
+      "title": "已保存的专家",
+      "description": "您网络中的专家"
+    },
+    "experts": {
+      "adminTitle": "专家",
+      "userTitle": "我的专家",
+      "adminDescription": "经过验证的专家可用",
+      "userDescription": "您拥有的专家"
+    },
+    "companies": {
+      "adminTitle": "公司",
+      "userTitle": "我的公司",
+      "adminDescription": "注册公司",
+      "userDescription": "您拥有的公司"
+    },
+    "opportunities": {
+      "title": "机会",
+      "description": "活跃的贸易机会"
+    },
+    "successRate": {
+      "title": "案件成功率",
+      "description": "已完成 {completed}/{total} 个案件"
+    },
+    "tradeCases": {
+      "title": "贸易案例",
+      "adminDescription": "所有贸易项目",
+      "userDescription": "提交的交易请求"
+    },
+    "openCases": {
+      "title": "开放案例",
+      "description": "可用机会"
+    },
+    "inProgress": {
+      "title": "进行中",
+      "description": "活跃的贸易项目"
+    },
+    "completed": {
+      "title": "完全的",
+      "description": "已完成项目"
+    },
+    "proposals": "提案",
+    "accepted": "公认",
     "notifications": "通知",
-    "settings": "设置",
-    "logout": "退出登录"
+    "openTickets": "公开门票"
+  },
+  "dashboardMyTasksWidget": {
+    "title": "我分配的任务",
+    "viewAll": "查看全部",
+    "empty": "没有分配的任务。",
+    "status": {
+      "TODO": "待办事项",
+      "IN_PROGRESS": "进行中",
+      "REVIEW": "审查",
+      "COMPLETED": "完全的"
+    }
+  },
+  "dashboardTopRated": {
+    "countries": {
+      "iran": "伊朗",
+      "uae": "阿联酋",
+      "china": "中国"
+    },
+    "categories": {
+      "shipping": "船运",
+      "customs_clearance": "报关",
+      "inspection": "检查",
+      "insurance": "保险",
+      "sourcing": "采购"
+    },
+    "viewAll": "查看全部",
+    "reviewCount": "基于 {count, plural, one {# 评论} other {# 评论}}",
+    "experts": {
+      "title": "最受好评的专家",
+      "empty": "尚无评级专家。"
+    },
+    "companies": {
+      "title": "评级最高的公司",
+      "empty": "尚未评级公司。"
+    }
+  },
+  "dashboardLatestItems": {
+    "viewAll": "查看全部",
+    "experts": {
+      "adminTitle": "最新专家",
+      "userTitle": "我的最新专家",
+      "empty": "没有找到专家。"
+    },
+    "companies": {
+      "adminTitle": "最新公司",
+      "userTitle": "我最新的公司",
+      "empty": "没有找到公司。"
+    },
+    "opportunities": {
+      "title": "最新机会",
+      "empty": "没有找到机会。"
+    },
+    "statuses": {
+      "open": "打开",
+      "closed": "关闭",
+      "pending": "待办的"
+    }
+  },
+  "dashboardRecentActivity": {
+    "title": "最近的活动",
+    "empty": "未发现任何活动。",
+    "system": "系统",
+    "actions": {
+      "proposalSubmitted": "提案已提交",
+      "proposalAccepted": "提案已被接受",
+      "proposalRejected": "提案被拒绝",
+      "caseCompleted": "案件已完成",
+      "projectCompleted": "项目已完成",
+      "documentUploaded": "文件已上传",
+      "projectTaskAttachmentUploaded": "项目任务附件已上传",
+      "documentApproved": "文件已批准",
+      "documentRejected": "文件被拒绝",
+      "messageSent": "消息已发送",
+      "projectMessageSent": "项目消息已发送",
+      "taskCommentAdded": "已添加任务评论",
+      "taskAssigned": "分配的任务",
+      "taskCompleted": "任务完成",
+      "ticketUpdated": "票证已更新",
+      "companyVerified": "公司已验证",
+      "companyRejected": "公司被拒绝",
+      "projectTaskUpdated": "项目任务已更新",
+      "projectTaskStatusUpdated": "项目任务状态已更新",
+      "projectTaskChecklistToggled": "项目任务清单已更新"
+    },
+    "details": {
+      "projectTaskStatusUpdated": "任务“{title}”状态更改为 {status}。",
+      "projectTaskAttachmentUploaded": "附件{file}已上传。",
+      "projectTaskUpdated": "项目任务“{title}”已更新。",
+      "projectTaskChecklistToggled": "检查清单项目“{item}”已更改。",
+      "projectTaskStatusUpdatedPrefix": "项目任务状态更新：",
+      "attachmentUploadedPrefix": "附件已上传：",
+      "projectTaskUpdatedPrefix": "项目任务更新："
+    },
+    "checklist": {
+      "completed": "完全的",
+      "incomplete": "不完整"
+    },
+    "statuses": {
+      "todo": "待办事项",
+      "in_progress": "进行中",
+      "review": "审查",
+      "completed": "完全的"
+    }
+  },
+  "dashboardProfileCard": {
+    "title": "用户资料",
+    "name": "姓名",
+    "email": "电子邮件",
+    "role": "角色",
+    "roles": {
+      "admin": "行政",
+      "user": "用户"
+    }
+  },
+  "dashboardPage": {
+    "title": "仪表板",
+    "badge": "业务管理面板",
+    "description": "管理您的 Dasres 帐户、个人资料和交易活动。",
+    "roles": {
+      "admin": "行政",
+      "user": "用户"
+    },
+    "admin": {
+      "title": "系统管理",
+      "commandCenter": "管理指挥中心",
+      "description": "Dasres平台运行状况概览",
+      "reviewVerifications": "审核验证",
+      "pendingVerifications": "待验证",
+      "totalReviews": "总评论",
+      "reviews": "评论",
+      "premiumUsers": "高级用户",
+      "openTickets": "公开门票",
+      "panel": "管理面板",
+      "users": "用户",
+      "experts": "专家",
+      "companies": "公司",
+      "opportunities": "机会",
+      "latestUsers": "最新用户",
+      "manageUsers": "管理用户"
+    }
+  },
+  "loginPage": {
+    "title": "欢迎回来",
+    "description": "登录您的 Dasres 帐户",
+    "email": "电子邮件",
+    "password": "密码",
+    "login": "登录",
+    "loginFailed": "登录失败。"
+  },
+  "registerPage": {
+    "title": "加入Dasres",
+    "description": "创建您的帐户",
+    "name": {
+      "label": "姓名",
+      "placeholder": "输入您的全名"
+    },
+    "email": {
+      "label": "电子邮件",
+      "placeholder": "输入您的电子邮件地址"
+    },
+    "password": {
+      "label": "密码",
+      "placeholder": "输入您的密码",
+      "hint": "您的密码必须至少包含 6 个字符。"
+    },
+    "submit": "创建账户",
+    "submitting": "正在创建帐户...",
+    "registrationFailed": "帐户创建失败。",
+    "alreadyHaveAccount": "已经有帐户？",
+    "login": "登录"
+  },
+  "projectDetailPage": {
+    "backToProjects": "返回项目"
+  },
+  "projectHeader": {
+    "progress": "进步"
+  },
+  "projectTabs": {
+    "overview": "概述",
+    "tasks": "任务",
+    "board": "木板",
+    "calendar": "日历",
+    "gantt": "甘特图",
+    "workload": "工作量",
+    "documents": "文件",
+    "timeline": "时间轴",
+    "messages": "留言",
+    "activity": "活动"
+  },
+  "projectOverviewCards": {
+    "customer": "顾客",
+    "category": "类别",
+    "openTasks": "开放任务",
+    "completedTasks": "已完成的任务",
+    "steps": "步骤",
+    "completed": "完全的"
+  },
+  "projectTimeSummary": {
+    "title": "时间追踪",
+    "description": "总体项目时间总结。",
+    "estimated": "估计的",
+    "logged": "已记录",
+    "remaining": "其余的",
+    "distribution": "时间分布"
+  },
+  "projectOverviewHeader": {
+    "description": "项目指挥中心包含任务、工作量、时间表、甘特图和执行跟踪。",
+    "overallProgress": "总体进展",
+    "status": {
+      "todo": "待办事项",
+      "pending": "待办的",
+      "open": "打开",
+      "inProgress": "进行中",
+      "review": "正在审核中",
+      "completed": "完全的",
+      "approved": "得到正式认可的",
+      "rejected": "被拒绝",
+      "closed": "关闭",
+      "active": "积极的",
+      "expired": "已到期",
+      "cancelled": "取消"
+    },
+    "metrics": {
+      "tasks": "任务",
+      "completed": "完全的",
+      "inProgress": "进行中",
+      "review": "审查",
+      "blocked": "被阻止",
+      "remaining": "其余的"
+    },
+    "hours": {
+      "estimated": "预计时间",
+      "logged": "记录时间",
+      "value": "{hours}h"
+    },
+    "features": {
+      "tasks": "任务",
+      "kanban": "看板",
+      "calendar": "日历",
+      "timeline": "时间轴",
+      "gantt": "甘特图",
+      "workload": "工作量"
+    }
+  },
+  "projectHealthCard": {
+    "title": "健康项目",
+    "progress": "进步",
+    "hoursUsed": "使用小时数",
+    "utilization": "利用率",
+    "overdue": "逾期",
+    "noEstimate": "没有估计",
+    "noOverdueTasks": "无逾期任务",
+    "overdueTasks": "{count} 任务"
+  },
+  "projectCriticalPathCard": {
+    "title": "关键路径",
+    "description": "可能直接延误项目进度的任务。",
+    "criticalTasks": "关键任务",
+    "criticalDuration": "临界持续时间",
+    "duration": "{count, plural, one {# 天} other {# 天}}",
+    "empty": "未检测到关键依赖性。",
+    "dependsOn": "取决于：{task}",
+    "critical": "批判的",
+    "pathStart": "关键路径开始"
+  },
+  "projectAIInsights": {
+    "title": "人工智能副驾驶见解",
+    "description": "基于规则的分析为未来的 GPT 集成做好准备。",
+    "healthScore": "人工智能健康评分",
+    "progressLabel": "进步：",
+    "health": {
+      "excellent": "出色的",
+      "stable": "稳定的",
+      "atRisk": "面临风险",
+      "critical": "批判的"
+    },
+    "risks": {
+      "title": "风险",
+      "overdueTasks": "{count, plural, one {#逾期任务} other {#逾期任务}}",
+      "blockedTasks": "{count, plural, one {# 阻塞任务} other {# 阻塞任务}}",
+      "pendingApprovals": "{count, plural, one {# 待批准} other {# 待批准}}"
+    },
+    "nextAction": "下一步行动",
+    "recommendation": "推荐",
+    "nextActions": {
+      "approveDocument": "批准{fileName}",
+      "resolveDependency": "解决 {taskTitle} 的依赖性",
+      "reviewOverdueTask": "审核逾期任务：{taskTitle}",
+      "continueExecution": "继续执行并关闭下一个任务",
+      "completionReview": "项目已准备好进行竣工审查"
+    },
+    "recommendations": {
+      "pendingApprovals": "文件审批是主要瓶颈。在发货或交付之前查看待处理的文件。",
+      "blockedTasks": "在开始下游执行之前解决任务依赖性。",
+      "overdueTasks": "进度风险正在增加。检查截止日期并重新分配延迟的任务。",
+      "normalProgress": "项目进展正常。持续监控文档和工作流程里程碑。"
+    }
+  },
+  "projectAIAssistant": {
+    "title": "Dasres人工智能",
+    "subtitle": "智能项目分析",
+    "risk": "风险",
+    "progress": "进步",
+    "aiSuggestions": "人工智能建议",
+    "riskLevels": {
+      "low": "低的",
+      "medium": "中等的",
+      "high": "高的"
+    },
+    "suggestions": {
+      "resolveBlocked": "解决阻塞的任务。",
+      "reviewOverdue": "审查逾期任务。",
+      "increasePace": "提高执行速度。",
+      "normal": "项目进展正常。"
+    }
+  },
+  "projectTasksSection": {
+    "title": "项目任务",
+    "description": "高效管理项目任务。",
+    "searchPlaceholder": "搜索任务...",
+    "searchLabel": "搜索项目任务",
+    "filteredCount": "{filtered} {total}",
+    "emptyState": "选择任务以查看详细信息。",
+    "noSearchResults": "没有任务符合您的搜索。"
+  },
+  "projectTaskList": {
+    "empty": "没有找到任务。",
+    "unassigned": "未分配",
+    "progress": "进步",
+    "progressLabel": "{title} 的进展",
+    "noDueDate": "无截止日期",
+    "priorities": {
+      "urgent": "紧迫的",
+      "high": "高的",
+      "medium": "中等的",
+      "low": "低的"
+    }
+  },
+  "projectTaskDetails": {
+    "emptyState": "选择任务以查看详细信息。",
+    "assignedTo": "分配给",
+    "unassigned": "未分配",
+    "startDate": "开始日期",
+    "dueDate": "到期日",
+    "noStartDate": "无开始日期",
+    "noDueDate": "无截止日期",
+    "progress": "进步",
+    "estimated": "估计的",
+    "logged": "已记录",
+    "remaining": "其余的",
+    "hours": "{count}h",
+    "notSet": "未设置",
+    "dependsOn": "取决于",
+    "blocks": "积木",
+    "attachments": "附件",
+    "uploadedBy": "由 {name} 上传",
+    "unknown": "未知",
+    "priorities": {
+      "urgent": "紧迫的",
+      "high": "高的",
+      "medium": "中等的",
+      "low": "低的"
+    },
+    "statuses": {
+      "todo": "托多",
+      "in_progress": "进行中",
+      "review": "审查",
+      "completed": "完全的"
+    }
+  },
+  "projectTaskStatusSelect": {
+    "label": "任务状态",
+    "updating": "正在更新状态...",
+    "updateError": "无法更新任务状态。",
+    "networkError": "更新状态时发生网络错误。",
+    "statuses": {
+      "todo": "托多",
+      "in_progress": "进行中",
+      "review": "审查",
+      "completed": "完全的"
+    }
+  },
+  "assignTaskSelect": {
+    "label": "分配任务",
+    "unassigned": "未分配",
+    "updating": "更新中...",
+    "updateError": "分配任务失败。",
+    "networkError": "分配任务时发生网络错误。"
+  },
+  "editProjectTaskForm": {
+    "edit": "编辑",
+    "title": "编辑任务",
+    "taskTitle": "任务标题",
+    "titleRequired": "任务标题为必填项。",
+    "description": "描述",
+    "descriptionPlaceholder": "添加任务描述...",
+    "priority": "优先事项",
+    "startDate": "开始日期",
+    "dueDate": "到期日",
+    "estimatedHours": "预计时间",
+    "estimatedHoursPlaceholder": "预计时间",
+    "loggedHours": "记录时间",
+    "loggedHoursPlaceholder": "记录时间",
+    "assignedTo": "分配给",
+    "unassigned": "未分配",
+    "dependsOn": "取决于",
+    "noDependency": "无依赖性",
+    "save": "节省",
+    "saving": "保存...",
+    "cancel": "取消",
+    "updateError": "无法更新任务。",
+    "networkError": "更新任务时发生网络错误。",
+    "invalidEstimatedHours": "估计小时数必须为零或更大。",
+    "invalidLoggedHours": "记录的小时数必须为零或更大。",
+    "priorities": {
+      "low": "低的",
+      "medium": "中等的",
+      "high": "高的",
+      "urgent": "紧迫的"
+    }
+  },
+  "projectTaskChecklist": {
+    "title": "清单",
+    "empty": "还没有清单项目。",
+    "updating": "更新中...",
+    "toggleError": "无法更新清单项目。",
+    "networkError": "更新清单项目时出现网络错误。",
+    "markComplete": "将 {title} 标记为完整",
+    "markIncomplete": "将 {title} 标记为不完整"
+  },
+  "createChecklistItemForm": {
+    "label": "清单项目标题",
+    "placeholder": "添加清单项目...",
+    "add": "添加",
+    "adding": "添加...",
+    "titleRequired": "清单项目标题为必填项。",
+    "createError": "无法添加清单项目。",
+    "invalidResponse": "清单项已创建，但服务器响应无效。",
+    "networkError": "添加清单项目时出现网络错误。"
+  },
+  "taskProgressBar": {
+    "title": "任务进度",
+    "ariaLabel": "任务进度",
+    "summary": "已完成 {completed}/{total} 个清单项"
+  },
+  "projectTaskComments": {
+    "title": "评论",
+    "empty": "还没有评论。",
+    "commentLabel": "评论",
+    "placeholder": "写评论...",
+    "postComment": "发表评论",
+    "posting": "发布...",
+    "edited": "已编辑",
+    "deletedComment": "该评论已被删除。",
+    "unknownAuthor": "未知",
+    "unknownDate": "日期未知",
+    "commentRequired": "需要评论。",
+    "createError": "无法发表评论。",
+    "networkError": "发表评论时发生网络错误。"
+  },
+  "projectTaskAttachmentUpload": {
+    "title": "附加文件",
+    "fileLabel": "选择一个文件",
+    "helpText": "支持的格式：JPG、PNG、WEBP、PDF、DOCX 和 XLSX。最大大小：10 MB。",
+    "fileSize": "{size} MB",
+    "upload": "上传",
+    "uploading": "正在上传...",
+    "clear": "清除",
+    "selectFile": "请选择一个文件。",
+    "invalidType": "不支持此文件类型。",
+    "fileTooLarge": "所选文件必须为 10 MB 或更小。",
+    "uploadError": "无法上传文件。",
+    "networkError": "上传文件时发生网络错误。"
+  },
+  "createProjectTaskForm": {
+    "newTask": "+ 新任务",
+    "modalTitle": "创建任务",
+    "taskTitle": "任务标题",
+    "taskTitlePlaceholder": "输入任务标题",
+    "description": "描述",
+    "descriptionPlaceholder": "说明（可选）",
+    "priority": "优先事项",
+    "startDate": "开始日期",
+    "dueDate": "到期日",
+    "createTask": "创建任务",
+    "creating": "创造...",
+    "cancel": "取消",
+    "titleRequired": "任务标题为必填项。",
+    "invalidDateRange": "截止日期不能早于开始日期。",
+    "createError": "无法创建任务。",
+    "networkError": "创建任务时发生网络错误。",
+    "priorities": {
+      "low": "低的",
+      "medium": "中等的",
+      "high": "高的",
+      "urgent": "紧迫的"
+    }
+  },
+  "projectBoard": {
+    "columns": {
+      "todo": "托多",
+      "inProgress": "进行中",
+      "review": "审查",
+      "completed": "完全的"
+    },
+    "emptyColumn": "没有任务",
+    "updateError": "无法更新任务状态。"
+  },
+  "kanbanColumn": {
+    "ariaLabel": "包含 {count} 任务的 {title} 列",
+    "taskCount": "{count} 任务"
+  },
+  "kanbanTaskCard": {
+    "assignee": "受让人",
+    "unassigned": "未分配",
+    "due": "到期的",
+    "noDueDate": "无截止日期",
+    "checklist": "清单",
+    "comments": "评论",
+    "files": "文件",
+    "dragLabel": "拖动任务 {title}",
+    "priorities": {
+      "low": "低的",
+      "medium": "中等的",
+      "high": "高的",
+      "urgent": "紧迫的"
+    }
+  },
+  "projectCalendarView": {
+    "title": "项目日历",
+    "description": "查看任务截止日期并移动任务以更新其截止日期。",
+    "noEvents": "没有计划任务。",
+    "updateError": "无法更新任务日期。",
+    "invalidTaskDate": "所选任务或日期无效。",
+    "buttons": {
+      "today": "今天",
+      "month": "月",
+      "week": "星期"
+    }
+  },
+  "projectGanttView": {
+    "title": "甘特图",
+    "description": "项目任务和依赖关系的可视化时间表。",
+    "emptyState": "甘特视图中没有显示日期的任务。",
+    "taskColumn": "任务",
+    "timeline": "时间轴",
+    "week": "星期",
+    "taskCount": "{count} 任务",
+    "critical": "批判的",
+    "blocked": "被阻止",
+    "dateRange": "{start} – {end}",
+    "zoom": {
+      "day": "天",
+      "week": "星期",
+      "month": "月"
+    },
+    "statuses": {
+      "todo": "托多",
+      "in_progress": "进行中",
+      "review": "审查",
+      "completed": "完全的",
+      "unknown": "未知"
+    },
+    "duration": {
+      "day": "{title} • {duration} 天",
+      "week": "{title} • {duration} 周",
+      "month": "{title} • {duration} 月份"
+    },
+    "tooltips": {
+      "baseline": "基线",
+      "dependencyInput": "输入依赖性",
+      "dependencyOutput": "输出依赖性",
+      "duration": {
+        "day": "持续时间：{duration} 天",
+        "week": "持续时间：{duration} 周",
+        "month": "持续时间：{duration} 个月"
+      }
+    }
+  },
+  "projectWorkloadView": {
+    "title": "团队工作量",
+    "description": "团队成员的任务分配、进度和逾期工作量。",
+    "emptyState": "没有可用于工作负载分析的任务。",
+    "unassigned": "未分配",
+    "totalTasks": "{count} 总任务",
+    "workload": "工作量",
+    "active": "积极的",
+    "done": "完毕",
+    "overdue": "逾期",
+    "progressLabel": "{name} 的平均任务进度",
+    "capacities": {
+      "high": "高的",
+      "medium": "中等的",
+      "low": "低的"
+    },
+    "workloadStates": {
+      "needsAttention": "需要注意",
+      "highLoad": "高负载",
+      "balanced": "均衡",
+      "available": "可用的"
+    }
+  },
+  "projectTimeline": {
+    "title": "时间轴步骤",
+    "completed": "完全的",
+    "pending": "待办的",
+    "notCompletedYet": "尚未完成",
+    "unknownDate": "日期未知",
+    "emptyState": "没有可用的时间线步骤。",
+    "steps": {
+      "requestSubmitted": "请求已提交",
+      "providerMatching": "供应商匹配",
+      "documentsReview": "文件审查",
+      "serviceInProgress": "服务进行中",
+      "completed": "完全的"
+    }
+  },
+  "projectDocuments": {
+    "title": "文档中心",
+    "description": "集中的项目和贸易文档工作区。",
+    "documentCount": "{count} 文件",
+    "required": "必需的",
+    "optional": "选修的",
+    "open": "打开",
+    "linkedTask": "链接任务：{title}",
+    "uploadedBy": "由 {name} 上传",
+    "unknownUser": "未知用户",
+    "unknownSize": "尺寸未知",
+    "unknownDate": "日期未知",
+    "rejectionReason": "拒绝原因",
+    "rejectedByAdmin": "被管理员拒绝",
+    "approvalStatuses": {
+      "approved": "得到正式认可的",
+      "rejected": "被拒绝",
+      "pending": "待办的"
+    },
+    "requirements": {
+      "commercialInvoice": "商业发票",
+      "packingList": "包装清单",
+      "billOfLading": "提货单",
+      "insuranceCertificate": "保险凭证"
+    },
+    "fileSize": {
+      "bytes": "{size} B",
+      "kilobytes": "{size} 知识库",
+      "megabytes": "{size} MB"
+    },
+    "emptyState": {
+      "title": "尚未上传任何文件",
+      "description": "在项目任务中上传的文档将显示在此处。"
+    }
+  },
+  "approveDocumentButtons": {
+    "approve": "✓ 批准",
+    "approving": "正在批准...",
+    "reject": "✕ 拒绝",
+    "rejecting": "拒绝...",
+    "updateError": "更新文档失败。",
+    "networkError": "更新文档时出现网络错误。"
+  },
+  "addProjectMessageForm": {
+    "label": "项目留言",
+    "placeholder": "写一个项目消息...",
+    "send": "发送消息",
+    "sending": "正在发送...",
+    "shortcutHint": "按 Ctrl 或 Command + Enter 发送。",
+    "sendError": "消息发送失败。",
+    "networkError": "发送消息时发生网络错误。",
+    "invalidResponse": "消息已发送，但服务器响应无效。"
+  },
+  "projectMessaging": {
+    "title": "项目消息传递",
+    "description": "客户、提供商和项目团队之间的内部沟通。",
+    "conversationCount": "{count} 对话",
+    "messageCount": "{count} 消息",
+    "defaultConversationTitle": "项目对话",
+    "conversationListLabel": "项目对话",
+    "noMessages": "此对话中尚未发送任何消息。",
+    "unknownSender": "未知发件人",
+    "unknownDate": "日期未知",
+    "you": "你",
+    "emptyState": {
+      "title": "还没有对话",
+      "description": "发送第一条消息以开始项目对话。"
+    }
+  },
+  "projectActivitySection": {
+    "details": {
+      "taskStatusUpdated": "任务“{title}”状态更改为 {status}。",
+      "documentUploaded": "文件 {file} 已上传。"
+    },
+    "title": "最近的活动",
+    "emptyState": "尚未记录任何活动。",
+    "unknownDate": "日期未知",
+    "actions": {
+      "project_created": "项目已创建",
+      "project_updated": "项目已更新",
+      "task_created": "任务已创建",
+      "task_updated": "任务已更新",
+      "task_assigned": "分配的任务",
+      "task_completed": "任务完成",
+      "task_status_updated": "任务状态已更新",
+      "project_task_status_updated": "项目任务状态已更新",
+      "comment_added": "已添加评论",
+      "document_uploaded": "文件已上传",
+      "document_approved": "文件已获批准",
+      "document_rejected": "文件被拒绝",
+      "message_sent": "消息已发送"
+    },
+    "statuses": {
+      "todo": "待办事项",
+      "in_progress": "进行中",
+      "review": "审查",
+      "completed": "完全的"
+    }
+  },
+  "projectListProgress": {
+    "progress": "进步",
+    "progressLabel": "项目任务进展",
+    "summary": "已完成 {completed}/{total} 个任务"
+  },
+  "projectPrintButton": {
+    "button": "导出/打印 PDF",
+    "tooltip": "打印此页或另存为 PDF",
+    "ariaLabel": "将项目导出或打印为 PDF"
+  },
+  "projectProgressCard": {
+    "title": "项目进展",
+    "progressLabel": "项目进展",
+    "summary": "已完成 {completed}/{total} 个任务"
+  },
+  "projectTasksExportButton": {
+    "button": "导出到 Excel",
+    "ariaLabel": "将项目任务导出为与 Excel 兼容的 CSV 文件",
+    "tooltip": "将项目任务下载为与 Excel 兼容的 CSV 文件",
+    "emptyTooltip": "没有要导出的任务",
+    "unknown": "未知",
+    "unknownDate": "日期未知",
+    "headers": {
+      "id": "ID",
+      "title": "标题",
+      "status": "地位",
+      "priority": "优先事项",
+      "progress": "进步",
+      "startDate": "开始日期",
+      "dueDate": "到期日",
+      "estimatedHours": "预计时间",
+      "loggedHours": "记录时间",
+      "assignedTo": "分配给",
+      "assignedEmail": "分配的电子邮件",
+      "dependsOn": "取决于",
+      "dependencyStatus": "依赖状态"
+    },
+    "statuses": {
+      "todo": "托多",
+      "inProgress": "进行中",
+      "review": "审查",
+      "completed": "完全的"
+    },
+    "priorities": {
+      "low": "低的",
+      "medium": "中等的",
+      "high": "高的",
+      "urgent": "紧迫的"
+    }
+  },
+  "statusBadge": {
+    "todo": "待办事项",
+    "pending": "待办的",
+    "open": "打开",
+    "in_progress": "进行中",
+    "review": "审查",
+    "completed": "完全的",
+    "closed": "关闭",
+    "approved": "得到正式认可的",
+    "rejected": "被拒绝",
+    "active": "积极的",
+    "expired": "已到期",
+    "cancelled": "取消"
+  },
+  "casesPage": {
+    "adminTitle": "所有贸易案例",
+    "userTitle": "我的案例",
+    "description": "跟踪您提交的贸易服务请求。",
+    "newCase": "新案例",
+    "emptyState": "未发现病例。",
+    "unknownDate": "日期未知",
+    "caseNumber": "案例#{id}",
+    "timeline": "时间轴",
+    "steps": "步骤：{completed} / {total}",
+    "winningProposal": "获胜提案",
+    "proposalNumber": "#{id}",
+    "notSelected": "未选择",
+    "created": "已创建",
+    "updated": "已更新",
+    "viewCase": "查看案例",
+    "stats": {
+      "total": "总病例数",
+      "open": "打开",
+      "inProgress": "进行中",
+      "completed": "完全的",
+      "cancelled": "取消"
+    },
+    "counts": {
+      "proposals": "{count}建议",
+      "documents": "{count} 文件",
+      "messages": "{count} 消息"
+    }
+  },
+  "openCasesPage": {
+    "title": "开放案例",
+    "adminDescription": "所有未结交易案件。",
+    "userDescription": "案例与您的公司类别相匹配。",
+    "myProposals": "我的建议",
+    "categoryLabel": "类别：",
+    "allCategories": "全部",
+    "unknownDate": "日期未知",
+    "requestedBy": "请求者：",
+    "created": "创建：{date}",
+    "viewCase": "查看案例",
+    "categories": {
+      "general": "一般的",
+      "customsClearance": "报关",
+      "shipping": "船运",
+      "inspection": "检查",
+      "insurance": "保险",
+      "sourcing": "采购",
+      "documentation": "文档",
+      "payment": "支付"
+    },
+    "sort": {
+      "label": "排序方式：",
+      "newest": "最新",
+      "oldest": "最古老的"
+    },
+    "stats": {
+      "matchingCases": "配套案例",
+      "matchingCategories": "匹配类别",
+      "highCompetition": "竞争激烈",
+      "myOpenProposals": "我的公开提案",
+      "savedMatching": "已保存的匹配"
+    },
+    "badges": {
+      "saved": "★ 已保存",
+      "applied": "应用",
+      "highCompetition": "竞争激烈"
+    },
+    "metrics": {
+      "proposals": "提案",
+      "documents": "文件",
+      "messages": "留言"
+    },
+    "noCategories": {
+      "title": "未找到公司类别",
+      "description": "首先添加公司简介，以便 Dasres 可以将开放案例与您的服务类别相匹配。",
+      "addCompany": "添加公司"
+    },
+    "emptyState": {
+      "title": "未找到匹配案例",
+      "adminDescription": "目前没有公开的交易案例。",
+      "userDescription": "目前没有与您的公司类别匹配的未结案例。稍后再试或扩展您的公司服务。",
+      "manageCompanies": "管理公司"
+    }
+  },
+  "caseDetailPage": {
+    "backToCases": "返回案例",
+    "caseNumber": "案例#{id}",
+    "unknownDate": "日期未知",
+    "unknown": "未知",
+    "unknownUser": "未知用户",
+    "unknownCountry": "未知国家",
+    "notAssigned": "未分配",
+    "notSelected": "未选择",
+    "notAvailable": "N/A",
+    "you": "你",
+    "system": "系统",
+    "customer": "顾客",
+    "winningCompany": "获奖公司",
+    "winningExpert": "获奖专家",
+    "progress": "进步",
+    "timeline": "案件时间表",
+    "workflowProgress": "工作流程进度",
+    "percentComplete": "{percent} 完成%",
+    "stepsSummary": "已完成 {completed}/{total} 个步骤",
+    "caseInformation": "案例信息",
+    "status": "地位",
+    "category": "类别",
+    "created": "已创建",
+    "updated": "最后更新",
+    "viewCompany": "查看公司",
+    "viewExpert": "查看专家",
+    "verified": "已验证",
+    "metrics": {
+      "proposals": "提案",
+      "messages": "留言",
+      "documents": "文件",
+      "activities": "活动"
+    },
+    "timelineStep": {
+      "completed": "✓ 步骤已完成",
+      "pending": "等待完成"
+    },
+    "timelineEmpty": {
+      "title": "没有时间表步骤",
+      "description": "工作流程步骤将出现在此处。"
+    },
+    "proposals": {
+      "title": "提案",
+      "winnerSelected": "已选出获胜提案。",
+      "closed": "此案已经在进行中。新提案已关闭。",
+      "ownCase": "您不能针对自己的案例提交提案。",
+      "noMatchingCompany": "您没有与此案例类别匹配的公司。",
+      "providerProposal": "供应商提案",
+      "unknownCompany": "未知公司",
+      "expertName": "专家：{name}",
+      "noExpert": "没有指定专家",
+      "price": "价格",
+      "noPrice": "无价格",
+      "company": "公司",
+      "expert": "专家",
+      "message": "提案留言",
+      "noMessage": "没有提供消息。",
+      "status": {
+        "accepted": "✓ 已接受",
+        "rejected": "被拒绝",
+        "pending": "待办的"
+      },
+      "empty": {
+        "title": "还没有提案",
+        "description": "匹配公司可以在此案例开放期间提交提案。"
+      }
+    },
+    "messages": {
+      "title": "留言",
+      "empty": {
+        "title": "还没有消息",
+        "description": "案件进展后，消息将显示在此处。"
+      }
+    },
+    "documents": {
+      "title": "文件",
+      "uploadedBy": "由 {name} 上传",
+      "download": "下载",
+      "empty": {
+        "title": "还没有文件",
+        "description": "上传的贸易文件将存储在这里。"
+      }
+    },
+    "recommendedCompanies": {
+      "title": "推荐企业",
+      "empty": "未找到经过验证的匹配公司。"
+    },
+    "assignedProvider": {
+      "title": "指定的提供者",
+      "winningProposal": "获胜提案",
+      "proposalSummary": "#{id} - {price}",
+      "proposalValue": "提案价值",
+      "assignedAt": "分配于",
+      "empty": {
+        "title": "尚未分配提供商",
+        "description": "一旦客户接受建议，所选公司或专家将在此处显示为指定的提供商。"
+      }
+    },
+    "activity": {
+      "title": "案例活动 ({count})",
+      "meta": "{actor} · {date}",
+      "actions": {
+        "proposalSubmitted": "提案已提交",
+        "proposalAccepted": "提案已被接受",
+        "proposalRejected": "提案被拒绝",
+        "messageSent": "消息已发送",
+        "documentUploaded": "文件已上传",
+        "caseCompleted": "案件已完成",
+        "reviewSubmitted": "审核已提交"
+      },
+      "empty": {
+        "title": "还没有活动",
+        "description": "案例事件、提案、消息和文档操作将显示在此处。"
+      }
+    },
+    "reviews": {
+      "title": "评论",
+      "reviewProvider": "审查接受的提供商",
+      "reviewCustomer": "评论客户",
+      "alreadySubmitted": "您的评论已经提交。",
+      "permission": "只有客户和接受的提供商才能提交对此案例的评论。"
+    },
+    "errors": {
+      "accessDenied": {
+        "title": "拒绝访问",
+        "description": "您无权查看此贸易案例。",
+        "back": "返回未结案例"
+      }
+    }
+  },
+  "tickets": {
+    "form": {
+      "subject": "主题",
+      "category": "类别",
+      "message": "信息",
+      "subjectPlaceholder": "主题",
+      "messagePlaceholder": "描述您的问题...",
+      "create": "创建票证",
+      "creating": "创造...",
+      "categories": {
+        "general": "一般的",
+        "technical": "技术的",
+        "verification": "确认",
+        "billing": "计费",
+        "dispute": "争议"
+      },
+      "errors": {
+        "createFailed": "创建工单失败。"
+      }
+    },
+    "new": {
+      "title": "新票",
+      "description": "有关验证、计费、技术问题或一般问题，请联系 Dasres 支持人员。"
+    },
+    "list": {
+      "title": "门票",
+      "description": "管理支持请求、案例问题和平台帮助。",
+      "newTicket": "新票",
+      "allTickets": "所有门票",
+      "myTickets": "我的门票",
+      "empty": "没有找到票。",
+      "created": "已创建",
+      "createdBy": "创建者： {name}",
+      "ticketsFound": "{count, plural, =0 {未找到门票} =1 {找到1张门票} other {找到#门票}}",
+      "statuses": {
+        "open": "打开",
+        "inProgress": "进行中",
+        "reopened": "重新开放",
+        "closed": "关闭"
+      }
+    },
+    "detail": {
+      "backToTickets": "← 返回门票",
+      "ticketNumber": "票号#{id}",
+      "createdBy": "创建者",
+      "createdAt": "创建于",
+      "messages": "留言",
+      "lastUpdate": "最后更新",
+      "conversation": "对话",
+      "messageCount": "{count, plural, =0 {没有消息} =1 {1消息} other {#消息}}",
+      "noMessages": "还没有消息。",
+      "closedNotice": "此票已关闭。",
+      "statuses": {
+        "open": "打开",
+        "inProgress": "进行中",
+        "closed": "关闭",
+        "reopened": "重新开放"
+      },
+      "categories": {
+        "general": "一般的",
+        "technical": "技术的",
+        "verification": "确认",
+        "billing": "计费",
+        "dispute": "争议"
+      },
+      "timeline": {
+        "title": "门票时间表",
+        "created": "票证已创建",
+        "firstMessage": "第一条消息",
+        "latestReply": "最新回复",
+        "closed": "票务已关闭",
+        "closedDescription": "目前状态已关闭。",
+        "reopened": "票务重新开放",
+        "reopenedDescription": "这张票需要再次关注。"
+      },
+      "rules": {
+        "title": "支持规则",
+        "focused": "保持回复的针对性和专业性。",
+        "caseDetails": "需要时附上案例详细信息。",
+        "closedReplies": "已关闭的工单无法收到回复。",
+        "adminReopen": "管理员可以重新打开已关闭的票证。"
+      },
+      "errors": {
+        "invalidId": "票证 ID 无效",
+        "notFound": "未找到门票",
+        "accessDenied": "拒绝访问"
+      }
+    },
+    "replyForm": {
+      "messageLabel": "回复",
+      "placeholder": "写一个回复...",
+      "send": "发送回复",
+      "sending": "正在发送...",
+      "errors": {
+        "messageRequired": "需要回复留言。",
+        "sendFailed": "无法发送回复。"
+      }
+    },
+    "closeButton": {
+      "confirm": "您确定要关闭此票证吗？",
+      "close": "关闭票证",
+      "closing": "关闭...",
+      "errors": {
+        "closeFailed": "无法关闭票证。"
+      }
+    },
+    "reopenButton": {
+      "reopen": "重新开放门票",
+      "reopening": "重新开放...",
+      "errors": {
+        "reopenFailed": "无法重新打开票证。"
+      }
+    }
+  },
+  "notifications": {
+    "markAllRead": {
+      "markAll": "全部标记为已读",
+      "updating": "更新中...",
+      "errors": {
+        "updateFailed": "无法更新通知。"
+      }
+    },
+    "list": {
+      "title": "通知",
+      "description": "关注案例、提案、消息、文档和系统警报的更新。",
+      "total": "通知总数",
+      "unread": "未读",
+      "read": "读",
+      "centerTitle": "通知中心",
+      "centerDescription": "管理案例、消息、文档和系统警报的更新。",
+      "empty": "还没有通知。",
+      "open": "查看 →",
+      "types": {
+        "proposal": "提议",
+        "accepted": "公认",
+        "rejected": "被拒绝",
+        "message": "信息",
+        "document": "文档",
+        "approved": "得到正式认可的",
+        "assigned": "已分配",
+        "completed": "完全的",
+        "comment": "评论",
+        "ticket": "票",
+        "deadline": "最后期限",
+        "projectDone": "项目已完成",
+        "system": "系统"
+      },
+      "messages": {
+        "ticketCreated": "{user} 创建了一个新工单：{subject}",
+        "ticketReply": "{user} 回复工单：{subject}",
+        "proposalReceived": "已收到一项新提案。",
+        "projectCompleted": "该项目已经完成。"
+      }
+    }
+  },
+  "adminUsers": {
+    "deleteUser": {
+      "button": "删除",
+      "deleting": "正在删除...",
+      "confirm": "您确定要删除该用户吗？",
+      "errors": {
+        "deleteFailed": "删除用户失败。"
+      }
+    },
+    "makeAdmin": {
+      "button": "设为管理员",
+      "making": "更新中...",
+      "confirm": "您确定要让该用户成为管理员吗？",
+      "errors": {
+        "makeAdminFailed": "无法更新用户角色。"
+      }
+    },
+    "changePlan": {
+      "label": "改变计划",
+      "plans": {
+        "free": "自由的",
+        "gold": "金子",
+        "diamond": "钻石",
+        "enterprise": "企业"
+      },
+      "errors": {
+        "updateFailed": "更新计划失败。"
+      }
+    },
+    "list": {
+      "title": "用户管理",
+      "description": "管理用户角色、计划和帐户访问。",
+      "accountsTitle": "用户帐户",
+      "accountsRegistered": "{count, plural, =0 {没有注册帐号} =1 {1个帐号已注册} other {#个帐号已注册}}",
+      "unnamedUser": "未命名用户",
+      "stats": {
+        "totalUsers": "用户总数",
+        "admins": "管理员",
+        "users": "用户",
+        "paidPlans": "付费计划"
+      },
+      "roles": {
+        "admin": "行政",
+        "user": "用户"
+      },
+      "plans": {
+        "free": "自由的",
+        "gold": "金子",
+        "diamond": "钻石",
+        "enterprise": "企业"
+      },
+      "table": {
+        "id": "ID",
+        "user": "用户",
+        "role": "角色",
+        "currentPlan": "当前计划",
+        "changePlan": "改变计划",
+        "created": "已创建",
+        "actions": "行动"
+      }
+    }
+  },
+  "expertReviews": {
+    "form": {
+      "title": "评价这位专家",
+      "ratingLabel": "等级",
+      "commentLabel": "审查",
+      "placeholder": "写下您的评论...",
+      "submit": "提交评论",
+      "submitting": "正在提交...",
+      "ratings": {
+        "1": "1 - 较差",
+        "2": "2 - 偏弱",
+        "3": "3 - 良好",
+        "4": "4 - 很好",
+        "5": "5 - 优秀"
+      },
+      "errors": {
+        "submitFailed": "提交审核失败。"
+      }
+    }
+  },
+  "companies": {
+    "edit": {
+      "title": "编辑公司",
+      "description": "更新公司信息、贸易类别和标志。",
+      "loading": "正在加载公司...",
+      "currentLogo": "当前标志",
+      "currentLogoAlt": "当前公司标志",
+      "update": "更新公司",
+      "updating": "更新中...",
+      "fields": {
+        "name": {
+          "label": "公司名称",
+          "placeholder": "公司名称"
+        },
+        "country": {
+          "label": "国家",
+          "placeholder": "国家"
+        },
+        "category": {
+          "label": "贸易类别"
+        },
+        "description": {
+          "label": "描述",
+          "placeholder": "描述"
+        },
+        "email": {
+          "label": "电子邮件",
+          "placeholder": "电子邮件"
+        },
+        "website": {
+          "label": "网站",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "更换标志",
+          "help": "留空以保留当前徽标。支持的格式：JPG、PNG 和 WEBP。"
+        }
+      },
+      "categories": {
+        "general": "一般的",
+        "customsClearance": "报关",
+        "shipping": "船运",
+        "inspection": "检查",
+        "insurance": "保险",
+        "sourcing": "采购",
+        "documentation": "文档",
+        "payment": "支付"
+      },
+      "errors": {
+        "loadFailed": "加载公司时出错。",
+        "updateFailed": "更新公司时出错。",
+        "networkError": "出了点问题。"
+      }
+    },
+    "new": {
+      "title": "添加公司",
+      "description": "创建公司简介并将其添加到 Dasres 贸易网络。",
+      "create": "创建公司",
+      "creating": "创造...",
+      "success": "公司创建成功。",
+      "fields": {
+        "name": {
+          "label": "公司名称",
+          "placeholder": "公司名称"
+        },
+        "country": {
+          "label": "国家",
+          "placeholder": "国家"
+        },
+        "category": {
+          "label": "贸易类别"
+        },
+        "description": {
+          "label": "描述",
+          "placeholder": "描述"
+        },
+        "email": {
+          "label": "电子邮件",
+          "placeholder": "电子邮件"
+        },
+        "website": {
+          "label": "网站",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "公司标志",
+          "help": "支持的格式：JPG、PNG 和 WEBP。"
+        }
+      },
+      "categories": {
+        "general": "一般的",
+        "customsClearance": "报关",
+        "shipping": "船运",
+        "inspection": "检查",
+        "insurance": "保险",
+        "sourcing": "采购",
+        "documentation": "文档",
+        "payment": "支付"
+      },
+      "errors": {
+        "createFailed": "创建公司时出错。",
+        "networkError": "出了点问题。"
+      }
+    },
+    "deleteButton": {
+      "button": "删除公司",
+      "deleting": "正在删除...",
+      "confirm": "您确定要删除该公司吗？",
+      "errors": {
+        "deleteFailed": "删除公司失败。"
+      }
+    },
+    "search": {
+      "searchLabel": "搜寻公司",
+      "searchPlaceholder": "🔍 搜索公司...",
+      "countryLabel": "国家",
+      "ratingFilterLabel": "评级过滤器",
+      "allCountries": "所有国家",
+      "allRatings": "所有评级",
+      "fiveStars": "5星",
+      "fourPlusStars": "4星及以上",
+      "verifiedOnly": "仅经过验证",
+      "viewProfile": "查看资料 →",
+      "available": "可用的",
+      "noRating": "还没有评级",
+      "notAvailable": "N/A",
+      "empty": "没有公司符合所选的过滤器。",
+      "reviewCount": "{count, plural, =1 {1 条评论} other {# 评论}}",
+      "featured": {
+        "title": "特色公司",
+        "description": "Dasres 上知名度较高的优质贸易公司。"
+      },
+      "verification": {
+        "verified": "已验证",
+        "rejected": "被拒绝",
+        "pending": "待办的"
+      },
+      "plans": {
+        "gold": "金子",
+        "diamond": "钻石",
+        "enterprise": "企业"
+      },
+      "metrics": {
+        "trust": "相信",
+        "rating": "等级",
+        "reviews": "评论"
+      }
+    }
+  },
+  "experts": {
+    "edit": {
+      "title": "编辑专家",
+      "description": "更新专家个人资料信息和个人资料图片。",
+      "loading": "正在加载专家...",
+      "currentImage": "当前个人资料图片",
+      "currentImageAlt": "当前专家形象",
+      "update": "更新专家",
+      "updating": "更新中...",
+      "fields": {
+        "name": {
+          "label": "姓名",
+          "placeholder": "姓名"
+        },
+        "country": {
+          "label": "国家",
+          "placeholder": "国家"
+        },
+        "specialty": {
+          "label": "专业",
+          "placeholder": "贸易专业"
+        },
+        "experience": {
+          "label": "经验",
+          "placeholder": "描述专业经历"
+        },
+        "email": {
+          "label": "电子邮件",
+          "placeholder": "电子邮件"
+        },
+        "image": {
+          "label": "替换图像",
+          "help": "留空以保留当前图像。支持的格式：JPG、PNG 和 WEBP。"
+        }
+      },
+      "errors": {
+        "loadFailed": "加载专家时出错。",
+        "updateFailed": "更新专家时出错。",
+        "networkError": "出了点问题。"
+      }
+    },
+    "new": {
+      "title": "添加专家",
+      "description": "创建专家档案并将其添加到 Dasres 贸易网络。",
+      "create": "创建专家",
+      "creating": "创造...",
+      "success": "专家创建成功。",
+      "fields": {
+        "name": {
+          "label": "姓名",
+          "placeholder": "姓名"
+        },
+        "country": {
+          "label": "国家",
+          "placeholder": "国家"
+        },
+        "specialty": {
+          "label": "专业",
+          "placeholder": "贸易专业"
+        },
+        "experience": {
+          "label": "经验",
+          "placeholder": "描述专业经历"
+        },
+        "email": {
+          "label": "电子邮件",
+          "placeholder": "电子邮件"
+        },
+        "image": {
+          "label": "个人资料图片",
+          "help": "支持的格式：JPG、PNG 和 WEBP。"
+        }
+      },
+      "errors": {
+        "createFailed": "创建专家时出错。",
+        "networkError": "出了点问题。"
+      }
+    },
+    "search": {
+      "searchLabel": "搜寻专家",
+      "searchPlaceholder": "🔍 搜索专家...",
+      "countryLabel": "国家",
+      "ratingFilterLabel": "评级过滤器",
+      "allCountries": "所有国家",
+      "allRatings": "所有评级",
+      "fiveStars": "5星",
+      "fourPlusStars": "4星及以上",
+      "verifiedOnly": "仅经过验证",
+      "viewProfile": "查看资料 →",
+      "available": "可用的",
+      "noRating": "还没有评级",
+      "notAvailable": "N/A",
+      "empty": "没有专家与选定的过滤器匹配。",
+      "reviewCount": "{count, plural, =1 {1 条评论} other {# 评论}}",
+      "featured": {
+        "title": "特邀专家",
+        "description": "在 Dasres 上具有更高知名度的高级专家。"
+      },
+      "verification": {
+        "verified": "已验证",
+        "rejected": "被拒绝",
+        "pending": "待办的"
+      },
+      "plans": {
+        "gold": "金子",
+        "diamond": "钻石",
+        "enterprise": "企业"
+      },
+      "metrics": {
+        "trust": "相信",
+        "rating": "等级",
+        "reviews": "评论"
+      }
+    },
+    "deleteButton": {
+      "button": "删除专家",
+      "deleting": "正在删除...",
+      "confirm": "您确定要删除该专家吗？",
+      "errors": {
+        "deleteFailed": "删除专家失败。"
+      }
+    }
+  },
+  "opportunities": {
+    "dashboard": {
+      "title": "机会管理",
+      "description": "浏览和管理国际贸易机会。",
+      "addOpportunity": "添加机会",
+      "latestOpportunity": "最新机会",
+      "stats": {
+        "total": "全部的",
+        "active": "积极的",
+        "closed": "关闭",
+        "countries": "国家"
+      },
+      "pagination": {
+        "previous": "以前的",
+        "next": "下一个",
+        "page": "{total} 的页面 {current}"
+      }
+    },
+    "new": {
+      "title": "添加机会",
+      "description": "创建新的贸易机会并将其发布到 Dasres 市场上。",
+      "create": "创造机会",
+      "creating": "创造...",
+      "success": "机会创造成功。",
+      "fields": {
+        "title": {
+          "label": "标题",
+          "placeholder": "机会标题"
+        },
+        "country": {
+          "label": "国家",
+          "placeholder": "国家"
+        },
+        "image": {
+          "label": "机会形象",
+          "help": "支持的格式：JPG、PNG 和 WEBP。"
+        },
+        "description": {
+          "label": "描述",
+          "placeholder": "描述贸易机会"
+        }
+      },
+      "errors": {
+        "createFailed": "创造机会的错误。",
+        "networkError": "出了点问题。"
+      }
+    },
+    "edit": {
+      "title": "编辑机会",
+      "description": "更新机会信息和图像。",
+      "loading": "加载机会...",
+      "currentImage": "当前的机会图片",
+      "currentImageAlt": "当前机会图片",
+      "update": "更新机会",
+      "updating": "更新中...",
+      "fields": {
+        "title": {
+          "label": "标题",
+          "placeholder": "机会标题"
+        },
+        "country": {
+          "label": "国家",
+          "placeholder": "国家"
+        },
+        "description": {
+          "label": "描述",
+          "placeholder": "描述贸易机会"
+        },
+        "image": {
+          "label": "替换图像",
+          "help": "留空以保留当前图像。支持的格式：JPG、PNG 和 WEBP。"
+        }
+      },
+      "errors": {
+        "loadFailed": "加载机会时出错。",
+        "updateFailed": "更新机会时出错。",
+        "networkError": "出了点问题。"
+      }
+    },
+    "search": {
+      "searchLabel": "搜索机会",
+      "searchPlaceholder": "🔍 寻找机会...",
+      "countryLabel": "国家",
+      "statusLabel": "地位",
+      "allCountries": "所有国家",
+      "allStatuses": "所有状态",
+      "viewOpportunity": "查看机会 →",
+      "statuses": {
+        "open": "打开",
+        "inProgress": "进行中",
+        "closed": "关闭"
+      },
+      "featured": {
+        "title": "特色机会",
+        "description": "目前有活跃的贸易机会可供合作。"
+      },
+      "empty": {
+        "title": "没有找到机会",
+        "description": "尝试更改您的搜索或过滤器。"
+      }
+    },
+    "deleteButton": {
+      "button": "删除机会",
+      "deleting": "正在删除...",
+      "confirm": "您确定要删除此机会吗？",
+      "errors": {
+        "deleteFailed": "删除机会失败。"
+      }
+    }
+  },
+  "tradeCases": {
+    "addProposal": {
+      "companyLabel": "公司",
+      "expertLabel": "专家",
+      "messageLabel": "提案留言",
+      "priceLabel": "建议价格",
+      "selectCompany": "选择公司",
+      "noExpert": "无专家/可选",
+      "messagePlaceholder": "写提案信息...",
+      "pricePlaceholder": "价格例如1200 美元",
+      "submitting": "正在提交...",
+      "submit": "添加提案",
+      "errors": {
+        "messageRequired": "需要提案消息。",
+        "companyRequired": "请选择一家公司。",
+        "submitFailed": "未能提交提案。"
+      }
+    },
+    "proposalActions": {
+      "accept": "接受",
+      "reject": "拒绝",
+      "accepting": "接受...",
+      "rejecting": "拒绝...",
+      "errors": {
+        "acceptFailed": "未能接受该提议。",
+        "rejectFailed": "未能拒绝该提议。"
+      }
+    },
+    "addMessage": {
+      "contentLabel": "信息",
+      "placeholder": "写留言...",
+      "sending": "正在发送...",
+      "submit": "添加留言",
+      "errors": {
+        "contentRequired": "留言内容为必填项。",
+        "submitFailed": "消息发送失败。"
+      }
+    },
+    "addDocument": {
+      "fileLabel": "选择文档",
+      "uploading": "正在上传...",
+      "submit": "上传文件",
+      "errors": {
+        "fileRequired": "请选择一个文档。",
+        "uploadFailed": "无法上传文档。"
+      }
+    },
+    "completeStep": {
+      "complete": "完全的",
+      "completing": "正在完成...",
+      "errors": {
+        "completeFailed": "未能完成此步骤。"
+      }
+    },
+    "completeCase": {
+      "confirm": "您确定要将此案例标记为已完成吗？",
+      "complete": "标记为已完成",
+      "completing": "正在完成...",
+      "errors": {
+        "completeFailed": "未能完成案件。"
+      }
+    },
+    "addReview": {
+      "ratingLabel": "等级",
+      "commentLabel": "审查",
+      "placeholder": "写下您的评论...",
+      "submit": "提交评论",
+      "submitting": "正在提交...",
+      "ratings": {
+        "1": "1 - 差",
+        "2": "2 - 较差",
+        "3": "3 - 一般",
+        "4": "4 - 良好",
+        "5": "5 - 优秀"
+      },
+      "errors": {
+        "submitFailed": "提交审核失败。"
+      }
+    },
+    "workflow": {
+      "title": "贸易工作流程",
+      "steps": {
+        "inquiry": "询问",
+        "quotation": "引述",
+        "negotiation": "谈判",
+        "contract": "合同",
+        "documents": "文件",
+        "customs": "海关",
+        "shipping": "船运",
+        "inspection": "检查",
+        "insurance": "保险",
+        "delivery": "送货",
+        "completed": "完全的"
+      }
+    }
+  },
+  "createCaseForm": {
+    "titleLabel": "案例名称",
+    "titlePlaceholder": "需要在迪拜清关",
+    "categoryLabel": "案例类别",
+    "categoryHelp": "这有助于Dasres将案例与相关公司和专家进行匹配。",
+    "descriptionLabel": "描述",
+    "descriptionPlaceholder": "描述运输、所需服务、国家/地区、文件、时间表以及任何特殊要求...",
+    "create": "创建案例",
+    "creating": "创造...",
+    "categories": {
+      "general": "一般的",
+      "customsClearance": "报关",
+      "shipping": "船运",
+      "inspection": "检查",
+      "insurance": "保险",
+      "sourcing": "采购",
+      "documentation": "文档",
+      "payment": "支付"
+    },
+    "backToCases": "← 返回案例",
+    "pageTitle": "创建新的贸易案例",
+    "pageDescription": "提交新的贸易服务请求。稍后可以指定提供者或专家。",
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    },
+    "errors": {
+      "planLimit": "您的 {plan} 计划最多允许 {limit} 活跃交易案例。升级您的计划以创建更多案例。",
+      "titleAndDescriptionRequired": "标题和描述为必填项。",
+      "invalidCategory": "案例类别无效。"
+    }
+  },
+  "dashboardSearch": {
+    "eyebrow": "全球搜索",
+    "title": "搜索 Dasres",
+    "description": "在您的工作空间中查找公司、专家、机会和贸易案例。",
+    "searchLabel": "搜索 Dasres",
+    "searchPlaceholder": "搜索企业、专家、机会、案例……",
+    "searchButton": "搜索",
+    "initialState": "输入关键字即可在 Dasres 中进行搜索。",
+    "resultsSummary": "{count, plural, =0 {未找到结果为} =1 {找到1个结果为} other {找到#结果为}}",
+    "sections": {
+      "companies": {
+        "title": "公司",
+        "empty": "没有找到公司。"
+      },
+      "experts": {
+        "title": "专家",
+        "empty": "没有找到专家。"
+      },
+      "opportunities": {
+        "title": "机会",
+        "empty": "没有找到机会。"
+      },
+      "tradeCases": {
+        "title": "贸易案例",
+        "empty": "未发现病例。"
+      }
+    },
+    "statuses": {
+      "open": "打开",
+      "inProgress": "进行中",
+      "completed": "完全的",
+      "closed": "关闭",
+      "pending": "待办的",
+      "cancelled": "取消"
+    }
+  },
+  "companyProfile": {
+    "metadata": {
+      "notFoundTitle": "未找到公司",
+      "notFoundDescription": "找不到所请求的公司简介。",
+      "description": "{name} 是一家位于 {country} 的 {category} 企业。在 Dasres 上查看该企业资料。"
+    },
+    "notFound": "未找到公司",
+    "backToCompanies": "← 返回公司",
+    "statusLabel": "地位",
+    "notAvailable": "N/A",
+    "notProvided": "未提供",
+    "companyRating": "公司评级",
+    "companyDescription": "公司简介",
+    "recentReviews": "最近的评论",
+    "companyInformation": "公司资料",
+    "noReviews": "还没有评论。",
+    "noCommentProvided": "没有发表评论。",
+    "basedOnReviews": "{count, plural, =1 {基于 1 条评论} other {基于 # 条评论}}",
+    "trustScoreValue": "信任评分：{score}/100",
+    "completedCasesValue": "已完成案例：{count}",
+    "ratingWithReviews": "⭐ {rating}（{count, plural, =1 {1 条评价} other {# 条评价}}）",
+    "sendEmail": "发送电子邮件",
+    "visitWebsite": "访问网站",
+    "verificationStatus": "验证状态",
+    "editCompany": "编辑公司",
+    "metrics": {
+      "trustScore": "信任分数",
+      "rating": "等级",
+      "reviews": "评论",
+      "verification": "确认",
+      "country": "国家"
+    },
+    "fields": {
+      "email": "电子邮件",
+      "website": "网站",
+      "country": "国家",
+      "category": "类别",
+      "reputation": "名声"
+    },
+    "verificationBadges": {
+      "verified": "已验证公司",
+      "rejected": "被拒绝",
+      "pending": "待验证"
+    },
+    "verificationStatuses": {
+      "verified": "已验证",
+      "rejected": "被拒绝",
+      "pending": "待办的"
+    },
+    "plans": {
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    },
+    "statuses": {
+      "active": "积极的",
+      "inactive": "不活跃",
+      "open": "打开",
+      "pending": "待办的",
+      "verified": "已验证",
+      "rejected": "被拒绝",
+      "completed": "完全的",
+      "inProgress": "进行中"
+    },
+    "schema": {
+      "status": "地位",
+      "category": "类别"
+    }
+  },
+  "dashboardCompanies": {
+    "title": "公司管理",
+    "description": "管理和浏览国际贸易公司。",
+    "addCompany": "添加公司",
+    "stats": {
+      "total": "全部的",
+      "verified": "已验证",
+      "pending": "待办的",
+      "rejected": "被拒绝",
+      "premium": "优质的"
+    },
+    "pagination": {
+      "previous": "以前的",
+      "next": "下一个",
+      "page": "{total} 的页面 {current}"
+    }
+  },
+  "dashboardExperts": {
+    "title": "专家管理",
+    "description": "管理和浏览国际贸易专家。",
+    "addExpert": "添加专家",
+    "stats": {
+      "total": "全部的",
+      "verified": "已验证",
+      "pending": "待办的",
+      "rejected": "被拒绝",
+      "premium": "优质的"
+    },
+    "pagination": {
+      "previous": "以前的",
+      "next": "下一个",
+      "page": "{total} 的页面 {current}"
+    }
+  },
+  "dashboardMyCases": {
+    "title": "我的活跃案例",
+    "description": "贵公司提案被采纳的案例。",
+    "notAvailable": "N/A",
+    "notAssigned": "未分配",
+    "caseNumber": "案例#{id}",
+    "documentCount": "{count, plural, =1 {1 文件} other {# 文件}}",
+    "messageCount": "{count, plural, =1 {1 留言} other {# 留言}}",
+    "stepsCompleted": "{completed} / {total} 步骤已完成",
+    "updated": "更新{date}",
+    "viewCase": "查看案例 →",
+    "stats": {
+      "assignedCases": "分配的案例",
+      "inProgress": "进行中",
+      "completed": "完全的",
+      "workload": "工作量",
+      "workloadDescription": "消息+文档"
+    },
+    "empty": {
+      "title": "尚无有效案例",
+      "description": "一旦您的公司提案之一被接受，分配的贸易案例将出现在此处。",
+      "browseOpenCases": "浏览未结案例"
+    },
+    "fields": {
+      "acceptedCompany": "接受公司",
+      "assignedExpert": "指定专家",
+      "proposalPrice": "提案价格",
+      "timelineProgress": "时间表进展"
+    },
+    "statuses": {
+      "open": "打开",
+      "inProgress": "进行中",
+      "completed": "完全的",
+      "cancelled": "取消"
+    }
+  },
+  "dashboardMyCompanies": {
+    "title": "我的公司",
+    "description": "管理您拥有的公司资料、其验证状态和可见性级别。",
+    "addCompany": "添加公司",
+    "created": "创建于 {date}",
+    "viewCompany": "查看公司 →",
+    "categories": {
+      "general": "一般的",
+      "customsClearance": "报关",
+      "shipping": "船运",
+      "inspection": "检查",
+      "insurance": "保险",
+      "sourcing": "采购",
+      "documentation": "文档",
+      "payment": "支付"
+    },
+    "countries": {
+      "iran": "伊朗"
+    },
+    "stats": {
+      "total": "全部的",
+      "verified": "已验证",
+      "pending": "待办的",
+      "rejected": "被拒绝",
+      "premium": "优质的"
+    },
+    "empty": {
+      "title": "您还没有任何公司",
+      "description": "创建您的第一个公司简介以参与商业机会并提交提案。",
+      "button": "添加公司"
+    },
+    "verification": {
+      "verified": "已验证",
+      "pending": "待办的",
+      "rejected": "被拒绝"
+    },
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    },
+    "statuses": {
+      "active": "积极的",
+      "inactive": "不活跃",
+      "suspended": "暂停"
+    }
+  },
+  "dashboardMyExperts": {
+    "title": "我的专家",
+    "description": "管理您拥有的专家档案、验证状态和计划可见性。",
+    "addExpert": "添加专家",
+    "created": "创建：{date}",
+    "viewExpert": "查看专家 →",
+    "stats": {
+      "total": "全部的",
+      "verified": "已验证",
+      "pending": "待办的",
+      "rejected": "被拒绝",
+      "premium": "优质的"
+    },
+    "empty": {
+      "title": "还没有专家",
+      "description": "创建您的第一个专家档案以展示您的经验并接收交易请求。",
+      "button": "添加专家"
+    },
+    "verification": {
+      "verified": "已验证",
+      "pending": "待办的",
+      "rejected": "被拒绝"
+    },
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    },
+    "statuses": {
+      "active": "积极的",
+      "inactive": "不活跃",
+      "suspended": "暂停"
+    }
+  },
+  "dashboardMyProposals": {
+    "title": "我的建议",
+    "description": "跟踪提案绩效、获胜率和提交的价值。",
+    "findOpenCases": "查找未结案件",
+    "empty": "还没有建议。",
+    "notAvailable": "N/A",
+    "notAssigned": "未分配",
+    "proposalNumber": "提案#{id}",
+    "submittedOn": "提交于 {date}",
+    "caseStatus": "案例状态：{status}",
+    "viewCase": "查看案例 →",
+    "stats": {
+      "totalProposals": "提案总数",
+      "pending": "待办的",
+      "accepted": "公认",
+      "rejected": "被拒绝",
+      "winRate": "胜率",
+      "acceptedValue": "接受值",
+      "submittedValue": "已提交：${value}"
+    },
+    "filters": {
+      "all": "全部：{count}",
+      "pending": "待定：{count}",
+      "accepted": "已接受：{count}",
+      "rejected": "已拒绝：{count}"
+    },
+    "fields": {
+      "case": "案件",
+      "company": "公司",
+      "expert": "专家",
+      "price": "价格"
+    },
+    "statuses": {
+      "pending": "待办的",
+      "accepted": "公认",
+      "rejected": "被拒绝"
+    },
+    "caseStatuses": {
+      "open": "打开",
+      "inProgress": "进行中",
+      "completed": "完全的",
+      "cancelled": "取消"
+    }
+  },
+  "dashboardMyTasks": {
+    "eyebrow": "我的任务",
+    "title": "分配的工作",
+    "assignedSummary": "{count, plural, =0 {没有分配的任务} =1 {1个已分配的任务} other {#已分配的任务}}",
+    "noDueDate": "无截止日期",
+    "viewProject": "查看项目",
+    "stats": {
+      "assigned": "已分配",
+      "completed": "完全的",
+      "inProgress": "进行中",
+      "overdue": "逾期"
+    },
+    "empty": {
+      "title": "没有分配任务",
+      "description": "您还没有分配任何工作。"
+    },
+    "fields": {
+      "project": "项目",
+      "projectStatus": "项目状况",
+      "dueDate": "到期日"
+    },
+    "taskStatuses": {
+      "todo": "托多",
+      "inProgress": "进行中",
+      "review": "审查",
+      "completed": "完全的"
+    },
+    "projectStatuses": {
+      "open": "打开",
+      "inProgress": "进行中",
+      "completed": "完全的",
+      "cancelled": "取消"
+    },
+    "priorities": {
+      "low": "低的",
+      "medium": "中等的",
+      "high": "高的",
+      "urgent": "紧迫的"
+    }
+  },
+  "dashboardProjects": {
+    "eyebrow": "项目",
+    "title": "贸易项目",
+    "description": "管理已接受的交易案例并跟踪执行进度。",
+    "customer": "顾客",
+    "empty": {
+      "title": "还没有项目",
+      "description": "接受提案后会自动创建项目。",
+      "browseOpenCases": "浏览未结案例"
+    },
+    "statuses": {
+      "active": "积极的",
+      "pending": "待办的",
+      "open": "打开",
+      "inProgress": "进行中",
+      "completed": "完全的",
+      "cancelled": "取消"
+    }
+  },
+  "dashboardSavedCases": {
+    "title": "已保存案例",
+    "description": "您保存的交易案例供以后查看。",
+    "savedOn": "已保存：{date}",
+    "viewCase": "查看案例 →",
+    "empty": {
+      "title": "尚未保存案例",
+      "description": "保存有趣的贸易案例以便稍后访问。",
+      "button": "浏览未结案例"
+    },
+    "metrics": {
+      "proposals": "提案",
+      "documents": "文件",
+      "messages": "留言"
+    },
+    "statuses": {
+      "open": "打开",
+      "inProgress": "进行中",
+      "completed": "完全的",
+      "cancelled": "取消"
+    }
+  },
+  "dashboardSavedCompanies": {
+    "title": "已保存的公司",
+    "description": "您保存的公司以便稍后查看和联系。",
+    "viewProfile": "查看资料",
+    "empty": {
+      "title": "还没有保存的公司",
+      "description": "保存值得信赖的公司来建立您的贸易网络​​。",
+      "button": "浏览公司"
+    }
+  },
+  "dashboardSavedExperts": {
+    "title": "已保存的专家",
+    "description": "您保存的专家供稍后查看和联系。",
+    "viewProfile": "查看资料",
+    "empty": {
+      "title": "尚未保存专家",
+      "description": "保存经验丰富的专业人士，以便快速联系他们进行未来的贸易项目。",
+      "button": "浏览专家"
+    }
+  },
+  "dashboardSettings": {
+    "eyebrow": "账户设置",
+    "title": "设置",
+    "description": "管理您的 Dasres 帐户、计划和个人资料信息。",
+    "unlimited": "无限",
+    "profileInformation": {
+      "title": "简介信息",
+      "notProvided": "未提供",
+      "fields": {
+        "name": "姓名",
+        "email": "电子邮件",
+        "role": "角色",
+        "plan": "计划"
+      }
+    },
+    "planLimits": {
+      "title": "计划限制",
+      "caseLimit": "案例限制",
+      "proposalLimit": "提案限额"
+    },
+    "quickLinks": {
+      "title": "快速链接",
+      "manageSubscription": "管理订阅",
+      "myCompanies": "我的公司",
+      "myExperts": "我的专家"
+    },
+    "security": {
+      "title": "安全",
+      "description": "生产安全阶段将添加密码更改、双因素身份验证和登录历史记录。"
+    },
+    "roles": {
+      "admin": "行政",
+      "user": "用户"
+    },
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    }
+  },
+  "dashboardSubscription": {
+    "title": "订阅",
+    "usageUnlimited": "无限制（使用：{used}）",
+    "premiumBadge": "优质的",
+    "description": "管理您的 Dasres 计划、使用限制和高级可见性。尚未启用支付功能；计划目前由管理员管理。",
+    "currentBadge": "当前的",
+    "managePlan": "管理计划",
+    "currentPlan": "当前计划",
+    "usageLimited": "使用限制",
+    "proposals": "提案",
+    "activeCases": "现有病例",
+    "usage": {
+      "currentPlan": "当前计划",
+      "activeCasesUsed": "使用的活跃案例",
+      "proposalsUsed": "使用的提案",
+      "limitedValue": "{used} / {limit}",
+      "unlimitedValue": "{used} / 无限"
+    },
+    "planLabels": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    },
+    "actions": {
+      "currentPlan": "当前计划",
+      "contactSales": "联系销售人员",
+      "notAvailable": "无法使用",
+      "requestUpgrade": "请求升级"
+    },
+    "plans": {
+      "free": {
+        "title": "自由的",
+        "description": "用于测试 Dasres 并启动基本交易活动。",
+        "price": "$0",
+        "features": {
+          "activeCases": "3个活跃贸易案件",
+          "proposals": "5份提案",
+          "companyProfile": "公司基本概况",
+          "expertProfile": "专家基本资料"
+        }
+      },
+      "gold": {
+        "title": "金子",
+        "description": "适用于需要更多可见性和能力的成长型团队。",
+        "price": "$29/月",
+        "features": {
+          "activeCases": "20个活跃贸易案件",
+          "proposals": "20份提案",
+          "badge": "金徽章",
+          "priorityListing": "优先上市"
+        }
+      },
+      "diamond": {
+        "title": "钻石",
+        "description": "适用于认真的供应商和频繁的贸易经营者。",
+        "price": "$99/月",
+        "features": {
+          "activeCases": "无限活跃交易案例",
+          "proposals": "无限提案",
+          "badge": "钻石徽章",
+          "featuredListing": "精选清单"
+        }
+      },
+      "enterprise": {
+        "title": "企业",
+        "description": "适用于大型贸易公司、代理机构和企业团队。",
+        "price": "定制定价",
+        "features": {
+          "activeCases": "无限活跃交易案例",
+          "proposals": "无限提案",
+          "badge": "企业徽章",
+          "visibility": "最高可见度",
+          "accountManager": "未来的客户经理访问权限"
+        }
+      }
+    },
+    "upgradeNotice": {
+      "title": "需要更高的计划吗？",
+      "description": "付款尚未激活。目前，管理员可以从用户管理面板手动升级用户计划。",
+      "back": "返回仪表板"
+    }
+  },
+  "dashboardVerifications": {
+    "title": "验证中心",
+    "description": "审查和管理公司和专家验证请求。",
+    "created": "创建：{date}",
+    "stats": {
+      "pending": {
+        "title": "待办的",
+        "description": "公司+专家"
+      },
+      "verified": {
+        "title": "已验证",
+        "description": "批准的配置文件"
+      },
+      "rejected": {
+        "title": "被拒绝",
+        "description": "拒绝的个人资料"
+      }
+    },
+    "companies": {
+      "title": "待定公司",
+      "description": "公司简介等待管理员审核。",
+      "empty": "没有待定的公司。"
+    },
+    "experts": {
+      "title": "待定专家",
+      "description": "等待管理员审核的专家档案。",
+      "empty": "没有待定的专家。"
+    },
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    }
+  },
+  "publicCompanyProfile": {
+    "categories": {
+      "general": "一般的",
+      "customsClearance": "报关",
+      "shipping": "船运",
+      "inspection": "检查",
+      "insurance": "保险",
+      "sourcing": "采购",
+      "documentation": "文档",
+      "payment": "支付"
+    },
+    "countries": {
+      "iran": "伊朗"
+    },
+    "metadata": {
+      "notFoundTitle": "未找到公司",
+      "notFoundDescription": "找不到所请求的公司简介。",
+      "description": "{name} 是一家 {category} 公司，位于 {country}。"
+    },
+    "notFound": "未找到公司",
+    "backToCompanies": "← 返回公司",
+    "statusLabel": "地位",
+    "statuses": {
+      "active": "积极的",
+      "inactive": "不活跃",
+      "open": "打开",
+      "pending": "待办的",
+      "verified": "已验证",
+      "rejected": "被拒绝",
+      "completed": "完全的",
+      "inProgress": "进行中"
+    },
+    "verificationStatuses": {
+      "verified": "已验证",
+      "pending": "待办的",
+      "rejected": "被拒绝"
+    },
+    "verificationBadges": {
+      "verified": "已验证",
+      "pending": "待验证",
+      "rejected": "被拒绝"
+    },
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    },
+    "metrics": {
+      "trustScore": "信任分数",
+      "rating": "等级",
+      "reviews": "评论",
+      "verification": "确认",
+      "country": "国家"
+    },
+    "companyRating": "公司评级",
+    "basedOnReviews": "基于 {count} 评论",
+    "trustScoreValue": "信任评分：{score}/100",
+    "completedCasesValue": "{count} 已完成的贸易案例",
+    "companyDescription": "公司简介",
+    "recentReviews": "最近的评论",
+    "noReviews": "还没有评论。",
+    "noCommentProvided": "没有发表评论。",
+    "notAvailable": "N/A",
+    "notProvided": "未提供",
+    "companyInformation": "公司资料",
+    "fields": {
+      "email": "电子邮件",
+      "website": "网站",
+      "country": "国家",
+      "category": "类别",
+      "reputation": "名声"
+    },
+    "ratingWithReviews": "{rating} / 5（{count} 条评价）",
+    "sendEmail": "发送电子邮件",
+    "visitWebsite": "访问网站",
+    "relatedExperts": {
+      "title": "相关专家",
+      "empty": "没有找到相关专家。",
+      "verified": "认证专家"
+    },
+    "verificationStatus": "验证状态",
+    "editCompany": "编辑公司",
+    "schema": {
+      "status": "地位",
+      "category": "类别"
+    }
+  },
+  "publicExpertProfile": {
+    "metadata": {
+      "notFoundTitle": "未找到专家",
+      "notFoundDescription": "找不到所请求的专家资料。",
+      "description": "{name} 是一位来自 {country} 的 {specialty} 领域专家，已入驻 Dasres。"
+    },
+    "notFound": "未找到专家",
+    "backToExperts": "← 返回专家",
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    },
+    "statuses": {
+      "active": "积极的",
+      "inactive": "不活跃",
+      "pending": "待办的",
+      "verified": "已验证",
+      "rejected": "被拒绝",
+      "suspended": "暂停"
+    },
+    "metrics": {
+      "trustScore": "信任分数",
+      "rating": "等级",
+      "reviews": "评论",
+      "specialty": "专业",
+      "country": "国家"
+    },
+    "experience": "经验",
+    "recentReviews": "最近的评论",
+    "noReviews": "还没有评论。",
+    "anonymousUser": "匿名用户",
+    "noCommentProvided": "没有发表评论。",
+    "contactExpert": "联系专家",
+    "fields": {
+      "email": "电子邮件",
+      "country": "国家",
+      "specialty": "专业",
+      "reputation": "名声"
+    },
+    "ratingWithReviews": "{rating}/5（{count} 条评价）",
+    "completedCases": "已完成案例",
+    "sendEmail": "发送电子邮件",
+    "relatedCompanies": {
+      "title": "相关公司",
+      "empty": "未找到相关企业。",
+      "verified": "已验证"
+    },
+    "adminActions": "管理员操作",
+    "editExpert": "编辑专家",
+    "reviewNotice": "评级和评论仅从已完成的交易案例中收集。",
+    "notAvailable": "N/A"
+  },
+  "publicOpportunityProfile": {
+    "metadata": {
+      "notFoundTitle": "未找到机会",
+      "notFoundDescription": "找不到请求的机会。"
+    },
+    "notFound": "未找到机会",
+    "backToOpportunities": "← 返回机会",
+    "tradeOpportunity": "贸易机会",
+    "statuses": {
+      "open": "打开",
+      "inProgress": "进行中",
+      "closed": "关闭"
+    },
+    "metrics": {
+      "status": "地位",
+      "country": "国家",
+      "visibility": "能见度",
+      "platform": "平台",
+      "category": "类别",
+      "trust": "相信"
+    },
+    "values": {
+      "public": "民众",
+      "trade": "贸易",
+      "verified": "已验证"
+    },
+    "opportunityDescription": "机会描述",
+    "howToRespond": {
+      "title": "如何应对",
+      "review": {
+        "title": "审查",
+        "description": "仔细阅读完整的机会要求。"
+      },
+      "contact": {
+        "title": "接触",
+        "description": "通过 Dasres 或提供的联系方式联系我们。"
+      },
+      "collaborate": {
+        "title": "合作",
+        "description": "建立值得信赖的国际贸易伙伴关系。"
+      }
+    },
+    "editOpportunity": "编辑机会",
+    "summary": {
+      "title": "机会总结",
+      "country": "国家",
+      "status": "地位",
+      "type": "类型"
+    },
+    "actions": {
+      "openTradeCase": "开放贸易案例",
+      "findCompanies": "寻找公司",
+      "findExperts": "寻找专家"
+    },
+    "relatedCompanies": {
+      "title": "相关公司",
+      "empty": "尚未找到该国家/地区经过验证的公司。",
+      "verified": "已验证公司"
+    },
+    "relatedExperts": {
+      "title": "相关专家",
+      "empty": "尚未找到该国家/地区经过验证的专家。",
+      "verified": "认证专家"
+    },
+    "trustNotice": {
+      "title": "信托通知",
+      "description": "在签订任何商业协议之前，务必核实贸易细节、文件和交易对手。"
+    }
+  },
+  "dashboardTopCompanies": {
+    "title": "评级最高的公司",
+    "description": "根据验证、信任评分和评论对公司进行排名。",
+    "empty": "没有找到公司。",
+    "verified": "已验证",
+    "notAvailable": "N/A",
+    "metrics": {
+      "trust": "相信",
+      "rating": "等级",
+      "reviews": "评论"
+    },
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    }
+  },
+  "topExperts": {
+    "title": "最受好评的专家",
+    "description": "根据验证、信任评分和评论对专家进行排名。",
+    "empty": "没有找到专家。",
+    "verified": "已验证",
+    "trust": "相信",
+    "rating": "等级",
+    "reviews": "评论",
+    "notAvailable": "N/A",
+    "plans": {
+      "FREE": "自由的",
+      "GOLD": "金子",
+      "DIAMOND": "钻石",
+      "ENTERPRISE": "企业"
+    }
+  },
+  "publicExperts": {
+    "eyebrow": "经过验证的专家网络",
+    "title": "寻找值得信赖的贸易专家",
+    "description": "与海关、采购、物流、检验和全球商业服务领域经过验证的国际贸易专业人士建立联系。",
+    "notAvailable": "N/A",
+    "featured": {
+      "title": "特邀专家",
+      "empty": "目前没有可用的特色专家。",
+      "viewProfile": "查看资料"
+    },
+    "metrics": {
+      "trust": "相信",
+      "rating": "等级",
+      "reviews": "评论"
+    },
+    "statistics": {
+      "total": "专家总数",
+      "verified": "经过验证的专家",
+      "rated": "评级专家"
+    },
+    "pagination": {
+      "previous": "以前的",
+      "next": "下一个",
+      "page": "{total} 的页面 {current}"
+    }
+  },
+  "myReviews": {
+    "title": "我的评论",
+    "description": "查看您收到的评论和您提交的评论。",
+    "fallbackUser": "用户",
+    "ratingOutOfFive": "{rating}/5",
+    "statistics": {
+      "averageRating": "平均评分",
+      "received": "收到的评论",
+      "given": "给出的评论",
+      "basedOn": "基于 {count} 收到的评论"
+    },
+    "received": {
+      "title": "我收到的评论",
+      "empty": "您尚未收到任何评论。",
+      "from": "来自 {name}"
+    },
+    "given": {
+      "title": "我给出的评论",
+      "empty": "您尚未提交任何评论。",
+      "to": "至 {name}"
+    }
+  },
+  "dashboardExpertProfile": {
+    "notFound": "未找到专家。",
+    "backToExperts": "← 返回专家",
+    "notAvailable": "N/A",
+    "experience": "经验",
+    "reviewNotice": "评论只能在完成交易案例后提交。",
+    "trustScoreValue": "{score}/{maximum}",
+    "metadata": {
+      "notFoundTitle": "未找到专家",
+      "notFoundDescription": "找不到所请求的专家资料。",
+      "title": "{name} | {specialty}",
+      "description": "{name} 是一位来自 {country} 的 {specialty} 领域专家。在 Dasres 上查看专家资料。"
+    },
+    "plans": {
+      "free": "自由的",
+      "gold": "金子",
+      "diamond": "钻石",
+      "enterprise": "企业"
+    },
+    "statuses": {
+      "active": "积极的",
+      "inactive": "不活跃",
+      "pending": "待办的",
+      "verified": "已验证",
+      "rejected": "被拒绝"
+    },
+    "metrics": {
+      "trustScore": "信任分数",
+      "rating": "等级",
+      "reviews": "评论",
+      "specialty": "专业",
+      "country": "国家"
+    },
+    "recentReviews": {
+      "title": "最近的评论",
+      "empty": "还没有评论。",
+      "fallbackUser": "用户",
+      "noComment": "没有发表评论。",
+      "rating": "{rating}/{maximum}"
+    },
+    "contact": {
+      "title": "联系专家",
+      "email": "电子邮件",
+      "country": "国家",
+      "specialty": "专业",
+      "reputation": "名声",
+      "trustScore": "信任分数",
+      "completedCases": "已完成案例",
+      "sendEmail": "发送电子邮件",
+      "noReviews": "还没有评论",
+      "reputationValue": "⭐ {rating}（{count} 条评价）"
+    },
+    "management": {
+      "title": "管理行动",
+      "edit": "编辑专家"
+    }
+  },
+  "rootMetadata": {
+    "siteName": "Dasres",
+    "title": "Dasres |全球贸易信任生态系统",
+    "description": "Dasres 通过一个基于案例的平台将经过验证的公司、值得信赖的专家和国际贸易机会联系起来。",
+    "keywords": {
+      "dasres": "Dasres",
+      "experts": "贸易专家",
+      "companies": "经过验证的公司",
+      "opportunities": "贸易机会",
+      "trade": "国际贸易",
+      "business": "全球商业平台",
+      "international": "国际商业网络"
+    },
+    "openGraph": {
+      "title": "Dasres |全球贸易信任生态系统",
+      "description": "在 Dasres 上发现经过验证的公司、值得信赖的专家和国际贸易机会。",
+      "imageAlt": "Dasres 全球贸易平台"
+    },
+    "twitter": {
+      "title": "Dasres |全球贸易信任生态系统",
+      "description": "与经过验证的公司和值得信赖的国际贸易专家联系。"
+    }
+  },
+  "publicCompanies": {
+    "eyebrow": "已验证的公司网络",
+    "title": "发现值得信赖的贸易公司",
+    "description": "浏览经过认证的海关、运输、检验、采购、物流和全球贸易服务领域的国际公司。",
+    "statistics": {
+      "total": "公司总数",
+      "verified": "已验证公司",
+      "rated": "评级公司"
+    },
+    "pagination": {
+      "previous": "以前的",
+      "next": "下一个",
+      "page": "{total} 的页面 {current}"
+    }
+  },
+  "publicOpportunities": {
+    "eyebrow": "全球贸易市场",
+    "title": "发现国际机会",
+    "description": "探索来自世界各地公司的经过验证的贸易机会，与买家和供应商建立联系，并扩展您的国际业务。",
+    "statistics": {
+      "total": "总机会",
+      "open": "开放机会",
+      "countries": "国家"
+    },
+    "pagination": {
+      "previous": "以前的",
+      "next": "下一个",
+      "page": "{total} 的页面 {current}"
+    }
+  },
+  "companyVerificationButtons": {
+    "verify": "核实",
+    "reject": "拒绝"
+  },
+  "verificationExpertActions": {
+    "verify": "核实",
+    "reject": "拒绝"
+  },
+  "verificationCompanyActions": {
+    "verify": "核实",
+    "reject": "拒绝"
+  },
+  "countryFilter": {
+    "allCountries": "所有国家"
+  },
+  "notFound": {
+    "label": "找不到页面",
+    "title": "该页面不存在。",
+    "description": "您要查找的页面可能已被移动、删除或在Dasres中不存在。",
+    "goHome": "回家",
+    "goDashboard": "前往仪表板"
+  },
+  "saveCaseButton": {
+    "saving": "保存...",
+    "unsave": "取消保存",
+    "save": "☆ 保存案例"
+  },
+  "saveCompanyButton": {
+    "saved": "已保存★",
+    "save": "保存☆"
+  },
+  "saveExpertButton": {
+    "saved": "已保存★",
+    "save": "保存☆"
+  },
+  "dashboardOpportunityDetail": {
+    "backToDashboardOpportunities": "← 返回仪表板机会",
+    "tradeOpportunity": "贸易机会",
+    "globalMarketplace": "全球市场",
+    "status": "地位",
+    "country": "国家",
+    "visibility": "能见度",
+    "dashboard": "仪表板",
+    "opportunityDescription": "机会描述",
+    "adminActions": "管理员操作",
+    "editOpportunity": "编辑机会",
+    "opportunitySummary": "机会总结",
+    "type": "类型",
+    "viewPublicPage": "查看公共页面",
+    "backToManagement": "返回管理",
+    "adminNote": "管理员说明",
+    "adminNoteDescription": "此页面用于管理仪表板内的贸易机会。公众访问者会看到单独的公共机会页面。",
+    "statuses": {
+      "open": "打开",
+      "inProgress": "进行中",
+      "closed": "关闭"
+    }
+  },
+  "ticketCategories": {
+    "general": "一般的",
+    "technical": "技术的",
+    "billing": "计费",
+    "support": "支持"
+  },
+  "statuses": {
+    "open": "打开",
+    "in_progress": "进行中",
+    "completed": "完全的",
+    "cancelled": "取消",
+    "pending": "待办的",
+    "accepted": "公认",
+    "rejected": "被拒绝",
+    "active": "积极的",
+    "on_hold": "等候接听",
+    "todo": "待办事项",
+    "review": "审查"
+  },
+  "categories": {
+    "general": "一般的",
+    "customs_clearance": "报关",
+    "shipping": "船运",
+    "inspection": "检查",
+    "insurance": "保险",
+    "sourcing": "采购",
+    "documentation": "文档",
+    "payment": "支付"
+  },
+  "plans": {
+    "free": "自由的",
+    "gold": "金子",
+    "diamond": "钻石",
+    "enterprise": "企业"
+  },
+  "verification": {
+    "pending": "待办的",
+    "verified": "已验证",
+    "rejected": "被拒绝"
   }
 }

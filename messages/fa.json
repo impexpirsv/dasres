@@ -21,6 +21,7 @@
     "toggleMenu": "باز و بسته کردن منو"
   },
   "hero": {
+    "platformValue": "شبکه تجارت جهانی",
     "eyebrow": "شبکه تأییدشده تجارت برای خدمات جهانی B2B",
     "titleLine1": "اعتماد را در",
     "titleLine2": "تجارت جهانی بسازید",
@@ -127,7 +128,8 @@
     "viewAll": "مشاهده همه",
     "statusOpen": "باز",
     "openOpportunity": "فرصت فعال",
-    "viewDetails": "مشاهده جزئیات"
+    "viewDetails": "مشاهده جزئیات",
+    "empty": "در حال حاضر فرصتی وجود ندارد."
   },
   "footer": {
     "ctaEyebrow": "آماده‌اید تجارت را با اطمینان مدیریت کنید؟",
@@ -333,8 +335,20 @@
     }
   },
   "dashboardTopRated": {
+    "countries": {
+      "iran": "ایران",
+      "uae": "امارات",
+      "china": "چین"
+    },
+    "categories": {
+      "shipping": "حمل‌ونقل",
+      "customs_clearance": "ترخیص گمرکی",
+      "inspection": "بازرسی",
+      "insurance": "بیمه",
+      "sourcing": "تأمین کالا"
+    },
     "viewAll": "مشاهده همه",
-    "reviewCount": "بر اساس {count} نظر",
+    "reviewCount": "بر اساس {count, plural, one {# نظر} other {# نظر}}",
     "experts": {
       "title": "متخصصان برتر",
       "empty": "هنوز متخصصی امتیاز دریافت نکرده است."
@@ -359,6 +373,11 @@
     "opportunities": {
       "title": "آخرین فرصت‌ها",
       "empty": "فرصتی یافت نشد."
+    },
+    "statuses": {
+      "open": "باز",
+      "closed": "بسته",
+      "pending": "در انتظار"
     }
   },
   "dashboardRecentActivity": {
@@ -377,14 +396,34 @@
       "documentRejected": "سند رد شد",
       "messageSent": "پیام ارسال شد",
       "projectMessageSent": "پیام پروژه ارسال شد",
-      "taskCommentAdded": "نظر جدیدی برای وظیفه ثبت شد",
-      "taskAssigned": "وظیفه اختصاص داده شد",
+      "taskCommentAdded": "نظر وظیفه اضافه شد",
+      "taskAssigned": "وظیفه تخصیص داده شد",
       "taskCompleted": "وظیفه تکمیل شد",
       "ticketUpdated": "تیکت به‌روزرسانی شد",
       "companyVerified": "شرکت تأیید شد",
       "companyRejected": "شرکت رد شد",
       "projectTaskUpdated": "وظیفه پروژه به‌روزرسانی شد",
-      "projectTaskChecklistToggled": "وضعیت چک‌لیست وظیفه تغییر کرد"
+      "projectTaskChecklistToggled": "چک‌لیست وظیفه پروژه به‌روزرسانی شد",
+      "projectTaskStatusUpdated": "وضعیت وظیفه پروژه تغییر کرد"
+    },
+    "details": {
+      "projectTaskStatusUpdated": "وضعیت وظیفه «{title}» به {status} تغییر کرد.",
+      "projectTaskAttachmentUploaded": "پیوست {file} بارگذاری شد.",
+      "projectTaskUpdated": "وظیفه پروژه «{title}» بروزرسانی شد.",
+      "projectTaskChecklistToggled": "چک‌لیست وظیفه «{item}» تغییر کرد.",
+      "projectTaskStatusUpdatedPrefix": "وضعیت وظیفه پروژه تغییر کرد:",
+      "attachmentUploadedPrefix": "پیوست بارگذاری شد:",
+      "projectTaskUpdatedPrefix": "وظیفه پروژه به‌روزرسانی شد:"
+    },
+    "checklist": {
+      "completed": "تکمیل شده",
+      "incomplete": "تکمیل نشده"
+    },
+    "statuses": {
+      "todo": "برای انجام",
+      "in_progress": "در حال انجام",
+      "review": "در حال بررسی",
+      "completed": "تکمیل شده"
     }
   },
   "dashboardProfileCard": {
@@ -399,17 +438,20 @@
   },
   "dashboardPage": {
     "title": "داشبورد",
+    "badge": "پنل مدیریت کسب‌وکار",
     "description": "حساب کاربری، پروفایل‌ها و فعالیت‌های تجاری خود را مدیریت کنید.",
     "roles": {
       "admin": "مدیر",
       "user": "کاربر"
     },
     "admin": {
+      "title": "مدیریت سیستم",
       "commandCenter": "مرکز فرماندهی مدیر",
       "description": "نمای کلی از وضعیت عملیاتی پلتفرم Dasres",
       "reviewVerifications": "بررسی تأییدیه‌ها",
       "pendingVerifications": "تأییدیه‌های در انتظار",
       "totalReviews": "مجموع نظرات",
+      "reviews": "نظرات",
       "premiumUsers": "کاربران ویژه",
       "openTickets": "تیکت‌های باز",
       "panel": "پنل مدیریت",
@@ -490,9 +532,16 @@
     "overallProgress": "پیشرفت کلی",
     "status": {
       "todo": "برای انجام",
+      "pending": "در انتظار",
+      "open": "باز",
       "inProgress": "در حال انجام",
       "review": "در حال بررسی",
       "completed": "تکمیل‌شده",
+      "approved": "تأیید شده",
+      "rejected": "رد شده",
+      "closed": "بسته شده",
+      "active": "فعال",
+      "expired": "منقضی شده",
       "cancelled": "لغوشده"
     },
     "metrics": {
@@ -532,10 +581,11 @@
     "description": "وظایفی که ممکن است مستقیماً باعث تأخیر در برنامه پروژه شوند.",
     "criticalTasks": "وظایف بحرانی",
     "criticalDuration": "مدت مسیر بحرانی",
-    "duration": "{count} روز",
+    "duration": "{count, plural, one {# روز} other {# روز}}",
     "empty": "هیچ وابستگی بحرانی شناسایی نشد.",
     "dependsOn": "وابسته به: {task}",
-    "critical": "بحرانی"
+    "critical": "بحرانی",
+    "pathStart": "شروع مسیر بحرانی"
   },
   "projectAIInsights": {
     "title": "تحلیل دستیار هوشمند",
@@ -550,9 +600,9 @@
     },
     "risks": {
       "title": "ریسک‌ها",
-      "overdueTasks": "{count} وظیفه عقب‌افتاده",
-      "blockedTasks": "{count} وظیفه مسدودشده",
-      "pendingApprovals": "{count} تأییدیه در انتظار"
+      "overdueTasks": "{count, plural, one {# وظیفه عقب‌افتاده} other {# وظیفه عقب‌افتاده}}",
+      "blockedTasks": "{count, plural, one {# وظیفه مسدودشده} other {# وظیفه مسدودشده}}",
+      "pendingApprovals": "{count, plural, one {# تأییدیه در انتظار} other {# تأییدیه در انتظار}}"
     },
     "nextAction": "اقدام بعدی",
     "recommendation": "پیشنهاد",
@@ -636,7 +686,7 @@
       "low": "کم"
     },
     "statuses": {
-      "todo": "برای انجام",
+      "todo": "انجام نشده",
       "in_progress": "در حال انجام",
       "review": "در حال بررسی",
       "completed": "تکمیل‌شده"
@@ -839,6 +889,16 @@
       "day": "{title} • {duration} روز",
       "week": "{title} • {duration} هفته",
       "month": "{title} • {duration} ماه"
+    },
+    "tooltips": {
+      "baseline": "خط مبنا",
+      "dependencyInput": "وابستگی ورودی",
+      "dependencyOutput": "وابستگی خروجی",
+      "duration": {
+        "day": "مدت: {duration} روز",
+        "week": "مدت: {duration} هفته",
+        "month": "مدت: {duration} ماه"
+      }
     }
   },
   "projectWorkloadView": {
@@ -870,7 +930,14 @@
     "pending": "در انتظار",
     "notCompletedYet": "هنوز تکمیل نشده است",
     "unknownDate": "تاریخ نامشخص",
-    "emptyState": "هیچ مرحله‌ای برای خط زمانی وجود ندارد."
+    "emptyState": "هیچ مرحله‌ای برای خط زمانی وجود ندارد.",
+    "steps": {
+      "requestSubmitted": "درخواست ثبت شد",
+      "providerMatching": "تطبیق ارائه‌دهندگان",
+      "documentsReview": "بررسی اسناد",
+      "serviceInProgress": "در حال اجرای سرویس",
+      "completed": "تکمیل شده"
+    }
   },
   "projectDocuments": {
     "title": "مرکز اسناد",
@@ -885,6 +952,7 @@
     "unknownSize": "حجم نامشخص",
     "unknownDate": "تاریخ نامشخص",
     "rejectionReason": "دلیل رد سند",
+    "rejectedByAdmin": "رد شده توسط مدیر",
     "approvalStatuses": {
       "approved": "تأییدشده",
       "rejected": "ردشده",
@@ -944,6 +1012,16 @@
     "title": "فعالیت‌های اخیر",
     "emptyState": "هنوز فعالیتی ثبت نشده است.",
     "unknownDate": "تاریخ نامشخص",
+    "statuses": {
+      "todo": "انجام نشده",
+      "in_progress": "در حال انجام",
+      "review": "در حال بررسی",
+      "completed": "تکمیل شده"
+    },
+    "details": {
+      "taskStatusUpdated": "وضعیت وظیفه {title} به {status} تغییر کرد",
+      "documentUploaded": "فایل بارگذاری شد: {file}"
+    },
     "actions": {
       "project_created": "پروژه ایجاد شد",
       "project_updated": "پروژه به‌روزرسانی شد",
@@ -952,6 +1030,7 @@
       "task_assigned": "وظیفه تخصیص داده شد",
       "task_completed": "وظیفه تکمیل شد",
       "task_status_updated": "وضعیت وظیفه به‌روزرسانی شد",
+      "project_task_status_updated": "وضعیت وظیفه پروژه به‌روزرسانی شد",
       "comment_added": "نظر اضافه شد",
       "document_uploaded": "سند بارگذاری شد",
       "document_approved": "سند تأیید شد",
@@ -1010,17 +1089,18 @@
     }
   },
   "statusBadge": {
+    "todo": "انجام نشده",
     "pending": "در انتظار",
     "open": "باز",
     "in_progress": "در حال انجام",
     "review": "در حال بررسی",
-    "completed": "تکمیل‌شده",
-    "closed": "بسته",
-    "approved": "تأییدشده",
-    "rejected": "ردشده",
+    "completed": "تکمیل شده",
+    "closed": "بسته شده",
+    "approved": "تأیید شده",
+    "rejected": "رد شده",
     "active": "فعال",
-    "expired": "منقضی‌شده",
-    "cancelled": "لغوشده"
+    "expired": "منقضی شده",
+    "cancelled": "لغو شده"
   },
   "casesPage": {
     "adminTitle": "همه پرونده‌های تجاری",
@@ -1062,6 +1142,16 @@
     "requestedBy": "درخواست‌کننده:",
     "created": "ایجادشده: {date}",
     "viewCase": "مشاهده پرونده",
+    "categories": {
+      "general": "عمومی",
+      "customsClearance": "ترخیص کالا",
+      "shipping": "حمل‌ونقل",
+      "inspection": "بازرسی",
+      "insurance": "بیمه",
+      "sourcing": "تأمین کالا",
+      "documentation": "مستندات",
+      "payment": "پرداخت"
+    },
     "sort": {
       "label": "مرتب‌سازی:",
       "newest": "جدیدترین",
@@ -1373,6 +1463,12 @@
         "deadline": "مهلت",
         "projectDone": "پروژه تکمیل شد",
         "system": "سیستم"
+      },
+      "messages": {
+        "ticketCreated": "{user} یک تیکت جدید ایجاد کرد: {subject}",
+        "ticketReply": "{user} به تیکت پاسخ داد: {subject}",
+        "proposalReceived": "یک پیشنهاد جدید دریافت شد.",
+        "projectCompleted": "پروژه تکمیل شد."
       }
     }
   },
@@ -1460,108 +1556,108 @@
   },
   "companies": {
     "edit": {
-  "title": "ویرایش شرکت",
-  "description": "اطلاعات شرکت، دسته‌بندی تجاری و لوگو را به‌روزرسانی کنید.",
-  "loading": "در حال بارگذاری شرکت...",
-  "currentLogo": "لوگوی فعلی",
-  "currentLogoAlt": "لوگوی فعلی شرکت",
-  "update": "به‌روزرسانی شرکت",
-  "updating": "در حال به‌روزرسانی...",
-  "fields": {
-    "name": {
-      "label": "نام شرکت",
-      "placeholder": "نام شرکت"
+      "title": "ویرایش شرکت",
+      "description": "اطلاعات شرکت، دسته‌بندی تجاری و لوگو را به‌روزرسانی کنید.",
+      "loading": "در حال بارگذاری شرکت...",
+      "currentLogo": "لوگوی فعلی",
+      "currentLogoAlt": "لوگوی فعلی شرکت",
+      "update": "به‌روزرسانی شرکت",
+      "updating": "در حال به‌روزرسانی...",
+      "fields": {
+        "name": {
+          "label": "نام شرکت",
+          "placeholder": "نام شرکت"
+        },
+        "country": {
+          "label": "کشور",
+          "placeholder": "کشور"
+        },
+        "category": {
+          "label": "دسته‌بندی تجاری"
+        },
+        "description": {
+          "label": "توضیحات",
+          "placeholder": "توضیحات شرکت"
+        },
+        "email": {
+          "label": "ایمیل",
+          "placeholder": "ایمیل"
+        },
+        "website": {
+          "label": "وب‌سایت",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "جایگزینی لوگو",
+          "help": "برای حفظ لوگوی فعلی این قسمت را خالی بگذارید. فرمت‌های مجاز: JPG، PNG و WEBP."
+        }
+      },
+      "categories": {
+        "general": "عمومی",
+        "customsClearance": "ترخیص گمرکی",
+        "shipping": "حمل‌ونقل",
+        "inspection": "بازرسی",
+        "insurance": "بیمه",
+        "sourcing": "تأمین کالا",
+        "documentation": "اسناد",
+        "payment": "پرداخت"
+      },
+      "errors": {
+        "loadFailed": "بارگذاری اطلاعات شرکت انجام نشد.",
+        "updateFailed": "به‌روزرسانی شرکت انجام نشد.",
+        "networkError": "خطایی رخ داد."
+      }
     },
-    "country": {
-      "label": "کشور",
-      "placeholder": "کشور"
-    },
-    "category": {
-      "label": "دسته‌بندی تجاری"
-    },
-    "description": {
-      "label": "توضیحات",
-      "placeholder": "توضیحات شرکت"
-    },
-    "email": {
-      "label": "ایمیل",
-      "placeholder": "ایمیل"
-    },
-    "website": {
-      "label": "وب‌سایت",
-      "placeholder": "https://example.com"
-    },
-    "logo": {
-      "label": "جایگزینی لوگو",
-      "help": "برای حفظ لوگوی فعلی این قسمت را خالی بگذارید. فرمت‌های مجاز: JPG، PNG و WEBP."
-    }
-  },
-  "categories": {
-    "general": "عمومی",
-    "customsClearance": "ترخیص گمرکی",
-    "shipping": "حمل‌ونقل",
-    "inspection": "بازرسی",
-    "insurance": "بیمه",
-    "sourcing": "تأمین کالا",
-    "documentation": "اسناد",
-    "payment": "پرداخت"
-  },
-  "errors": {
-    "loadFailed": "بارگذاری اطلاعات شرکت انجام نشد.",
-    "updateFailed": "به‌روزرسانی شرکت انجام نشد.",
-    "networkError": "خطایی رخ داد."
-  }
-},
     "new": {
-  "title": "افزودن شرکت",
-  "description": "پروفایل شرکت را ایجاد کرده و آن را به شبکه تجاری دسترس اضافه کنید.",
-  "create": "ایجاد شرکت",
-  "creating": "در حال ایجاد...",
-  "success": "شرکت با موفقیت ایجاد شد.",
-  "fields": {
-    "name": {
-      "label": "نام شرکت",
-      "placeholder": "نام شرکت"
+      "title": "افزودن شرکت",
+      "description": "پروفایل شرکت را ایجاد کرده و آن را به شبکه تجاری دسترس اضافه کنید.",
+      "create": "ایجاد شرکت",
+      "creating": "در حال ایجاد...",
+      "success": "شرکت با موفقیت ایجاد شد.",
+      "fields": {
+        "name": {
+          "label": "نام شرکت",
+          "placeholder": "نام شرکت"
+        },
+        "country": {
+          "label": "کشور",
+          "placeholder": "کشور"
+        },
+        "category": {
+          "label": "دسته‌بندی تجاری"
+        },
+        "description": {
+          "label": "توضیحات",
+          "placeholder": "توضیحات شرکت"
+        },
+        "email": {
+          "label": "ایمیل",
+          "placeholder": "ایمیل"
+        },
+        "website": {
+          "label": "وب‌سایت",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "لوگوی شرکت",
+          "help": "فرمت‌های مجاز: JPG، PNG و WEBP."
+        }
+      },
+      "categories": {
+        "general": "عمومی",
+        "customsClearance": "ترخیص گمرکی",
+        "shipping": "حمل‌ونقل",
+        "inspection": "بازرسی",
+        "insurance": "بیمه",
+        "sourcing": "تأمین کالا",
+        "documentation": "اسناد",
+        "payment": "پرداخت"
+      },
+      "errors": {
+        "createFailed": "ایجاد شرکت انجام نشد.",
+        "networkError": "خطایی رخ داد."
+      }
     },
-    "country": {
-      "label": "کشور",
-      "placeholder": "کشور"
-    },
-    "category": {
-      "label": "دسته‌بندی تجاری"
-    },
-    "description": {
-      "label": "توضیحات",
-      "placeholder": "توضیحات شرکت"
-    },
-    "email": {
-      "label": "ایمیل",
-      "placeholder": "ایمیل"
-    },
-    "website": {
-      "label": "وب‌سایت",
-      "placeholder": "https://example.com"
-    },
-    "logo": {
-      "label": "لوگوی شرکت",
-      "help": "فرمت‌های مجاز: JPG، PNG و WEBP."
-    }
-  },
-  "categories": {
-    "general": "عمومی",
-    "customsClearance": "ترخیص گمرکی",
-    "shipping": "حمل‌ونقل",
-    "inspection": "بازرسی",
-    "insurance": "بیمه",
-    "sourcing": "تأمین کالا",
-    "documentation": "اسناد",
-    "payment": "پرداخت"
-  },
-  "errors": {
-    "createFailed": "ایجاد شرکت انجام نشد.",
-    "networkError": "خطایی رخ داد."
-  }
-},
     "deleteButton": {
       "button": "حذف شرکت",
       "deleting": "در حال حذف...",
@@ -1609,118 +1705,118 @@
   },
   "experts": {
     "edit": {
-  "title": "ویرایش متخصص",
-  "description": "اطلاعات پروفایل متخصص و تصویر او را به‌روزرسانی کنید.",
-  "loading": "در حال بارگذاری متخصص...",
-  "currentImage": "تصویر فعلی پروفایل",
-  "currentImageAlt": "تصویر فعلی متخصص",
-  "update": "به‌روزرسانی متخصص",
-  "updating": "در حال به‌روزرسانی...",
-  "fields": {
-    "name": {
-      "label": "نام",
-      "placeholder": "نام کامل"
+      "title": "ویرایش متخصص",
+      "description": "اطلاعات پروفایل متخصص و تصویر او را به‌روزرسانی کنید.",
+      "loading": "در حال بارگذاری متخصص...",
+      "currentImage": "تصویر فعلی پروفایل",
+      "currentImageAlt": "تصویر فعلی متخصص",
+      "update": "به‌روزرسانی متخصص",
+      "updating": "در حال به‌روزرسانی...",
+      "fields": {
+        "name": {
+          "label": "نام",
+          "placeholder": "نام کامل"
+        },
+        "country": {
+          "label": "کشور",
+          "placeholder": "کشور"
+        },
+        "specialty": {
+          "label": "تخصص",
+          "placeholder": "تخصص تجاری"
+        },
+        "experience": {
+          "label": "تجربه",
+          "placeholder": "تجربه حرفه‌ای را توضیح دهید"
+        },
+        "email": {
+          "label": "ایمیل",
+          "placeholder": "ایمیل"
+        },
+        "image": {
+          "label": "جایگزینی تصویر",
+          "help": "برای حفظ تصویر فعلی این قسمت را خالی بگذارید. فرمت‌های مجاز: JPG، PNG و WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "بارگذاری اطلاعات متخصص انجام نشد.",
+        "updateFailed": "به‌روزرسانی متخصص انجام نشد.",
+        "networkError": "خطایی رخ داد."
+      }
     },
-    "country": {
-      "label": "کشور",
-      "placeholder": "کشور"
-    },
-    "specialty": {
-      "label": "تخصص",
-      "placeholder": "تخصص تجاری"
-    },
-    "experience": {
-      "label": "تجربه",
-      "placeholder": "تجربه حرفه‌ای را توضیح دهید"
-    },
-    "email": {
-      "label": "ایمیل",
-      "placeholder": "ایمیل"
-    },
-    "image": {
-      "label": "جایگزینی تصویر",
-      "help": "برای حفظ تصویر فعلی این قسمت را خالی بگذارید. فرمت‌های مجاز: JPG، PNG و WEBP."
-    }
-  },
-  "errors": {
-    "loadFailed": "بارگذاری اطلاعات متخصص انجام نشد.",
-    "updateFailed": "به‌روزرسانی متخصص انجام نشد.",
-    "networkError": "خطایی رخ داد."
-  }
-},
     "new": {
-  "title": "افزودن متخصص",
-  "description": "پروفایل متخصص را ایجاد کرده و آن را به شبکه تجاری دسترس اضافه کنید.",
-  "create": "ایجاد متخصص",
-  "creating": "در حال ایجاد...",
-  "success": "متخصص با موفقیت ایجاد شد.",
-  "fields": {
-    "name": {
-      "label": "نام",
-      "placeholder": "نام کامل"
+      "title": "افزودن متخصص",
+      "description": "پروفایل متخصص را ایجاد کرده و آن را به شبکه تجاری دسترس اضافه کنید.",
+      "create": "ایجاد متخصص",
+      "creating": "در حال ایجاد...",
+      "success": "متخصص با موفقیت ایجاد شد.",
+      "fields": {
+        "name": {
+          "label": "نام",
+          "placeholder": "نام کامل"
+        },
+        "country": {
+          "label": "کشور",
+          "placeholder": "کشور"
+        },
+        "specialty": {
+          "label": "تخصص",
+          "placeholder": "تخصص تجاری"
+        },
+        "experience": {
+          "label": "تجربه",
+          "placeholder": "تجربه حرفه‌ای را توضیح دهید"
+        },
+        "email": {
+          "label": "ایمیل",
+          "placeholder": "ایمیل"
+        },
+        "image": {
+          "label": "تصویر پروفایل",
+          "help": "فرمت‌های مجاز: JPG، PNG و WEBP."
+        }
+      },
+      "errors": {
+        "createFailed": "ایجاد متخصص انجام نشد.",
+        "networkError": "خطایی رخ داد."
+      }
     },
-    "country": {
-      "label": "کشور",
-      "placeholder": "کشور"
-    },
-    "specialty": {
-      "label": "تخصص",
-      "placeholder": "تخصص تجاری"
-    },
-    "experience": {
-      "label": "تجربه",
-      "placeholder": "تجربه حرفه‌ای را توضیح دهید"
-    },
-    "email": {
-      "label": "ایمیل",
-      "placeholder": "ایمیل"
-    },
-    "image": {
-      "label": "تصویر پروفایل",
-      "help": "فرمت‌های مجاز: JPG، PNG و WEBP."
-    }
-  },
-  "errors": {
-    "createFailed": "ایجاد متخصص انجام نشد.",
-    "networkError": "خطایی رخ داد."
-  }
-},
     "search": {
-  "searchLabel": "جستجوی متخصصان",
-  "searchPlaceholder": "🔍 جستجوی متخصصان...",
-  "countryLabel": "کشور",
-  "ratingFilterLabel": "فیلتر امتیاز",
-  "allCountries": "همه کشورها",
-  "allRatings": "همه امتیازها",
-  "fiveStars": "۵ ستاره",
-  "fourPlusStars": "۴ ستاره و بیشتر",
-  "verifiedOnly": "فقط متخصصان تأییدشده",
-  "viewProfile": "مشاهده پروفایل ←",
-  "available": "آماده همکاری",
-  "noRating": "هنوز امتیازی ثبت نشده است",
-  "notAvailable": "ناموجود",
-  "empty": "هیچ متخصصی با فیلترهای انتخاب‌شده مطابقت ندارد.",
-  "reviewCount": "{count, plural, =1 {۱ نظر} other {# نظر}}",
-  "featured": {
-    "title": "متخصصان ویژه",
-    "description": "متخصصان ممتاز با نمایش بیشتر در دسترس."
-  },
-  "verification": {
-    "verified": "تأییدشده",
-    "rejected": "ردشده",
-    "pending": "در انتظار بررسی"
-  },
-  "plans": {
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  },
-  "metrics": {
-    "trust": "اعتماد",
-    "rating": "امتیاز",
-    "reviews": "نظرات"
-  }
-},
+      "searchLabel": "جستجوی متخصصان",
+      "searchPlaceholder": "🔍 جستجوی متخصصان...",
+      "countryLabel": "کشور",
+      "ratingFilterLabel": "فیلتر امتیاز",
+      "allCountries": "همه کشورها",
+      "allRatings": "همه امتیازها",
+      "fiveStars": "۵ ستاره",
+      "fourPlusStars": "۴ ستاره و بیشتر",
+      "verifiedOnly": "فقط متخصصان تأییدشده",
+      "viewProfile": "مشاهده پروفایل ←",
+      "available": "آماده همکاری",
+      "noRating": "هنوز امتیازی ثبت نشده است",
+      "notAvailable": "ناموجود",
+      "empty": "هیچ متخصصی با فیلترهای انتخاب‌شده مطابقت ندارد.",
+      "reviewCount": "{count, plural, =1 {۱ نظر} other {# نظر}}",
+      "featured": {
+        "title": "متخصصان ویژه",
+        "description": "متخصصان ممتاز با نمایش بیشتر در دسترس."
+      },
+      "verification": {
+        "verified": "تأییدشده",
+        "rejected": "ردشده",
+        "pending": "در انتظار بررسی"
+      },
+      "plans": {
+        "gold": "طلایی",
+        "diamond": "الماسی",
+        "enterprise": "سازمانی"
+      },
+      "metrics": {
+        "trust": "اعتماد",
+        "rating": "امتیاز",
+        "reviews": "نظرات"
+      }
+    },
     "deleteButton": {
       "button": "حذف متخصص",
       "deleting": "در حال حذف...",
@@ -1732,105 +1828,105 @@
   },
   "opportunities": {
     "dashboard": {
-  "title": "مدیریت فرصت‌ها",
-  "description": "فرصت‌های تجارت بین‌المللی را مشاهده و مدیریت کنید.",
-  "addOpportunity": "افزودن فرصت",
-  "latestOpportunity": "جدیدترین فرصت",
-  "stats": {
-    "total": "مجموع",
-    "active": "فعال",
-    "closed": "بسته‌شده",
-    "countries": "کشورها"
-  },
-  "pagination": {
-    "previous": "قبلی",
-    "next": "بعدی",
-    "page": "صفحه {current} از {total}"
-  }
-},
+      "title": "مدیریت فرصت‌ها",
+      "description": "فرصت‌های تجارت بین‌المللی را مشاهده و مدیریت کنید.",
+      "addOpportunity": "افزودن فرصت",
+      "latestOpportunity": "جدیدترین فرصت",
+      "stats": {
+        "total": "مجموع",
+        "active": "فعال",
+        "closed": "بسته‌شده",
+        "countries": "کشورها"
+      },
+      "pagination": {
+        "previous": "قبلی",
+        "next": "بعدی",
+        "page": "صفحه {current} از {total}"
+      }
+    },
     "new": {
-  "title": "افزودن فرصت",
-  "description": "یک فرصت تجاری جدید ایجاد کرده و آن را در بازار دسترس منتشر کنید.",
-  "create": "ایجاد فرصت",
-  "creating": "در حال ایجاد...",
-  "success": "فرصت با موفقیت ایجاد شد.",
-  "fields": {
-    "title": {
-      "label": "عنوان",
-      "placeholder": "عنوان فرصت"
+      "title": "افزودن فرصت",
+      "description": "یک فرصت تجاری جدید ایجاد کرده و آن را در بازار دسترس منتشر کنید.",
+      "create": "ایجاد فرصت",
+      "creating": "در حال ایجاد...",
+      "success": "فرصت با موفقیت ایجاد شد.",
+      "fields": {
+        "title": {
+          "label": "عنوان",
+          "placeholder": "عنوان فرصت"
+        },
+        "country": {
+          "label": "کشور",
+          "placeholder": "کشور"
+        },
+        "image": {
+          "label": "تصویر فرصت",
+          "help": "فرمت‌های مجاز: JPG، PNG و WEBP."
+        },
+        "description": {
+          "label": "توضیحات",
+          "placeholder": "فرصت تجاری را توضیح دهید"
+        }
+      },
+      "errors": {
+        "createFailed": "ایجاد فرصت انجام نشد.",
+        "networkError": "خطایی رخ داد."
+      }
     },
-    "country": {
-      "label": "کشور",
-      "placeholder": "کشور"
+    "edit": {
+      "title": "ویرایش فرصت",
+      "description": "اطلاعات و تصویر فرصت تجاری را به‌روزرسانی کنید.",
+      "loading": "در حال بارگذاری فرصت...",
+      "currentImage": "تصویر فعلی فرصت",
+      "currentImageAlt": "تصویر فعلی فرصت",
+      "update": "به‌روزرسانی فرصت",
+      "updating": "در حال به‌روزرسانی...",
+      "fields": {
+        "title": {
+          "label": "عنوان",
+          "placeholder": "عنوان فرصت"
+        },
+        "country": {
+          "label": "کشور",
+          "placeholder": "کشور"
+        },
+        "description": {
+          "label": "توضیحات",
+          "placeholder": "فرصت تجاری را توضیح دهید"
+        },
+        "image": {
+          "label": "جایگزینی تصویر",
+          "help": "برای حفظ تصویر فعلی این قسمت را خالی بگذارید. فرمت‌های مجاز: JPG، PNG و WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "بارگذاری اطلاعات فرصت انجام نشد.",
+        "updateFailed": "به‌روزرسانی فرصت انجام نشد.",
+        "networkError": "خطایی رخ داد."
+      }
     },
-    "image": {
-      "label": "تصویر فرصت",
-      "help": "فرمت‌های مجاز: JPG، PNG و WEBP."
-    },
-    "description": {
-      "label": "توضیحات",
-      "placeholder": "فرصت تجاری را توضیح دهید"
-    }
-  },
-  "errors": {
-    "createFailed": "ایجاد فرصت انجام نشد.",
-    "networkError": "خطایی رخ داد."
-  }
-},
-"edit": {
-  "title": "ویرایش فرصت",
-  "description": "اطلاعات و تصویر فرصت تجاری را به‌روزرسانی کنید.",
-  "loading": "در حال بارگذاری فرصت...",
-  "currentImage": "تصویر فعلی فرصت",
-  "currentImageAlt": "تصویر فعلی فرصت",
-  "update": "به‌روزرسانی فرصت",
-  "updating": "در حال به‌روزرسانی...",
-  "fields": {
-    "title": {
-      "label": "عنوان",
-      "placeholder": "عنوان فرصت"
-    },
-    "country": {
-      "label": "کشور",
-      "placeholder": "کشور"
-    },
-    "description": {
-      "label": "توضیحات",
-      "placeholder": "فرصت تجاری را توضیح دهید"
-    },
-    "image": {
-      "label": "جایگزینی تصویر",
-      "help": "برای حفظ تصویر فعلی این قسمت را خالی بگذارید. فرمت‌های مجاز: JPG، PNG و WEBP."
-    }
-  },
-  "errors": {
-    "loadFailed": "بارگذاری اطلاعات فرصت انجام نشد.",
-    "updateFailed": "به‌روزرسانی فرصت انجام نشد.",
-    "networkError": "خطایی رخ داد."
-  }
-},
     "search": {
-  "searchLabel": "جستجوی فرصت‌ها",
-  "searchPlaceholder": "🔍 جستجوی فرصت‌ها...",
-  "countryLabel": "کشور",
-  "statusLabel": "وضعیت",
-  "allCountries": "همه کشورها",
-  "allStatuses": "همه وضعیت‌ها",
-  "viewOpportunity": "مشاهده فرصت ←",
-  "statuses": {
-    "open": "باز",
-    "inProgress": "در حال انجام",
-    "closed": "بسته‌شده"
-  },
-  "featured": {
-    "title": "فرصت‌های ویژه",
-    "description": "فرصت‌های تجاری فعالی که در حال حاضر برای همکاری باز هستند."
-  },
-  "empty": {
-    "title": "فرصتی یافت نشد",
-    "description": "عبارت جستجو یا فیلترها را تغییر دهید."
-  }
-},
+      "searchLabel": "جستجوی فرصت‌ها",
+      "searchPlaceholder": "🔍 جستجوی فرصت‌ها...",
+      "countryLabel": "کشور",
+      "statusLabel": "وضعیت",
+      "allCountries": "همه کشورها",
+      "allStatuses": "همه وضعیت‌ها",
+      "viewOpportunity": "مشاهده فرصت ←",
+      "statuses": {
+        "open": "باز",
+        "inProgress": "در حال انجام",
+        "closed": "بسته‌شده"
+      },
+      "featured": {
+        "title": "فرصت‌های ویژه",
+        "description": "فرصت‌های تجاری فعالی که در حال حاضر برای همکاری باز هستند."
+      },
+      "empty": {
+        "title": "فرصتی یافت نشد",
+        "description": "عبارت جستجو یا فیلترها را تغییر دهید."
+      }
+    },
     "deleteButton": {
       "button": "حذف فرصت",
       "deleting": "در حال حذف...",
@@ -1937,672 +2033,689 @@
     }
   },
   "createCaseForm": {
-  "titleLabel": "عنوان پرونده",
-  "titlePlaceholder": "نیاز به ترخیص گمرکی در دبی",
-  "categoryLabel": "دسته‌بندی پرونده",
-  "categoryHelp": "این مورد به دسترس کمک می‌کند پرونده را به شرکت‌ها و متخصصان مرتبط متصل کند.",
-  "descriptionLabel": "توضیحات",
-  "descriptionPlaceholder": "جزئیات محموله، خدمات موردنیاز، کشور، اسناد، زمان‌بندی و هر نیاز ویژه را توضیح دهید...",
-  "create": "ایجاد پرونده",
-  "creating": "در حال ایجاد...",
-  "categories": {
-    "general": "عمومی",
-    "customsClearance": "ترخیص گمرکی",
-    "shipping": "حمل‌ونقل",
-    "inspection": "بازرسی",
-    "insurance": "بیمه",
-    "sourcing": "تأمین کالا",
-    "documentation": "اسناد",
-    "payment": "پرداخت"
+    "titleLabel": "عنوان پرونده",
+    "titlePlaceholder": "نیاز به ترخیص گمرکی در دبی",
+    "categoryLabel": "دسته‌بندی پرونده",
+    "categoryHelp": "این مورد به دسترس کمک می‌کند پرونده را به شرکت‌ها و متخصصان مرتبط متصل کند.",
+    "descriptionLabel": "توضیحات",
+    "descriptionPlaceholder": "جزئیات محموله، خدمات موردنیاز، کشور، اسناد، زمان‌بندی و هر نیاز ویژه را توضیح دهید...",
+    "create": "ایجاد پرونده",
+    "creating": "در حال ایجاد...",
+    "categories": {
+      "general": "عمومی",
+      "customsClearance": "ترخیص گمرکی",
+      "shipping": "حمل‌ونقل",
+      "inspection": "بازرسی",
+      "insurance": "بیمه",
+      "sourcing": "تأمین کالا",
+      "documentation": "اسناد",
+      "payment": "پرداخت"
+    },
+    "backToCases": "← بازگشت به پرونده‌ها",
+    "pageTitle": "ایجاد پرونده تجاری جدید",
+    "pageDescription": "یک درخواست خدمات تجاری جدید ثبت کنید. شرکت یا متخصص ارائه‌دهنده خدمات می‌تواند بعداً تعیین شود.",
+    "plans": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    },
+    "errors": {
+      "planLimit": "پلن {plan} شما امکان داشتن حداکثر {limit} پرونده تجاری فعال را فراهم می‌کند. برای ایجاد پرونده‌های بیشتر، پلن خود را ارتقا دهید.",
+      "titleAndDescriptionRequired": "وارد کردن عنوان و توضیحات الزامی است.",
+      "invalidCategory": "دسته‌بندی پرونده معتبر نیست."
+    }
   },
-  "backToCases": "← بازگشت به پرونده‌ها",
-"pageTitle": "ایجاد پرونده تجاری جدید",
-"pageDescription": "یک درخواست خدمات تجاری جدید ثبت کنید. شرکت یا متخصص ارائه‌دهنده خدمات می‌تواند بعداً تعیین شود.",
-"plans": {
-  "free": "رایگان",
-  "gold": "طلایی",
-  "diamond": "الماسی",
-  "enterprise": "سازمانی"
-},
-"errors": {
-  "planLimit": "پلن {plan} شما امکان داشتن حداکثر {limit} پرونده تجاری فعال را فراهم می‌کند. برای ایجاد پرونده‌های بیشتر، پلن خود را ارتقا دهید.",
-  "titleAndDescriptionRequired": "وارد کردن عنوان و توضیحات الزامی است.",
-  "invalidCategory": "دسته‌بندی پرونده معتبر نیست."
-}
-},
-"dashboardSearch": {
-  "eyebrow": "جست‌وجوی سراسری",
-  "title": "جست‌وجو در دسترس",
-  "description": "شرکت‌ها، متخصصان، فرصت‌ها و پرونده‌های تجاری را در فضای کاری خود پیدا کنید.",
-  "searchLabel": "جست‌وجو در دسترس",
-  "searchPlaceholder": "جست‌وجوی شرکت‌ها، متخصصان، فرصت‌ها و پرونده‌ها...",
-  "searchButton": "جست‌وجو",
-  "initialState": "برای جست‌وجو در دسترس یک عبارت وارد کنید.",
-  "resultsSummary": "{count, plural, =0 {هیچ نتیجه‌ای یافت نشد برای} =1 {۱ نتیجه یافت شد برای} other {# نتیجه یافت شد برای}}",
-  "sections": {
+  "dashboardSearch": {
+    "eyebrow": "جست‌وجوی سراسری",
+    "title": "جست‌وجو در دسترس",
+    "description": "شرکت‌ها، متخصصان، فرصت‌ها و پرونده‌های تجاری را در فضای کاری خود پیدا کنید.",
+    "searchLabel": "جست‌وجو در دسترس",
+    "searchPlaceholder": "جست‌وجوی شرکت‌ها، متخصصان، فرصت‌ها و پرونده‌ها...",
+    "searchButton": "جست‌وجو",
+    "initialState": "برای جست‌وجو در دسترس یک عبارت وارد کنید.",
+    "resultsSummary": "{count, plural, =0 {هیچ نتیجه‌ای یافت نشد برای} =1 {۱ نتیجه یافت شد برای} other {# نتیجه یافت شد برای}}",
+    "sections": {
+      "companies": {
+        "title": "شرکت‌ها",
+        "empty": "شرکتی یافت نشد."
+      },
+      "experts": {
+        "title": "متخصصان",
+        "empty": "متخصصی یافت نشد."
+      },
+      "opportunities": {
+        "title": "فرصت‌ها",
+        "empty": "فرصتی یافت نشد."
+      },
+      "tradeCases": {
+        "title": "پرونده‌های تجاری",
+        "empty": "پرونده‌ای یافت نشد."
+      }
+    },
+    "statuses": {
+      "open": "باز",
+      "inProgress": "در حال انجام",
+      "completed": "تکمیل‌شده",
+      "closed": "بسته‌شده",
+      "pending": "در انتظار",
+      "cancelled": "لغوشده"
+    }
+  },
+  "companyProfile": {
+    "metadata": {
+      "notFoundTitle": "شرکت یافت نشد",
+      "notFoundDescription": "پروفایل شرکت موردنظر یافت نشد.",
+      "description": "{name} یک شرکت فعال در حوزه {category} از کشور {country} است. پروفایل این شرکت را در دسترس مشاهده کنید."
+    },
+    "notFound": "شرکت یافت نشد",
+    "backToCompanies": "بازگشت به شرکت‌ها ←",
+    "statusLabel": "وضعیت",
+    "notAvailable": "ناموجود",
+    "notProvided": "ثبت نشده",
+    "companyRating": "امتیاز شرکت",
+    "companyDescription": "توضیحات شرکت",
+    "recentReviews": "آخرین نظرات",
+    "companyInformation": "اطلاعات شرکت",
+    "noReviews": "هنوز نظری ثبت نشده است.",
+    "noCommentProvided": "متنی برای این نظر ثبت نشده است.",
+    "basedOnReviews": "{count, plural, =1 {بر اساس ۱ نظر} other {بر اساس # نظر}}",
+    "trustScoreValue": "امتیاز اعتماد: {score} از ۱۰۰",
+    "completedCasesValue": "پرونده‌های تکمیل‌شده: {count}",
+    "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {۱ نظر} other {# نظر}})",
+    "sendEmail": "ارسال ایمیل",
+    "visitWebsite": "مشاهده وب‌سایت",
+    "verificationStatus": "وضعیت تأیید",
+    "editCompany": "ویرایش شرکت",
+    "metrics": {
+      "trustScore": "امتیاز اعتماد",
+      "rating": "امتیاز",
+      "reviews": "نظرات",
+      "verification": "تأیید",
+      "country": "کشور"
+    },
+    "fields": {
+      "email": "ایمیل",
+      "website": "وب‌سایت",
+      "country": "کشور",
+      "category": "دسته‌بندی",
+      "reputation": "اعتبار"
+    },
+    "verificationBadges": {
+      "verified": "شرکت تأییدشده",
+      "rejected": "ردشده",
+      "pending": "در انتظار تأیید"
+    },
+    "verificationStatuses": {
+      "verified": "تأییدشده",
+      "rejected": "ردشده",
+      "pending": "در انتظار"
+    },
+    "plans": {
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    },
+    "statuses": {
+      "active": "فعال",
+      "inactive": "غیرفعال",
+      "open": "باز",
+      "pending": "در انتظار",
+      "verified": "تأییدشده",
+      "rejected": "ردشده",
+      "completed": "تکمیل‌شده",
+      "inProgress": "در حال انجام"
+    },
+    "schema": {
+      "status": "وضعیت",
+      "category": "دسته‌بندی"
+    }
+  },
+  "dashboardCompanies": {
+    "title": "مدیریت شرکت‌ها",
+    "description": "شرکت‌های تجارت بین‌المللی را مدیریت و بررسی کنید.",
+    "addCompany": "افزودن شرکت",
+    "stats": {
+      "total": "مجموع",
+      "verified": "تأییدشده",
+      "pending": "در انتظار",
+      "rejected": "ردشده",
+      "premium": "ویژه"
+    },
+    "pagination": {
+      "previous": "قبلی",
+      "next": "بعدی",
+      "page": "صفحه {current} از {total}"
+    }
+  },
+  "dashboardExperts": {
+    "title": "مدیریت متخصصان",
+    "description": "متخصصان تجارت بین‌المللی را مدیریت و بررسی کنید.",
+    "addExpert": "افزودن متخصص",
+    "stats": {
+      "total": "مجموع",
+      "verified": "تأییدشده",
+      "pending": "در انتظار",
+      "rejected": "ردشده",
+      "premium": "ویژه"
+    },
+    "pagination": {
+      "previous": "قبلی",
+      "next": "بعدی",
+      "page": "صفحه {current} از {total}"
+    }
+  },
+  "dashboardMyCases": {
+    "title": "پرونده‌های فعال من",
+    "description": "پرونده‌هایی که پیشنهاد شرکت شما در آن‌ها پذیرفته شده است.",
+    "notAvailable": "ناموجود",
+    "notAssigned": "تخصیص داده نشده",
+    "caseNumber": "پرونده شماره {id}",
+    "documentCount": "{count, plural, =1 {۱ سند} other {# سند}}",
+    "messageCount": "{count, plural, =1 {۱ پیام} other {# پیام}}",
+    "stepsCompleted": "{completed} از {total} مرحله تکمیل شده است",
+    "updated": "به‌روزرسانی‌شده در {date}",
+    "viewCase": "مشاهده پرونده ←",
+    "stats": {
+      "assignedCases": "پرونده‌های تخصیص‌یافته",
+      "inProgress": "در حال انجام",
+      "completed": "تکمیل‌شده",
+      "workload": "حجم فعالیت",
+      "workloadDescription": "پیام‌ها + اسناد"
+    },
+    "empty": {
+      "title": "هنوز پرونده فعالی ندارید",
+      "description": "پس از پذیرفته‌شدن یکی از پیشنهادهای شرکت شما، پرونده تجاری مربوط در این بخش نمایش داده می‌شود.",
+      "browseOpenCases": "مشاهده پرونده‌های باز"
+    },
+    "fields": {
+      "acceptedCompany": "شرکت پذیرفته‌شده",
+      "assignedExpert": "متخصص تخصیص‌یافته",
+      "proposalPrice": "مبلغ پیشنهاد",
+      "timelineProgress": "پیشرفت مراحل"
+    },
+    "statuses": {
+      "open": "باز",
+      "inProgress": "در حال انجام",
+      "completed": "تکمیل‌شده",
+      "cancelled": "لغوشده"
+    }
+  },
+  "dashboardMyCompanies": {
+    "title": "شرکت‌های من",
+    "description": "پروفایل شرکت‌های متعلق به خود، وضعیت تأیید و سطح نمایش آن‌ها را مدیریت کنید.",
+    "addCompany": "افزودن شرکت",
+    "created": "ایجادشده در {date}",
+    "viewCompany": "مشاهده شرکت ←",
+    "categories": {
+      "general": "عمومی",
+      "customsClearance": "ترخیص کالا",
+      "shipping": "حمل‌ونقل",
+      "inspection": "بازرسی",
+      "insurance": "بیمه",
+      "sourcing": "تأمین کالا",
+      "documentation": "مستندات",
+      "payment": "پرداخت"
+    },
+    "countries": {
+      "iran": "ایران"
+    },
+    "stats": {
+      "total": "مجموع",
+      "verified": "تأییدشده",
+      "pending": "در انتظار",
+      "rejected": "ردشده",
+      "premium": "ویژه"
+    },
+    "empty": {
+      "title": "هنوز شرکتی ندارید",
+      "description": "برای شرکت در فرصت‌های تجاری و ارسال پیشنهاد، اولین پروفایل شرکت خود را ایجاد کنید.",
+      "button": "افزودن شرکت"
+    },
+    "verification": {
+      "verified": "تأییدشده",
+      "pending": "در انتظار",
+      "rejected": "ردشده"
+    },
+    "plans": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    },
+    "statuses": {
+      "active": "فعال",
+      "inactive": "غیرفعال",
+      "suspended": "تعلیق‌شده"
+    }
+  },
+  "dashboardMyExperts": {
+    "title": "متخصصان من",
+    "description": "پروفایل متخصصان متعلق به خود، وضعیت تأیید و سطح نمایش آن‌ها را مدیریت کنید.",
+    "addExpert": "افزودن متخصص",
+    "created": "ایجادشده در {date}",
+    "viewExpert": "مشاهده متخصص ←",
+    "stats": {
+      "total": "مجموع",
+      "verified": "تأییدشده",
+      "pending": "در انتظار",
+      "rejected": "ردشده",
+      "premium": "ویژه"
+    },
+    "empty": {
+      "title": "هنوز متخصصی ندارید",
+      "description": "برای نمایش تجربه‌های حرفه‌ای و دریافت درخواست‌های تجاری، اولین پروفایل متخصص خود را ایجاد کنید.",
+      "button": "افزودن متخصص"
+    },
+    "verification": {
+      "verified": "تأییدشده",
+      "pending": "در انتظار",
+      "rejected": "ردشده"
+    },
+    "plans": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    },
+    "statuses": {
+      "active": "فعال",
+      "inactive": "غیرفعال",
+      "suspended": "تعلیق‌شده"
+    }
+  },
+  "dashboardMyProposals": {
+    "title": "پیشنهادهای من",
+    "description": "عملکرد پیشنهادها، نرخ موفقیت و ارزش ارسال‌شده را بررسی کنید.",
+    "findOpenCases": "مشاهده پرونده‌های باز",
+    "empty": "هنوز پیشنهادی ثبت نشده است.",
+    "notAvailable": "ناموجود",
+    "notAssigned": "تخصیص داده نشده",
+    "proposalNumber": "پیشنهاد شماره {id}",
+    "submittedOn": "ارسال‌شده در {date}",
+    "caseStatus": "وضعیت پرونده: {status}",
+    "viewCase": "مشاهده پرونده ←",
+    "stats": {
+      "totalProposals": "مجموع پیشنهادها",
+      "pending": "در انتظار",
+      "accepted": "پذیرفته‌شده",
+      "rejected": "ردشده",
+      "winRate": "نرخ موفقیت",
+      "acceptedValue": "ارزش پذیرفته‌شده",
+      "submittedValue": "ارزش ارسال‌شده: ${value}"
+    },
+    "filters": {
+      "all": "همه: {count}",
+      "pending": "در انتظار: {count}",
+      "accepted": "پذیرفته‌شده: {count}",
+      "rejected": "ردشده: {count}"
+    },
+    "fields": {
+      "case": "پرونده",
+      "company": "شرکت",
+      "expert": "متخصص",
+      "price": "قیمت"
+    },
+    "statuses": {
+      "pending": "در انتظار",
+      "accepted": "پذیرفته‌شده",
+      "rejected": "ردشده"
+    },
+    "caseStatuses": {
+      "open": "باز",
+      "inProgress": "در حال انجام",
+      "completed": "تکمیل‌شده",
+      "cancelled": "لغوشده"
+    }
+  },
+  "dashboardMyTasks": {
+    "eyebrow": "وظایف من",
+    "title": "کارهای تخصیص‌یافته",
+    "assignedSummary": "{count, plural, =0 {هیچ وظیفه‌ای به شما تخصیص داده نشده است} =1 {۱ وظیفه به شما تخصیص داده شده است} other {# وظیفه به شما تخصیص داده شده است}}",
+    "noDueDate": "بدون مهلت",
+    "viewProject": "مشاهده پروژه",
+    "stats": {
+      "assigned": "تخصیص‌یافته",
+      "completed": "تکمیل‌شده",
+      "inProgress": "در حال انجام",
+      "overdue": "عقب‌افتاده"
+    },
+    "empty": {
+      "title": "وظیفه‌ای به شما تخصیص داده نشده است",
+      "description": "در حال حاضر هیچ کار تخصیص‌یافته‌ای ندارید."
+    },
+    "fields": {
+      "project": "پروژه",
+      "projectStatus": "وضعیت پروژه",
+      "dueDate": "مهلت انجام"
+    },
+    "taskStatuses": {
+      "todo": "برای انجام",
+      "inProgress": "در حال انجام",
+      "review": "در حال بررسی",
+      "completed": "تکمیل‌شده"
+    },
+    "projectStatuses": {
+      "open": "باز",
+      "inProgress": "در حال انجام",
+      "completed": "تکمیل‌شده",
+      "cancelled": "لغوشده"
+    },
+    "priorities": {
+      "low": "کم",
+      "medium": "متوسط",
+      "high": "زیاد",
+      "urgent": "فوری"
+    }
+  },
+  "dashboardProjects": {
+    "eyebrow": "پروژه‌ها",
+    "title": "پروژه‌های تجاری",
+    "description": "پرونده‌های تجاری پذیرفته‌شده را مدیریت کرده و روند اجرا را پیگیری کنید.",
+    "customer": "مشتری",
+    "empty": {
+      "title": "هنوز پروژه‌ای وجود ندارد",
+      "description": "پس از پذیرفته‌شدن یک پیشنهاد، پروژه به‌صورت خودکار ایجاد می‌شود.",
+      "browseOpenCases": "مشاهده پرونده‌های باز"
+    },
+    "statuses": {
+      "active": "فعال",
+      "pending": "در انتظار",
+      "open": "باز",
+      "inProgress": "در حال انجام",
+      "completed": "تکمیل‌شده",
+      "cancelled": "لغوشده"
+    }
+  },
+  "dashboardSavedCases": {
+    "title": "پرونده‌های ذخیره‌شده",
+    "description": "پرونده‌های تجاری که برای بررسی در آینده ذخیره کرده‌اید.",
+    "savedOn": "ذخیره‌شده در {date}",
+    "viewCase": "مشاهده پرونده ←",
+    "empty": {
+      "title": "هنوز پرونده‌ای ذخیره نشده است",
+      "description": "پرونده‌های تجاری موردعلاقه را ذخیره کنید تا بعداً به آن‌ها دسترسی داشته باشید.",
+      "button": "مشاهده پرونده‌های باز"
+    },
+    "metrics": {
+      "proposals": "پیشنهادها",
+      "documents": "اسناد",
+      "messages": "پیام‌ها"
+    },
+    "statuses": {
+      "open": "باز",
+      "inProgress": "در حال انجام",
+      "completed": "تکمیل‌شده",
+      "cancelled": "لغوشده"
+    }
+  },
+  "dashboardSavedCompanies": {
+    "title": "شرکت‌های ذخیره‌شده",
+    "description": "شرکت‌هایی که برای بررسی و ارتباط در آینده ذخیره کرده‌اید.",
+    "viewProfile": "مشاهده پروفایل",
+    "empty": {
+      "title": "هنوز شرکتی ذخیره نشده است",
+      "description": "شرکت‌های قابل‌اعتماد را برای ساخت شبکه تجاری خود ذخیره کنید.",
+      "button": "مشاهده شرکت‌ها"
+    }
+  },
+  "dashboardSavedExperts": {
+    "title": "متخصصان ذخیره‌شده",
+    "description": "متخصصانی که برای بررسی و ارتباط در آینده ذخیره کرده‌اید.",
+    "viewProfile": "مشاهده پروفایل",
+    "empty": {
+      "title": "هنوز متخصصی ذخیره نشده است",
+      "description": "متخصصان باتجربه را ذخیره کنید تا برای پروژه‌های تجاری آینده سریع‌تر با آن‌ها ارتباط بگیرید.",
+      "button": "مشاهده متخصصان"
+    }
+  },
+  "dashboardSettings": {
+    "eyebrow": "تنظیمات حساب",
+    "title": "تنظیمات",
+    "description": "اطلاعات حساب، طرح اشتراک و پروفایل دسترس خود را مدیریت کنید.",
+    "unlimited": "نامحدود",
+    "profileInformation": {
+      "title": "اطلاعات پروفایل",
+      "notProvided": "ثبت نشده",
+      "fields": {
+        "name": "نام",
+        "email": "ایمیل",
+        "role": "نقش",
+        "plan": "طرح"
+      }
+    },
+    "planLimits": {
+      "title": "محدودیت‌های طرح",
+      "caseLimit": "سقف پرونده",
+      "proposalLimit": "سقف پیشنهاد"
+    },
+    "quickLinks": {
+      "title": "دسترسی سریع",
+      "manageSubscription": "مدیریت اشتراک",
+      "myCompanies": "شرکت‌های من",
+      "myExperts": "متخصصان من"
+    },
+    "security": {
+      "title": "امنیت",
+      "description": "تغییر رمز عبور، احراز هویت دومرحله‌ای و سابقه ورود در مرحله امنیت نسخه نهایی اضافه خواهند شد."
+    },
+    "roles": {
+      "admin": "مدیر",
+      "user": "کاربر"
+    },
+    "plans": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    }
+  },
+  "dashboardSubscription": {
+    "title": "اشتراک",
+    "usageUnlimited": "نامحدود (استفاده شده: {used})",
+    "premiumBadge": "ویژه",
+    "description": "طرح دسترس، محدودیت‌های مصرف و سطح نمایش ویژه خود را مدیریت کنید. پرداخت‌ها هنوز فعال نشده‌اند و در حال حاضر طرح‌ها توسط مدیر مدیریت می‌شوند.",
+    "currentBadge": "طرح فعلی",
+    "managePlan": "مدیریت پلن",
+    "currentPlan": "پلن فعلی",
+    "usageLimited": "محدودیت استفاده",
+    "proposals": "پیشنهادها",
+    "activeCases": "پرونده‌های فعال",
+    "usage": {
+      "currentPlan": "طرح فعلی",
+      "activeCasesUsed": "پرونده‌های فعال استفاده‌شده",
+      "proposalsUsed": "پیشنهادهای استفاده‌شده",
+      "limitedValue": "{used} از {limit}",
+      "unlimitedValue": "{used} از نامحدود"
+    },
+    "planLabels": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    },
+    "actions": {
+      "currentPlan": "طرح فعلی",
+      "contactSales": "ارتباط با فروش",
+      "notAvailable": "در دسترس نیست",
+      "requestUpgrade": "درخواست ارتقا"
+    },
+    "plans": {
+      "free": {
+        "title": "رایگان",
+        "description": "برای آزمایش دسترس و شروع فعالیت‌های تجاری پایه.",
+        "price": "۰ دلار",
+        "features": {
+          "activeCases": "۳ پرونده تجاری فعال",
+          "proposals": "۵ پیشنهاد",
+          "companyProfile": "پروفایل پایه شرکت",
+          "expertProfile": "پروفایل پایه متخصص"
+        }
+      },
+      "gold": {
+        "title": "طلایی",
+        "description": "برای تیم‌های در حال رشد که به ظرفیت و نمایش بیشتری نیاز دارند.",
+        "price": "۲۹ دلار در ماه",
+        "features": {
+          "activeCases": "۲۰ پرونده تجاری فعال",
+          "proposals": "۲۰ پیشنهاد",
+          "badge": "نشان طلایی",
+          "priorityListing": "نمایش با اولویت"
+        }
+      },
+      "diamond": {
+        "title": "الماسی",
+        "description": "برای ارائه‌دهندگان حرفه‌ای و فعالان پرتکرار تجارت.",
+        "price": "۹۹ دلار در ماه",
+        "features": {
+          "activeCases": "پرونده‌های تجاری فعال نامحدود",
+          "proposals": "پیشنهادهای نامحدود",
+          "badge": "نشان الماسی",
+          "featuredListing": "نمایش ویژه"
+        }
+      },
+      "enterprise": {
+        "title": "سازمانی",
+        "description": "برای شرکت‌های تجاری بزرگ، آژانس‌ها و تیم‌های سازمانی.",
+        "price": "قیمت‌گذاری اختصاصی",
+        "features": {
+          "activeCases": "پرونده‌های تجاری فعال نامحدود",
+          "proposals": "پیشنهادهای نامحدود",
+          "badge": "نشان سازمانی",
+          "visibility": "بالاترین سطح نمایش",
+          "accountManager": "دسترسی آینده به مدیر حساب"
+        }
+      }
+    },
+    "upgradeNotice": {
+      "title": "به طرح بالاتری نیاز دارید؟",
+      "description": "پرداخت‌ها هنوز فعال نیستند. در حال حاضر مدیران می‌توانند طرح کاربران را از بخش مدیریت کاربران به‌صورت دستی ارتقا دهند.",
+      "back": "بازگشت به داشبورد"
+    }
+  },
+  "dashboardVerifications": {
+    "title": "مرکز تأیید",
+    "description": "درخواست‌های تأیید شرکت‌ها و متخصصان را بررسی و مدیریت کنید.",
+    "created": "ایجادشده در {date}",
+    "stats": {
+      "pending": {
+        "title": "در انتظار",
+        "description": "شرکت‌ها + متخصصان"
+      },
+      "verified": {
+        "title": "تأییدشده",
+        "description": "پروفایل‌های تأییدشده"
+      },
+      "rejected": {
+        "title": "ردشده",
+        "description": "پروفایل‌های ردشده"
+      }
+    },
     "companies": {
-      "title": "شرکت‌ها",
-      "empty": "شرکتی یافت نشد."
+      "title": "شرکت‌های در انتظار",
+      "description": "پروفایل شرکت‌هایی که در انتظار بررسی مدیر هستند.",
+      "empty": "هیچ شرکت در انتظاری وجود ندارد."
     },
     "experts": {
-      "title": "متخصصان",
-      "empty": "متخصصی یافت نشد."
+      "title": "متخصصان در انتظار",
+      "description": "پروفایل متخصصانی که در انتظار بررسی مدیر هستند.",
+      "empty": "هیچ متخصص در انتظاری وجود ندارد."
     },
-    "opportunities": {
-      "title": "فرصت‌ها",
-      "empty": "فرصتی یافت نشد."
-    },
-    "tradeCases": {
-      "title": "پرونده‌های تجاری",
-      "empty": "پرونده‌ای یافت نشد."
+    "plans": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
     }
   },
-  "statuses": {
-    "open": "باز",
-    "inProgress": "در حال انجام",
-    "completed": "تکمیل‌شده",
-    "closed": "بسته‌شده",
-    "pending": "در انتظار",
-    "cancelled": "لغوشده"
-  }
-},
-"companyProfile": {
-  "metadata": {
-    "notFoundTitle": "شرکت یافت نشد",
-    "notFoundDescription": "پروفایل شرکت موردنظر یافت نشد.",
-    "description": "{name} یک شرکت فعال در حوزه {category} از کشور {country} است. پروفایل این شرکت را در دسترس مشاهده کنید."
-  },
-  "notFound": "شرکت یافت نشد",
-  "backToCompanies": "بازگشت به شرکت‌ها ←",
-  "statusLabel": "وضعیت",
-  "notAvailable": "ناموجود",
-  "notProvided": "ثبت نشده",
-  "companyRating": "امتیاز شرکت",
-  "companyDescription": "توضیحات شرکت",
-  "recentReviews": "آخرین نظرات",
-  "companyInformation": "اطلاعات شرکت",
-  "noReviews": "هنوز نظری ثبت نشده است.",
-  "noCommentProvided": "متنی برای این نظر ثبت نشده است.",
-  "basedOnReviews": "{count, plural, =1 {بر اساس ۱ نظر} other {بر اساس # نظر}}",
-  "trustScoreValue": "امتیاز اعتماد: {score} از ۱۰۰",
-  "completedCasesValue": "پرونده‌های تکمیل‌شده: {count}",
-  "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {۱ نظر} other {# نظر}})",
-  "sendEmail": "ارسال ایمیل",
-  "visitWebsite": "مشاهده وب‌سایت",
-  "verificationStatus": "وضعیت تأیید",
-  "editCompany": "ویرایش شرکت",
-  "metrics": {
-    "trustScore": "امتیاز اعتماد",
-    "rating": "امتیاز",
-    "reviews": "نظرات",
-    "verification": "تأیید",
-    "country": "کشور"
-  },
-  "fields": {
-    "email": "ایمیل",
-    "website": "وب‌سایت",
-    "country": "کشور",
-    "category": "دسته‌بندی",
-    "reputation": "اعتبار"
-  },
-  "verificationBadges": {
-    "verified": "شرکت تأییدشده",
-    "rejected": "ردشده",
-    "pending": "در انتظار تأیید"
-  },
-  "verificationStatuses": {
-    "verified": "تأییدشده",
-    "rejected": "ردشده",
-    "pending": "در انتظار"
-  },
-  "plans": {
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  },
-  "statuses": {
-    "active": "فعال",
-    "inactive": "غیرفعال",
-    "open": "باز",
-    "pending": "در انتظار",
-    "verified": "تأییدشده",
-    "rejected": "ردشده",
-    "completed": "تکمیل‌شده",
-    "inProgress": "در حال انجام"
-  },
-  "schema": {
-    "status": "وضعیت",
-    "category": "دسته‌بندی"
-  }
-},
-"dashboardCompanies": {
-  "title": "مدیریت شرکت‌ها",
-  "description": "شرکت‌های تجارت بین‌المللی را مدیریت و بررسی کنید.",
-  "addCompany": "افزودن شرکت",
-  "stats": {
-    "total": "مجموع",
-    "verified": "تأییدشده",
-    "pending": "در انتظار",
-    "rejected": "ردشده",
-    "premium": "ویژه"
-  },
-  "pagination": {
-    "previous": "قبلی",
-    "next": "بعدی",
-    "page": "صفحه {current} از {total}"
-  }
-},
-"dashboardExperts": {
-  "title": "مدیریت متخصصان",
-  "description": "متخصصان تجارت بین‌المللی را مدیریت و بررسی کنید.",
-  "addExpert": "افزودن متخصص",
-  "stats": {
-    "total": "مجموع",
-    "verified": "تأییدشده",
-    "pending": "در انتظار",
-    "rejected": "ردشده",
-    "premium": "ویژه"
-  },
-  "pagination": {
-    "previous": "قبلی",
-    "next": "بعدی",
-    "page": "صفحه {current} از {total}"
-  }
-},
-"dashboardMyCases": {
-  "title": "پرونده‌های فعال من",
-  "description": "پرونده‌هایی که پیشنهاد شرکت شما در آن‌ها پذیرفته شده است.",
-  "notAvailable": "ناموجود",
-  "notAssigned": "تخصیص داده نشده",
-  "caseNumber": "پرونده شماره {id}",
-  "documentCount": "{count, plural, =1 {۱ سند} other {# سند}}",
-  "messageCount": "{count, plural, =1 {۱ پیام} other {# پیام}}",
-  "stepsCompleted": "{completed} از {total} مرحله تکمیل شده است",
-  "updated": "به‌روزرسانی‌شده در {date}",
-  "viewCase": "مشاهده پرونده ←",
-  "stats": {
-    "assignedCases": "پرونده‌های تخصیص‌یافته",
-    "inProgress": "در حال انجام",
-    "completed": "تکمیل‌شده",
-    "workload": "حجم فعالیت",
-    "workloadDescription": "پیام‌ها + اسناد"
-  },
-  "empty": {
-    "title": "هنوز پرونده فعالی ندارید",
-    "description": "پس از پذیرفته‌شدن یکی از پیشنهادهای شرکت شما، پرونده تجاری مربوط در این بخش نمایش داده می‌شود.",
-    "browseOpenCases": "مشاهده پرونده‌های باز"
-  },
-  "fields": {
-    "acceptedCompany": "شرکت پذیرفته‌شده",
-    "assignedExpert": "متخصص تخصیص‌یافته",
-    "proposalPrice": "مبلغ پیشنهاد",
-    "timelineProgress": "پیشرفت مراحل"
-  },
-  "statuses": {
-    "open": "باز",
-    "inProgress": "در حال انجام",
-    "completed": "تکمیل‌شده",
-    "cancelled": "لغوشده"
-  }
-},
-"dashboardMyCompanies": {
-  "title": "شرکت‌های من",
-  "description": "پروفایل شرکت‌های متعلق به خود، وضعیت تأیید و سطح نمایش آن‌ها را مدیریت کنید.",
-  "addCompany": "افزودن شرکت",
-  "created": "ایجادشده در {date}",
-  "viewCompany": "مشاهده شرکت ←",
-  "stats": {
-    "total": "مجموع",
-    "verified": "تأییدشده",
-    "pending": "در انتظار",
-    "rejected": "ردشده",
-    "premium": "ویژه"
-  },
-  "empty": {
-    "title": "هنوز شرکتی ندارید",
-    "description": "برای شرکت در فرصت‌های تجاری و ارسال پیشنهاد، اولین پروفایل شرکت خود را ایجاد کنید.",
-    "button": "افزودن شرکت"
-  },
-  "verification": {
-    "verified": "تأییدشده",
-    "pending": "در انتظار",
-    "rejected": "ردشده"
-  },
-  "plans": {
-    "free": "رایگان",
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  },
-  "statuses": {
-    "active": "فعال",
-    "inactive": "غیرفعال",
-    "suspended": "تعلیق‌شده"
-  }
-},
-"dashboardMyExperts": {
-  "title": "متخصصان من",
-  "description": "پروفایل متخصصان متعلق به خود، وضعیت تأیید و سطح نمایش آن‌ها را مدیریت کنید.",
-  "addExpert": "افزودن متخصص",
-  "created": "ایجادشده در {date}",
-  "viewExpert": "مشاهده متخصص ←",
-  "stats": {
-    "total": "مجموع",
-    "verified": "تأییدشده",
-    "pending": "در انتظار",
-    "rejected": "ردشده",
-    "premium": "ویژه"
-  },
-  "empty": {
-    "title": "هنوز متخصصی ندارید",
-    "description": "برای نمایش تجربه‌های حرفه‌ای و دریافت درخواست‌های تجاری، اولین پروفایل متخصص خود را ایجاد کنید.",
-    "button": "افزودن متخصص"
-  },
-  "verification": {
-    "verified": "تأییدشده",
-    "pending": "در انتظار",
-    "rejected": "ردشده"
-  },
-  "plans": {
-    "free": "رایگان",
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  },
-  "statuses": {
-    "active": "فعال",
-    "inactive": "غیرفعال",
-    "suspended": "تعلیق‌شده"
-  }
-},
-"dashboardMyProposals": {
-  "title": "پیشنهادهای من",
-  "description": "عملکرد پیشنهادها، نرخ موفقیت و ارزش ارسال‌شده را بررسی کنید.",
-  "findOpenCases": "مشاهده پرونده‌های باز",
-  "empty": "هنوز پیشنهادی ثبت نشده است.",
-  "notAvailable": "ناموجود",
-  "notAssigned": "تخصیص داده نشده",
-  "proposalNumber": "پیشنهاد شماره {id}",
-  "submittedOn": "ارسال‌شده در {date}",
-  "caseStatus": "وضعیت پرونده: {status}",
-  "viewCase": "مشاهده پرونده ←",
-  "stats": {
-    "totalProposals": "مجموع پیشنهادها",
-    "pending": "در انتظار",
-    "accepted": "پذیرفته‌شده",
-    "rejected": "ردشده",
-    "winRate": "نرخ موفقیت",
-    "acceptedValue": "ارزش پذیرفته‌شده",
-    "submittedValue": "ارزش ارسال‌شده: ${value}"
-  },
-  "filters": {
-    "all": "همه: {count}",
-    "pending": "در انتظار: {count}",
-    "accepted": "پذیرفته‌شده: {count}",
-    "rejected": "ردشده: {count}"
-  },
-  "fields": {
-    "case": "پرونده",
-    "company": "شرکت",
-    "expert": "متخصص",
-    "price": "قیمت"
-  },
-  "statuses": {
-    "pending": "در انتظار",
-    "accepted": "پذیرفته‌شده",
-    "rejected": "ردشده"
-  },
-  "caseStatuses": {
-    "open": "باز",
-    "inProgress": "در حال انجام",
-    "completed": "تکمیل‌شده",
-    "cancelled": "لغوشده"
-  }
-},
-"dashboardMyTasks": {
-  "eyebrow": "وظایف من",
-  "title": "کارهای تخصیص‌یافته",
-  "assignedSummary": "{count, plural, =0 {هیچ وظیفه‌ای به شما تخصیص داده نشده است} =1 {۱ وظیفه به شما تخصیص داده شده است} other {# وظیفه به شما تخصیص داده شده است}}",
-  "noDueDate": "بدون مهلت",
-  "viewProject": "مشاهده پروژه",
-  "stats": {
-    "assigned": "تخصیص‌یافته",
-    "completed": "تکمیل‌شده",
-    "inProgress": "در حال انجام",
-    "overdue": "عقب‌افتاده"
-  },
-  "empty": {
-    "title": "وظیفه‌ای به شما تخصیص داده نشده است",
-    "description": "در حال حاضر هیچ کار تخصیص‌یافته‌ای ندارید."
-  },
-  "fields": {
-    "project": "پروژه",
-    "projectStatus": "وضعیت پروژه",
-    "dueDate": "مهلت انجام"
-  },
-  "taskStatuses": {
-    "todo": "برای انجام",
-    "inProgress": "در حال انجام",
-    "review": "در حال بررسی",
-    "completed": "تکمیل‌شده"
-  },
-  "projectStatuses": {
-    "open": "باز",
-    "inProgress": "در حال انجام",
-    "completed": "تکمیل‌شده",
-    "cancelled": "لغوشده"
-  },
-  "priorities": {
-    "low": "کم",
-    "medium": "متوسط",
-    "high": "زیاد",
-    "urgent": "فوری"
-  }
-},
-"dashboardProjects": {
-  "eyebrow": "پروژه‌ها",
-  "title": "پروژه‌های تجاری",
-  "description": "پرونده‌های تجاری پذیرفته‌شده را مدیریت کرده و روند اجرا را پیگیری کنید.",
-  "customer": "مشتری",
-  "empty": {
-    "title": "هنوز پروژه‌ای وجود ندارد",
-    "description": "پس از پذیرفته‌شدن یک پیشنهاد، پروژه به‌صورت خودکار ایجاد می‌شود.",
-    "browseOpenCases": "مشاهده پرونده‌های باز"
-  },
-  "statuses": {
-    "open": "باز",
-    "inProgress": "در حال انجام",
-    "completed": "تکمیل‌شده",
-    "cancelled": "لغوشده"
-  }
-},
-"dashboardSavedCases": {
-  "title": "پرونده‌های ذخیره‌شده",
-  "description": "پرونده‌های تجاری که برای بررسی در آینده ذخیره کرده‌اید.",
-  "savedOn": "ذخیره‌شده در {date}",
-  "viewCase": "مشاهده پرونده ←",
-  "empty": {
-    "title": "هنوز پرونده‌ای ذخیره نشده است",
-    "description": "پرونده‌های تجاری موردعلاقه را ذخیره کنید تا بعداً به آن‌ها دسترسی داشته باشید.",
-    "button": "مشاهده پرونده‌های باز"
-  },
-  "metrics": {
-    "proposals": "پیشنهادها",
-    "documents": "اسناد",
-    "messages": "پیام‌ها"
-  },
-  "statuses": {
-    "open": "باز",
-    "inProgress": "در حال انجام",
-    "completed": "تکمیل‌شده",
-    "cancelled": "لغوشده"
-  }
-},
-"dashboardSavedCompanies": {
-  "title": "شرکت‌های ذخیره‌شده",
-  "description": "شرکت‌هایی که برای بررسی و ارتباط در آینده ذخیره کرده‌اید.",
-  "viewProfile": "مشاهده پروفایل",
-  "empty": {
-    "title": "هنوز شرکتی ذخیره نشده است",
-    "description": "شرکت‌های قابل‌اعتماد را برای ساخت شبکه تجاری خود ذخیره کنید.",
-    "button": "مشاهده شرکت‌ها"
-  }
-},
-"dashboardSavedExperts": {
-  "title": "متخصصان ذخیره‌شده",
-  "description": "متخصصانی که برای بررسی و ارتباط در آینده ذخیره کرده‌اید.",
-  "viewProfile": "مشاهده پروفایل",
-  "empty": {
-    "title": "هنوز متخصصی ذخیره نشده است",
-    "description": "متخصصان باتجربه را ذخیره کنید تا برای پروژه‌های تجاری آینده سریع‌تر با آن‌ها ارتباط بگیرید.",
-    "button": "مشاهده متخصصان"
-  }
-},
-"dashboardSettings": {
-  "eyebrow": "تنظیمات حساب",
-  "title": "تنظیمات",
-  "description": "اطلاعات حساب، طرح اشتراک و پروفایل دسترس خود را مدیریت کنید.",
-  "unlimited": "نامحدود",
-  "profileInformation": {
-    "title": "اطلاعات پروفایل",
+  "publicCompanyProfile": {
+    "categories": {
+      "general": "عمومی",
+      "customsClearance": "ترخیص کالا",
+      "shipping": "حمل‌ونقل",
+      "inspection": "بازرسی",
+      "insurance": "بیمه",
+      "sourcing": "تأمین کالا",
+      "documentation": "مستندات",
+      "payment": "پرداخت"
+    },
+    "countries": {
+      "iran": "ایران"
+    },
+    "metadata": {
+      "notFoundTitle": "شرکت پیدا نشد",
+      "notFoundDescription": "پروفایل شرکت موردنظر یافت نشد.",
+      "description": "{name} یک شرکت {category} در {country} است."
+    },
+    "notFound": "شرکت پیدا نشد",
+    "backToCompanies": "← بازگشت به شرکت‌ها",
+    "statusLabel": "وضعیت",
+    "statuses": {
+      "active": "فعال",
+      "inactive": "غیرفعال",
+      "open": "باز",
+      "pending": "در انتظار",
+      "verified": "تأیید شده",
+      "rejected": "رد شده",
+      "completed": "تکمیل شده",
+      "inProgress": "در حال انجام"
+    },
+    "verificationStatuses": {
+      "verified": "تأیید شده",
+      "pending": "در انتظار تأیید",
+      "rejected": "رد شده"
+    },
+    "verificationBadges": {
+      "verified": "تأیید شده",
+      "pending": "در انتظار تأیید",
+      "rejected": "رد شده"
+    },
+    "plans": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    },
+    "metrics": {
+      "trustScore": "امتیاز اعتماد",
+      "rating": "امتیاز",
+      "reviews": "نظرات",
+      "verification": "احراز هویت",
+      "country": "کشور"
+    },
+    "companyRating": "امتیاز شرکت",
+    "basedOnReviews": "بر اساس {count} نظر",
+    "trustScoreValue": "امتیاز اعتماد: {score}/100",
+    "completedCasesValue": "{count} پرونده تجاری تکمیل شده",
+    "companyDescription": "درباره شرکت",
+    "recentReviews": "آخرین نظرات",
+    "noReviews": "هنوز نظری ثبت نشده است.",
+    "noCommentProvided": "بدون توضیح",
+    "notAvailable": "موجود نیست",
     "notProvided": "ثبت نشده",
+    "companyInformation": "اطلاعات شرکت",
     "fields": {
-      "name": "نام",
       "email": "ایمیل",
-      "role": "نقش",
-      "plan": "طرح"
+      "website": "وب‌سایت",
+      "country": "کشور",
+      "category": "دسته‌بندی",
+      "reputation": "اعتبار"
+    },
+    "ratingWithReviews": "{rating} از ۵ ({count} نظر)",
+    "sendEmail": "ارسال ایمیل",
+    "visitWebsite": "ورود به وب‌سایت",
+    "relatedExperts": {
+      "title": "کارشناسان مرتبط",
+      "empty": "کارشناس مرتبطی یافت نشد.",
+      "verified": "کارشناس تأیید شده"
+    },
+    "verificationStatus": "وضعیت احراز هویت",
+    "editCompany": "ویرایش شرکت",
+    "schema": {
+      "status": "وضعیت",
+      "category": "دسته‌بندی"
     }
   },
-  "planLimits": {
-    "title": "محدودیت‌های طرح",
-    "caseLimit": "سقف پرونده",
-    "proposalLimit": "سقف پیشنهاد"
-  },
-  "quickLinks": {
-    "title": "دسترسی سریع",
-    "manageSubscription": "مدیریت اشتراک",
-    "myCompanies": "شرکت‌های من",
-    "myExperts": "متخصصان من"
-  },
-  "security": {
-    "title": "امنیت",
-    "description": "تغییر رمز عبور، احراز هویت دومرحله‌ای و سابقه ورود در مرحله امنیت نسخه نهایی اضافه خواهند شد."
-  },
-  "roles": {
-    "admin": "مدیر",
-    "user": "کاربر"
-  },
-  "plans": {
-    "free": "رایگان",
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  }
-},
-"dashboardSubscription": {
-  "title": "اشتراک",
-  "description": "طرح دسترس، محدودیت‌های مصرف و سطح نمایش ویژه خود را مدیریت کنید. پرداخت‌ها هنوز فعال نشده‌اند و در حال حاضر طرح‌ها توسط مدیر مدیریت می‌شوند.",
-  "currentBadge": "طرح فعلی",
-  "usage": {
-    "currentPlan": "طرح فعلی",
-    "activeCasesUsed": "پرونده‌های فعال استفاده‌شده",
-    "proposalsUsed": "پیشنهادهای استفاده‌شده",
-    "limitedValue": "{used} از {limit}",
-    "unlimitedValue": "{used} از نامحدود"
-  },
-  "planLabels": {
-    "free": "رایگان",
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  },
-  "actions": {
-    "currentPlan": "طرح فعلی",
-    "contactSales": "ارتباط با فروش",
-    "notAvailable": "در دسترس نیست",
-    "requestUpgrade": "درخواست ارتقا"
-  },
-  "plans": {
-    "free": {
-      "title": "رایگان",
-      "description": "برای آزمایش دسترس و شروع فعالیت‌های تجاری پایه.",
-      "price": "۰ دلار",
-      "features": {
-        "activeCases": "۳ پرونده تجاری فعال",
-        "proposals": "۵ پیشنهاد",
-        "companyProfile": "پروفایل پایه شرکت",
-        "expertProfile": "پروفایل پایه متخصص"
-      }
-    },
-    "gold": {
-      "title": "طلایی",
-      "description": "برای تیم‌های در حال رشد که به ظرفیت و نمایش بیشتری نیاز دارند.",
-      "price": "۲۹ دلار در ماه",
-      "features": {
-        "activeCases": "۲۰ پرونده تجاری فعال",
-        "proposals": "۲۰ پیشنهاد",
-        "badge": "نشان طلایی",
-        "priorityListing": "نمایش با اولویت"
-      }
-    },
-    "diamond": {
-      "title": "الماسی",
-      "description": "برای ارائه‌دهندگان حرفه‌ای و فعالان پرتکرار تجارت.",
-      "price": "۹۹ دلار در ماه",
-      "features": {
-        "activeCases": "پرونده‌های تجاری فعال نامحدود",
-        "proposals": "پیشنهادهای نامحدود",
-        "badge": "نشان الماسی",
-        "featuredListing": "نمایش ویژه"
-      }
-    },
-    "enterprise": {
-      "title": "سازمانی",
-      "description": "برای شرکت‌های تجاری بزرگ، آژانس‌ها و تیم‌های سازمانی.",
-      "price": "قیمت‌گذاری اختصاصی",
-      "features": {
-        "activeCases": "پرونده‌های تجاری فعال نامحدود",
-        "proposals": "پیشنهادهای نامحدود",
-        "badge": "نشان سازمانی",
-        "visibility": "بالاترین سطح نمایش",
-        "accountManager": "دسترسی آینده به مدیر حساب"
-      }
-    }
-  },
-  "upgradeNotice": {
-    "title": "به طرح بالاتری نیاز دارید؟",
-    "description": "پرداخت‌ها هنوز فعال نیستند. در حال حاضر مدیران می‌توانند طرح کاربران را از بخش مدیریت کاربران به‌صورت دستی ارتقا دهند.",
-    "back": "بازگشت به داشبورد"
-  }
-},
-"dashboardVerifications": {
-  "title": "مرکز تأیید",
-  "description": "درخواست‌های تأیید شرکت‌ها و متخصصان را بررسی و مدیریت کنید.",
-  "created": "ایجادشده در {date}",
-  "stats": {
-    "pending": {
-      "title": "در انتظار",
-      "description": "شرکت‌ها + متخصصان"
-    },
-    "verified": {
-      "title": "تأییدشده",
-      "description": "پروفایل‌های تأییدشده"
-    },
-    "rejected": {
-      "title": "ردشده",
-      "description": "پروفایل‌های ردشده"
-    }
-  },
-  "companies": {
-    "title": "شرکت‌های در انتظار",
-    "description": "پروفایل شرکت‌هایی که در انتظار بررسی مدیر هستند.",
-    "empty": "هیچ شرکت در انتظاری وجود ندارد."
-  },
-  "experts": {
-    "title": "متخصصان در انتظار",
-    "description": "پروفایل متخصصانی که در انتظار بررسی مدیر هستند.",
-    "empty": "هیچ متخصص در انتظاری وجود ندارد."
-  },
-  "plans": {
-    "free": "رایگان",
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  }
-},
-"publicCompanyProfile": {
-  "metadata": {
-    "notFoundTitle": "شرکت پیدا نشد",
-    "notFoundDescription": "پروفایل شرکت موردنظر یافت نشد.",
-    "description": "{name} یک شرکت {category} در {country} است."
-  },
-
-  "notFound": "شرکت پیدا نشد",
-  "backToCompanies": "← بازگشت به شرکت‌ها",
-
-  "statusLabel": "وضعیت",
-
-  "statuses": {
-    "active": "فعال",
-    "inactive": "غیرفعال",
-    "open": "باز",
-    "pending": "در انتظار",
-    "verified": "تأیید شده",
-    "rejected": "رد شده",
-    "completed": "تکمیل شده",
-    "inProgress": "در حال انجام"
-  },
-
-  "verificationStatuses": {
-    "verified": "تأیید شده",
-    "pending": "در انتظار تأیید",
-    "rejected": "رد شده"
-  },
-
-  "verificationBadges": {
-    "verified": "تأیید شده",
-    "pending": "در انتظار تأیید",
-    "rejected": "رد شده"
-  },
-
-  "plans": {
-    "free": "رایگان",
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  },
-
-  "metrics": {
-    "trustScore": "امتیاز اعتماد",
-    "rating": "امتیاز",
-    "reviews": "نظرات",
-    "verification": "احراز هویت",
-    "country": "کشور"
-  },
-
-  "companyRating": "امتیاز شرکت",
-  "basedOnReviews": "بر اساس {count} نظر",
-  "trustScoreValue": "امتیاز اعتماد: {score}/100",
-  "completedCasesValue": "{count} پرونده تجاری تکمیل شده",
-
-  "companyDescription": "درباره شرکت",
-  "recentReviews": "آخرین نظرات",
-
-  "noReviews": "هنوز نظری ثبت نشده است.",
-  "noCommentProvided": "بدون توضیح",
-  "notAvailable": "موجود نیست",
-  "notProvided": "ثبت نشده",
-
-  "companyInformation": "اطلاعات شرکت",
-
-  "fields": {
-    "email": "ایمیل",
-    "website": "وب‌سایت",
-    "country": "کشور",
-    "category": "دسته‌بندی",
-    "reputation": "اعتبار"
-  },
-
-  "ratingWithReviews": "{rating} از ۵ ({count} نظر)",
-
-  "sendEmail": "ارسال ایمیل",
-  "visitWebsite": "ورود به وب‌سایت",
-
-  "relatedExperts": {
-    "title": "کارشناسان مرتبط",
-    "empty": "کارشناس مرتبطی یافت نشد.",
-    "verified": "کارشناس تأیید شده"
-  },
-
-  "verificationStatus": "وضعیت احراز هویت",
-
-  "editCompany": "ویرایش شرکت",
-
-  "schema": {
-    "status": "وضعیت",
-    "category": "دسته‌بندی"
-  }
-},
   "publicExpertProfile": {
     "metadata": {
       "notFoundTitle": "کارشناس یافت نشد",
@@ -2611,14 +2724,12 @@
     },
     "notFound": "کارشناس یافت نشد",
     "backToExperts": "← بازگشت به کارشناسان",
-
     "plans": {
       "free": "رایگان",
       "gold": "طلایی",
       "diamond": "الماس",
       "enterprise": "سازمانی"
     },
-
     "statuses": {
       "active": "فعال",
       "inactive": "غیرفعال",
@@ -2627,7 +2738,6 @@
       "rejected": "رد شده",
       "suspended": "معلق"
     },
-
     "metrics": {
       "trustScore": "امتیاز اعتماد",
       "rating": "امتیاز",
@@ -2635,373 +2745,421 @@
       "specialty": "تخصص",
       "country": "کشور"
     },
-
     "experience": "سوابق و تجربه",
-
     "recentReviews": "آخرین نظرات",
-
     "noReviews": "هنوز نظری ثبت نشده است.",
-
     "anonymousUser": "کاربر ناشناس",
-
     "noCommentProvided": "بدون توضیح",
-
     "contactExpert": "اطلاعات تماس",
-
     "fields": {
       "email": "ایمیل",
       "country": "کشور",
       "specialty": "تخصص",
       "reputation": "اعتبار"
     },
-
     "ratingWithReviews": "{rating} از ۵ ({count} نظر)",
-
     "completedCases": "پرونده‌های تکمیل‌شده",
-
     "sendEmail": "ارسال ایمیل",
-
     "relatedCompanies": {
       "title": "شرکت‌های مرتبط",
       "empty": "شرکت مرتبطی یافت نشد.",
       "verified": "تایید شده"
     },
-
     "adminActions": "مدیریت",
-
     "editExpert": "ویرایش کارشناس",
-
     "reviewNotice": "تمام امتیازها و نظرات تنها از پرونده‌های تجاری تکمیل‌شده ثبت می‌شوند.",
-
     "notAvailable": "—"
   },
   "publicOpportunityProfile": {
-  "metadata": {
-    "notFoundTitle": "فرصت تجاری پیدا نشد",
-    "notFoundDescription": "فرصت تجاری موردنظر یافت نشد."
-  },
-  "notFound": "فرصت تجاری پیدا نشد",
-  "backToOpportunities": "← بازگشت به فرصت‌های تجاری",
-  "tradeOpportunity": "فرصت تجاری",
-
-  "statuses": {
-    "open": "باز",
-    "inProgress": "در حال انجام",
-    "closed": "بسته"
-  },
-
-  "metrics": {
-    "status": "وضعیت",
-    "country": "کشور",
-    "visibility": "دسترسی",
-    "platform": "پلتفرم",
-    "category": "دسته‌بندی",
-    "trust": "اعتبار"
-  },
-
-  "values": {
-    "public": "عمومی",
-    "trade": "تجارت",
-    "verified": "تأیید شده"
-  },
-
-  "opportunityDescription": "شرح فرصت تجاری",
-
-  "howToRespond": {
-    "title": "نحوه پاسخ",
-    "review": {
-      "title": "بررسی",
-      "description": "جزئیات فرصت را با دقت مطالعه کنید."
+    "metadata": {
+      "notFoundTitle": "فرصت تجاری پیدا نشد",
+      "notFoundDescription": "فرصت تجاری موردنظر یافت نشد."
     },
-    "contact": {
-      "title": "ارتباط",
-      "description": "از طریق دسترس یا اطلاعات تماس موجود ارتباط برقرار کنید."
+    "notFound": "فرصت تجاری پیدا نشد",
+    "backToOpportunities": "← بازگشت به فرصت‌های تجاری",
+    "tradeOpportunity": "فرصت تجاری",
+    "statuses": {
+      "open": "باز",
+      "inProgress": "در حال انجام",
+      "closed": "بسته"
     },
-    "collaborate": {
-      "title": "همکاری",
-      "description": "یک همکاری تجاری مطمئن و حرفه‌ای ایجاد کنید."
+    "metrics": {
+      "status": "وضعیت",
+      "country": "کشور",
+      "visibility": "دسترسی",
+      "platform": "پلتفرم",
+      "category": "دسته‌بندی",
+      "trust": "اعتبار"
+    },
+    "values": {
+      "public": "عمومی",
+      "trade": "تجارت",
+      "verified": "تأیید شده"
+    },
+    "opportunityDescription": "شرح فرصت تجاری",
+    "howToRespond": {
+      "title": "نحوه پاسخ",
+      "review": {
+        "title": "بررسی",
+        "description": "جزئیات فرصت را با دقت مطالعه کنید."
+      },
+      "contact": {
+        "title": "ارتباط",
+        "description": "از طریق دسترس یا اطلاعات تماس موجود ارتباط برقرار کنید."
+      },
+      "collaborate": {
+        "title": "همکاری",
+        "description": "یک همکاری تجاری مطمئن و حرفه‌ای ایجاد کنید."
+      }
+    },
+    "editOpportunity": "ویرایش فرصت",
+    "summary": {
+      "title": "خلاصه فرصت",
+      "country": "کشور",
+      "status": "وضعیت",
+      "type": "نوع"
+    },
+    "actions": {
+      "openTradeCase": "ایجاد پرونده تجاری",
+      "findCompanies": "جستجوی شرکت‌ها",
+      "findExperts": "جستجوی متخصصان"
+    },
+    "relatedCompanies": {
+      "title": "شرکت‌های مرتبط",
+      "empty": "هنوز شرکت تأییدشده‌ای برای این کشور وجود ندارد.",
+      "verified": "شرکت تأیید شده"
+    },
+    "relatedExperts": {
+      "title": "متخصصان مرتبط",
+      "empty": "هنوز متخصص تأییدشده‌ای برای این کشور وجود ندارد.",
+      "verified": "متخصص تأیید شده"
+    },
+    "trustNotice": {
+      "title": "هشدار اعتماد",
+      "description": "همیشه پیش از هرگونه همکاری تجاری، مدارک، اطلاعات و طرف مقابل را به‌طور کامل بررسی کنید."
     }
   },
-
-  "editOpportunity": "ویرایش فرصت",
-
-  "summary": {
-    "title": "خلاصه فرصت",
-    "country": "کشور",
-    "status": "وضعیت",
-    "type": "نوع"
-  },
-
-  "actions": {
-    "openTradeCase": "ایجاد پرونده تجاری",
-    "findCompanies": "جستجوی شرکت‌ها",
-    "findExperts": "جستجوی متخصصان"
-  },
-
-  "relatedCompanies": {
-    "title": "شرکت‌های مرتبط",
-    "empty": "هنوز شرکت تأییدشده‌ای برای این کشور وجود ندارد.",
-    "verified": "شرکت تأیید شده"
-  },
-
-  "relatedExperts": {
-    "title": "متخصصان مرتبط",
-    "empty": "هنوز متخصص تأییدشده‌ای برای این کشور وجود ندارد.",
-    "verified": "متخصص تأیید شده"
-  },
-
-  "trustNotice": {
-    "title": "هشدار اعتماد",
-    "description": "همیشه پیش از هرگونه همکاری تجاری، مدارک، اطلاعات و طرف مقابل را به‌طور کامل بررسی کنید."
-  }
-},
-"dashboardTopCompanies": {
-  "title": "برترین شرکت‌ها",
-  "description": "رتبه‌بندی شرکت‌ها بر اساس وضعیت تأیید، امتیاز اعتماد و نظرات کاربران.",
-  "empty": "هیچ شرکتی یافت نشد.",
-  "verified": "تأییدشده",
-  "notAvailable": "ناموجود",
-  "metrics": {
-    "trust": "اعتماد",
-    "rating": "امتیاز",
-    "reviews": "نظرات"
-  },
-  "plans": {
-    "free": "رایگان",
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  }
-},
-"topExperts": {
-  "title": "برترین متخصصان",
-  "description": "رتبه‌بندی متخصصان بر اساس وضعیت تأیید، امتیاز اعتماد و نظرات کاربران.",
-  "empty": "هیچ متخصصی پیدا نشد.",
-  "verified": "تأییدشده",
-  "trust": "اعتماد",
-  "rating": "امتیاز",
-  "reviews": "نظرات",
-  "notAvailable": "ناموجود",
-  "plans": {
-    "FREE": "رایگان",
-    "GOLD": "طلایی",
-    "DIAMOND": "الماسی",
-    "ENTERPRISE": "سازمانی"
-  }
-},
-"publicExperts": {
-  "eyebrow": "شبکه متخصصان تأییدشده",
-  "title": "متخصصان قابل اعتماد تجارت را پیدا کنید",
-  "description": "با متخصصان تأییدشده تجارت بین‌المللی در حوزه‌های گمرک، تأمین کالا، لجستیک، بازرسی و خدمات کسب‌وکار جهانی ارتباط برقرار کنید.",
-  "notAvailable": "ناموجود",
-  "featured": {
-    "title": "متخصص برگزیده",
-    "empty": "در حال حاضر متخصص برگزیده‌ای موجود نیست."
-  },
-  "metrics": {
-    "trust": "اعتماد",
-    "rating": "امتیاز",
-    "reviews": "نظرات"
-  },
-  "statistics": {
-    "total": "کل متخصصان",
-    "verified": "متخصصان تأییدشده",
-    "rated": "متخصصان دارای امتیاز"
-  },
-  "pagination": {
-    "previous": "قبلی",
-    "next": "بعدی",
-    "page": "صفحه {current} از {total}"
-  }
-},
-"myReviews": {
-  "title": "نظرات من",
-  "description": "نظراتی را که دریافت کرده‌اید و نظراتی را که ثبت کرده‌اید مشاهده کنید.",
-  "fallbackUser": "کاربر",
-  "ratingOutOfFive": "{rating} از ۵",
-  "statistics": {
-    "averageRating": "میانگین امتیاز",
-    "received": "نظرات دریافتی",
-    "given": "نظرات ثبت‌شده",
-    "basedOn": "بر اساس {count} نظر دریافتی"
-  },
-  "received": {
-    "title": "نظراتی که دریافت کرده‌ام",
-    "empty": "هنوز هیچ نظری دریافت نکرده‌اید.",
-    "from": "از طرف {name}"
-  },
-  "given": {
-    "title": "نظراتی که ثبت کرده‌ام",
-    "empty": "هنوز هیچ نظری ثبت نکرده‌اید.",
-    "to": "برای {name}"
-  }
-},
-"dashboardExpertProfile": {
-  "notFound": "متخصص پیدا نشد.",
-  "backToExperts": "بازگشت به متخصصان ←",
-  "notAvailable": "ناموجود",
-  "experience": "سوابق و تجربه",
-  "reviewNotice": "ثبت نظر فقط پس از تکمیل یک پرونده تجاری امکان‌پذیر است.",
-  "trustScoreValue": "{score} از {maximum}",
-  "metadata": {
-    "notFoundTitle": "متخصص پیدا نشد",
-    "notFoundDescription": "پروفایل متخصص موردنظر پیدا نشد.",
-    "title": "{name} | {specialty}",
-    "description": "{name} متخصص حوزه {specialty} از {country} است. پروفایل این متخصص را در دسترس مشاهده کنید."
-  },
-  "plans": {
-    "free": "رایگان",
-    "gold": "طلایی",
-    "diamond": "الماسی",
-    "enterprise": "سازمانی"
-  },
-  "statuses": {
-    "active": "فعال",
-    "inactive": "غیرفعال",
-    "pending": "در انتظار",
+  "dashboardTopCompanies": {
+    "title": "برترین شرکت‌ها",
+    "description": "رتبه‌بندی شرکت‌ها بر اساس وضعیت تأیید، امتیاز اعتماد و نظرات کاربران.",
+    "empty": "هیچ شرکتی یافت نشد.",
     "verified": "تأییدشده",
-    "rejected": "ردشده"
+    "notAvailable": "ناموجود",
+    "metrics": {
+      "trust": "اعتماد",
+      "rating": "امتیاز",
+      "reviews": "نظرات"
+    },
+    "plans": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    }
   },
-  "metrics": {
-    "trustScore": "امتیاز اعتماد",
+  "topExperts": {
+    "title": "برترین متخصصان",
+    "description": "رتبه‌بندی متخصصان بر اساس وضعیت تأیید، امتیاز اعتماد و نظرات کاربران.",
+    "empty": "هیچ متخصصی پیدا نشد.",
+    "verified": "تأییدشده",
+    "trust": "اعتماد",
     "rating": "امتیاز",
     "reviews": "نظرات",
-    "specialty": "تخصص",
-    "country": "کشور"
+    "notAvailable": "ناموجود",
+    "plans": {
+      "FREE": "رایگان",
+      "GOLD": "طلایی",
+      "DIAMOND": "الماسی",
+      "ENTERPRISE": "سازمانی"
+    }
   },
-  "recentReviews": {
-    "title": "آخرین نظرات",
-    "empty": "هنوز نظری ثبت نشده است.",
+  "publicExperts": {
+    "eyebrow": "شبکه متخصصان تأییدشده",
+    "title": "متخصصان قابل اعتماد تجارت را پیدا کنید",
+    "description": "با متخصصان تأییدشده تجارت بین‌المللی در حوزه‌های گمرک، تأمین کالا، لجستیک، بازرسی و خدمات کسب‌وکار جهانی ارتباط برقرار کنید.",
+    "notAvailable": "ناموجود",
+    "featured": {
+      "title": "متخصص برگزیده",
+      "empty": "در حال حاضر متخصص برگزیده‌ای موجود نیست.",
+      "viewProfile": "مشاهده پروفایل"
+    },
+    "metrics": {
+      "trust": "اعتماد",
+      "rating": "امتیاز",
+      "reviews": "نظرات"
+    },
+    "statistics": {
+      "total": "کل متخصصان",
+      "verified": "متخصصان تأییدشده",
+      "rated": "متخصصان دارای امتیاز"
+    },
+    "pagination": {
+      "previous": "قبلی",
+      "next": "بعدی",
+      "page": "صفحه {current} از {total}"
+    }
+  },
+  "myReviews": {
+    "title": "نظرات من",
+    "description": "نظراتی را که دریافت کرده‌اید و نظراتی را که ثبت کرده‌اید مشاهده کنید.",
     "fallbackUser": "کاربر",
-    "noComment": "توضیحی ثبت نشده است.",
-    "rating": "{rating} از {maximum}"
+    "ratingOutOfFive": "{rating} از ۵",
+    "statistics": {
+      "averageRating": "میانگین امتیاز",
+      "received": "نظرات دریافتی",
+      "given": "نظرات ثبت‌شده",
+      "basedOn": "بر اساس {count} نظر دریافتی"
+    },
+    "received": {
+      "title": "نظراتی که دریافت کرده‌ام",
+      "empty": "هنوز هیچ نظری دریافت نکرده‌اید.",
+      "from": "از طرف {name}"
+    },
+    "given": {
+      "title": "نظراتی که ثبت کرده‌ام",
+      "empty": "هنوز هیچ نظری ثبت نکرده‌اید.",
+      "to": "برای {name}"
+    }
   },
-  "contact": {
-    "title": "ارتباط با متخصص",
-    "email": "ایمیل",
+  "dashboardExpertProfile": {
+    "notFound": "متخصص پیدا نشد.",
+    "backToExperts": "بازگشت به متخصصان ←",
+    "notAvailable": "ناموجود",
+    "experience": "سوابق و تجربه",
+    "reviewNotice": "ثبت نظر فقط پس از تکمیل یک پرونده تجاری امکان‌پذیر است.",
+    "trustScoreValue": "{score} از {maximum}",
+    "metadata": {
+      "notFoundTitle": "متخصص پیدا نشد",
+      "notFoundDescription": "پروفایل متخصص موردنظر پیدا نشد.",
+      "title": "{name} | {specialty}",
+      "description": "{name} متخصص حوزه {specialty} از {country} است. پروفایل این متخصص را در دسترس مشاهده کنید."
+    },
+    "plans": {
+      "free": "رایگان",
+      "gold": "طلایی",
+      "diamond": "الماسی",
+      "enterprise": "سازمانی"
+    },
+    "statuses": {
+      "active": "فعال",
+      "inactive": "غیرفعال",
+      "pending": "در انتظار",
+      "verified": "تأییدشده",
+      "rejected": "ردشده"
+    },
+    "metrics": {
+      "trustScore": "امتیاز اعتماد",
+      "rating": "امتیاز",
+      "reviews": "نظرات",
+      "specialty": "تخصص",
+      "country": "کشور"
+    },
+    "recentReviews": {
+      "title": "آخرین نظرات",
+      "empty": "هنوز نظری ثبت نشده است.",
+      "fallbackUser": "کاربر",
+      "noComment": "توضیحی ثبت نشده است.",
+      "rating": "{rating} از {maximum}"
+    },
+    "contact": {
+      "title": "ارتباط با متخصص",
+      "email": "ایمیل",
+      "country": "کشور",
+      "specialty": "تخصص",
+      "reputation": "اعتبار",
+      "trustScore": "امتیاز اعتماد",
+      "completedCases": "پرونده‌های تکمیل‌شده",
+      "sendEmail": "ارسال ایمیل",
+      "noReviews": "هنوز نظری ثبت نشده است",
+      "reputationValue": "⭐ {rating} بر اساس {count} نظر"
+    },
+    "management": {
+      "title": "عملیات مدیریتی",
+      "edit": "ویرایش متخصص"
+    }
+  },
+  "rootMetadata": {
+    "siteName": "دسترس",
+    "title": "دسترس | اکوسیستم اعتماد برای تجارت جهانی",
+    "description": "دسترس شرکت‌های تأییدشده، متخصصان قابل اعتماد و فرصت‌های تجارت بین‌المللی را در یک پلتفرم پرونده‌محور به هم متصل می‌کند.",
+    "keywords": {
+      "dasres": "دسترس",
+      "experts": "متخصصان تجارت",
+      "companies": "شرکت‌های تأییدشده",
+      "opportunities": "فرصت‌های تجاری",
+      "trade": "تجارت بین‌المللی",
+      "business": "پلتفرم کسب‌وکار جهانی",
+      "international": "شبکه کسب‌وکار بین‌المللی"
+    },
+    "openGraph": {
+      "title": "دسترس | اکوسیستم اعتماد برای تجارت جهانی",
+      "description": "شرکت‌های تأییدشده، متخصصان قابل اعتماد و فرصت‌های تجارت بین‌المللی را در دسترس پیدا کنید.",
+      "imageAlt": "پلتفرم تجارت جهانی دسترس"
+    },
+    "twitter": {
+      "title": "دسترس | اکوسیستم اعتماد برای تجارت جهانی",
+      "description": "برای تجارت بین‌المللی با شرکت‌های تأییدشده و متخصصان قابل اعتماد ارتباط برقرار کنید."
+    }
+  },
+  "publicCompanies": {
+    "eyebrow": "شبکه شرکت‌های تأییدشده",
+    "title": "شرکت‌های تجاری قابل اعتماد را پیدا کنید",
+    "description": "شرکت‌های بین‌المللی فعال در حوزه‌های گمرک، حمل‌ونقل، بازرسی، تأمین کالا، لجستیک و خدمات تجارت جهانی را بررسی کنید.",
+    "statistics": {
+      "total": "کل شرکت‌ها",
+      "verified": "شرکت‌های تأییدشده",
+      "rated": "شرکت‌های دارای امتیاز"
+    },
+    "pagination": {
+      "previous": "قبلی",
+      "next": "بعدی",
+      "page": "صفحه {current} از {total}"
+    }
+  },
+  "publicOpportunities": {
+    "eyebrow": "بازار تجارت جهانی",
+    "title": "فرصت‌های بین‌المللی را کشف کنید",
+    "description": "فرصت‌های تجاری شرکت‌های سراسر جهان را بررسی کنید، با خریداران و تأمین‌کنندگان ارتباط بگیرید و کسب‌وکار بین‌المللی خود را گسترش دهید.",
+    "statistics": {
+      "total": "کل فرصت‌ها",
+      "open": "فرصت‌های باز",
+      "countries": "کشورها"
+    },
+    "pagination": {
+      "previous": "قبلی",
+      "next": "بعدی",
+      "page": "صفحه {current} از {total}"
+    }
+  },
+  "companyVerificationButtons": {
+    "verify": "تأیید",
+    "reject": "رد"
+  },
+  "verificationExpertActions": {
+    "verify": "تأیید",
+    "reject": "رد"
+  },
+  "verificationCompanyActions": {
+    "verify": "تأیید",
+    "reject": "رد"
+  },
+  "countryFilter": {
+    "allCountries": "همه کشورها"
+  },
+  "notFound": {
+    "label": "صفحه پیدا نشد",
+    "title": "این صفحه وجود ندارد.",
+    "description": "صفحه‌ای که به دنبال آن هستید ممکن است جابه‌جا شده، حذف شده یا در دسترس نباشد.",
+    "goHome": "صفحه اصلی",
+    "goDashboard": "داشبورد"
+  },
+  "saveCaseButton": {
+    "saving": "در حال ذخیره...",
+    "unsave": "حذف از ذخیره‌شده‌ها",
+    "save": "☆ ذخیره پرونده"
+  },
+  "saveCompanyButton": {
+    "saved": "ذخیره شده ★",
+    "save": "ذخیره ☆"
+  },
+  "saveExpertButton": {
+    "saved": "ذخیره شده ★",
+    "save": "ذخیره ☆"
+  },
+  "dashboardOpportunityDetail": {
+    "backToDashboardOpportunities": "→ بازگشت به فرصت‌های داشبورد",
+    "tradeOpportunity": "فرصت تجاری",
+    "globalMarketplace": "بازار جهانی",
+    "status": "وضعیت",
     "country": "کشور",
-    "specialty": "تخصص",
-    "reputation": "اعتبار",
-    "trustScore": "امتیاز اعتماد",
-    "completedCases": "پرونده‌های تکمیل‌شده",
-    "sendEmail": "ارسال ایمیل",
-    "noReviews": "هنوز نظری ثبت نشده است",
-    "reputationValue": "⭐ {rating} بر اساس {count} نظر"
+    "visibility": "نحوه نمایش",
+    "dashboard": "داشبورد",
+    "opportunityDescription": "توضیحات فرصت",
+    "adminActions": "عملیات مدیر",
+    "editOpportunity": "ویرایش فرصت",
+    "opportunitySummary": "خلاصه فرصت",
+    "type": "نوع",
+    "viewPublicPage": "مشاهده صفحه عمومی",
+    "backToManagement": "بازگشت به مدیریت",
+    "adminNote": "یادداشت مدیر",
+    "adminNoteDescription": "این صفحه برای مدیریت فرصت‌های تجاری در داشبورد استفاده می‌شود. بازدیدکنندگان عمومی، صفحه عمومی جداگانه فرصت را مشاهده می‌کنند.",
+    "statuses": {
+      "open": "باز",
+      "inProgress": "در حال انجام",
+      "closed": "بسته"
+    }
   },
-  "management": {
-    "title": "عملیات مدیریتی",
-    "edit": "ویرایش متخصص"
-  }
-},
-"rootMetadata": {
-  "siteName": "دسترس",
-  "title": "دسترس | اکوسیستم اعتماد برای تجارت جهانی",
-  "description": "دسترس شرکت‌های تأییدشده، متخصصان قابل اعتماد و فرصت‌های تجارت بین‌المللی را در یک پلتفرم پرونده‌محور به هم متصل می‌کند.",
-  "keywords": {
-    "dasres": "دسترس",
-    "experts": "متخصصان تجارت",
-    "companies": "شرکت‌های تأییدشده",
-    "opportunities": "فرصت‌های تجاری",
-    "trade": "تجارت بین‌المللی",
-    "business": "پلتفرم کسب‌وکار جهانی",
-    "international": "شبکه کسب‌وکار بین‌المللی"
+  "common": {
+    "years": "{count} سال",
+    "hours": "ساعت",
+    "countries": {
+      "iran": "ایران",
+      "uae": "امارات",
+      "UAE": "امارات",
+      "china": "چین",
+      "Iran": "ایران"
+    },
+    "categories": {
+      "General": "عمومی",
+      "Shipping": "حمل‌ونقل",
+      "Inspection": "بازرسی",
+      "Customs Clearance": "ترخیص کالا",
+      "customs_clearance": "ترخیص کالا",
+      "shipping": "حمل‌ونقل",
+      "inspection": "بازرسی",
+      "insurance": "بیمه",
+      "sourcing": "تأمین کالا"
+    },
+    "specialties": {
+      "Shipping": "حمل‌ونقل",
+      "Inspection": "بازرسی",
+      "clearance": "ترخیص کالا",
+      "clearence": "ترخیص کالا",
+      "Customs Clearance": "ترخیص کالا",
+      "ticket_general": "عمومی",
+      "ticket_technical": "فنی",
+      "ticket_billing": "مالی",
+      "ticket_support": "پشتیبانی"
+    }
   },
-  "openGraph": {
-    "title": "دسترس | اکوسیستم اعتماد برای تجارت جهانی",
-    "description": "شرکت‌های تأییدشده، متخصصان قابل اعتماد و فرصت‌های تجارت بین‌المللی را در دسترس پیدا کنید.",
-    "imageAlt": "پلتفرم تجارت جهانی دسترس"
+  "ticketCategories": {
+    "general": "عمومی",
+    "technical": "فنی",
+    "billing": "مالی",
+    "support": "پشتیبانی"
   },
-  "twitter": {
-    "title": "دسترس | اکوسیستم اعتماد برای تجارت جهانی",
-    "description": "برای تجارت بین‌المللی با شرکت‌های تأییدشده و متخصصان قابل اعتماد ارتباط برقرار کنید."
-  }
-},
-"publicCompanies": {
-  "eyebrow": "شبکه شرکت‌های تأییدشده",
-  "title": "شرکت‌های تجاری قابل اعتماد را پیدا کنید",
-  "description": "شرکت‌های بین‌المللی فعال در حوزه‌های گمرک، حمل‌ونقل، بازرسی، تأمین کالا، لجستیک و خدمات تجارت جهانی را بررسی کنید.",
-  "statistics": {
-    "total": "کل شرکت‌ها",
-    "verified": "شرکت‌های تأییدشده",
-    "rated": "شرکت‌های دارای امتیاز"
-  },
-  "pagination": {
-    "previous": "قبلی",
-    "next": "بعدی",
-    "page": "صفحه {current} از {total}"
-  }
-},
-"publicOpportunities": {
-  "eyebrow": "بازار تجارت جهانی",
-  "title": "فرصت‌های بین‌المللی را کشف کنید",
-  "description": "فرصت‌های تجاری شرکت‌های سراسر جهان را بررسی کنید، با خریداران و تأمین‌کنندگان ارتباط بگیرید و کسب‌وکار بین‌المللی خود را گسترش دهید.",
-  "statistics": {
-    "total": "کل فرصت‌ها",
-    "open": "فرصت‌های باز",
-    "countries": "کشورها"
-  },
-  "pagination": {
-    "previous": "قبلی",
-    "next": "بعدی",
-    "page": "صفحه {current} از {total}"
-  }
-},
-"companyVerificationButtons": {
-  "verify": "تأیید",
-  "reject": "رد"
-},
-"verificationExpertActions": {
-  "verify": "تأیید",
-  "reject": "رد"
-},
-"verificationCompanyActions": {
-  "verify": "تأیید",
-  "reject": "رد"
-},
-"countryFilter": {
-  "allCountries": "همه کشورها"
-},
-"notFound": {
-  "label": "صفحه پیدا نشد",
-  "title": "این صفحه وجود ندارد.",
-  "description": "صفحه‌ای که به دنبال آن هستید ممکن است جابه‌جا شده، حذف شده یا در دسترس نباشد.",
-  "goHome": "صفحه اصلی",
-  "goDashboard": "داشبورد"
-},
-"saveCaseButton": {
-  "saving": "در حال ذخیره...",
-  "unsave": "حذف از ذخیره‌شده‌ها",
-  "save": "☆ ذخیره پرونده"
-},
-"saveCompanyButton": {
-  "saved": "ذخیره شده ★",
-  "save": "ذخیره ☆"
-},
-"saveExpertButton": {
-  "saved": "ذخیره شده ★",
-  "save": "ذخیره ☆"
-},
-"dashboardOpportunityDetail": {
-  "backToDashboardOpportunities": "→ بازگشت به فرصت‌های داشبورد",
-  "tradeOpportunity": "فرصت تجاری",
-  "globalMarketplace": "بازار جهانی",
-  "status": "وضعیت",
-  "country": "کشور",
-  "visibility": "نحوه نمایش",
-  "dashboard": "داشبورد",
-  "opportunityDescription": "توضیحات فرصت",
-  "adminActions": "عملیات مدیر",
-  "editOpportunity": "ویرایش فرصت",
-  "opportunitySummary": "خلاصه فرصت",
-  "type": "نوع",
-  "viewPublicPage": "مشاهده صفحه عمومی",
-  "backToManagement": "بازگشت به مدیریت",
-  "adminNote": "یادداشت مدیر",
-  "adminNoteDescription": "این صفحه برای مدیریت فرصت‌های تجاری در داشبورد استفاده می‌شود. بازدیدکنندگان عمومی، صفحه عمومی جداگانه فرصت را مشاهده می‌کنند.",
   "statuses": {
     "open": "باز",
-    "inProgress": "در حال انجام",
-    "closed": "بسته"
+    "in_progress": "در حال انجام",
+    "completed": "تکمیل‌شده",
+    "cancelled": "لغوشده",
+    "pending": "در انتظار",
+    "accepted": "پذیرفته‌شده",
+    "rejected": "ردشده",
+    "active": "فعال",
+    "on_hold": "متوقف",
+    "todo": "برای انجام",
+    "review": "در حال بررسی"
+  },
+  "categories": {
+    "general": "عمومی",
+    "customs_clearance": "ترخیص گمرکی",
+    "shipping": "حمل‌ونقل",
+    "inspection": "بازرسی",
+    "insurance": "بیمه",
+    "sourcing": "تأمین کالا",
+    "documentation": "مستندسازی",
+    "payment": "پرداخت"
+  },
+  "plans": {
+    "free": "رایگان",
+    "gold": "طلایی",
+    "diamond": "الماسی",
+    "enterprise": "سازمانی"
+  },
+  "verification": {
+    "pending": "در انتظار بررسی",
+    "verified": "تأیید شده",
+    "rejected": "رد شده"
   }
-}
 }

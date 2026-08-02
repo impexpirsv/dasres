@@ -1,9 +1,3158 @@
 {
   "common": {
-    "appName": "Dasres",
+    "years": "{count} yıl",
+    "hours": "saat",
+    "countries": {
+      "iran": "İran",
+      "uae": "Birleşik Arap Emirlikleri",
+      "UAE": "Birleşik Arap Emirlikleri",
+      "china": "Çin",
+      "Iran": "İran"
+    },
+    "categories": {
+      "General": "Genel",
+      "Shipping": "Nakliye",
+      "Inspection": "Denetleme",
+      "Customs Clearance": "Gümrük işlemleri",
+      "customs_clearance": "Gümrük işlemleri",
+      "shipping": "Nakliye",
+      "inspection": "Denetleme",
+      "insurance": "Sigorta",
+      "sourcing": "Kaynak bulma"
+    },
+    "specialties": {
+      "Shipping": "Nakliye",
+      "Inspection": "Denetleme",
+      "clearance": "Gümrük işlemleri",
+      "clearence": "Gümrük işlemleri",
+      "Customs Clearance": "Gümrük işlemleri",
+      "ticket_general": "Genel",
+      "ticket_technical": "Teknik",
+      "ticket_billing": "Faturalandırma",
+      "ticket_support": "Destek"
+    }
+  },
+  "navbar": {
+    "home": "Ev",
+    "experts": "Uzmanlar",
+    "companies": "Şirketler",
+    "opportunities": "Fırsatlar",
+    "topExperts": "En İyi Uzmanlar",
+    "topCompanies": "En İyi Şirketler",
     "dashboard": "Kontrol Paneli",
+    "login": "Giriş yapmak",
+    "join": "Katılmak",
+    "joinDasres": "Dasres'ye katılın",
+    "tagline": "Küresel Ticaret İçin Güven Ekosistemi",
+    "toggleMenu": "Menüyü değiştir"
+  },
+  "hero": {
+    "platformValue": "Küresel Ticaret Ağı",
+    "eyebrow": "Küresel B2B hizmetleri için doğrulanmış ticaret ağı",
+    "titleLine1": "Güven oluşturun",
+    "titleLine2": "küresel ticaret",
+    "description": "Dasres, uluslararası ticarete yönelik vaka bazlı tek bir platform aracılığıyla doğrulanmış şirketleri, güvenilir uzmanları ve ticaret fırsatlarını birbirine bağlar.",
+    "join": "Dasres'ye katılın",
+    "exploreExperts": "Uzmanları Keşfedin",
+    "browseCompanies": "Şirketlere Göz Atın",
+    "liveCaseLabel": "Canlı ticaret durumu",
+    "liveCaseTitle": "Gümrükleme BAE",
+    "verified": "Doğrulandı",
+    "proposals": "Teklifler",
+    "trust": "Güven",
+    "status": "Durum",
+    "inProgress": "Devam etmekte",
+    "topCompany": "En iyi şirket",
+    "topExpert": "En iyi uzman",
+    "customsClearance": "Gümrük işlemleri",
+    "tradeConsultant": "Ticaret Danışmanı",
+    "rating": "{value} Değerlendirmesi"
+  },
+  "liveStats": {
+    "eyebrow": "Canlı Platform Metrikleri",
+    "title": "Gerçek zamanlı Dasres etkinliği",
+    "verifiedCompanies": "Doğrulanmış Şirketler",
+    "trustedExperts": "Güvenilir Uzmanlar",
+    "tradeOpportunities": "Ticaret Fırsatları",
+    "tradeCases": "Ticaret Vakaları",
+    "caseSuccessRate": "Vaka Başarı Oranı"
+  },
+  "topRatedShowcase": {
+    "eyebrow": "Güven Ağı",
+    "titleLine1": "Doğrulanmış sağlayıcılar.",
+    "titleLine2": "Güvene göre sıralanmıştır.",
+    "description": "Dasres, doğrulama, derecelendirme, inceleme ve güven puanlamasını kullanarak şirketleri ve uzmanları öne çıkarır, böylece ticaret ekipleri sağlayıcıları güvenle karşılaştırabilir.",
+    "verifiedProfiles": "Doğrulanmış profiller",
+    "reviewHistory": "Geçmişi inceleyin",
+    "trustScoring": "Güven puanlaması",
+    "topCompany": "En İyi Şirket",
+    "topExpert": "En İyi Uzman",
+    "verified": "Doğrulandı",
+    "trust": "Güven",
+    "rating": "Derecelendirme",
+    "reviews": "Yorumlar",
+    "noReviews": "Yorum yok",
+    "viewCompany": "Şirketi Görüntüle",
+    "viewExpert": "Uzmanı Görüntüle"
+  },
+  "services": {
+    "eyebrow": "Platform İş Akışı",
+    "titleLine1": "Talepten itibaren",
+    "titleLine2": "güvenilir teslimat.",
+    "description": "Dasres yalnızca bir dizin değildir. Uluslararası ticaret hizmetleri, teklifler, belgeler, iletişim ve itibar için vaka bazlı bir işletim katmanıdır.",
+    "unifiedWorkflow": "Birleşik iş akışı",
+    "caseVisibility": "Vaka görünürlüğü",
+    "steps": {
+      "createCase": {
+        "title": "Bir ticari vaka oluşturun",
+        "description": "Ticaret talebinizi kategori, kapsam ve hizmet detaylarıyla birlikte gönderin."
+      },
+      "matchProviders": {
+        "title": "Sağlayıcılarla eşleştirin",
+        "description": "Dasres, vakayı kategoriye göre doğrulanmış şirketlere ve uzmanlara bağlar."
+      },
+      "receiveProposals": {
+        "title": "Teklifleri al",
+        "description": "Fiyat, mesaj, sağlayıcı profili, doğrulama ve itibarı karşılaştırın."
+      },
+      "assignWinner": {
+        "title": "Kazananı atayın",
+        "description": "Bir teklifi kabul edin, gerisini reddedin ve aktif vaka iş akışını başlatın."
+      },
+      "manageDelivery": {
+        "title": "Teslimatı yönet",
+        "description": "Mesajları, belgeleri, zaman çizelgesi adımlarını ve etkinlik günlüklerini tek bir yerde saklayın."
+      },
+      "completeReview": {
+        "title": "Tamamlayın ve inceleyin",
+        "description": "Vakayı kapatın, incelemeler gönderin ve gelecekteki projeler için güven oluşturun."
+      }
+    }
+  },
+  "expertsSection": {
+    "eyebrow": "Uzman Ağı",
+    "title": "Öne Çıkan Uzmanlar",
+    "description": "Gümrük, kaynak bulma, lojistik, denetim ve ticaret danışmanlığı alanlarında doğrulanmış uluslararası ticaret profesyonelleriyle bağlantı kurun.",
+    "viewAll": "Tümünü Görüntüle",
+    "verified": "Doğrulandı",
+    "available": "Mevcut",
+    "viewProfile": "Profili Görüntüle"
+  },
+  "companiesSection": {
+    "eyebrow": "Şirket Ağı",
+    "title": "Öne Çıkan Şirketler",
+    "description": "Gümrükleme, nakliye, kaynak sağlama, denetim ve uluslararası lojistik alanlarında doğrulanmış ticaret şirketlerini keşfedin.",
+    "viewAll": "Tümünü Görüntüle",
+    "verified": "Doğrulandı",
+    "acceptingProjects": "Proje Kabulü",
+    "viewProfile": "Profili Görüntüle"
+  },
+  "opportunitiesSection": {
+    "eyebrow": "Küresel Pazaryeri",
+    "title": "En Son Ticaret Fırsatları",
+    "description": "Uluslararası ticaret taleplerine göz atın, yeni iş fırsatlarını keşfedin ve dünya çapındaki doğrulanmış sağlayıcılarla bağlantı kurun.",
+    "viewAll": "Tümünü Görüntüle",
+    "statusOpen": "Açık",
+    "openOpportunity": "Fırsatı Aç",
+    "viewDetails": "Ayrıntıları Görüntüle",
+    "empty": "Şu anda herhangi bir fırsat mevcut değil."
+  },
+  "footer": {
+    "ctaEyebrow": "Ticareti güvenle yönetmeye hazır mısınız?",
+    "ctaTitle": "İlk Dasres takas vakanızı başlatın.",
+    "ctaDescription": "Tek bir güvenilir iş akışında bir vaka oluşturun, doğrulanmış sağlayıcıları karşılaştırın ve teklifleri, belgeleri ve iletişimi yönetin.",
+    "createCase": "Vaka Oluştur",
+    "exploreNetwork": "Ağı Keşfedin",
+    "description": "Uluslararası ticaret hizmetleri, doğrulanmış sağlayıcılar, teklifler, belgeler ve itibar için vakaya dayalı güven ekosistemi.",
+    "platformTitle": "platformu",
+    "networkTitle": "Ağ",
+    "trustSignalsTitle": "Güven Sinyalleri",
+    "companies": "Şirketler",
+    "experts": "Uzmanlar",
+    "opportunities": "Fırsatlar",
+    "dashboard": "Kontrol Paneli",
+    "topCompanies": "En İyi Şirketler",
+    "topExperts": "En İyi Uzmanlar",
+    "openCases": "Açık Vakalar",
+    "supportTickets": "Destek Biletleri",
+    "verifiedCompanies": "Doğrulanmış şirketler",
+    "trustedExperts": "Güvenilir uzmanlar",
+    "proposalWorkflow": "Teklif iş akışı",
+    "reviewsReputation": "İncelemeler ve itibar",
+    "copyright": "© {year} Dasres. Her hakkı saklıdır.",
+    "languagesAvailable": "12 dilde mevcut"
+  },
+  "dashboardSidebar": {
+    "tagline": "Küresel Ticaret İçin Güven Ekosistemi",
+    "menu": "Menü",
+    "sections": {
+      "main": "Ana",
+      "tradeManagement": "Ticaret Yönetimi",
+      "ownership": "Mülkiyet",
+      "admin": "Yönetici",
+      "communication": "İletişim",
+      "subscription": "Abonelik",
+      "account": "Hesap"
+    },
+    "links": {
+      "dashboard": "Kontrol Paneli",
+      "globalSearch": "Küresel Arama",
+      "experts": "Uzmanlar",
+      "topExperts": "En İyi Uzmanlar",
+      "companies": "Şirketler",
+      "topCompanies": "En İyi Şirketler",
+      "opportunities": "Fırsatlar",
+      "submittedCases": "Gönderilen Vakalar",
+      "activeWorkspaces": "Aktif Çalışma Alanları",
+      "projects": "Projeler",
+      "myTasks": "Görevlerim",
+      "myProposals": "Tekliflerim",
+      "myReviews": "İncelemelerim",
+      "openCases": "Açık Vakalar",
+      "savedCases": "Kaydedilen Vakalar",
+      "savedCompanies": "Kaydedilen Şirketler",
+      "savedExperts": "Kaydedilen Uzmanlar",
+      "tickets": "Biletler",
+      "myCompanies": "Şirketlerim",
+      "myExperts": "Uzmanlarım",
+      "users": "Kullanıcılar",
+      "verifications": "Doğrulamalar",
+      "notifications": "Bildirimler",
+      "subscription": "Abonelik",
+      "settings": "Ayarlar",
+      "logout": "Oturumu kapat"
+    },
+    "premium": {
+      "title": "PREMIUM ÖZELLİKLER",
+      "description": "Planlar, sınırlar ve görünürlük"
+    }
+  },
+  "dashboardQuickActions": {
+    "title": "Hızlı Eylemler",
+    "description": "Sık kullanılan kısayollar",
+    "createCase": {
+      "title": "Vaka Oluştur",
+      "description": "Yeni bir uluslararası ticaret projesi başlatın."
+    },
+    "openCases": {
+      "title": "Açık Vakalar",
+      "description": "Mevcut takas taleplerine göz atın."
+    },
+    "myCompanies": {
+      "title": "Şirketlerim",
+      "description": "Şirket profillerinizi yönetin."
+    },
+    "myExperts": {
+      "title": "Uzmanlarım",
+      "description": "Uzman profillerinizi yönetin."
+    }
+  },
+  "dashboardAttention": {
+    "title": "Dikkatinize İhtiyaç Var",
+    "description": "İncelenecek önemli öğeler",
+    "unreadNotifications": "Okunmamış Bildirimler",
+    "openTickets": "Açık Biletler",
+    "openCases": "Açık Vakalar",
+    "myProposals": "Tekliflerim"
+  },
+  "dashboardAnalytics": {
+    "title": "Analitiklere Genel Bakış",
+    "description": "Operasyonel performans özeti",
+    "casePipeline": {
+      "title": "Vaka Boru Hattı",
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış"
+    },
+    "proposalPerformance": {
+      "title": "Teklif Performansı",
+      "description": "Kabul edilen ve reddedilen tekliflere dayalı kabul oranı.",
+      "accepted": "Kabul edildi",
+      "rejected": "Reddedilmiş"
+    },
+    "platformAttention": {
+      "title": "Platformun Dikkatine",
+      "notifications": "Bildirimler",
+      "tickets": "Biletler",
+      "reviews": "Yorumlar",
+      "saved": "Kaydedildi"
+    }
+  },
+  "dashboardOverdueTasks": {
+    "title": "Gecikmiş Görevler",
+    "empty": {
+      "title": "Gecikmiş Görev Yok",
+      "description": "Her şey programa uygun."
+    },
+    "dueDate": "Son tarih: {date}"
+  },
+  "dashboardSubscriptionWidget": {
+    "currentPlan": "Mevcut Plan",
+    "managePlan": "Planı Yönet",
+    "activeCases": "Aktif vakalar",
+    "proposals": "Teklifler",
+    "usageLimited": "{used} / {limit}",
+    "usageUnlimited": "{used} / Sınırsız"
+  },
+  "dashboardStatsGrid": {
+    "savedCases": {
+      "title": "Kaydedilen Vakalar",
+      "description": "Daha sonra kullanılmak üzere kaydedilen vakalar"
+    },
+    "savedCompanies": {
+      "title": "Kaydedilen Şirketler",
+      "description": "Ağınızdaki şirketler"
+    },
+    "savedExperts": {
+      "title": "Kaydedilen Uzmanlar",
+      "description": "Ağınızdaki uzmanlar"
+    },
+    "experts": {
+      "adminTitle": "Uzmanlar",
+      "userTitle": "Uzmanlarım",
+      "adminDescription": "Doğrulanmış uzmanlar mevcut",
+      "userDescription": "Sahip olduğunuz uzmanlar"
+    },
+    "companies": {
+      "adminTitle": "Şirketler",
+      "userTitle": "Şirketlerim",
+      "adminDescription": "Kayıtlı şirketler",
+      "userDescription": "Sahip olduğunuz şirketler"
+    },
+    "opportunities": {
+      "title": "Fırsatlar",
+      "description": "Aktif ticaret fırsatları"
+    },
+    "successRate": {
+      "title": "Vaka Başarı Oranı",
+      "description": "{total} dosyadan {completed} tanesi tamamlandı"
+    },
+    "tradeCases": {
+      "title": "Ticaret Vakaları",
+      "adminDescription": "Tüm ticari projeler",
+      "userDescription": "Gönderilen takas talepleri"
+    },
+    "openCases": {
+      "title": "Açık Vakalar",
+      "description": "Mevcut fırsatlar"
+    },
+    "inProgress": {
+      "title": "Devam etmekte",
+      "description": "Aktif ticaret projeleri"
+    },
+    "completed": {
+      "title": "Tamamlanmış",
+      "description": "Biten projeler"
+    },
+    "proposals": "Teklifler",
+    "accepted": "Kabul edildi",
     "notifications": "Bildirimler",
-    "settings": "Ayarlar",
-    "logout": "Çıkış"
+    "openTickets": "Açık Biletler"
+  },
+  "dashboardMyTasksWidget": {
+    "title": "Atanan Görevlerim",
+    "viewAll": "Tümünü görüntüle",
+    "empty": "Atanan görev yok.",
+    "status": {
+      "TODO": "Yapılacaklar",
+      "IN_PROGRESS": "Devam etmekte",
+      "REVIEW": "Gözden geçirmek",
+      "COMPLETED": "Tamamlanmış"
+    }
+  },
+  "dashboardTopRated": {
+    "countries": {
+      "iran": "İran",
+      "uae": "BAE",
+      "china": "Çin"
+    },
+    "categories": {
+      "shipping": "Nakliye",
+      "customs_clearance": "Gümrük işlemleri",
+      "inspection": "Denetleme",
+      "insurance": "Sigorta",
+      "sourcing": "Kaynak bulma"
+    },
+    "viewAll": "Tümünü görüntüle",
+    "reviewCount": "{count, plural, one {# incelemeye dayanmaktadır} other {# inceleme}}",
+    "experts": {
+      "title": "En Çok Puan Alan Uzmanlar",
+      "empty": "Henüz derecelendirilen uzman yok."
+    },
+    "companies": {
+      "title": "En Çok Puan Alan Şirketler",
+      "empty": "Henüz derecelendirilen şirket yok."
+    }
+  },
+  "dashboardLatestItems": {
+    "viewAll": "Tümünü görüntüle",
+    "experts": {
+      "adminTitle": "En Son Uzmanlar",
+      "userTitle": "En Yeni Uzmanlarım",
+      "empty": "Uzman bulunamadı."
+    },
+    "companies": {
+      "adminTitle": "En Yeni Şirketler",
+      "userTitle": "En Yeni Şirketlerim",
+      "empty": "Hiçbir şirket bulunamadı."
+    },
+    "opportunities": {
+      "title": "En Son Fırsatlar",
+      "empty": "Hiçbir fırsat bulunamadı."
+    },
+    "statuses": {
+      "open": "Açık",
+      "closed": "Kapalı",
+      "pending": "Askıda olması"
+    }
+  },
+  "dashboardRecentActivity": {
+    "title": "Son Etkinlik",
+    "empty": "Etkinlik bulunamadı.",
+    "system": "Sistem",
+    "actions": {
+      "proposalSubmitted": "Teklif Gönderildi",
+      "proposalAccepted": "Teklif Kabul Edildi",
+      "proposalRejected": "Teklif Reddedildi",
+      "caseCompleted": "Vaka Tamamlandı",
+      "projectCompleted": "Proje Tamamlandı",
+      "documentUploaded": "Doküman Yüklendi",
+      "projectTaskAttachmentUploaded": "Proje Görevi Eki Yüklendi",
+      "documentApproved": "Belge Onaylandı",
+      "documentRejected": "Belge Reddedildi",
+      "messageSent": "Mesaj Gönderildi",
+      "projectMessageSent": "Proje Mesajı Gönderildi",
+      "taskCommentAdded": "Görev Yorumu Eklendi",
+      "taskAssigned": "Görev Atandı",
+      "taskCompleted": "Görev Tamamlandı",
+      "ticketUpdated": "Bilet Güncellendi",
+      "companyVerified": "Şirket Doğrulandı",
+      "companyRejected": "Şirket Reddedildi",
+      "projectTaskUpdated": "Proje Görevi Güncellendi",
+      "projectTaskStatusUpdated": "Proje Görev Durumu Güncellendi",
+      "projectTaskChecklistToggled": "Proje Görevi Kontrol Listesi Güncellendi"
+    },
+    "details": {
+      "projectTaskStatusUpdated": "Görev \"{title}\" durumu {status} olarak değiştirildi.",
+      "projectTaskAttachmentUploaded": "Ek {file} yüklendi.",
+      "projectTaskUpdated": "\"{title}\" proje görevi güncellendi.",
+      "projectTaskChecklistToggled": "Kontrol listesi öğesi \"{item}\" değiştirildi.",
+      "projectTaskStatusUpdatedPrefix": "Proje görevi durumu güncellendi:",
+      "attachmentUploadedPrefix": "Ek yüklendi:",
+      "projectTaskUpdatedPrefix": "Proje görevi güncellendi:"
+    },
+    "checklist": {
+      "completed": "Tamamlanmış",
+      "incomplete": "Tamamlanmamış"
+    },
+    "statuses": {
+      "todo": "Yapılacaklar",
+      "in_progress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "completed": "Tamamlanmış"
+    }
+  },
+  "dashboardProfileCard": {
+    "title": "Kullanıcı Profili",
+    "name": "İsim",
+    "email": "E-posta",
+    "role": "Rol",
+    "roles": {
+      "admin": "Yönetici",
+      "user": "Kullanıcı"
+    }
+  },
+  "dashboardPage": {
+    "title": "Kontrol Paneli",
+    "badge": "İşletme Yönetim Paneli",
+    "description": "Dasres hesabınızı, profillerinizi ve ticari faaliyetlerinizi yönetin.",
+    "roles": {
+      "admin": "Yönetici",
+      "user": "Kullanıcı"
+    },
+    "admin": {
+      "title": "Sistem Yönetimi",
+      "commandCenter": "Yönetici Komuta Merkezi",
+      "description": "Dasres platformunun operasyonel durumuna genel bakış",
+      "reviewVerifications": "Doğrulamaları İnceleyin",
+      "pendingVerifications": "Bekleyen Doğrulamalar",
+      "totalReviews": "Toplam İncelemeler",
+      "reviews": "Yorumlar",
+      "premiumUsers": "Premium Kullanıcılar",
+      "openTickets": "Açık Biletler",
+      "panel": "Yönetici Paneli",
+      "users": "Kullanıcılar",
+      "experts": "Uzmanlar",
+      "companies": "Şirketler",
+      "opportunities": "Fırsatlar",
+      "latestUsers": "Son Kullanıcılar",
+      "manageUsers": "Kullanıcıları Yönet"
+    }
+  },
+  "loginPage": {
+    "title": "Tekrar hoşgeldiniz",
+    "description": "Dasres hesabınızda oturum açın",
+    "email": "E-posta",
+    "password": "Şifre",
+    "login": "Giriş yapmak",
+    "loginFailed": "Giriş başarısız oldu."
+  },
+  "registerPage": {
+    "title": "Dasres'ye katılın",
+    "description": "Hesabınızı oluşturun",
+    "name": {
+      "label": "Ad Soyad",
+      "placeholder": "Tam adınızı girin"
+    },
+    "email": {
+      "label": "E-posta",
+      "placeholder": "E-posta adresinizi girin"
+    },
+    "password": {
+      "label": "Şifre",
+      "placeholder": "Şifrenizi girin",
+      "hint": "Şifreniz en az 6 karakter olmalıdır."
+    },
+    "submit": "Hesap oluşturmak",
+    "submitting": "Hesap oluşturuluyor...",
+    "registrationFailed": "Hesap oluşturma başarısız oldu.",
+    "alreadyHaveAccount": "Zaten bir hesabınız var mı?",
+    "login": "Giriş yapmak"
+  },
+  "projectDetailPage": {
+    "backToProjects": "Projelere Geri Dön"
+  },
+  "projectHeader": {
+    "progress": "İlerlemek"
+  },
+  "projectTabs": {
+    "overview": "Genel Bakış",
+    "tasks": "Görevler",
+    "board": "Pano",
+    "calendar": "Takvim",
+    "gantt": "Gantt",
+    "workload": "İş yükü",
+    "documents": "Belgeler",
+    "timeline": "Zaman çizelgesi",
+    "messages": "Mesajlar",
+    "activity": "Etkinlik"
+  },
+  "projectOverviewCards": {
+    "customer": "Müşteri",
+    "category": "Kategori",
+    "openTasks": "Görevleri Aç",
+    "completedTasks": "Tamamlanan Görevler",
+    "steps": "Adımlar",
+    "completed": "Tamamlanmış"
+  },
+  "projectTimeSummary": {
+    "title": "Zaman Takibi",
+    "description": "Genel proje süresi özeti.",
+    "estimated": "Tahmini",
+    "logged": "Günlüğe kaydedildi",
+    "remaining": "Geriye kalan",
+    "distribution": "Zaman Dağılımı"
+  },
+  "projectOverviewHeader": {
+    "description": "Görevler, iş yükü, zaman çizelgesi, Gantt ve yürütme takibi içeren proje komuta merkezi.",
+    "overallProgress": "Genel İlerleme",
+    "status": {
+      "todo": "Yapılacaklar",
+      "pending": "Askıda olması",
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "review": "İnceleniyor",
+      "completed": "Tamamlanmış",
+      "approved": "Onaylı",
+      "rejected": "Reddedilmiş",
+      "closed": "Kapalı",
+      "active": "Aktif",
+      "expired": "Günü geçmiş",
+      "cancelled": "İptal edildi"
+    },
+    "metrics": {
+      "tasks": "Görevler",
+      "completed": "Tamamlanmış",
+      "inProgress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "blocked": "Engellendi",
+      "remaining": "Geriye kalan"
+    },
+    "hours": {
+      "estimated": "Tahmini Saatler",
+      "logged": "Kayıtlı Saatler",
+      "value": "{hours}h"
+    },
+    "features": {
+      "tasks": "Görevler",
+      "kanban": "Kanban",
+      "calendar": "Takvim",
+      "timeline": "Zaman çizelgesi",
+      "gantt": "Gantt",
+      "workload": "İş yükü"
+    }
+  },
+  "projectHealthCard": {
+    "title": "Proje Sağlığı",
+    "progress": "İlerlemek",
+    "hoursUsed": "Kullanılan Saatler",
+    "utilization": "Kullanım",
+    "overdue": "vadesi geçmiş",
+    "noEstimate": "Tahmin yok",
+    "noOverdueTasks": "Gecikmiş görev yok",
+    "overdueTasks": "{count} görev(ler)i"
+  },
+  "projectCriticalPathCard": {
+    "title": "Kritik Yol",
+    "description": "Proje zamanlamasını doğrudan geciktirebilecek görevler.",
+    "criticalTasks": "Kritik Görevler",
+    "criticalDuration": "Kritik Süre",
+    "duration": "{count, plural, one {# gün} other {# gün}}",
+    "empty": "Kritik bağımlılık algılanmadı.",
+    "dependsOn": "Bağlıdır: {task}",
+    "critical": "Kritik",
+    "pathStart": "Kritik yol başlangıcı"
+  },
+  "projectAIInsights": {
+    "title": "Yapay Zeka Yardımcı Pilot İçgörüleri",
+    "description": "Gelecekteki GPT entegrasyonu için hazırlanan kural tabanlı analiz.",
+    "healthScore": "Yapay Zeka Sağlık Puanı",
+    "progressLabel": "İlerlemek:",
+    "health": {
+      "excellent": "Harika",
+      "stable": "Stabil",
+      "atRisk": "Risk Altında",
+      "critical": "Kritik"
+    },
+    "risks": {
+      "title": "Riskler",
+      "overdueTasks": "{count, plural, one {# gecikmiş görev} other {# gecikmiş görevler}}",
+      "blockedTasks": "{count, plural, one {# engellenen görev} other {# engellenen görevler}}",
+      "pendingApprovals": "{count, plural, one {# onay bekleniyor} other {# onay bekleniyor}}"
+    },
+    "nextAction": "Sonraki Eylem",
+    "recommendation": "Tavsiye",
+    "nextActions": {
+      "approveDocument": "{fileName}'yi onayla",
+      "resolveDependency": "{taskTitle} bağımlılığını çözümleyin",
+      "reviewOverdueTask": "Süresi geçmiş görevi gözden geçirin: {taskTitle}",
+      "continueExecution": "Yürütmeye devam edin ve sonraki görevi kapatın",
+      "completionReview": "Proje tamamlanma incelemesine hazır"
+    },
+    "recommendations": {
+      "pendingApprovals": "Belge onayı ana darboğazdır. Gönderim veya teslimata geçmeden önce bekleyen belgeleri inceleyin.",
+      "blockedTasks": "Aşağı yönde yürütmeye başlamadan önce görev bağımlılıklarını çözün.",
+      "overdueTasks": "Program riski artıyor. Son teslim tarihlerini gözden geçirin ve geciken görevleri yeniden atayın.",
+      "normalProgress": "Proje normal bir şekilde ilerliyor. Belgeleri ve iş akışı aşamalarını izlemeye devam edin."
+    }
+  },
+  "projectAIAssistant": {
+    "title": "Dasres AI",
+    "subtitle": "Akıllı Proje Analizi",
+    "risk": "Risk",
+    "progress": "İlerlemek",
+    "aiSuggestions": "Yapay Zeka Önerileri",
+    "riskLevels": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek"
+    },
+    "suggestions": {
+      "resolveBlocked": "Engellenen görevleri çözün.",
+      "reviewOverdue": "Geciken görevleri gözden geçirin.",
+      "increasePace": "Yürütme hızını artırın.",
+      "normal": "Proje normal bir şekilde ilerliyor."
+    }
+  },
+  "projectTasksSection": {
+    "title": "Proje Görevleri",
+    "description": "Proje görevlerini verimli bir şekilde yönetin.",
+    "searchPlaceholder": "Görevleri ara...",
+    "searchLabel": "Proje görevlerini arayın",
+    "filteredCount": "{filtered} veya {total}",
+    "emptyState": "Ayrıntılarını görüntülemek için bir görev seçin.",
+    "noSearchResults": "Aramanızla eşleşen görev yok."
+  },
+  "projectTaskList": {
+    "empty": "Hiçbir görev bulunamadı.",
+    "unassigned": "Atanmamış",
+    "progress": "İlerlemek",
+    "progressLabel": "{title} için ilerleme",
+    "noDueDate": "Son tarih yok",
+    "priorities": {
+      "urgent": "Acil",
+      "high": "Yüksek",
+      "medium": "Orta",
+      "low": "Düşük"
+    }
+  },
+  "projectTaskDetails": {
+    "emptyState": "Ayrıntılarını görüntülemek için bir görev seçin.",
+    "assignedTo": "Atandı",
+    "unassigned": "Atanmamış",
+    "startDate": "Başlangıç ​​Tarihi",
+    "dueDate": "Bitiş tarihi",
+    "noStartDate": "Başlangıç ​​tarihi yok",
+    "noDueDate": "Son tarih yok",
+    "progress": "İlerlemek",
+    "estimated": "Tahmini",
+    "logged": "Günlüğe kaydedildi",
+    "remaining": "Geriye kalan",
+    "hours": "{count}h",
+    "notSet": "Ayarlanmadı",
+    "dependsOn": "bağlıdır",
+    "blocks": "Bloklar",
+    "attachments": "Ekler",
+    "uploadedBy": "{name} tarafından yüklendi",
+    "unknown": "Bilinmiyor",
+    "priorities": {
+      "urgent": "Acil",
+      "high": "Yüksek",
+      "medium": "Orta",
+      "low": "Düşük"
+    },
+    "statuses": {
+      "todo": "Yapılacaklar",
+      "in_progress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "completed": "Tamamlanmış"
+    }
+  },
+  "projectTaskStatusSelect": {
+    "label": "Görev Durumu",
+    "updating": "Durum güncelleniyor...",
+    "updateError": "Görev durumu güncellenemedi.",
+    "networkError": "Durum güncellenirken bir ağ hatası oluştu.",
+    "statuses": {
+      "todo": "Yapılacaklar",
+      "in_progress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "completed": "Tamamlanmış"
+    }
+  },
+  "assignTaskSelect": {
+    "label": "Görev ata",
+    "unassigned": "Atanmamış",
+    "updating": "Güncelleniyor...",
+    "updateError": "Görev atanamadı.",
+    "networkError": "Görev atanırken bir ağ hatası oluştu."
+  },
+  "editProjectTaskForm": {
+    "edit": "Düzenlemek",
+    "title": "Görevi Düzenle",
+    "taskTitle": "Görev Başlığı",
+    "titleRequired": "Görev başlığı gerekli.",
+    "description": "Tanım",
+    "descriptionPlaceholder": "Görev açıklaması ekleyin...",
+    "priority": "Öncelik",
+    "startDate": "Başlangıç ​​Tarihi",
+    "dueDate": "Bitiş tarihi",
+    "estimatedHours": "Tahmini Saatler",
+    "estimatedHoursPlaceholder": "Tahmini saatler",
+    "loggedHours": "Kayıtlı Saatler",
+    "loggedHoursPlaceholder": "Günlüğe kaydedilen saatler",
+    "assignedTo": "Atandı",
+    "unassigned": "Atanmamış",
+    "dependsOn": "bağlıdır",
+    "noDependency": "Bağımlılık Yok",
+    "save": "Kaydetmek",
+    "saving": "Kaydediliyor...",
+    "cancel": "İptal etmek",
+    "updateError": "Görev güncellenemedi.",
+    "networkError": "Görev güncellenirken bir ağ hatası oluştu.",
+    "invalidEstimatedHours": "Tahmini saat sıfır veya daha büyük olmalıdır.",
+    "invalidLoggedHours": "Günlüğe kaydedilen saatler sıfır veya daha büyük olmalıdır.",
+    "priorities": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek",
+      "urgent": "Acil"
+    }
+  },
+  "projectTaskChecklist": {
+    "title": "Kontrol listesi",
+    "empty": "Henüz kontrol listesi öğesi yok.",
+    "updating": "Güncelleniyor...",
+    "toggleError": "Kontrol listesi öğesi güncellenemedi.",
+    "networkError": "Kontrol listesi öğesi güncellenirken bir ağ hatası oluştu.",
+    "markComplete": "{title}'yi tamamlandı olarak işaretle",
+    "markIncomplete": "{title}'yi eksik olarak işaretleyin"
+  },
+  "createChecklistItemForm": {
+    "label": "Kontrol listesi öğesi başlığı",
+    "placeholder": "Kontrol listesi öğesi ekle...",
+    "add": "Eklemek",
+    "adding": "Ekleniyor...",
+    "titleRequired": "Kontrol listesi öğesi başlığı gerekli.",
+    "createError": "Kontrol listesi öğesi eklenemedi.",
+    "invalidResponse": "Kontrol listesi öğesi oluşturuldu ancak sunucunun yanıtı geçersizdi.",
+    "networkError": "Kontrol listesi öğesi eklenirken bir ağ hatası oluştu."
+  },
+  "taskProgressBar": {
+    "title": "Görev İlerlemesi",
+    "ariaLabel": "Görev ilerlemesi",
+    "summary": "{total} kontrol listesi öğesinden {completed} tanesi tamamlandı"
+  },
+  "projectTaskComments": {
+    "title": "Yorumlar",
+    "empty": "Henüz yorum yok.",
+    "commentLabel": "Yorum",
+    "placeholder": "Bir yorum yazın...",
+    "postComment": "Yorum Gönder",
+    "posting": "Yayınlanıyor...",
+    "edited": "düzenlendi",
+    "deletedComment": "Bu yorum silindi.",
+    "unknownAuthor": "Bilinmiyor",
+    "unknownDate": "Bilinmeyen tarih",
+    "commentRequired": "Yorum gerekli.",
+    "createError": "Yorum yayınlanamadı.",
+    "networkError": "Yorum gönderilirken bir ağ hatası oluştu."
+  },
+  "projectTaskAttachmentUpload": {
+    "title": "Dosya Ekle",
+    "fileLabel": "Bir dosya seçin",
+    "helpText": "Desteklenen formatlar: JPG, PNG, WEBP, PDF, DOCX ve XLSX. Maksimum boyut: 10 MB.",
+    "fileSize": "{size} MB",
+    "upload": "Yüklemek",
+    "uploading": "Yükleniyor...",
+    "clear": "Temizlemek",
+    "selectFile": "Lütfen bir dosya seçin.",
+    "invalidType": "Bu dosya türü desteklenmiyor.",
+    "fileTooLarge": "Seçilen dosya 10 MB veya daha küçük olmalıdır.",
+    "uploadError": "Dosya yüklenemedi.",
+    "networkError": "Dosya yüklenirken bir ağ hatası oluştu."
+  },
+  "createProjectTaskForm": {
+    "newTask": "+ Yeni Görev",
+    "modalTitle": "Görev Oluştur",
+    "taskTitle": "Görev Başlığı",
+    "taskTitlePlaceholder": "Görev başlığını girin",
+    "description": "Tanım",
+    "descriptionPlaceholder": "Açıklama (isteğe bağlı)",
+    "priority": "Öncelik",
+    "startDate": "Başlangıç ​​Tarihi",
+    "dueDate": "Bitiş tarihi",
+    "createTask": "Görev Oluştur",
+    "creating": "Oluşturuluyor...",
+    "cancel": "İptal etmek",
+    "titleRequired": "Görev başlığı gerekli.",
+    "invalidDateRange": "Son tarih başlangıç ​​tarihinden önce olamaz.",
+    "createError": "Görev oluşturulamadı.",
+    "networkError": "Görev oluşturulurken bir ağ hatası oluştu.",
+    "priorities": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek",
+      "urgent": "Acil"
+    }
+  },
+  "projectBoard": {
+    "columns": {
+      "todo": "Yapılacaklar",
+      "inProgress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "completed": "Tamamlanmış"
+    },
+    "emptyColumn": "Görev yok",
+    "updateError": "Görev durumu güncellenemedi."
+  },
+  "kanbanColumn": {
+    "ariaLabel": "{count} görevlerine sahip {title} sütunu",
+    "taskCount": "{count} görevleri"
+  },
+  "kanbanTaskCard": {
+    "assignee": "Vekil",
+    "unassigned": "Atanmamış",
+    "due": "Vadesi dolmuş",
+    "noDueDate": "Son tarih yok",
+    "checklist": "Kontrol listesi",
+    "comments": "Yorumlar",
+    "files": "Dosyalar",
+    "dragLabel": "{title} görevini sürükleyin",
+    "priorities": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek",
+      "urgent": "Acil"
+    }
+  },
+  "projectCalendarView": {
+    "title": "Proje Takvimi",
+    "description": "Görev son tarihlerini görüntüleyin ve son tarihlerini güncellemek için görevleri taşıyın.",
+    "noEvents": "Zamanlanmış görev yok.",
+    "updateError": "Görev tarihi güncellenemedi.",
+    "invalidTaskDate": "Seçilen görev veya tarih geçersiz.",
+    "buttons": {
+      "today": "Bugün",
+      "month": "Ay",
+      "week": "Hafta"
+    }
+  },
+  "projectGanttView": {
+    "title": "Gantt Grafiği",
+    "description": "Proje görevlerinin ve bağımlılıklarının görsel zaman çizelgesi.",
+    "emptyState": "Gantt görünümünde görüntülenecek tarihli görev yok.",
+    "taskColumn": "Görev",
+    "timeline": "Zaman çizelgesi",
+    "week": "Hafta",
+    "taskCount": "{count} görevleri",
+    "critical": "Kritik",
+    "blocked": "Engellendi",
+    "dateRange": "{start} – {end}",
+    "zoom": {
+      "day": "Gün",
+      "week": "Hafta",
+      "month": "Ay"
+    },
+    "statuses": {
+      "todo": "Yapılacaklar",
+      "in_progress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "completed": "Tamamlanmış",
+      "unknown": "Bilinmiyor"
+    },
+    "duration": {
+      "day": "{title} • {duration} gün(ler)",
+      "week": "{title} • {duration} hafta(lar)",
+      "month": "{title} • {duration} ay(lar)"
+    },
+    "tooltips": {
+      "baseline": "Temel",
+      "dependencyInput": "Giriş Bağımlılığı",
+      "dependencyOutput": "Çıkış Bağımlılığı",
+      "duration": {
+        "day": "Süre: {duration} gün",
+        "week": "Süre: {duration} hafta",
+        "month": "Süre: {duration} ay"
+      }
+    }
+  },
+  "projectWorkloadView": {
+    "title": "Ekip İş Yükü",
+    "description": "Ekip üyesine göre görev dağıtımı, ilerleme ve gecikmiş iş yükü.",
+    "emptyState": "İş yükü analizi için kullanılabilir görev yok.",
+    "unassigned": "Atanmamış",
+    "totalTasks": "{count} toplam görevler",
+    "workload": "İş yükü",
+    "active": "Aktif",
+    "done": "Tamamlamak",
+    "overdue": "vadesi geçmiş",
+    "progressLabel": "{name} için ortalama görev ilerlemesi",
+    "capacities": {
+      "high": "Yüksek",
+      "medium": "Orta",
+      "low": "Düşük"
+    },
+    "workloadStates": {
+      "needsAttention": "Dikkat Gerekiyor",
+      "highLoad": "Yüksek Yük",
+      "balanced": "Dengeli",
+      "available": "Mevcut"
+    }
+  },
+  "projectTimeline": {
+    "title": "Zaman Çizelgesi Adımları",
+    "completed": "Tamamlanmış",
+    "pending": "Askıda olması",
+    "notCompletedYet": "Henüz tamamlanmadı",
+    "unknownDate": "Bilinmeyen tarih",
+    "emptyState": "Hiçbir zaman çizelgesi adımı mevcut değil.",
+    "steps": {
+      "requestSubmitted": "Talep Gönderildi",
+      "providerMatching": "Sağlayıcı Eşleştirme",
+      "documentsReview": "Belge İncelemesi",
+      "serviceInProgress": "Hizmet Devam Ediyor",
+      "completed": "Tamamlanmış"
+    }
+  },
+  "projectDocuments": {
+    "title": "Belge Merkezi",
+    "description": "Merkezi proje ve ticari belge çalışma alanı.",
+    "documentCount": "{count} belgeleri",
+    "required": "Gerekli",
+    "optional": "İsteğe bağlı",
+    "open": "Açık",
+    "linkedTask": "Bağlantılı görev: {title}",
+    "uploadedBy": "{name} tarafından yüklendi",
+    "unknownUser": "Bilinmeyen kullanıcı",
+    "unknownSize": "Bilinmeyen boyut",
+    "unknownDate": "Bilinmeyen tarih",
+    "rejectionReason": "Reddetme nedeni",
+    "rejectedByAdmin": "Yönetici tarafından reddedildi",
+    "approvalStatuses": {
+      "approved": "Onaylı",
+      "rejected": "Reddedilmiş",
+      "pending": "Askıda olması"
+    },
+    "requirements": {
+      "commercialInvoice": "Ticari fatura",
+      "packingList": "Paket listesi",
+      "billOfLading": "Konşimento",
+      "insuranceCertificate": "Sigorta Sertifikası"
+    },
+    "fileSize": {
+      "bytes": "{size} B",
+      "kilobytes": "{size} KB",
+      "megabytes": "{size} MB"
+    },
+    "emptyState": {
+      "title": "Henüz belge yüklenmedi",
+      "description": "Proje görevlerine yüklenen belgeler burada görünecektir."
+    }
+  },
+  "approveDocumentButtons": {
+    "approve": "✓ Onayla",
+    "approving": "Onaylanıyor...",
+    "reject": "✕ Reddet",
+    "rejecting": "Reddediliyor...",
+    "updateError": "Doküman güncellenemedi.",
+    "networkError": "Belge güncellenirken bir ağ hatası oluştu."
+  },
+  "addProjectMessageForm": {
+    "label": "Proje mesajı",
+    "placeholder": "Bir proje mesajı yazın...",
+    "send": "Mesaj Gönder",
+    "sending": "Gönderiliyor...",
+    "shortcutHint": "Göndermek için Ctrl veya Command + Enter tuşlarına basın.",
+    "sendError": "Mesaj gönderilemedi.",
+    "networkError": "Mesaj gönderilirken bir ağ hatası oluştu.",
+    "invalidResponse": "Mesaj gönderildi ancak sunucunun yanıtı geçersizdi."
+  },
+  "projectMessaging": {
+    "title": "Proje Mesajlaşması",
+    "description": "Müşteri, sağlayıcı ve proje ekibi arasındaki iç iletişim.",
+    "conversationCount": "{count} konuşmaları",
+    "messageCount": "{count} mesajları",
+    "defaultConversationTitle": "Proje Konuşması",
+    "conversationListLabel": "Proje konuşmaları",
+    "noMessages": "Bu görüşmede henüz mesaj gönderilmedi.",
+    "unknownSender": "Bilinmeyen gönderen",
+    "unknownDate": "Bilinmeyen tarih",
+    "you": "Sen",
+    "emptyState": {
+      "title": "Henüz konuşma yok",
+      "description": "Proje görüşmesini başlatmak için ilk mesajı gönderin."
+    }
+  },
+  "projectActivitySection": {
+    "details": {
+      "taskStatusUpdated": "Görev \"{title}\" durumu {status} olarak değiştirildi.",
+      "documentUploaded": "{file} dosyası yüklendi."
+    },
+    "title": "Son Etkinlikler",
+    "emptyState": "Henüz hiçbir aktivite kaydedilmedi.",
+    "unknownDate": "Bilinmeyen tarih",
+    "actions": {
+      "project_created": "Proje oluşturuldu",
+      "project_updated": "Proje güncellendi",
+      "task_created": "Görev oluşturuldu",
+      "task_updated": "Görev güncellendi",
+      "task_assigned": "Görev atandı",
+      "task_completed": "Görev tamamlandı",
+      "task_status_updated": "Görev durumu güncellendi",
+      "project_task_status_updated": "Proje görev durumu güncellendi",
+      "comment_added": "Yorum eklendi",
+      "document_uploaded": "Doküman yüklendi",
+      "document_approved": "Belge onaylandı",
+      "document_rejected": "Belge reddedildi",
+      "message_sent": "Mesaj gönderildi"
+    },
+    "statuses": {
+      "todo": "Yapılacaklar",
+      "in_progress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "completed": "Tamamlanmış"
+    }
+  },
+  "projectListProgress": {
+    "progress": "İlerlemek",
+    "progressLabel": "Proje görevi ilerlemesi",
+    "summary": "{total} görevden {completed} tanesi tamamlandı"
+  },
+  "projectPrintButton": {
+    "button": "PDF'yi Dışa Aktar / Yazdır",
+    "tooltip": "Bu sayfayı yazdırın veya PDF olarak kaydedin",
+    "ariaLabel": "Projeyi PDF olarak dışa aktarın veya yazdırın"
+  },
+  "projectProgressCard": {
+    "title": "Proje İlerlemesi",
+    "progressLabel": "Proje ilerlemesi",
+    "summary": "{total} görevden {completed} tanesi tamamlandı"
+  },
+  "projectTasksExportButton": {
+    "button": "Excel'e aktar",
+    "ariaLabel": "Proje görevlerini Excel uyumlu bir CSV dosyası olarak dışa aktarın",
+    "tooltip": "Proje görevlerini Excel ile uyumlu bir CSV dosyası olarak indirin",
+    "emptyTooltip": "Dışa aktarılacak görev yok",
+    "unknown": "Bilinmiyor",
+    "unknownDate": "Bilinmeyen tarih",
+    "headers": {
+      "id": "İD",
+      "title": "Başlık",
+      "status": "Durum",
+      "priority": "Öncelik",
+      "progress": "İlerlemek",
+      "startDate": "Başlangıç ​​Tarihi",
+      "dueDate": "Bitiş tarihi",
+      "estimatedHours": "Tahmini Saatler",
+      "loggedHours": "Kayıtlı Saatler",
+      "assignedTo": "Atanan Kişi",
+      "assignedEmail": "Atanan E-posta",
+      "dependsOn": "bağlıdır",
+      "dependencyStatus": "Bağımlılık Durumu"
+    },
+    "statuses": {
+      "todo": "Yapılacaklar",
+      "inProgress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "completed": "Tamamlanmış"
+    },
+    "priorities": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek",
+      "urgent": "Acil"
+    }
+  },
+  "statusBadge": {
+    "todo": "Yapılacaklar",
+    "pending": "Askıda olması",
+    "open": "Açık",
+    "in_progress": "Devam etmekte",
+    "review": "Gözden geçirmek",
+    "completed": "Tamamlanmış",
+    "closed": "Kapalı",
+    "approved": "Onaylı",
+    "rejected": "Reddedilmiş",
+    "active": "Aktif",
+    "expired": "Günü geçmiş",
+    "cancelled": "İptal edildi"
+  },
+  "casesPage": {
+    "adminTitle": "Tüm Ticari Vakalar",
+    "userTitle": "Vakalarım",
+    "description": "Gönderilen ticari hizmet taleplerinizi takip edin.",
+    "newCase": "Yeni Vaka",
+    "emptyState": "Hiçbir vaka bulunamadı.",
+    "unknownDate": "Bilinmeyen tarih",
+    "caseNumber": "Vaka #{id}",
+    "timeline": "Zaman çizelgesi",
+    "steps": "{completed} / {total} adım",
+    "winningProposal": "Kazanan Teklif",
+    "proposalNumber": "#{id}",
+    "notSelected": "Seçilmedi",
+    "created": "Oluşturuldu",
+    "updated": "Güncellendi",
+    "viewCase": "Vakayı Görüntüle",
+    "stats": {
+      "total": "Toplam Vakalar",
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış",
+      "cancelled": "İptal edildi"
+    },
+    "counts": {
+      "proposals": "{count} teklifleri",
+      "documents": "{count} belgeleri",
+      "messages": "{count} mesajları"
+    }
+  },
+  "openCasesPage": {
+    "title": "Açık Vakalar",
+    "adminDescription": "Tüm açık ticaret davaları.",
+    "userDescription": "Şirket kategorilerinizle eşleşen vakalar.",
+    "myProposals": "Tekliflerim",
+    "categoryLabel": "Kategori:",
+    "allCategories": "Tüm",
+    "unknownDate": "Bilinmeyen tarih",
+    "requestedBy": "Talep eden:",
+    "created": "Oluşturulan: {date}",
+    "viewCase": "Vakayı Görüntüle",
+    "categories": {
+      "general": "Genel",
+      "customsClearance": "Gümrük işlemleri",
+      "shipping": "Nakliye",
+      "inspection": "Denetleme",
+      "insurance": "Sigorta",
+      "sourcing": "Kaynak bulma",
+      "documentation": "Dokümantasyon",
+      "payment": "Ödeme"
+    },
+    "sort": {
+      "label": "Göre sırala:",
+      "newest": "En yeni",
+      "oldest": "En eski"
+    },
+    "stats": {
+      "matchingCases": "Eşleşen Vakalar",
+      "matchingCategories": "Eşleşen Kategoriler",
+      "highCompetition": "Yüksek Rekabet",
+      "myOpenProposals": "Açık Tekliflerim",
+      "savedMatching": "Kaydedilen Eşleştirme"
+    },
+    "badges": {
+      "saved": "★ Kaydedildi",
+      "applied": "Uygulandı",
+      "highCompetition": "Yüksek Rekabet"
+    },
+    "metrics": {
+      "proposals": "Teklifler",
+      "documents": "Belgeler",
+      "messages": "Mesajlar"
+    },
+    "noCategories": {
+      "title": "Hiçbir şirket kategorisi bulunamadı",
+      "description": "Dasres'nin açık servis taleplerini hizmet kategorinizle eşleştirebilmesi için önce bir şirket profili ekleyin.",
+      "addCompany": "Şirket Ekle"
+    },
+    "emptyState": {
+      "title": "Eşleşen Vaka Bulunamadı",
+      "adminDescription": "Şu anda açık ticaret davası bulunmamaktadır.",
+      "userDescription": "Şu anda şirket kategorilerinizle eşleşen açık vaka yok. Daha sonra tekrar deneyin veya şirket hizmetlerinizi genişletin.",
+      "manageCompanies": "Şirketleri Yönet"
+    }
+  },
+  "caseDetailPage": {
+    "backToCases": "Vakalara Geri Dön",
+    "caseNumber": "Vaka #{id}",
+    "unknownDate": "Bilinmeyen tarih",
+    "unknown": "Bilinmiyor",
+    "unknownUser": "Bilinmeyen kullanıcı",
+    "unknownCountry": "Bilinmeyen ülke",
+    "notAssigned": "Atanmadı",
+    "notSelected": "Seçilmedi",
+    "notAvailable": "N/A",
+    "you": "Sen",
+    "system": "Sistem",
+    "customer": "Müşteri",
+    "winningCompany": "Kazanan Şirket",
+    "winningExpert": "Kazanan Uzman",
+    "progress": "İlerlemek",
+    "timeline": "Vaka Zaman Çizelgesi",
+    "workflowProgress": "İş Akışı İlerlemesi",
+    "percentComplete": "{percent}% Tamamlandı",
+    "stepsSummary": "{total} adımdan {completed} tanesi tamamlandı",
+    "caseInformation": "Vaka Bilgileri",
+    "status": "Durum",
+    "category": "Kategori",
+    "created": "Oluşturuldu",
+    "updated": "Son Güncelleme",
+    "viewCompany": "Şirketi Görüntüle",
+    "viewExpert": "Uzmanı Görüntüle",
+    "verified": "Doğrulandı",
+    "metrics": {
+      "proposals": "Teklifler",
+      "messages": "Mesajlar",
+      "documents": "Belgeler",
+      "activities": "Faaliyetler"
+    },
+    "timelineStep": {
+      "completed": "✓ Adım tamamlandı",
+      "pending": "Tamamlanmayı bekliyorum"
+    },
+    "timelineEmpty": {
+      "title": "Zaman çizelgesi adımı yok",
+      "description": "İş akışı adımları burada görünecektir."
+    },
+    "proposals": {
+      "title": "Teklifler",
+      "winnerSelected": "Kazanan bir teklif zaten seçildi.",
+      "closed": "Bu dava zaten devam ediyor. Yeni teklifler kapalı.",
+      "ownCase": "Kendi durumunuz için teklif sunamazsınız.",
+      "noMatchingCompany": "Bu vaka kategorisi için eşleşen bir şirketiniz yok.",
+      "providerProposal": "Sağlayıcı Teklifi",
+      "unknownCompany": "Bilinmeyen Şirket",
+      "expertName": "Uzman: {name}",
+      "noExpert": "Uzman atanmadı",
+      "price": "Fiyat",
+      "noPrice": "Fiyat yok",
+      "company": "Şirket",
+      "expert": "Uzman",
+      "message": "Teklif Mesajı",
+      "noMessage": "Mesaj verilmedi.",
+      "status": {
+        "accepted": "✓ Kabul edildi",
+        "rejected": "Reddedilmiş",
+        "pending": "Askıda olması"
+      },
+      "empty": {
+        "title": "Henüz teklif yok",
+        "description": "Eşleşen firmalar bu dava açıkken teklif verebilirler."
+      }
+    },
+    "messages": {
+      "title": "Mesajlar",
+      "empty": {
+        "title": "Henüz mesaj yok",
+        "description": "Dava devam ettiğinde mesajlar burada görünecek."
+      }
+    },
+    "documents": {
+      "title": "Belgeler",
+      "uploadedBy": "{name} tarafından yüklendi",
+      "download": "İndirmek",
+      "empty": {
+        "title": "Henüz belge yok",
+        "description": "Yüklenen ticari belgeler burada saklanacaktır."
+      }
+    },
+    "recommendedCompanies": {
+      "title": "Önerilen Şirketler",
+      "empty": "Doğrulanmış eşleşen şirket bulunamadı."
+    },
+    "assignedProvider": {
+      "title": "Atanan Sağlayıcı",
+      "winningProposal": "Kazanan Teklif",
+      "proposalSummary": "#{id} - {price}",
+      "proposalValue": "Teklif Değeri",
+      "assignedAt": "Atanma Tarihi",
+      "empty": {
+        "title": "Henüz sağlayıcı atanmadı",
+        "description": "Müşteri bir teklifi kabul ettiğinde, seçilen şirket veya uzman burada atanmış sağlayıcı olarak görünecektir."
+      }
+    },
+    "activity": {
+      "title": "Vaka Etkinliği ({count})",
+      "meta": "{actor} · {date}",
+      "actions": {
+        "proposalSubmitted": "Teklif Gönderildi",
+        "proposalAccepted": "Teklif Kabul Edildi",
+        "proposalRejected": "Teklif Reddedildi",
+        "messageSent": "Mesaj Gönderildi",
+        "documentUploaded": "Doküman Yüklendi",
+        "caseCompleted": "Vaka Tamamlandı",
+        "reviewSubmitted": "İnceleme Gönderildi"
+      },
+      "empty": {
+        "title": "Henüz etkinlik yok",
+        "description": "Vaka etkinlikleri, teklifler, mesajlar ve belge eylemleri burada görünecektir."
+      }
+    },
+    "reviews": {
+      "title": "Yorumlar",
+      "reviewProvider": "Kabul edilen sağlayıcıyı inceleyin",
+      "reviewCustomer": "Müşteriyi inceleyin",
+      "alreadySubmitted": "İncelemeniz zaten gönderildi.",
+      "permission": "Bu durum için yalnızca müşteri ve kabul edilen sağlayıcı inceleme gönderebilir."
+    },
+    "errors": {
+      "accessDenied": {
+        "title": "Erişim engellendi",
+        "description": "Bu ticari yazışmayı görüntüleme izniniz yok.",
+        "back": "Açık Vakalara Geri Dön"
+      }
+    }
+  },
+  "tickets": {
+    "form": {
+      "subject": "Ders",
+      "category": "Kategori",
+      "message": "Mesaj",
+      "subjectPlaceholder": "Ders",
+      "messagePlaceholder": "Sorununuzu açıklayın...",
+      "create": "Bilet Oluştur",
+      "creating": "Oluşturuluyor...",
+      "categories": {
+        "general": "Genel",
+        "technical": "Teknik",
+        "verification": "Doğrulama",
+        "billing": "Faturalandırma",
+        "dispute": "Anlaşmazlık"
+      },
+      "errors": {
+        "createFailed": "Bilet oluşturulamadı."
+      }
+    },
+    "new": {
+      "title": "Yeni Bilet",
+      "description": "Doğrulama, faturalandırma, teknik sorunlar veya genel sorular için Dasres destek ekibiyle iletişime geçin."
+    },
+    "list": {
+      "title": "Biletler",
+      "description": "Destek taleplerini, vaka sorunlarını ve platform yardımını yönetin.",
+      "newTicket": "Yeni Bilet",
+      "allTickets": "Tüm Biletler",
+      "myTickets": "Biletlerim",
+      "empty": "Bilet bulunamadı.",
+      "created": "Oluşturuldu",
+      "createdBy": "Oluşturan: {name}",
+      "ticketsFound": "{count, plural, =0 {Bilet bulunamadı} =1 {1 bilet bulundu} other {# bilet bulundu}}",
+      "statuses": {
+        "open": "Açık",
+        "inProgress": "Devam etmekte",
+        "reopened": "Yeniden açıldı",
+        "closed": "Kapalı"
+      }
+    },
+    "detail": {
+      "backToTickets": "← Biletler'e geri dön",
+      "ticketNumber": "Bilet #{id}",
+      "createdBy": "Oluşturan",
+      "createdAt": "Oluşturulma Tarihi",
+      "messages": "Mesajlar",
+      "lastUpdate": "Son Güncelleme",
+      "conversation": "Konuşma",
+      "messageCount": "{count, plural, =0 {Mesaj yok} =1 {1 mesaj} other {# mesajlar}}",
+      "noMessages": "Henüz mesaj yok.",
+      "closedNotice": "Bu bilet kapalı.",
+      "statuses": {
+        "open": "Açık",
+        "inProgress": "Devam etmekte",
+        "closed": "Kapalı",
+        "reopened": "Yeniden açıldı"
+      },
+      "categories": {
+        "general": "Genel",
+        "technical": "Teknik",
+        "verification": "Doğrulama",
+        "billing": "Faturalandırma",
+        "dispute": "Anlaşmazlık"
+      },
+      "timeline": {
+        "title": "Bilet Zaman Çizelgesi",
+        "created": "Bilet Oluşturuldu",
+        "firstMessage": "İlk Mesaj",
+        "latestReply": "Son Yanıt",
+        "closed": "Bilet Kapatıldı",
+        "closedDescription": "Mevcut durum kapalı.",
+        "reopened": "Bilet Yeniden Açıldı",
+        "reopenedDescription": "Bu bilete yine dikkat edilmesi gerekiyor."
+      },
+      "rules": {
+        "title": "Destek Kuralları",
+        "focused": "Yanıtları odaklanmış ve profesyonel tutun.",
+        "caseDetails": "Gerektiğinde vaka ayrıntılarını ekleyin.",
+        "closedReplies": "Kapalı biletlere yanıt alınamaz.",
+        "adminReopen": "Yöneticiler kapatılan biletleri yeniden açabilir."
+      },
+      "errors": {
+        "invalidId": "Geçersiz Bilet Kimliği",
+        "notFound": "Bilet Bulunamadı",
+        "accessDenied": "Erişim engellendi"
+      }
+    },
+    "replyForm": {
+      "messageLabel": "Cevap vermek",
+      "placeholder": "Bir cevap yazın...",
+      "send": "Yanıt Gönder",
+      "sending": "Gönderiliyor...",
+      "errors": {
+        "messageRequired": "Yanıt mesajı gerekli.",
+        "sendFailed": "Yanıt gönderilemedi."
+      }
+    },
+    "closeButton": {
+      "confirm": "Bu bileti kapatmak istediğinizden emin misiniz?",
+      "close": "Bileti Kapat",
+      "closing": "Kapanıyor...",
+      "errors": {
+        "closeFailed": "Bilet kapatılamadı."
+      }
+    },
+    "reopenButton": {
+      "reopen": "Bileti Yeniden Aç",
+      "reopening": "Yeniden açılıyor...",
+      "errors": {
+        "reopenFailed": "Bilet yeniden açılamadı."
+      }
+    }
+  },
+  "notifications": {
+    "markAllRead": {
+      "markAll": "Tümünü okundu olarak işaretle",
+      "updating": "Güncelleniyor...",
+      "errors": {
+        "updateFailed": "Bildirimler güncellenemedi."
+      }
+    },
+    "list": {
+      "title": "Bildirimler",
+      "description": "Vakalar, teklifler, mesajlar, belgeler ve sistem uyarılarına ilişkin güncellemeleri takip edin.",
+      "total": "Toplam Bildirimler",
+      "unread": "Okunmamış",
+      "read": "Okumak",
+      "centerTitle": "Bildirim Merkezi",
+      "centerDescription": "Vakalara, mesajlara, belgelere ve sistem uyarılarına ilişkin güncellemeleri yönetin.",
+      "empty": "Henüz bildirim yok.",
+      "open": "Görüntüle →",
+      "types": {
+        "proposal": "Teklif",
+        "accepted": "Kabul edildi",
+        "rejected": "Reddedilmiş",
+        "message": "Mesaj",
+        "document": "Belge",
+        "approved": "Onaylı",
+        "assigned": "Atandı",
+        "completed": "Tamamlanmış",
+        "comment": "Yorum",
+        "ticket": "Bilet",
+        "deadline": "Son teslim tarihi",
+        "projectDone": "Proje Tamamlandı",
+        "system": "Sistem"
+      },
+      "messages": {
+        "ticketCreated": "{user} yeni bir destek talebi oluşturdu: {subject}",
+        "ticketReply": "{user} destek talebine yanıt verdi: {subject}",
+        "proposalReceived": "Yeni bir teklif alındı.",
+        "projectCompleted": "Proje tamamlandı."
+      }
+    }
+  },
+  "adminUsers": {
+    "deleteUser": {
+      "button": "Silmek",
+      "deleting": "Siliniyor...",
+      "confirm": "Bu kullanıcıyı silmek istediğinizden emin misiniz?",
+      "errors": {
+        "deleteFailed": "Kullanıcı silinemedi."
+      }
+    },
+    "makeAdmin": {
+      "button": "Yönetici Yap",
+      "making": "Güncelleniyor...",
+      "confirm": "Bu kullanıcıyı yönetici yapmak istediğinizden emin misiniz?",
+      "errors": {
+        "makeAdminFailed": "Kullanıcının rolü güncellenemedi."
+      }
+    },
+    "changePlan": {
+      "label": "Planı değiştir",
+      "plans": {
+        "free": "ÖZGÜR",
+        "gold": "ALTIN",
+        "diamond": "ELMAS",
+        "enterprise": "GİRİŞİM"
+      },
+      "errors": {
+        "updateFailed": "Plan güncellenemedi."
+      }
+    },
+    "list": {
+      "title": "Kullanıcı Yönetimi",
+      "description": "Kullanıcı rollerini, planlarını ve hesap erişimini yönetin.",
+      "accountsTitle": "Kullanıcı Hesapları",
+      "accountsRegistered": "{count, plural, =0 {Kayıtlı hesap yok} =1 {1 hesap kayıtlı} other {# hesap kayıtlı}}",
+      "unnamedUser": "Adsız Kullanıcı",
+      "stats": {
+        "totalUsers": "Toplam Kullanıcı Sayısı",
+        "admins": "Yöneticiler",
+        "users": "Kullanıcılar",
+        "paidPlans": "Ücretli Planlar"
+      },
+      "roles": {
+        "admin": "Yönetici",
+        "user": "Kullanıcı"
+      },
+      "plans": {
+        "free": "ÖZGÜR",
+        "gold": "ALTIN",
+        "diamond": "ELMAS",
+        "enterprise": "GİRİŞİM"
+      },
+      "table": {
+        "id": "İD",
+        "user": "Kullanıcı",
+        "role": "Rol",
+        "currentPlan": "Mevcut Plan",
+        "changePlan": "Planı Değiştir",
+        "created": "Oluşturuldu",
+        "actions": "Eylemler"
+      }
+    }
+  },
+  "expertReviews": {
+    "form": {
+      "title": "Bu uzmana puan verin",
+      "ratingLabel": "Derecelendirme",
+      "commentLabel": "Gözden geçirmek",
+      "placeholder": "Yorumunuzu yazın...",
+      "submit": "İncelemeyi Gönder",
+      "submitting": "Gönderiliyor...",
+      "ratings": {
+        "1": "1 - Zayıf",
+        "2": "2 - Yetersiz",
+        "3": "3 - İyi",
+        "4": "4 - Çok iyi",
+        "5": "5 - Mükemmel"
+      },
+      "errors": {
+        "submitFailed": "İnceleme gönderilemedi."
+      }
+    }
+  },
+  "companies": {
+    "edit": {
+      "title": "Şirketi Düzenle",
+      "description": "Şirket bilgilerini, ticari kategoriyi ve logoyu güncelleyin.",
+      "loading": "Şirket yükleniyor...",
+      "currentLogo": "Güncel Logo",
+      "currentLogoAlt": "Mevcut şirket logosu",
+      "update": "Şirketi Güncelle",
+      "updating": "Güncelleniyor...",
+      "fields": {
+        "name": {
+          "label": "Firma Adı",
+          "placeholder": "Firma Adı"
+        },
+        "country": {
+          "label": "Ülke",
+          "placeholder": "Ülke"
+        },
+        "category": {
+          "label": "Ticaret Kategorisi"
+        },
+        "description": {
+          "label": "Tanım",
+          "placeholder": "Tanım"
+        },
+        "email": {
+          "label": "E-posta",
+          "placeholder": "E-posta"
+        },
+        "website": {
+          "label": "Web sitesi",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "Logoyu Değiştir",
+          "help": "Mevcut logoyu korumak için boş bırakın. Desteklenen formatlar: JPG, PNG ve WEBP."
+        }
+      },
+      "categories": {
+        "general": "Genel",
+        "customsClearance": "Gümrük işlemleri",
+        "shipping": "Nakliye",
+        "inspection": "Denetleme",
+        "insurance": "Sigorta",
+        "sourcing": "Kaynak bulma",
+        "documentation": "Dokümantasyon",
+        "payment": "Ödeme"
+      },
+      "errors": {
+        "loadFailed": "Şirket yüklenirken hata oluştu.",
+        "updateFailed": "Şirket güncellenirken hata oluştu.",
+        "networkError": "Bir şeyler ters gitti."
+      }
+    },
+    "new": {
+      "title": "Şirket Ekle",
+      "description": "Bir şirket profili oluşturun ve bunu Dasres ticaret ağına ekleyin.",
+      "create": "Şirket Oluştur",
+      "creating": "Oluşturuluyor...",
+      "success": "Şirket başarıyla oluşturuldu.",
+      "fields": {
+        "name": {
+          "label": "Firma Adı",
+          "placeholder": "Firma Adı"
+        },
+        "country": {
+          "label": "Ülke",
+          "placeholder": "Ülke"
+        },
+        "category": {
+          "label": "Ticaret Kategorisi"
+        },
+        "description": {
+          "label": "Tanım",
+          "placeholder": "Tanım"
+        },
+        "email": {
+          "label": "E-posta",
+          "placeholder": "E-posta"
+        },
+        "website": {
+          "label": "Web sitesi",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "Şirket logosu",
+          "help": "Desteklenen formatlar: JPG, PNG ve WEBP."
+        }
+      },
+      "categories": {
+        "general": "Genel",
+        "customsClearance": "Gümrük işlemleri",
+        "shipping": "Nakliye",
+        "inspection": "Denetleme",
+        "insurance": "Sigorta",
+        "sourcing": "Kaynak bulma",
+        "documentation": "Dokümantasyon",
+        "payment": "Ödeme"
+      },
+      "errors": {
+        "createFailed": "Şirket oluşturulurken hata oluştu.",
+        "networkError": "Bir şeyler ters gitti."
+      }
+    },
+    "deleteButton": {
+      "button": "Şirketi Sil",
+      "deleting": "Siliniyor...",
+      "confirm": "Bu şirketi silmek istediğinizden emin misiniz?",
+      "errors": {
+        "deleteFailed": "Şirket silinemedi."
+      }
+    },
+    "search": {
+      "searchLabel": "Şirketleri arayın",
+      "searchPlaceholder": "🔍Şirketleri arayın...",
+      "countryLabel": "Ülke",
+      "ratingFilterLabel": "Derecelendirme filtresi",
+      "allCountries": "Tüm Ülkeler",
+      "allRatings": "Tüm Derecelendirmeler",
+      "fiveStars": "5 yıldız",
+      "fourPlusStars": "4 veya daha fazla yıldız",
+      "verifiedOnly": "Yalnızca Doğrulandı",
+      "viewProfile": "Profili Görüntüle →",
+      "available": "Mevcut",
+      "noRating": "Henüz derecelendirme yok",
+      "notAvailable": "N/A",
+      "empty": "Seçilen filtrelerle eşleşen şirket yok.",
+      "reviewCount": "{count, plural, =1 {1 inceleme} other {# yorum}}",
+      "featured": {
+        "title": "Öne Çıkan Şirketler",
+        "description": "Dasres'de daha yüksek görünürlüğe sahip birinci sınıf ticaret şirketleri."
+      },
+      "verification": {
+        "verified": "Doğrulandı",
+        "rejected": "Reddedilmiş",
+        "pending": "Askıda olması"
+      },
+      "plans": {
+        "gold": "ALTIN",
+        "diamond": "ELMAS",
+        "enterprise": "GİRİŞİM"
+      },
+      "metrics": {
+        "trust": "Güven",
+        "rating": "Derecelendirme",
+        "reviews": "Yorumlar"
+      }
+    }
+  },
+  "experts": {
+    "edit": {
+      "title": "Uzmanı Düzenle",
+      "description": "Uzman profil bilgilerini ve profil resmini güncelleyin.",
+      "loading": "Uzman yükleniyor...",
+      "currentImage": "Mevcut Profil Resmi",
+      "currentImageAlt": "Güncel uzman resmi",
+      "update": "Güncelleme Uzmanı",
+      "updating": "Güncelleniyor...",
+      "fields": {
+        "name": {
+          "label": "İsim",
+          "placeholder": "Ad Soyad"
+        },
+        "country": {
+          "label": "Ülke",
+          "placeholder": "Ülke"
+        },
+        "specialty": {
+          "label": "Uzmanlık",
+          "placeholder": "Ticaret uzmanlığı"
+        },
+        "experience": {
+          "label": "Deneyim",
+          "placeholder": "Mesleki deneyimi anlatın"
+        },
+        "email": {
+          "label": "E-posta",
+          "placeholder": "E-posta"
+        },
+        "image": {
+          "label": "Resmi Değiştir",
+          "help": "Geçerli görüntüyü korumak için boş bırakın. Desteklenen formatlar: JPG, PNG ve WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "Uzman yüklenirken hata oluştu.",
+        "updateFailed": "Uzman güncellenirken hata oluştu.",
+        "networkError": "Bir şeyler ters gitti."
+      }
+    },
+    "new": {
+      "title": "Uzman Ekle",
+      "description": "Bir uzman profili oluşturun ve bunu Dasres ticaret ağına ekleyin.",
+      "create": "Uzman Oluştur",
+      "creating": "Oluşturuluyor...",
+      "success": "Uzman başarıyla oluşturuldu.",
+      "fields": {
+        "name": {
+          "label": "İsim",
+          "placeholder": "Ad Soyad"
+        },
+        "country": {
+          "label": "Ülke",
+          "placeholder": "Ülke"
+        },
+        "specialty": {
+          "label": "Uzmanlık",
+          "placeholder": "Ticaret uzmanlığı"
+        },
+        "experience": {
+          "label": "Deneyim",
+          "placeholder": "Mesleki deneyimi anlatın"
+        },
+        "email": {
+          "label": "E-posta",
+          "placeholder": "E-posta"
+        },
+        "image": {
+          "label": "Profil Resmi",
+          "help": "Desteklenen formatlar: JPG, PNG ve WEBP."
+        }
+      },
+      "errors": {
+        "createFailed": "Uzman oluşturulurken hata oluştu.",
+        "networkError": "Bir şeyler ters gitti."
+      }
+    },
+    "search": {
+      "searchLabel": "Arama uzmanları",
+      "searchPlaceholder": "🔍Arama uzmanları...",
+      "countryLabel": "Ülke",
+      "ratingFilterLabel": "Derecelendirme filtresi",
+      "allCountries": "Tüm Ülkeler",
+      "allRatings": "Tüm Derecelendirmeler",
+      "fiveStars": "5 yıldız",
+      "fourPlusStars": "4 veya daha fazla yıldız",
+      "verifiedOnly": "Yalnızca Doğrulandı",
+      "viewProfile": "Profili Görüntüle →",
+      "available": "Mevcut",
+      "noRating": "Henüz derecelendirme yok",
+      "notAvailable": "N/A",
+      "empty": "Seçilen filtrelerle eşleşen uzman yok.",
+      "reviewCount": "{count, plural, =1 {1 inceleme} other {# yorum}}",
+      "featured": {
+        "title": "Öne Çıkan Uzmanlar",
+        "description": "Dasres'de daha yüksek görünürlüğe sahip birinci sınıf uzmanlar."
+      },
+      "verification": {
+        "verified": "Doğrulandı",
+        "rejected": "Reddedilmiş",
+        "pending": "Askıda olması"
+      },
+      "plans": {
+        "gold": "ALTIN",
+        "diamond": "ELMAS",
+        "enterprise": "GİRİŞİM"
+      },
+      "metrics": {
+        "trust": "Güven",
+        "rating": "Derecelendirme",
+        "reviews": "Yorumlar"
+      }
+    },
+    "deleteButton": {
+      "button": "Uzmanı Sil",
+      "deleting": "Siliniyor...",
+      "confirm": "Bu uzmanı silmek istediğinizden emin misiniz?",
+      "errors": {
+        "deleteFailed": "Uzman silinemedi."
+      }
+    }
+  },
+  "opportunities": {
+    "dashboard": {
+      "title": "Fırsat Yönetimi",
+      "description": "Uluslararası ticaret fırsatlarına göz atın ve yönetin.",
+      "addOpportunity": "Fırsat Ekle",
+      "latestOpportunity": "Son Fırsat",
+      "stats": {
+        "total": "Toplam",
+        "active": "Aktif",
+        "closed": "Kapalı",
+        "countries": "Ülkeler"
+      },
+      "pagination": {
+        "previous": "Öncesi",
+        "next": "Sonraki",
+        "page": "{total}'nin {current} sayfası"
+      }
+    },
+    "new": {
+      "title": "Fırsat Ekle",
+      "description": "Yeni bir ticaret fırsatı yaratın ve bunu Dasres pazarında yayınlayın.",
+      "create": "Fırsat Yaratın",
+      "creating": "Oluşturuluyor...",
+      "success": "Fırsat başarıyla oluşturuldu.",
+      "fields": {
+        "title": {
+          "label": "Başlık",
+          "placeholder": "Fırsat başlığı"
+        },
+        "country": {
+          "label": "Ülke",
+          "placeholder": "Ülke"
+        },
+        "image": {
+          "label": "Fırsat Resmi",
+          "help": "Desteklenen formatlar: JPG, PNG ve WEBP."
+        },
+        "description": {
+          "label": "Tanım",
+          "placeholder": "Ticaret fırsatını açıklayın"
+        }
+      },
+      "errors": {
+        "createFailed": "Fırsat oluşturulurken hata oluştu.",
+        "networkError": "Bir şeyler ters gitti."
+      }
+    },
+    "edit": {
+      "title": "Fırsatı Düzenle",
+      "description": "Fırsat bilgilerini ve görselini güncelleyin.",
+      "loading": "Fırsat yükleniyor...",
+      "currentImage": "Mevcut Fırsat Resmi",
+      "currentImageAlt": "Mevcut fırsat resmi",
+      "update": "Fırsatı Güncelle",
+      "updating": "Güncelleniyor...",
+      "fields": {
+        "title": {
+          "label": "Başlık",
+          "placeholder": "Fırsat başlığı"
+        },
+        "country": {
+          "label": "Ülke",
+          "placeholder": "Ülke"
+        },
+        "description": {
+          "label": "Tanım",
+          "placeholder": "Ticaret fırsatını açıklayın"
+        },
+        "image": {
+          "label": "Resmi Değiştir",
+          "help": "Geçerli görüntüyü korumak için boş bırakın. Desteklenen formatlar: JPG, PNG ve WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "Fırsat yüklenirken hata oluştu.",
+        "updateFailed": "Fırsat güncellenirken hata oluştu.",
+        "networkError": "Bir şeyler ters gitti."
+      }
+    },
+    "search": {
+      "searchLabel": "Arama fırsatları",
+      "searchPlaceholder": "🔍Arama fırsatları...",
+      "countryLabel": "Ülke",
+      "statusLabel": "Durum",
+      "allCountries": "Tüm Ülkeler",
+      "allStatuses": "Tüm Durumlar",
+      "viewOpportunity": "Fırsatı Görüntüle →",
+      "statuses": {
+        "open": "Açık",
+        "inProgress": "Devam etmekte",
+        "closed": "Kapalı"
+      },
+      "featured": {
+        "title": "Öne Çıkan Fırsatlar",
+        "description": "Aktif ticaret fırsatları şu anda işbirliğine açıktır."
+      },
+      "empty": {
+        "title": "Fırsat bulunamadı",
+        "description": "Aramanızı veya filtrelerinizi değiştirmeyi deneyin."
+      }
+    },
+    "deleteButton": {
+      "button": "Fırsatı Sil",
+      "deleting": "Siliniyor...",
+      "confirm": "Bu fırsatı silmek istediğinizden emin misiniz?",
+      "errors": {
+        "deleteFailed": "Fırsat silinemedi."
+      }
+    }
+  },
+  "tradeCases": {
+    "addProposal": {
+      "companyLabel": "Şirket",
+      "expertLabel": "Uzman",
+      "messageLabel": "Teklif mesajı",
+      "priceLabel": "Teklif fiyatı",
+      "selectCompany": "Şirket seçin",
+      "noExpert": "Uzman yok / isteğe bağlı",
+      "messagePlaceholder": "Teklif mesajı yazın...",
+      "pricePlaceholder": "Fiyat ör. 1200 ABD Doları",
+      "submitting": "Gönderiliyor...",
+      "submit": "Teklif Ekle",
+      "errors": {
+        "messageRequired": "Teklif mesajı gerekli.",
+        "companyRequired": "Lütfen bir şirket seçin.",
+        "submitFailed": "Teklif gönderilemedi."
+      }
+    },
+    "proposalActions": {
+      "accept": "Kabul etmek",
+      "reject": "Reddetmek",
+      "accepting": "Kabul ediliyor...",
+      "rejecting": "Reddediliyor...",
+      "errors": {
+        "acceptFailed": "Teklif kabul edilemedi.",
+        "rejectFailed": "Teklif reddedilemedi."
+      }
+    },
+    "addMessage": {
+      "contentLabel": "Mesaj",
+      "placeholder": "Bir mesaj yazın...",
+      "sending": "Gönderiliyor...",
+      "submit": "Mesaj Ekle",
+      "errors": {
+        "contentRequired": "Mesaj içeriği gereklidir.",
+        "submitFailed": "Mesaj gönderilemedi."
+      }
+    },
+    "addDocument": {
+      "fileLabel": "Belgeyi seçin",
+      "uploading": "Yükleniyor...",
+      "submit": "Belgeyi Yükle",
+      "errors": {
+        "fileRequired": "Lütfen bir belge seçin.",
+        "uploadFailed": "Doküman yüklenemedi."
+      }
+    },
+    "completeStep": {
+      "complete": "Tamamlamak",
+      "completing": "Tamamlanıyor...",
+      "errors": {
+        "completeFailed": "Bu adım tamamlanamadı."
+      }
+    },
+    "completeCase": {
+      "confirm": "Bu vakayı tamamlandı olarak işaretlemek istediğinizden emin misiniz?",
+      "complete": "Tamamlandı Olarak İşaretle",
+      "completing": "Tamamlanıyor...",
+      "errors": {
+        "completeFailed": "Vaka tamamlanamadı."
+      }
+    },
+    "addReview": {
+      "ratingLabel": "Derecelendirme",
+      "commentLabel": "Gözden geçirmek",
+      "placeholder": "Yorumunuzu yazın...",
+      "submit": "İncelemeyi Gönder",
+      "submitting": "Gönderiliyor...",
+      "ratings": {
+        "1": "1 - Kötü",
+        "2": "2 - Zayıf",
+        "3": "3 - Orta",
+        "4": "4 - İyi",
+        "5": "5 - Mükemmel"
+      },
+      "errors": {
+        "submitFailed": "İnceleme gönderilemedi."
+      }
+    },
+    "workflow": {
+      "title": "Ticaret İş Akışı",
+      "steps": {
+        "inquiry": "Sorgu",
+        "quotation": "Alıntı yapmak",
+        "negotiation": "Müzakere",
+        "contract": "Sözleşme",
+        "documents": "Belgeler",
+        "customs": "Gümrük",
+        "shipping": "Nakliye",
+        "inspection": "Denetleme",
+        "insurance": "Sigorta",
+        "delivery": "Teslimat",
+        "completed": "Tamamlanmış"
+      }
+    }
+  },
+  "createCaseForm": {
+    "titleLabel": "Vaka Başlığı",
+    "titlePlaceholder": "Dubai'de gümrük iznine ihtiyacınız var",
+    "categoryLabel": "Vaka Kategorisi",
+    "categoryHelp": "Bu, Dasres'nin vakayı ilgili şirketler ve uzmanlarla eşleştirmesine yardımcı olur.",
+    "descriptionLabel": "Tanım",
+    "descriptionPlaceholder": "Gönderiyi, gereken hizmeti, ülkeyi, belgeleri, zaman çizelgesini ve özel gereksinimleri açıklayın...",
+    "create": "Vaka Oluştur",
+    "creating": "Oluşturuluyor...",
+    "categories": {
+      "general": "Genel",
+      "customsClearance": "Gümrük işlemleri",
+      "shipping": "Nakliye",
+      "inspection": "Denetleme",
+      "insurance": "Sigorta",
+      "sourcing": "Kaynak bulma",
+      "documentation": "Dokümantasyon",
+      "payment": "Ödeme"
+    },
+    "backToCases": "← Vakalara geri dön",
+    "pageTitle": "Yeni Ticaret Vakası Oluştur",
+    "pageDescription": "Yeni bir ticari hizmet talebi gönderin. Daha sonra bir sağlayıcı veya uzman atanabilir.",
+    "plans": {
+      "free": "Özgür",
+      "gold": "Altın",
+      "diamond": "Elmas",
+      "enterprise": "Girişim"
+    },
+    "errors": {
+      "planLimit": "{plan} planınız en fazla {limit} aktif ticaret vakasına izin verir. Daha fazla vaka oluşturmak için planınızı yükseltin.",
+      "titleAndDescriptionRequired": "Başlık ve açıklama gereklidir.",
+      "invalidCategory": "Geçersiz vaka kategorisi."
+    }
+  },
+  "dashboardSearch": {
+    "eyebrow": "Küresel Arama",
+    "title": "Dasres'de arayın",
+    "description": "Çalışma alanınızdaki şirketleri, uzmanları, fırsatları ve ticari vakaları bulun.",
+    "searchLabel": "Dasres'de arayın",
+    "searchPlaceholder": "Şirketleri, uzmanları, fırsatları, vakaları arayın...",
+    "searchButton": "Aramak",
+    "initialState": "Dasres genelinde arama yapmak için bir anahtar kelime girin.",
+    "resultsSummary": "{count, plural, =0 {} =1 { için sonuç bulunamadı} other { için1 sonuç bulundu}} için # sonuç bulundu",
+    "sections": {
+      "companies": {
+        "title": "Şirketler",
+        "empty": "Hiçbir şirket bulunamadı."
+      },
+      "experts": {
+        "title": "Uzmanlar",
+        "empty": "Uzman bulunamadı."
+      },
+      "opportunities": {
+        "title": "Fırsatlar",
+        "empty": "Hiçbir fırsat bulunamadı."
+      },
+      "tradeCases": {
+        "title": "Ticaret Vakaları",
+        "empty": "Hiçbir vaka bulunamadı."
+      }
+    },
+    "statuses": {
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış",
+      "closed": "Kapalı",
+      "pending": "Askıda olması",
+      "cancelled": "İptal edildi"
+    }
+  },
+  "companyProfile": {
+    "metadata": {
+      "notFoundTitle": "Şirket Bulunamadı",
+      "notFoundDescription": "İstenilen şirket profili bulunamadı.",
+      "description": "{name}, {country}'nin bir {category} şirketidir. Dasres'deki bu şirket profilini keşfedin."
+    },
+    "notFound": "Şirket Bulunamadı",
+    "backToCompanies": "← Şirketlere geri dön",
+    "statusLabel": "Durum",
+    "notAvailable": "N/A",
+    "notProvided": "Sağlanmadı",
+    "companyRating": "Şirket Derecelendirmesi",
+    "companyDescription": "Şirket Tanımı",
+    "recentReviews": "Son İncelemeler",
+    "companyInformation": "Şirket Bilgileri",
+    "noReviews": "Henüz yorum yok.",
+    "noCommentProvided": "Yorum yapılmadı.",
+    "basedOnReviews": "{count, plural, =1 {1 yoruma göre} other {# yoruma göre}}",
+    "trustScoreValue": "Güven Puanı: {score}/100",
+    "completedCasesValue": "Tamamlanan Vakalar: {count}",
+    "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {1 değerlendirme} other {# değerlendirme}})",
+    "sendEmail": "E-posta Gönder",
+    "visitWebsite": "Web Sitesini Ziyaret Edin",
+    "verificationStatus": "Doğrulama Durumu",
+    "editCompany": "Şirketi Düzenle",
+    "metrics": {
+      "trustScore": "Güven Puanı",
+      "rating": "Derecelendirme",
+      "reviews": "Yorumlar",
+      "verification": "Doğrulama",
+      "country": "Ülke"
+    },
+    "fields": {
+      "email": "E-posta",
+      "website": "Web sitesi",
+      "country": "Ülke",
+      "category": "Kategori",
+      "reputation": "İtibar"
+    },
+    "verificationBadges": {
+      "verified": "Doğrulanmış Şirket",
+      "rejected": "Reddedilmiş",
+      "pending": "Doğrulama Bekleniyor"
+    },
+    "verificationStatuses": {
+      "verified": "Doğrulandı",
+      "rejected": "Reddedilmiş",
+      "pending": "Askıda olması"
+    },
+    "plans": {
+      "gold": "ALTIN",
+      "diamond": "ELMAS",
+      "enterprise": "GİRİŞİM"
+    },
+    "statuses": {
+      "active": "Aktif",
+      "inactive": "Etkin değil",
+      "open": "Açık",
+      "pending": "Askıda olması",
+      "verified": "Doğrulandı",
+      "rejected": "Reddedilmiş",
+      "completed": "Tamamlanmış",
+      "inProgress": "Devam etmekte"
+    },
+    "schema": {
+      "status": "Durum",
+      "category": "Kategori"
+    }
+  },
+  "dashboardCompanies": {
+    "title": "Şirket Yönetimi",
+    "description": "Uluslararası ticaret şirketlerini yönetin ve bunlara göz atın.",
+    "addCompany": "Şirket Ekle",
+    "stats": {
+      "total": "Toplam",
+      "verified": "Doğrulandı",
+      "pending": "Askıda olması",
+      "rejected": "Reddedilmiş",
+      "premium": "prim"
+    },
+    "pagination": {
+      "previous": "Öncesi",
+      "next": "Sonraki",
+      "page": "{total}'nin {current} sayfası"
+    }
+  },
+  "dashboardExperts": {
+    "title": "Uzman Yönetimi",
+    "description": "Uluslararası ticaret uzmanlarını yönetin ve bunlara göz atın.",
+    "addExpert": "Uzman Ekle",
+    "stats": {
+      "total": "Toplam",
+      "verified": "Doğrulandı",
+      "pending": "Askıda olması",
+      "rejected": "Reddedilmiş",
+      "premium": "prim"
+    },
+    "pagination": {
+      "previous": "Öncesi",
+      "next": "Sonraki",
+      "page": "{total}'nin {current} sayfası"
+    }
+  },
+  "dashboardMyCases": {
+    "title": "Aktif Vakalarım",
+    "description": "Şirket teklifinizin kabul edildiği durumlar.",
+    "notAvailable": "N/A",
+    "notAssigned": "Atanmadı",
+    "caseNumber": "Vaka #{id}",
+    "documentCount": "{count, plural, =1 {1 Belge} other {# Belgeler}}",
+    "messageCount": "{count, plural, =1 {1 Mesaj} other {# Mesajlar}}",
+    "stepsCompleted": "{completed} / {total} adımları tamamlandı",
+    "updated": "{date} güncellendi",
+    "viewCase": "Vakayı Görüntüle →",
+    "stats": {
+      "assignedCases": "Atanan Vakalar",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış",
+      "workload": "İş yükü",
+      "workloadDescription": "Mesajlar + Belgeler"
+    },
+    "empty": {
+      "title": "Henüz Aktif Vaka Yok",
+      "description": "Şirket tekliflerinizden biri kabul edildiğinde, atanan ticaret durumu burada görünecektir.",
+      "browseOpenCases": "Açık Vakalara Göz Atın"
+    },
+    "fields": {
+      "acceptedCompany": "Kabul Edilen Şirket",
+      "assignedExpert": "Atanan Uzman",
+      "proposalPrice": "Teklif Fiyatı",
+      "timelineProgress": "Zaman Çizelgesi İlerlemesi"
+    },
+    "statuses": {
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış",
+      "cancelled": "İptal edildi"
+    }
+  },
+  "dashboardMyCompanies": {
+    "title": "Şirketlerim",
+    "description": "Sahip olduğunuz şirket profillerini, doğrulama durumlarını ve görünürlük düzeylerini yönetin.",
+    "addCompany": "Şirket Ekle",
+    "created": "{date} tarihinde oluşturuldu",
+    "viewCompany": "Şirketi Görüntüle →",
+    "categories": {
+      "general": "Genel",
+      "customsClearance": "Gümrük işlemleri",
+      "shipping": "Nakliye",
+      "inspection": "Denetleme",
+      "insurance": "Sigorta",
+      "sourcing": "Kaynak bulma",
+      "documentation": "Dokümantasyon",
+      "payment": "Ödeme"
+    },
+    "countries": {
+      "iran": "İran"
+    },
+    "stats": {
+      "total": "Toplam",
+      "verified": "Doğrulandı",
+      "pending": "Askıda olması",
+      "rejected": "Reddedilmiş",
+      "premium": "prim"
+    },
+    "empty": {
+      "title": "Henüz şirketiniz yok",
+      "description": "İş fırsatlarına katılmak ve teklif göndermek için ilk şirket profilinizi oluşturun.",
+      "button": "Şirket Ekle"
+    },
+    "verification": {
+      "verified": "Doğrulandı",
+      "pending": "Askıda olması",
+      "rejected": "Reddedilmiş"
+    },
+    "plans": {
+      "free": "Özgür",
+      "gold": "Altın",
+      "diamond": "Elmas",
+      "enterprise": "Girişim"
+    },
+    "statuses": {
+      "active": "Aktif",
+      "inactive": "Etkin değil",
+      "suspended": "Askıya alınmış"
+    }
+  },
+  "dashboardMyExperts": {
+    "title": "Uzmanlarım",
+    "description": "Sahip olduğunuz uzman profillerini, doğrulama durumunu ve plan görünürlüğünü yönetin.",
+    "addExpert": "Uzman Ekle",
+    "created": "Oluşturulan: {date}",
+    "viewExpert": "Uzmanı Görüntüle →",
+    "stats": {
+      "total": "Toplam",
+      "verified": "Doğrulandı",
+      "pending": "Askıda olması",
+      "rejected": "Reddedilmiş",
+      "premium": "prim"
+    },
+    "empty": {
+      "title": "Henüz uzman yok",
+      "description": "Deneyiminizi sergilemek ve takas talepleri almak için ilk uzman profilinizi oluşturun.",
+      "button": "Uzman Ekle"
+    },
+    "verification": {
+      "verified": "Doğrulandı",
+      "pending": "Askıda olması",
+      "rejected": "Reddedilmiş"
+    },
+    "plans": {
+      "free": "ÖZGÜR",
+      "gold": "ALTIN",
+      "diamond": "ELMAS",
+      "enterprise": "GİRİŞİM"
+    },
+    "statuses": {
+      "active": "Aktif",
+      "inactive": "Etkin değil",
+      "suspended": "Askıya alınmış"
+    }
+  },
+  "dashboardMyProposals": {
+    "title": "Tekliflerim",
+    "description": "Teklif performansını, kazanma oranını ve gönderilen değeri izleyin.",
+    "findOpenCases": "Açık Vakaları Bul",
+    "empty": "Henüz teklif yok.",
+    "notAvailable": "N/A",
+    "notAssigned": "Atanmadı",
+    "proposalNumber": "Teklif #{id}",
+    "submittedOn": "{date} tarihinde gönderildi",
+    "caseStatus": "Vaka Durumu: {status}",
+    "viewCase": "Vakayı Görüntüle →",
+    "stats": {
+      "totalProposals": "Toplam Teklifler",
+      "pending": "Askıda olması",
+      "accepted": "Kabul edildi",
+      "rejected": "Reddedilmiş",
+      "winRate": "Kazanma Oranı",
+      "acceptedValue": "Kabul Edilen Değer",
+      "submittedValue": "Gönderildi: ${value}"
+    },
+    "filters": {
+      "all": "Hepsi: {count}",
+      "pending": "Beklemede: {count}",
+      "accepted": "Kabul edildi: {count}",
+      "rejected": "Reddedildi: {count}"
+    },
+    "fields": {
+      "case": "Dava",
+      "company": "Şirket",
+      "expert": "Uzman",
+      "price": "Fiyat"
+    },
+    "statuses": {
+      "pending": "Askıda olması",
+      "accepted": "Kabul edildi",
+      "rejected": "Reddedilmiş"
+    },
+    "caseStatuses": {
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış",
+      "cancelled": "İptal edildi"
+    }
+  },
+  "dashboardMyTasks": {
+    "eyebrow": "Görevlerim",
+    "title": "Atanan İş",
+    "assignedSummary": "{count, plural, =0 {Atanan görev yok} =1 {1 atanan görev} other {# atanan görev}}",
+    "noDueDate": "Son tarih yok",
+    "viewProject": "Projeyi Görüntüle",
+    "stats": {
+      "assigned": "Atandı",
+      "completed": "Tamamlanmış",
+      "inProgress": "Devam etmekte",
+      "overdue": "vadesi geçmiş"
+    },
+    "empty": {
+      "title": "Atanan Görev Yok",
+      "description": "Henüz atanmış bir işiniz yok."
+    },
+    "fields": {
+      "project": "Proje",
+      "projectStatus": "Proje Durumu",
+      "dueDate": "Bitiş tarihi"
+    },
+    "taskStatuses": {
+      "todo": "Yapılacaklar",
+      "inProgress": "Devam etmekte",
+      "review": "Gözden geçirmek",
+      "completed": "Tamamlanmış"
+    },
+    "projectStatuses": {
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış",
+      "cancelled": "İptal edildi"
+    },
+    "priorities": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek",
+      "urgent": "Acil"
+    }
+  },
+  "dashboardProjects": {
+    "eyebrow": "Projeler",
+    "title": "Ticaret Projeleri",
+    "description": "Kabul edilen ticari vakaları yönetin ve yürütme ilerlemesini takip edin.",
+    "customer": "Müşteri",
+    "empty": {
+      "title": "Henüz Proje Yok",
+      "description": "Teklif kabul edildiğinde projeler otomatik olarak oluşturulur.",
+      "browseOpenCases": "Açık Vakalara Göz Atın"
+    },
+    "statuses": {
+      "active": "Aktif",
+      "pending": "Askıda olması",
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış",
+      "cancelled": "İptal edildi"
+    }
+  },
+  "dashboardSavedCases": {
+    "title": "Kaydedilen Vakalar",
+    "description": "Daha sonra incelemek üzere kaydettiğiniz ticari vakalar.",
+    "savedOn": "Kaydedildi: {date}",
+    "viewCase": "Vakayı Görüntüle →",
+    "empty": {
+      "title": "Henüz kayıtlı vaka yok",
+      "description": "Daha sonra erişmek için ilginç ticari vakaları kaydedin.",
+      "button": "Açık Vakalara Göz Atın"
+    },
+    "metrics": {
+      "proposals": "Teklifler",
+      "documents": "Belgeler",
+      "messages": "Mesajlar"
+    },
+    "statuses": {
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "completed": "Tamamlanmış",
+      "cancelled": "İptal edildi"
+    }
+  },
+  "dashboardSavedCompanies": {
+    "title": "Kaydedilen Şirketler",
+    "description": "Daha sonra incelemek ve iletişim kurmak üzere kaydettiğiniz şirketler.",
+    "viewProfile": "Profili Görüntüle",
+    "empty": {
+      "title": "Henüz kayıtlı şirket yok",
+      "description": "Ticaret ağınızı oluşturmak için güvenilir şirketleri kurtarın.",
+      "button": "Şirketlere Göz Atın"
+    }
+  },
+  "dashboardSavedExperts": {
+    "title": "Kaydedilen Uzmanlar",
+    "description": "Daha sonra incelemek ve iletişime geçmek üzere kaydettiğiniz uzmanlar.",
+    "viewProfile": "Profili Görüntüle",
+    "empty": {
+      "title": "Henüz kayıtlı uzman yok",
+      "description": "Gelecekteki ticari projeler için deneyimli profesyonelleri hızlı bir şekilde iletişime geçmekten kurtarın.",
+      "button": "Uzmanlara Göz Atın"
+    }
+  },
+  "dashboardSettings": {
+    "eyebrow": "Hesap Ayarları",
+    "title": "Ayarlar",
+    "description": "Dasres hesabınızı, planınızı ve profil bilgilerinizi yönetin.",
+    "unlimited": "Sınırsız",
+    "profileInformation": {
+      "title": "Profil Bilgileri",
+      "notProvided": "Sağlanmadı",
+      "fields": {
+        "name": "İsim",
+        "email": "E-posta",
+        "role": "Rol",
+        "plan": "Planı"
+      }
+    },
+    "planLimits": {
+      "title": "Plan Sınırları",
+      "caseLimit": "Vaka Sınırı",
+      "proposalLimit": "Teklif Limiti"
+    },
+    "quickLinks": {
+      "title": "Hızlı Bağlantılar",
+      "manageSubscription": "Aboneliği Yönet",
+      "myCompanies": "Şirketlerim",
+      "myExperts": "Uzmanlarım"
+    },
+    "security": {
+      "title": "Güvenlik",
+      "description": "Üretim güvenliği aşamasında şifre değişiklikleri, iki faktörlü kimlik doğrulama ve oturum açma geçmişi eklenecektir."
+    },
+    "roles": {
+      "admin": "Yönetici",
+      "user": "Kullanıcı"
+    },
+    "plans": {
+      "free": "ÖZGÜR",
+      "gold": "ALTIN",
+      "diamond": "ELMAS",
+      "enterprise": "GİRİŞİM"
+    }
+  },
+  "dashboardSubscription": {
+    "title": "Abonelik",
+    "usageUnlimited": "Sınırsız (kullanılan: {used})",
+    "premiumBadge": "prim",
+    "description": "Dasres planınızı, kullanım sınırlarınızı ve premium görünürlüğü yönetin. Ödemeler henüz etkinleştirilmedi; planlar şu anda yönetici tarafından yönetilmektedir.",
+    "currentBadge": "AKIM",
+    "managePlan": "Planı Yönet",
+    "currentPlan": "Mevcut Plan",
+    "usageLimited": "Kullanım Limiti",
+    "proposals": "Teklifler",
+    "activeCases": "Aktif vakalar",
+    "usage": {
+      "currentPlan": "Mevcut Plan",
+      "activeCasesUsed": "Kullanılan Aktif Vakalar",
+      "proposalsUsed": "Kullanılan Teklifler",
+      "limitedValue": "{used} / {limit}",
+      "unlimitedValue": "{used} / Sınırsız"
+    },
+    "planLabels": {
+      "free": "ÖZGÜR",
+      "gold": "ALTIN",
+      "diamond": "ELMAS",
+      "enterprise": "GİRİŞİM"
+    },
+    "actions": {
+      "currentPlan": "Mevcut Plan",
+      "contactSales": "Satış Ekibiyle İletişime Geçin",
+      "notAvailable": "Müsait değil",
+      "requestUpgrade": "Yükseltme Talebi"
+    },
+    "plans": {
+      "free": {
+        "title": "Özgür",
+        "description": "Dasres'yi test etmek ve temel ticaret faaliyetini başlatmak için.",
+        "price": "$0",
+        "features": {
+          "activeCases": "3 aktif ticaret dosyası",
+          "proposals": "5 teklif",
+          "companyProfile": "Temel şirket profili",
+          "expertProfile": "Temel uzman profili"
+        }
+      },
+      "gold": {
+        "title": "Altın",
+        "description": "Daha fazla görünürlük ve kapasiteye ihtiyaç duyan büyüyen ekipler için.",
+        "price": "29 $/ay",
+        "features": {
+          "activeCases": "20 aktif ticaret dosyası",
+          "proposals": "20 teklif",
+          "badge": "Altın rozet",
+          "priorityListing": "Öncelikli listeleme"
+        }
+      },
+      "diamond": {
+        "title": "Elmas",
+        "description": "Ciddi sağlayıcılar ve sık ticaret yapan operatörler için.",
+        "price": "99 $/ay",
+        "features": {
+          "activeCases": "Sınırsız aktif ticari vaka",
+          "proposals": "Sınırsız teklif",
+          "badge": "Elmas rozeti",
+          "featuredListing": "Öne çıkan liste"
+        }
+      },
+      "enterprise": {
+        "title": "Girişim",
+        "description": "Büyük ticari şirketler, acenteler ve kurumsal ekipler için.",
+        "price": "Özel Fiyatlandırma",
+        "features": {
+          "activeCases": "Sınırsız aktif ticari vaka",
+          "proposals": "Sınırsız teklif",
+          "badge": "Kurumsal rozet",
+          "visibility": "En yüksek görünürlük",
+          "accountManager": "Gelecekteki hesap yöneticisi erişimi"
+        }
+      }
+    },
+    "upgradeNotice": {
+      "title": "Daha yüksek bir plana mı ihtiyacınız var?",
+      "description": "Ödemeler henüz aktif değil. Şimdilik yöneticiler kullanıcı planlarını kullanıcı yönetimi panelinden manuel olarak yükseltebilirler.",
+      "back": "Kontrol Paneline Geri Dön"
+    }
+  },
+  "dashboardVerifications": {
+    "title": "Doğrulama Merkezi",
+    "description": "Şirket ve uzman doğrulama isteklerini inceleyin ve yönetin.",
+    "created": "Oluşturulan: {date}",
+    "stats": {
+      "pending": {
+        "title": "Askıda olması",
+        "description": "Şirketler + Uzmanlar"
+      },
+      "verified": {
+        "title": "Doğrulandı",
+        "description": "Onaylanan profiller"
+      },
+      "rejected": {
+        "title": "Reddedilmiş",
+        "description": "Reddedilen profiller"
+      }
+    },
+    "companies": {
+      "title": "Bekleyen Şirketler",
+      "description": "Yönetici incelemesini bekleyen şirket profilleri.",
+      "empty": "Bekleyen şirket yok."
+    },
+    "experts": {
+      "title": "Bekleyen Uzmanlar",
+      "description": "Yönetici incelemesini bekleyen uzman profilleri.",
+      "empty": "Bekleyen uzman yok."
+    },
+    "plans": {
+      "free": "ÖZGÜR",
+      "gold": "ALTIN",
+      "diamond": "ELMAS",
+      "enterprise": "GİRİŞİM"
+    }
+  },
+  "publicCompanyProfile": {
+    "categories": {
+      "general": "Genel",
+      "customsClearance": "Gümrük işlemleri",
+      "shipping": "Nakliye",
+      "inspection": "Denetleme",
+      "insurance": "Sigorta",
+      "sourcing": "Kaynak bulma",
+      "documentation": "Dokümantasyon",
+      "payment": "Ödeme"
+    },
+    "countries": {
+      "iran": "İran"
+    },
+    "metadata": {
+      "notFoundTitle": "Şirket Bulunamadı",
+      "notFoundDescription": "İstenilen şirket profili bulunamadı.",
+      "description": "{name}, {country}'de yer alan bir {category} şirketidir."
+    },
+    "notFound": "Şirket bulunamadı",
+    "backToCompanies": "← Şirketlere geri dön",
+    "statusLabel": "Durum",
+    "statuses": {
+      "active": "Aktif",
+      "inactive": "Etkin değil",
+      "open": "Açık",
+      "pending": "Askıda olması",
+      "verified": "Doğrulandı",
+      "rejected": "Reddedilmiş",
+      "completed": "Tamamlanmış",
+      "inProgress": "Devam etmekte"
+    },
+    "verificationStatuses": {
+      "verified": "Doğrulandı",
+      "pending": "Askıda olması",
+      "rejected": "Reddedilmiş"
+    },
+    "verificationBadges": {
+      "verified": "Doğrulandı",
+      "pending": "Doğrulama Bekleniyor",
+      "rejected": "Reddedilmiş"
+    },
+    "plans": {
+      "free": "Özgür",
+      "gold": "Altın",
+      "diamond": "Elmas",
+      "enterprise": "Girişim"
+    },
+    "metrics": {
+      "trustScore": "Güven Puanı",
+      "rating": "Derecelendirme",
+      "reviews": "Yorumlar",
+      "verification": "Doğrulama",
+      "country": "Ülke"
+    },
+    "companyRating": "Şirket Derecelendirmesi",
+    "basedOnReviews": "{count} incelemelerine dayanmaktadır",
+    "trustScoreValue": "Güven Puanı: {score}/100",
+    "completedCasesValue": "{count} ticari davaları tamamladı",
+    "companyDescription": "Şirket Tanımı",
+    "recentReviews": "Son İncelemeler",
+    "noReviews": "Henüz yorum yok.",
+    "noCommentProvided": "Yorum yapılmadı.",
+    "notAvailable": "N/A",
+    "notProvided": "Sağlanmadı",
+    "companyInformation": "Şirket Bilgileri",
+    "fields": {
+      "email": "E-posta",
+      "website": "Web sitesi",
+      "country": "Ülke",
+      "category": "Kategori",
+      "reputation": "İtibar"
+    },
+    "ratingWithReviews": "{rating} / 5 ({count} değerlendirme)",
+    "sendEmail": "E-posta Gönder",
+    "visitWebsite": "Web Sitesini Ziyaret Edin",
+    "relatedExperts": {
+      "title": "İlgili Uzmanlar",
+      "empty": "İlgili uzman bulunamadı.",
+      "verified": "Doğrulanmış Uzman"
+    },
+    "verificationStatus": "Doğrulama Durumu",
+    "editCompany": "Şirketi Düzenle",
+    "schema": {
+      "status": "Durum",
+      "category": "Kategori"
+    }
+  },
+  "publicExpertProfile": {
+    "metadata": {
+      "notFoundTitle": "Uzman Bulunamadı",
+      "notFoundDescription": "İstenilen uzman profili bulunamadı.",
+      "description": "{name}, {country} merkezli bir {specialty} uzmanıdır ve Dasres platformunda yer almaktadır."
+    },
+    "notFound": "Uzman Bulunamadı",
+    "backToExperts": "← Uzmanlar'e geri dön",
+    "plans": {
+      "free": "Özgür",
+      "gold": "Altın",
+      "diamond": "Elmas",
+      "enterprise": "Girişim"
+    },
+    "statuses": {
+      "active": "Aktif",
+      "inactive": "Etkin değil",
+      "pending": "Askıda olması",
+      "verified": "Doğrulandı",
+      "rejected": "Reddedilmiş",
+      "suspended": "Askıya alınmış"
+    },
+    "metrics": {
+      "trustScore": "Güven Puanı",
+      "rating": "Derecelendirme",
+      "reviews": "Yorumlar",
+      "specialty": "Uzmanlık",
+      "country": "Ülke"
+    },
+    "experience": "Deneyim",
+    "recentReviews": "Son İncelemeler",
+    "noReviews": "Henüz yorum yok.",
+    "anonymousUser": "Anonim Kullanıcı",
+    "noCommentProvided": "Yorum yapılmadı.",
+    "contactExpert": "Uzmanla İletişime Geçin",
+    "fields": {
+      "email": "E-posta",
+      "country": "Ülke",
+      "specialty": "Uzmanlık",
+      "reputation": "İtibar"
+    },
+    "ratingWithReviews": "{rating}/5 ({count} değerlendirme)",
+    "completedCases": "Tamamlanan Vakalar",
+    "sendEmail": "E-posta Gönder",
+    "relatedCompanies": {
+      "title": "İlgili Şirketler",
+      "empty": "İlgili şirket bulunamadı.",
+      "verified": "Doğrulandı"
+    },
+    "adminActions": "Yönetici Eylemleri",
+    "editExpert": "Uzmanı Düzenle",
+    "reviewNotice": "Derecelendirmeler ve incelemeler yalnızca tamamlanmış ticari vakalardan toplanır.",
+    "notAvailable": "N/A"
+  },
+  "publicOpportunityProfile": {
+    "metadata": {
+      "notFoundTitle": "Fırsat Bulunamadı",
+      "notFoundDescription": "İstenilen fırsat bulunamadı."
+    },
+    "notFound": "Fırsat Bulunamadı",
+    "backToOpportunities": "← Fırsatlar'e geri dön",
+    "tradeOpportunity": "Ticaret Fırsatı",
+    "statuses": {
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "closed": "Kapalı"
+    },
+    "metrics": {
+      "status": "Durum",
+      "country": "Ülke",
+      "visibility": "Görünürlük",
+      "platform": "platformu",
+      "category": "Kategori",
+      "trust": "Güven"
+    },
+    "values": {
+      "public": "Halk",
+      "trade": "Ticaret",
+      "verified": "Doğrulandı"
+    },
+    "opportunityDescription": "Fırsat Açıklaması",
+    "howToRespond": {
+      "title": "Nasıl Yanıt Verilir?",
+      "review": {
+        "title": "Gözden geçirmek",
+        "description": "Fırsat gereksinimlerinin tamamını dikkatlice okuyun."
+      },
+      "contact": {
+        "title": "Temas etmek",
+        "description": "Dasres veya sağlanan iletişim bilgileri aracılığıyla bize ulaşın."
+      },
+      "collaborate": {
+        "title": "İşbirliği yapın",
+        "description": "Güvenilir bir uluslararası ticaret ortaklığı kurun."
+      }
+    },
+    "editOpportunity": "Fırsatı Düzenle",
+    "summary": {
+      "title": "Fırsat Özeti",
+      "country": "Ülke",
+      "status": "Durum",
+      "type": "Tip"
+    },
+    "actions": {
+      "openTradeCase": "Açık Ticaret Davası",
+      "findCompanies": "Şirket Bul",
+      "findExperts": "Uzman Bul"
+    },
+    "relatedCompanies": {
+      "title": "İlgili Şirketler",
+      "empty": "Bu ülke için henüz doğrulanmış şirket bulunamadı.",
+      "verified": "Doğrulanmış Şirket"
+    },
+    "relatedExperts": {
+      "title": "İlgili Uzmanlar",
+      "empty": "Bu ülke için henüz doğrulanmış uzman bulunamadı.",
+      "verified": "Doğrulanmış Uzman"
+    },
+    "trustNotice": {
+      "title": "Güven Bildirimi",
+      "description": "Herhangi bir ticari anlaşmaya girmeden önce daima ticari ayrıntıları, belgeleri ve karşı tarafları doğrulayın."
+    }
+  },
+  "dashboardTopCompanies": {
+    "title": "En Çok Puan Alan Şirketler",
+    "description": "Doğrulama, güven puanı ve incelemelere göre sıralanan şirketler.",
+    "empty": "Hiçbir şirket bulunamadı.",
+    "verified": "Doğrulandı",
+    "notAvailable": "N/A",
+    "metrics": {
+      "trust": "Güven",
+      "rating": "Derecelendirme",
+      "reviews": "Yorumlar"
+    },
+    "plans": {
+      "free": "ÖZGÜR",
+      "gold": "ALTIN",
+      "diamond": "ELMAS",
+      "enterprise": "GİRİŞİM"
+    }
+  },
+  "topExperts": {
+    "title": "En Çok Puan Alan Uzmanlar",
+    "description": "Doğrulama, güven puanı ve incelemelere göre sıralanan uzmanlar.",
+    "empty": "Uzman bulunamadı.",
+    "verified": "Doğrulandı",
+    "trust": "Güven",
+    "rating": "Derecelendirme",
+    "reviews": "Yorumlar",
+    "notAvailable": "N/A",
+    "plans": {
+      "FREE": "Özgür",
+      "GOLD": "Altın",
+      "DIAMOND": "Elmas",
+      "ENTERPRISE": "Girişim"
+    }
+  },
+  "publicExperts": {
+    "eyebrow": "Doğrulanmış Uzman Ağı",
+    "title": "Güvenilir ticaret uzmanlarını bulun",
+    "description": "Gümrük, kaynak bulma, lojistik, denetim ve küresel iş hizmetlerinde doğrulanmış uluslararası ticaret profesyonelleriyle bağlantı kurun.",
+    "notAvailable": "N/A",
+    "featured": {
+      "title": "Öne Çıkan Uzman",
+      "empty": "Şu anda öne çıkan bir uzman mevcut değil.",
+      "viewProfile": "Profili Görüntüle"
+    },
+    "metrics": {
+      "trust": "Güven",
+      "rating": "Derecelendirme",
+      "reviews": "Yorumlar"
+    },
+    "statistics": {
+      "total": "Toplam Uzmanlar",
+      "verified": "Doğrulanmış Uzmanlar",
+      "rated": "Derecelendirilmiş Uzmanlar"
+    },
+    "pagination": {
+      "previous": "Öncesi",
+      "next": "Sonraki",
+      "page": "{total}'nin {current} sayfası"
+    }
+  },
+  "myReviews": {
+    "title": "İncelemelerim",
+    "description": "Aldığınız incelemeleri ve gönderdiğiniz incelemeleri görüntüleyin.",
+    "fallbackUser": "Kullanıcı",
+    "ratingOutOfFive": "{rating}/5",
+    "statistics": {
+      "averageRating": "Ortalama Derecelendirme",
+      "received": "Alınan İncelemeler",
+      "given": "Verilen İncelemeler",
+      "basedOn": "Alınan {count} incelemelerine göre"
+    },
+    "received": {
+      "title": "Aldığım Yorumlar",
+      "empty": "Henüz herhangi bir değerlendirme almadınız.",
+      "from": "{name}'den"
+    },
+    "given": {
+      "title": "Verdiğim İncelemeler",
+      "empty": "Henüz herhangi bir değerlendirme göndermediniz.",
+      "to": "{name}'ye"
+    }
+  },
+  "dashboardExpertProfile": {
+    "notFound": "Uzman bulunamadı.",
+    "backToExperts": "← Uzmanlar'e geri dön",
+    "notAvailable": "N/A",
+    "experience": "Deneyim",
+    "reviewNotice": "İncelemeler yalnızca tamamlanmış bir takas davasından sonra gönderilebilir.",
+    "trustScoreValue": "{score}/{maximum}",
+    "metadata": {
+      "notFoundTitle": "Uzman Bulunamadı",
+      "notFoundDescription": "İstenilen uzman profili bulunamadı.",
+      "title": "{name} | {specialty}",
+      "description": "{name}, {country} merkezli bir {specialty} uzmanıdır. Bu uzman profilini Dasres platformunda inceleyin."
+    },
+    "plans": {
+      "free": "Özgür",
+      "gold": "Altın",
+      "diamond": "Elmas",
+      "enterprise": "Girişim"
+    },
+    "statuses": {
+      "active": "Aktif",
+      "inactive": "Etkin değil",
+      "pending": "Askıda olması",
+      "verified": "Doğrulandı",
+      "rejected": "Reddedilmiş"
+    },
+    "metrics": {
+      "trustScore": "Güven Puanı",
+      "rating": "Derecelendirme",
+      "reviews": "Yorumlar",
+      "specialty": "Uzmanlık",
+      "country": "Ülke"
+    },
+    "recentReviews": {
+      "title": "Son İncelemeler",
+      "empty": "Henüz yorum yok.",
+      "fallbackUser": "Kullanıcı",
+      "noComment": "Yorum yapılmadı.",
+      "rating": "{rating}/{maximum}"
+    },
+    "contact": {
+      "title": "Uzmanla İletişime Geçin",
+      "email": "E-posta",
+      "country": "Ülke",
+      "specialty": "Uzmanlık",
+      "reputation": "İtibar",
+      "trustScore": "Güven Puanı",
+      "completedCases": "Tamamlanan Vakalar",
+      "sendEmail": "E-posta Gönder",
+      "noReviews": "Henüz yorum yok",
+      "reputationValue": "⭐ {rating} ({count} değerlendirme)"
+    },
+    "management": {
+      "title": "Yönetim Eylemleri",
+      "edit": "Uzmanı Düzenle"
+    }
+  },
+  "rootMetadata": {
+    "siteName": "Dasres",
+    "title": "Dasres | Küresel Ticaret İçin Güven Ekosistemi",
+    "description": "Dasres, doğrulanmış şirketleri, güvenilir uzmanları ve uluslararası ticaret fırsatlarını vakaya dayalı tek bir platform aracılığıyla birbirine bağlar.",
+    "keywords": {
+      "dasres": "Dasres",
+      "experts": "ticaret uzmanları",
+      "companies": "doğrulanmış şirketler",
+      "opportunities": "ticaret fırsatları",
+      "trade": "uluslararası ticaret",
+      "business": "küresel iş platformu",
+      "international": "uluslararası iş ağı"
+    },
+    "openGraph": {
+      "title": "Dasres | Küresel Ticaret İçin Güven Ekosistemi",
+      "description": "Dasres'de doğrulanmış şirketleri, güvenilir uzmanları ve uluslararası ticaret fırsatlarını keşfedin.",
+      "imageAlt": "Dasres küresel ticaret platformu"
+    },
+    "twitter": {
+      "title": "Dasres | Küresel Ticaret İçin Güven Ekosistemi",
+      "description": "Uluslararası ticaret için doğrulanmış şirketler ve güvenilir uzmanlarla bağlantı kurun."
+    }
+  },
+  "publicCompanies": {
+    "eyebrow": "Doğrulanmış Şirket Ağı",
+    "title": "Güvenilir ticaret şirketlerini keşfedin",
+    "description": "Gümrük, sevkıyat, denetim, kaynak kullanımı, lojistik ve küresel ticaret hizmetlerinde doğrulanmış uluslararası şirketlere göz atın.",
+    "statistics": {
+      "total": "Toplam Şirketler",
+      "verified": "Doğrulanmış Şirketler",
+      "rated": "Derecelendirilen Şirketler"
+    },
+    "pagination": {
+      "previous": "Öncesi",
+      "next": "Sonraki",
+      "page": "{total}'nin {current} sayfası"
+    }
+  },
+  "publicOpportunities": {
+    "eyebrow": "Küresel Ticaret Pazarı",
+    "title": "Uluslararası fırsatları keşfedin",
+    "description": "Dünyanın dört bir yanındaki şirketlerin doğrulanmış ticaret fırsatlarını keşfedin, alıcılar ve tedarikçilerle bağlantı kurun ve uluslararası işinizi genişletin.",
+    "statistics": {
+      "total": "Toplam Fırsatlar",
+      "open": "Açık Fırsatlar",
+      "countries": "Ülkeler"
+    },
+    "pagination": {
+      "previous": "Öncesi",
+      "next": "Sonraki",
+      "page": "{total}'nin {current} sayfası"
+    }
+  },
+  "companyVerificationButtons": {
+    "verify": "Doğrulamak",
+    "reject": "Reddetmek"
+  },
+  "verificationExpertActions": {
+    "verify": "Doğrulamak",
+    "reject": "Reddetmek"
+  },
+  "verificationCompanyActions": {
+    "verify": "Doğrulamak",
+    "reject": "Reddetmek"
+  },
+  "countryFilter": {
+    "allCountries": "Tüm Ülkeler"
+  },
+  "notFound": {
+    "label": "Sayfa Bulunamadı",
+    "title": "Bu sayfa mevcut değil.",
+    "description": "Aradığınız sayfa taşınmış, silinmiş veya Dasres'de mevcut olmayabilir.",
+    "goHome": "Eve Git",
+    "goDashboard": "Kontrol Paneline Git"
+  },
+  "saveCaseButton": {
+    "saving": "Kaydediliyor...",
+    "unsave": "Kaydetmeyi iptal et",
+    "save": "☆ Vakayı Kaydet"
+  },
+  "saveCompanyButton": {
+    "saved": "Kaydedildi ★",
+    "save": "Kaydet ☆"
+  },
+  "saveExpertButton": {
+    "saved": "Kaydedildi ★",
+    "save": "Kaydet ☆"
+  },
+  "dashboardOpportunityDetail": {
+    "backToDashboardOpportunities": "← Kontrol Paneli Fırsatları'e geri dön",
+    "tradeOpportunity": "Ticaret Fırsatı",
+    "globalMarketplace": "Küresel Pazaryeri",
+    "status": "Durum",
+    "country": "Ülke",
+    "visibility": "Görünürlük",
+    "dashboard": "Kontrol Paneli",
+    "opportunityDescription": "Fırsat Açıklaması",
+    "adminActions": "Yönetici Eylemleri",
+    "editOpportunity": "Fırsatı Düzenle",
+    "opportunitySummary": "Fırsat Özeti",
+    "type": "Tip",
+    "viewPublicPage": "Genel Sayfayı Görüntüle",
+    "backToManagement": "Yönetime Geri Dön",
+    "adminNote": "Yönetici Notu",
+    "adminNoteDescription": "Bu sayfa, kontrol panelindeki ticaret fırsatlarını yönetmek için kullanılır. Genel ziyaretçiler ayrı bir genel fırsat sayfasını görür.",
+    "statuses": {
+      "open": "Açık",
+      "inProgress": "Devam etmekte",
+      "closed": "Kapalı"
+    }
+  },
+  "ticketCategories": {
+    "general": "Genel",
+    "technical": "Teknik",
+    "billing": "Faturalandırma",
+    "support": "Destek"
+  },
+  "statuses": {
+    "open": "Açık",
+    "in_progress": "Devam etmekte",
+    "completed": "Tamamlanmış",
+    "cancelled": "İptal edildi",
+    "pending": "Askıda olması",
+    "accepted": "Kabul edildi",
+    "rejected": "Reddedilmiş",
+    "active": "Aktif",
+    "on_hold": "Beklemede",
+    "todo": "Yapılacaklar",
+    "review": "Gözden geçirmek"
+  },
+  "categories": {
+    "general": "Genel",
+    "customs_clearance": "Gümrük işlemleri",
+    "shipping": "Nakliye",
+    "inspection": "Denetleme",
+    "insurance": "Sigorta",
+    "sourcing": "Kaynak bulma",
+    "documentation": "Dokümantasyon",
+    "payment": "Ödeme"
+  },
+  "plans": {
+    "free": "Özgür",
+    "gold": "Altın",
+    "diamond": "Elmas",
+    "enterprise": "Girişim"
+  },
+  "verification": {
+    "pending": "Askıda olması",
+    "verified": "Doğrulandı",
+    "rejected": "Reddedilmiş"
   }
 }

@@ -21,6 +21,7 @@
     "toggleMenu": "فتح أو إغلاق القائمة"
   },
   "hero": {
+    "platformValue": "شبكة التجارة العالمية",
     "eyebrow": "شبكة تجارة موثقة لخدمات الأعمال العالمية",
     "titleLine1": "ابنِ الثقة في",
     "titleLine2": "التجارة العالمية",
@@ -127,7 +128,8 @@
     "viewAll": "عرض الكل",
     "statusOpen": "مفتوح",
     "openOpportunity": "فرصة متاحة",
-    "viewDetails": "عرض التفاصيل"
+    "viewDetails": "عرض التفاصيل",
+    "empty": "لا توجد فرص متاحة حالياً."
   },
   "footer": {
     "ctaEyebrow": "هل أنت مستعد لإدارة التجارة بثقة؟",
@@ -333,8 +335,20 @@
     }
   },
   "dashboardTopRated": {
+    "countries": {
+      "iran": "إيران",
+      "uae": "الإمارات",
+      "china": "الصين"
+    },
+    "categories": {
+      "shipping": "الشحن",
+      "customs_clearance": "التخليص الجمركي",
+      "inspection": "الفحص",
+      "insurance": "التأمين",
+      "sourcing": "تأمين المصادر"
+    },
     "viewAll": "عرض الكل",
-    "reviewCount": "بناءً على {count} تقييم",
+    "reviewCount": "بناءً على {count, plural, one {# تقييم} other {# تقييمات}}",
     "experts": {
       "title": "الخبراء الأعلى تقييماً",
       "empty": "لا يوجد خبراء حاصلون على تقييم بعد."
@@ -359,6 +373,11 @@
     "opportunities": {
       "title": "أحدث الفرص",
       "empty": "لم يتم العثور على فرص."
+    },
+    "statuses": {
+      "open": "مفتوح",
+      "closed": "مغلق",
+      "pending": "قيد الانتظار"
     }
   },
   "dashboardRecentActivity": {
@@ -369,22 +388,42 @@
       "proposalSubmitted": "تم إرسال العرض",
       "proposalAccepted": "تم قبول العرض",
       "proposalRejected": "تم رفض العرض",
-      "caseCompleted": "تم إكمال الملف",
+      "caseCompleted": "تم إكمال الحالة",
       "projectCompleted": "تم إكمال المشروع",
       "documentUploaded": "تم رفع المستند",
       "projectTaskAttachmentUploaded": "تم رفع مرفق مهمة المشروع",
-      "documentApproved": "تم اعتماد المستند",
+      "documentApproved": "تمت الموافقة على المستند",
       "documentRejected": "تم رفض المستند",
       "messageSent": "تم إرسال الرسالة",
       "projectMessageSent": "تم إرسال رسالة المشروع",
-      "taskCommentAdded": "تمت إضافة تعليق إلى المهمة",
+      "taskCommentAdded": "تمت إضافة تعليق على المهمة",
       "taskAssigned": "تم تعيين المهمة",
       "taskCompleted": "تم إكمال المهمة",
       "ticketUpdated": "تم تحديث التذكرة",
-      "companyVerified": "تم اعتماد الشركة",
+      "companyVerified": "تم التحقق من الشركة",
       "companyRejected": "تم رفض الشركة",
       "projectTaskUpdated": "تم تحديث مهمة المشروع",
-      "projectTaskChecklistToggled": "تم تحديث قائمة مهام المشروع"
+      "projectTaskChecklistToggled": "تم تحديث قائمة تحقق مهمة المشروع",
+      "projectTaskStatusUpdated": "تم تغيير حالة مهمة المشروع"
+    },
+    "details": {
+      "projectTaskStatusUpdated": "تم تغيير حالة المهمة «{title}» إلى {status}.",
+      "projectTaskAttachmentUploaded": "تم رفع المرفق {file}.",
+      "projectTaskUpdated": "تم تحديث مهمة المشروع «{title}».",
+      "projectTaskChecklistToggled": "تم تغيير قائمة التحقق للمهمة «{item}».",
+      "projectTaskStatusUpdatedPrefix": "تم تحديث حالة مهمة المشروع:",
+      "attachmentUploadedPrefix": "تم رفع المرفق:",
+      "projectTaskUpdatedPrefix": "تم تحديث مهمة المشروع:"
+    },
+    "checklist": {
+      "completed": "مكتمل",
+      "incomplete": "غير مكتمل"
+    },
+    "statuses": {
+      "todo": "للتنفيذ",
+      "in_progress": "قيد التنفيذ",
+      "review": "قيد المراجعة",
+      "completed": "مكتمل"
     }
   },
   "dashboardProfileCard": {
@@ -399,17 +438,20 @@
   },
   "dashboardPage": {
     "title": "لوحة التحكم",
+    "badge": "لوحة إدارة الأعمال",
     "description": "قم بإدارة حسابك في Dasres وملفاتك الشخصية وأنشطة التجارة.",
     "roles": {
       "admin": "المدير",
       "user": "المستخدم"
     },
     "admin": {
+      "title": "إدارة النظام",
       "commandCenter": "مركز قيادة المدير",
-      "description": "نظرة عامة على الحالة التشغيلية لمنصة Dasres.",
-      "reviewVerifications": "مراجعة طلبات التحقق",
-      "pendingVerifications": "طلبات التحقق المعلقة",
+      "description": "نظرة عامة على الحالة التشغيلية لمنصة Dasres",
+      "reviewVerifications": "مراجعة عمليات التحقق",
+      "pendingVerifications": "عمليات التحقق المعلقة",
       "totalReviews": "إجمالي التقييمات",
+      "reviews": "التقييمات",
       "premiumUsers": "المستخدمون المميزون",
       "openTickets": "التذاكر المفتوحة",
       "panel": "لوحة الإدارة",
@@ -489,11 +531,18 @@
     "description": "مركز إدارة المشروع لمتابعة المهام وعبء العمل والجدول الزمني ومخطط جانت والتنفيذ.",
     "overallProgress": "التقدم الإجمالي",
     "status": {
-      "todo": "للقيام",
+      "todo": "للتنفيذ",
+      "pending": "قيد الانتظار",
+      "open": "مفتوح",
       "inProgress": "قيد التنفيذ",
       "review": "قيد المراجعة",
       "completed": "مكتمل",
-      "cancelled": "ملغي"
+      "approved": "تمت الموافقة",
+      "rejected": "مرفوض",
+      "closed": "مغلق",
+      "active": "نشط",
+      "expired": "منتهي",
+      "cancelled": "ملغى"
     },
     "metrics": {
       "tasks": "المهام",
@@ -532,10 +581,11 @@
     "description": "المهام التي قد تؤخر الجدول الزمني للمشروع بشكل مباشر.",
     "criticalTasks": "المهام الحرجة",
     "criticalDuration": "مدة المسار الحرج",
-    "duration": "{count} يوم",
+    "duration": "{count, plural, one {# يوم} other {# أيام}}",
     "empty": "لم يتم اكتشاف أي تبعية حرجة.",
     "dependsOn": "يعتمد على: {task}",
-    "critical": "حرج"
+    "critical": "حرج",
+    "pathStart": "بداية المسار الحرج"
   },
   "projectAIInsights": {
     "title": "رؤى المساعد الذكي",
@@ -550,9 +600,9 @@
     },
     "risks": {
       "title": "المخاطر",
-      "overdueTasks": "{count} مهمة متأخرة",
-      "blockedTasks": "{count} مهمة محظورة",
-      "pendingApprovals": "{count} موافقة معلقة"
+      "overdueTasks": "{count, plural, one {# مهمة متأخرة} other {# مهام متأخرة}}",
+      "blockedTasks": "{count, plural, one {# مهمة محظورة} other {# مهام محظورة}}",
+      "pendingApprovals": "{count, plural, one {# موافقة معلقة} other {# موافقات معلقة}}"
     },
     "nextAction": "الإجراء التالي",
     "recommendation": "التوصية",
@@ -839,6 +889,16 @@
       "day": "{title} • {duration} يوم",
       "week": "{title} • {duration} أسبوع",
       "month": "{title} • {duration} شهر"
+    },
+    "tooltips": {
+      "baseline": "خط الأساس",
+      "dependencyInput": "اعتماد وارد",
+      "dependencyOutput": "اعتماد صادر",
+      "duration": {
+        "day": "المدة: {duration} أيام",
+        "week": "المدة: {duration} أسابيع",
+        "month": "المدة: {duration} أشهر"
+      }
     }
   },
   "projectWorkloadView": {
@@ -870,7 +930,14 @@
     "pending": "قيد الانتظار",
     "notCompletedYet": "لم تكتمل بعد",
     "unknownDate": "تاريخ غير معروف",
-    "emptyState": "لا توجد مراحل متاحة للخط الزمني."
+    "emptyState": "لا توجد مراحل متاحة للخط الزمني.",
+    "steps": {
+      "requestSubmitted": "تم تقديم الطلب",
+      "providerMatching": "مطابقة مقدمي الخدمة",
+      "documentsReview": "مراجعة المستندات",
+      "serviceInProgress": "الخدمة قيد التنفيذ",
+      "completed": "مكتمل"
+    }
   },
   "projectDocuments": {
     "title": "مركز المستندات",
@@ -885,6 +952,7 @@
     "unknownSize": "حجم غير معروف",
     "unknownDate": "تاريخ غير معروف",
     "rejectionReason": "سبب الرفض",
+    "rejectedByAdmin": "مرفوض بواسطة المدير",
     "approvalStatuses": {
       "approved": "تمت الموافقة",
       "rejected": "مرفوض",
@@ -941,8 +1009,12 @@
     }
   },
   "projectActivitySection": {
-    "title": "النشاطات الأخيرة",
-    "emptyState": "لا توجد نشاطات بعد.",
+    "details": {
+      "taskStatusUpdated": "تم تغيير حالة المهمة \"{title}\" إلى {status}.",
+      "documentUploaded": "تم رفع الملف {file}."
+    },
+    "title": "الأنشطة الأخيرة",
+    "emptyState": "لم يتم تسجيل أي أنشطة بعد.",
     "unknownDate": "تاريخ غير معروف",
     "actions": {
       "project_created": "تم إنشاء المشروع",
@@ -950,13 +1022,20 @@
       "task_created": "تم إنشاء المهمة",
       "task_updated": "تم تحديث المهمة",
       "task_assigned": "تم تعيين المهمة",
-      "task_completed": "تم إكمال المهمة",
+      "task_completed": "اكتملت المهمة",
       "task_status_updated": "تم تحديث حالة المهمة",
+      "project_task_status_updated": "تم تحديث حالة مهمة المشروع",
       "comment_added": "تمت إضافة تعليق",
       "document_uploaded": "تم رفع المستند",
-      "document_approved": "تمت الموافقة على المستند",
+      "document_approved": "تم اعتماد المستند",
       "document_rejected": "تم رفض المستند",
       "message_sent": "تم إرسال الرسالة"
+    },
+    "statuses": {
+      "todo": "لم يبدأ",
+      "in_progress": "قيد التنفيذ",
+      "review": "قيد المراجعة",
+      "completed": "مكتمل"
     }
   },
   "projectListProgress": {
@@ -1010,17 +1089,18 @@
     }
   },
   "statusBadge": {
+    "todo": "لم يبدأ",
     "pending": "قيد الانتظار",
-    "open": "مفتوحة",
+    "open": "مفتوح",
     "in_progress": "قيد التنفيذ",
     "review": "قيد المراجعة",
-    "completed": "مكتملة",
-    "closed": "مغلقة",
+    "completed": "مكتمل",
+    "closed": "مغلق",
     "approved": "تمت الموافقة",
-    "rejected": "مرفوضة",
-    "active": "نشطة",
-    "expired": "منتهية",
-    "cancelled": "ملغاة"
+    "rejected": "مرفوض",
+    "active": "نشط",
+    "expired": "منتهي",
+    "cancelled": "ملغي"
   },
   "casesPage": {
     "adminTitle": "جميع القضايا التجارية",
@@ -1062,6 +1142,16 @@
     "requestedBy": "مقدمة من:",
     "created": "تاريخ الإنشاء: {date}",
     "viewCase": "عرض القضية",
+    "categories": {
+      "general": "عام",
+      "customsClearance": "التخليص الجمركي",
+      "shipping": "الشحن",
+      "inspection": "الفحص",
+      "insurance": "التأمين",
+      "sourcing": "التوريد",
+      "documentation": "المستندات",
+      "payment": "الدفع"
+    },
     "sort": {
       "label": "الترتيب حسب:",
       "newest": "الأحدث",
@@ -1346,33 +1436,39 @@
       "markAll": "تحديد الكل كمقروء",
       "updating": "جارٍ التحديث...",
       "errors": {
-        "updateFailed": "تعذر تحديث الإشعارات."
+        "updateFailed": "فشل تحديث الإشعارات."
       }
     },
     "list": {
       "title": "الإشعارات",
-      "description": "تابع تحديثات الحالات والعروض والرسائل والمستندات وتنبيهات النظام.",
+      "description": "تابع تحديثات القضايا والعروض والرسائل والمستندات وتنبيهات النظام.",
       "total": "إجمالي الإشعارات",
       "unread": "غير مقروء",
       "read": "مقروء",
       "centerTitle": "مركز الإشعارات",
-      "centerDescription": "إدارة تحديثات الحالات والرسائل والمستندات وتنبيهات النظام.",
+      "centerDescription": "إدارة تحديثات القضايا والرسائل والمستندات وتنبيهات النظام.",
       "empty": "لا توجد إشعارات حتى الآن.",
-      "open": "فتح ←",
+      "open": "عرض ←",
       "types": {
         "proposal": "عرض",
         "accepted": "مقبول",
         "rejected": "مرفوض",
         "message": "رسالة",
         "document": "مستند",
-        "approved": "معتمد",
+        "approved": "تمت الموافقة",
         "assigned": "تم التعيين",
         "completed": "مكتمل",
         "comment": "تعليق",
         "ticket": "تذكرة",
-        "deadline": "موعد نهائي",
+        "deadline": "الموعد النهائي",
         "projectDone": "اكتمل المشروع",
         "system": "النظام"
+      },
+      "messages": {
+        "ticketCreated": "قام {user} بإنشاء تذكرة جديدة: {subject}",
+        "ticketReply": "قام {user} بالرد على التذكرة: {subject}",
+        "proposalReceived": "تم استلام عرض جديد.",
+        "projectCompleted": "تم إكمال المشروع."
       }
     }
   },
@@ -1460,108 +1556,108 @@
   },
   "companies": {
     "edit": {
-  "title": "تعديل الشركة",
-  "description": "حدّث معلومات الشركة والفئة التجارية والشعار.",
-  "loading": "جارٍ تحميل الشركة...",
-  "currentLogo": "الشعار الحالي",
-  "currentLogoAlt": "الشعار الحالي للشركة",
-  "update": "تحديث الشركة",
-  "updating": "جارٍ التحديث...",
-  "fields": {
-    "name": {
-      "label": "اسم الشركة",
-      "placeholder": "اسم الشركة"
+      "title": "تعديل الشركة",
+      "description": "حدّث معلومات الشركة والفئة التجارية والشعار.",
+      "loading": "جارٍ تحميل الشركة...",
+      "currentLogo": "الشعار الحالي",
+      "currentLogoAlt": "الشعار الحالي للشركة",
+      "update": "تحديث الشركة",
+      "updating": "جارٍ التحديث...",
+      "fields": {
+        "name": {
+          "label": "اسم الشركة",
+          "placeholder": "اسم الشركة"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "الدولة"
+        },
+        "category": {
+          "label": "الفئة التجارية"
+        },
+        "description": {
+          "label": "الوصف",
+          "placeholder": "وصف الشركة"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "البريد الإلكتروني"
+        },
+        "website": {
+          "label": "الموقع الإلكتروني",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "استبدال الشعار",
+          "help": "اترك هذا الحقل فارغًا للاحتفاظ بالشعار الحالي. الصيغ المدعومة: JPG وPNG وWEBP."
+        }
+      },
+      "categories": {
+        "general": "عام",
+        "customsClearance": "التخليص الجمركي",
+        "shipping": "الشحن",
+        "inspection": "التفتيش",
+        "insurance": "التأمين",
+        "sourcing": "التوريد",
+        "documentation": "المستندات",
+        "payment": "الدفع"
+      },
+      "errors": {
+        "loadFailed": "تعذر تحميل بيانات الشركة.",
+        "updateFailed": "تعذر تحديث الشركة.",
+        "networkError": "حدث خطأ ما."
+      }
     },
-    "country": {
-      "label": "الدولة",
-      "placeholder": "الدولة"
-    },
-    "category": {
-      "label": "الفئة التجارية"
-    },
-    "description": {
-      "label": "الوصف",
-      "placeholder": "وصف الشركة"
-    },
-    "email": {
-      "label": "البريد الإلكتروني",
-      "placeholder": "البريد الإلكتروني"
-    },
-    "website": {
-      "label": "الموقع الإلكتروني",
-      "placeholder": "https://example.com"
-    },
-    "logo": {
-      "label": "استبدال الشعار",
-      "help": "اترك هذا الحقل فارغًا للاحتفاظ بالشعار الحالي. الصيغ المدعومة: JPG وPNG وWEBP."
-    }
-  },
-  "categories": {
-    "general": "عام",
-    "customsClearance": "التخليص الجمركي",
-    "shipping": "الشحن",
-    "inspection": "التفتيش",
-    "insurance": "التأمين",
-    "sourcing": "التوريد",
-    "documentation": "المستندات",
-    "payment": "الدفع"
-  },
-  "errors": {
-    "loadFailed": "تعذر تحميل بيانات الشركة.",
-    "updateFailed": "تعذر تحديث الشركة.",
-    "networkError": "حدث خطأ ما."
-  }
-},
     "new": {
-  "title": "إضافة شركة",
-  "description": "أنشئ ملفًا للشركة وأضفه إلى شبكة دسترس التجارية.",
-  "create": "إنشاء الشركة",
-  "creating": "جارٍ الإنشاء...",
-  "success": "تم إنشاء الشركة بنجاح.",
-  "fields": {
-    "name": {
-      "label": "اسم الشركة",
-      "placeholder": "اسم الشركة"
+      "title": "إضافة شركة",
+      "description": "أنشئ ملفًا للشركة وأضفه إلى شبكة دسترس التجارية.",
+      "create": "إنشاء الشركة",
+      "creating": "جارٍ الإنشاء...",
+      "success": "تم إنشاء الشركة بنجاح.",
+      "fields": {
+        "name": {
+          "label": "اسم الشركة",
+          "placeholder": "اسم الشركة"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "الدولة"
+        },
+        "category": {
+          "label": "الفئة التجارية"
+        },
+        "description": {
+          "label": "الوصف",
+          "placeholder": "وصف الشركة"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "البريد الإلكتروني"
+        },
+        "website": {
+          "label": "الموقع الإلكتروني",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "شعار الشركة",
+          "help": "الصيغ المدعومة: JPG وPNG وWEBP."
+        }
+      },
+      "categories": {
+        "general": "عام",
+        "customsClearance": "التخليص الجمركي",
+        "shipping": "الشحن",
+        "inspection": "التفتيش",
+        "insurance": "التأمين",
+        "sourcing": "التوريد",
+        "documentation": "المستندات",
+        "payment": "الدفع"
+      },
+      "errors": {
+        "createFailed": "تعذر إنشاء الشركة.",
+        "networkError": "حدث خطأ ما."
+      }
     },
-    "country": {
-      "label": "الدولة",
-      "placeholder": "الدولة"
-    },
-    "category": {
-      "label": "الفئة التجارية"
-    },
-    "description": {
-      "label": "الوصف",
-      "placeholder": "وصف الشركة"
-    },
-    "email": {
-      "label": "البريد الإلكتروني",
-      "placeholder": "البريد الإلكتروني"
-    },
-    "website": {
-      "label": "الموقع الإلكتروني",
-      "placeholder": "https://example.com"
-    },
-    "logo": {
-      "label": "شعار الشركة",
-      "help": "الصيغ المدعومة: JPG وPNG وWEBP."
-    }
-  },
-  "categories": {
-    "general": "عام",
-    "customsClearance": "التخليص الجمركي",
-    "shipping": "الشحن",
-    "inspection": "التفتيش",
-    "insurance": "التأمين",
-    "sourcing": "التوريد",
-    "documentation": "المستندات",
-    "payment": "الدفع"
-  },
-  "errors": {
-    "createFailed": "تعذر إنشاء الشركة.",
-    "networkError": "حدث خطأ ما."
-  }
-},
     "deleteButton": {
       "button": "حذف الشركة",
       "deleting": "جارٍ الحذف...",
@@ -1609,118 +1705,118 @@
   },
   "experts": {
     "edit": {
-  "title": "تعديل الخبير",
-  "description": "حدّث معلومات ملف الخبير وصورته الشخصية.",
-  "loading": "جارٍ تحميل الخبير...",
-  "currentImage": "صورة الملف الشخصي الحالية",
-  "currentImageAlt": "الصورة الحالية للخبير",
-  "update": "تحديث الخبير",
-  "updating": "جارٍ التحديث...",
-  "fields": {
-    "name": {
-      "label": "الاسم",
-      "placeholder": "الاسم الكامل"
+      "title": "تعديل الخبير",
+      "description": "حدّث معلومات ملف الخبير وصورته الشخصية.",
+      "loading": "جارٍ تحميل الخبير...",
+      "currentImage": "صورة الملف الشخصي الحالية",
+      "currentImageAlt": "الصورة الحالية للخبير",
+      "update": "تحديث الخبير",
+      "updating": "جارٍ التحديث...",
+      "fields": {
+        "name": {
+          "label": "الاسم",
+          "placeholder": "الاسم الكامل"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "الدولة"
+        },
+        "specialty": {
+          "label": "التخصص",
+          "placeholder": "التخصص التجاري"
+        },
+        "experience": {
+          "label": "الخبرة",
+          "placeholder": "صف الخبرة المهنية"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "البريد الإلكتروني"
+        },
+        "image": {
+          "label": "استبدال الصورة",
+          "help": "اترك هذا الحقل فارغًا للاحتفاظ بالصورة الحالية. الصيغ المدعومة: JPG وPNG وWEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "تعذر تحميل بيانات الخبير.",
+        "updateFailed": "تعذر تحديث الخبير.",
+        "networkError": "حدث خطأ ما."
+      }
     },
-    "country": {
-      "label": "الدولة",
-      "placeholder": "الدولة"
-    },
-    "specialty": {
-      "label": "التخصص",
-      "placeholder": "التخصص التجاري"
-    },
-    "experience": {
-      "label": "الخبرة",
-      "placeholder": "صف الخبرة المهنية"
-    },
-    "email": {
-      "label": "البريد الإلكتروني",
-      "placeholder": "البريد الإلكتروني"
-    },
-    "image": {
-      "label": "استبدال الصورة",
-      "help": "اترك هذا الحقل فارغًا للاحتفاظ بالصورة الحالية. الصيغ المدعومة: JPG وPNG وWEBP."
-    }
-  },
-  "errors": {
-    "loadFailed": "تعذر تحميل بيانات الخبير.",
-    "updateFailed": "تعذر تحديث الخبير.",
-    "networkError": "حدث خطأ ما."
-  }
-},
     "new": {
-  "title": "إضافة خبير",
-  "description": "أنشئ ملفًا للخبير وأضفه إلى شبكة دسترس التجارية.",
-  "create": "إنشاء الخبير",
-  "creating": "جارٍ الإنشاء...",
-  "success": "تم إنشاء الخبير بنجاح.",
-  "fields": {
-    "name": {
-      "label": "الاسم",
-      "placeholder": "الاسم الكامل"
+      "title": "إضافة خبير",
+      "description": "أنشئ ملفًا للخبير وأضفه إلى شبكة دسترس التجارية.",
+      "create": "إنشاء الخبير",
+      "creating": "جارٍ الإنشاء...",
+      "success": "تم إنشاء الخبير بنجاح.",
+      "fields": {
+        "name": {
+          "label": "الاسم",
+          "placeholder": "الاسم الكامل"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "الدولة"
+        },
+        "specialty": {
+          "label": "التخصص",
+          "placeholder": "التخصص التجاري"
+        },
+        "experience": {
+          "label": "الخبرة",
+          "placeholder": "صف الخبرة المهنية"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "البريد الإلكتروني"
+        },
+        "image": {
+          "label": "صورة الملف الشخصي",
+          "help": "الصيغ المدعومة: JPG وPNG وWEBP."
+        }
+      },
+      "errors": {
+        "createFailed": "تعذر إنشاء الخبير.",
+        "networkError": "حدث خطأ ما."
+      }
     },
-    "country": {
-      "label": "الدولة",
-      "placeholder": "الدولة"
-    },
-    "specialty": {
-      "label": "التخصص",
-      "placeholder": "التخصص التجاري"
-    },
-    "experience": {
-      "label": "الخبرة",
-      "placeholder": "صف الخبرة المهنية"
-    },
-    "email": {
-      "label": "البريد الإلكتروني",
-      "placeholder": "البريد الإلكتروني"
-    },
-    "image": {
-      "label": "صورة الملف الشخصي",
-      "help": "الصيغ المدعومة: JPG وPNG وWEBP."
-    }
-  },
-  "errors": {
-    "createFailed": "تعذر إنشاء الخبير.",
-    "networkError": "حدث خطأ ما."
-  }
-},
     "search": {
-  "searchLabel": "البحث عن الخبراء",
-  "searchPlaceholder": "🔍 البحث عن الخبراء...",
-  "countryLabel": "الدولة",
-  "ratingFilterLabel": "تصفية التقييم",
-  "allCountries": "جميع الدول",
-  "allRatings": "جميع التقييمات",
-  "fiveStars": "5 نجوم",
-  "fourPlusStars": "4 نجوم أو أكثر",
-  "verifiedOnly": "الخبراء الموثقون فقط",
-  "viewProfile": "عرض الملف الشخصي ←",
-  "available": "متاح",
-  "noRating": "لا يوجد تقييم حتى الآن",
-  "notAvailable": "غير متاح",
-  "empty": "لا يوجد خبراء يطابقون عوامل التصفية المحددة.",
-  "reviewCount": "{count, plural, =1 {مراجعة واحدة} other {# مراجعات}}",
-  "featured": {
-    "title": "الخبراء المميزون",
-    "description": "خبراء متميزون يتمتعون بظهور أكبر على Dasres."
-  },
-  "verification": {
-    "verified": "موثق",
-    "rejected": "مرفوض",
-    "pending": "قيد المراجعة"
-  },
-  "plans": {
-    "gold": "ذهبي",
-    "diamond": "ماسي",
-    "enterprise": "مؤسسي"
-  },
-  "metrics": {
-    "trust": "الثقة",
-    "rating": "التقييم",
-    "reviews": "المراجعات"
-  }
-},
+      "searchLabel": "البحث عن الخبراء",
+      "searchPlaceholder": "🔍 البحث عن الخبراء...",
+      "countryLabel": "الدولة",
+      "ratingFilterLabel": "تصفية التقييم",
+      "allCountries": "جميع الدول",
+      "allRatings": "جميع التقييمات",
+      "fiveStars": "5 نجوم",
+      "fourPlusStars": "4 نجوم أو أكثر",
+      "verifiedOnly": "الخبراء الموثقون فقط",
+      "viewProfile": "عرض الملف الشخصي ←",
+      "available": "متاح",
+      "noRating": "لا يوجد تقييم حتى الآن",
+      "notAvailable": "غير متاح",
+      "empty": "لا يوجد خبراء يطابقون عوامل التصفية المحددة.",
+      "reviewCount": "{count, plural, =1 {مراجعة واحدة} other {# مراجعات}}",
+      "featured": {
+        "title": "الخبراء المميزون",
+        "description": "خبراء متميزون يتمتعون بظهور أكبر على Dasres."
+      },
+      "verification": {
+        "verified": "موثق",
+        "rejected": "مرفوض",
+        "pending": "قيد المراجعة"
+      },
+      "plans": {
+        "gold": "ذهبي",
+        "diamond": "ماسي",
+        "enterprise": "مؤسسي"
+      },
+      "metrics": {
+        "trust": "الثقة",
+        "rating": "التقييم",
+        "reviews": "المراجعات"
+      }
+    },
     "deleteButton": {
       "button": "حذف الخبير",
       "deleting": "جارٍ الحذف...",
@@ -1732,105 +1828,105 @@
   },
   "opportunities": {
     "dashboard": {
-  "title": "Opportunities Management",
-  "description": "Browse and manage international trade opportunities.",
-  "addOpportunity": "Add Opportunity",
-  "latestOpportunity": "Latest Opportunity",
-  "stats": {
-    "total": "Total",
-    "active": "Active",
-    "closed": "Closed",
-    "countries": "Countries"
-  },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {current} of {total}"
-  }
-},
+      "title": "إدارة الفرص",
+      "description": "تصفّح فرص التجارة الدولية وأدرها.",
+      "addOpportunity": "إضافة فرصة",
+      "latestOpportunity": "أحدث فرصة",
+      "stats": {
+        "total": "الإجمالي",
+        "active": "النشطة",
+        "closed": "المغلقة",
+        "countries": "الدول"
+      },
+      "pagination": {
+        "previous": "السابقة",
+        "next": "التالية",
+        "page": "الصفحة {current} من {total}"
+      }
+    },
     "new": {
-  "title": "إضافة فرصة",
-  "description": "أنشئ فرصة تجارية جديدة وانشرها في سوق دسترس.",
-  "create": "إنشاء الفرصة",
-  "creating": "جارٍ الإنشاء...",
-  "success": "تم إنشاء الفرصة بنجاح.",
-  "fields": {
-    "title": {
-      "label": "العنوان",
-      "placeholder": "عنوان الفرصة"
+      "title": "إضافة فرصة",
+      "description": "أنشئ فرصة تجارية جديدة وانشرها في سوق دسترس.",
+      "create": "إنشاء الفرصة",
+      "creating": "جارٍ الإنشاء...",
+      "success": "تم إنشاء الفرصة بنجاح.",
+      "fields": {
+        "title": {
+          "label": "العنوان",
+          "placeholder": "عنوان الفرصة"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "الدولة"
+        },
+        "image": {
+          "label": "صورة الفرصة",
+          "help": "الصيغ المدعومة: JPG وPNG وWEBP."
+        },
+        "description": {
+          "label": "الوصف",
+          "placeholder": "صف الفرصة التجارية"
+        }
+      },
+      "errors": {
+        "createFailed": "تعذر إنشاء الفرصة.",
+        "networkError": "حدث خطأ ما."
+      }
     },
-    "country": {
-      "label": "الدولة",
-      "placeholder": "الدولة"
+    "edit": {
+      "title": "تعديل الفرصة",
+      "description": "حدّث معلومات الفرصة وصورتها.",
+      "loading": "جارٍ تحميل الفرصة...",
+      "currentImage": "الصورة الحالية للفرصة",
+      "currentImageAlt": "الصورة الحالية للفرصة",
+      "update": "تحديث الفرصة",
+      "updating": "جارٍ التحديث...",
+      "fields": {
+        "title": {
+          "label": "العنوان",
+          "placeholder": "عنوان الفرصة"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "الدولة"
+        },
+        "description": {
+          "label": "الوصف",
+          "placeholder": "صف الفرصة التجارية"
+        },
+        "image": {
+          "label": "استبدال الصورة",
+          "help": "اترك هذا الحقل فارغًا للاحتفاظ بالصورة الحالية. الصيغ المدعومة: JPG وPNG وWEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "تعذر تحميل بيانات الفرصة.",
+        "updateFailed": "تعذر تحديث الفرصة.",
+        "networkError": "حدث خطأ ما."
+      }
     },
-    "image": {
-      "label": "صورة الفرصة",
-      "help": "الصيغ المدعومة: JPG وPNG وWEBP."
-    },
-    "description": {
-      "label": "الوصف",
-      "placeholder": "صف الفرصة التجارية"
-    }
-  },
-  "errors": {
-    "createFailed": "تعذر إنشاء الفرصة.",
-    "networkError": "حدث خطأ ما."
-  }
-},
-"edit": {
-  "title": "تعديل الفرصة",
-  "description": "حدّث معلومات الفرصة وصورتها.",
-  "loading": "جارٍ تحميل الفرصة...",
-  "currentImage": "الصورة الحالية للفرصة",
-  "currentImageAlt": "الصورة الحالية للفرصة",
-  "update": "تحديث الفرصة",
-  "updating": "جارٍ التحديث...",
-  "fields": {
-    "title": {
-      "label": "العنوان",
-      "placeholder": "عنوان الفرصة"
-    },
-    "country": {
-      "label": "الدولة",
-      "placeholder": "الدولة"
-    },
-    "description": {
-      "label": "الوصف",
-      "placeholder": "صف الفرصة التجارية"
-    },
-    "image": {
-      "label": "استبدال الصورة",
-      "help": "اترك هذا الحقل فارغًا للاحتفاظ بالصورة الحالية. الصيغ المدعومة: JPG وPNG وWEBP."
-    }
-  },
-  "errors": {
-    "loadFailed": "تعذر تحميل بيانات الفرصة.",
-    "updateFailed": "تعذر تحديث الفرصة.",
-    "networkError": "حدث خطأ ما."
-  }
-},
     "search": {
-  "searchLabel": "البحث عن الفرص",
-  "searchPlaceholder": "🔍 البحث عن الفرص...",
-  "countryLabel": "الدولة",
-  "statusLabel": "الحالة",
-  "allCountries": "جميع الدول",
-  "allStatuses": "جميع الحالات",
-  "viewOpportunity": "عرض الفرصة ←",
-  "statuses": {
-    "open": "مفتوحة",
-    "inProgress": "قيد التنفيذ",
-    "closed": "مغلقة"
-  },
-  "featured": {
-    "title": "الفرص المميزة",
-    "description": "فرص تجارية نشطة ومتاحة حاليًا للتعاون."
-  },
-  "empty": {
-    "title": "لم يتم العثور على فرص",
-    "description": "حاول تغيير البحث أو عوامل التصفية."
-  }
-},
+      "searchLabel": "البحث عن الفرص",
+      "searchPlaceholder": "🔍 البحث عن الفرص...",
+      "countryLabel": "الدولة",
+      "statusLabel": "الحالة",
+      "allCountries": "جميع الدول",
+      "allStatuses": "جميع الحالات",
+      "viewOpportunity": "عرض الفرصة ←",
+      "statuses": {
+        "open": "مفتوحة",
+        "inProgress": "قيد التنفيذ",
+        "closed": "مغلقة"
+      },
+      "featured": {
+        "title": "الفرص المميزة",
+        "description": "فرص تجارية نشطة ومتاحة حاليًا للتعاون."
+      },
+      "empty": {
+        "title": "لم يتم العثور على فرص",
+        "description": "حاول تغيير البحث أو عوامل التصفية."
+      }
+    },
     "deleteButton": {
       "button": "حذف فرصت",
       "deleting": "جارٍ الحذف...",
@@ -1937,672 +2033,689 @@
     }
   },
   "createCaseForm": {
-  "titleLabel": "عنوان الحالة",
-  "titlePlaceholder": "الحاجة إلى التخليص الجمركي في دبي",
-  "categoryLabel": "فئة الحالة",
-  "categoryHelp": "يساعد ذلك دسترس على مطابقة الحالة مع الشركات والخبراء المناسبين.",
-  "descriptionLabel": "الوصف",
-  "descriptionPlaceholder": "صف الشحنة والخدمة المطلوبة والدولة والمستندات والجدول الزمني وأي متطلبات خاصة...",
-  "create": "إنشاء الحالة",
-  "creating": "جارٍ الإنشاء...",
-  "categories": {
-    "general": "عام",
-    "customsClearance": "التخليص الجمركي",
-    "shipping": "الشحن",
-    "inspection": "التفتيش",
-    "insurance": "التأمين",
-    "sourcing": "التوريد",
-    "documentation": "المستندات",
-    "payment": "الدفع"
+    "titleLabel": "عنوان الحالة",
+    "titlePlaceholder": "الحاجة إلى التخليص الجمركي في دبي",
+    "categoryLabel": "فئة الحالة",
+    "categoryHelp": "يساعد ذلك دسترس على مطابقة الحالة مع الشركات والخبراء المناسبين.",
+    "descriptionLabel": "الوصف",
+    "descriptionPlaceholder": "صف الشحنة والخدمة المطلوبة والدولة والمستندات والجدول الزمني وأي متطلبات خاصة...",
+    "create": "إنشاء الحالة",
+    "creating": "جارٍ الإنشاء...",
+    "categories": {
+      "general": "عام",
+      "customsClearance": "التخليص الجمركي",
+      "shipping": "الشحن",
+      "inspection": "التفتيش",
+      "insurance": "التأمين",
+      "sourcing": "التوريد",
+      "documentation": "المستندات",
+      "payment": "الدفع"
+    },
+    "backToCases": "← العودة إلى الحالات",
+    "pageTitle": "إنشاء حالة تجارية جديدة",
+    "pageDescription": "أرسل طلب خدمة تجارية جديداً. يمكن تعيين شركة أو خبير لاحقاً.",
+    "plans": {
+      "free": "مجانية",
+      "gold": "ذهبية",
+      "diamond": "ماسية",
+      "enterprise": "مؤسسات"
+    },
+    "errors": {
+      "planLimit": "تسمح خطتك {plan} بما يصل إلى {limit} حالات تجارية نشطة. قم بترقية خطتك لإنشاء المزيد من الحالات.",
+      "titleAndDescriptionRequired": "العنوان والوصف مطلوبان.",
+      "invalidCategory": "فئة الحالة غير صالحة."
+    }
   },
-  "backToCases": "← العودة إلى الحالات",
-"pageTitle": "إنشاء حالة تجارية جديدة",
-"pageDescription": "أرسل طلب خدمة تجارية جديداً. يمكن تعيين شركة أو خبير لاحقاً.",
-"plans": {
-  "free": "مجانية",
-  "gold": "ذهبية",
-  "diamond": "ماسية",
-  "enterprise": "مؤسسات"
-},
-"errors": {
-  "planLimit": "تسمح خطتك {plan} بما يصل إلى {limit} حالات تجارية نشطة. قم بترقية خطتك لإنشاء المزيد من الحالات.",
-  "titleAndDescriptionRequired": "العنوان والوصف مطلوبان.",
-  "invalidCategory": "فئة الحالة غير صالحة."
-}
-},
-"dashboardSearch": {
-  "eyebrow": "البحث الشامل",
-  "title": "البحث في دسترس",
-  "description": "ابحث عن الشركات والخبراء والفرص والحالات التجارية في مساحة عملك.",
-  "searchLabel": "البحث في دسترس",
-  "searchPlaceholder": "البحث عن الشركات والخبراء والفرص والحالات...",
-  "searchButton": "بحث",
-  "initialState": "أدخل كلمة مفتاحية للبحث في دسترس.",
-  "resultsSummary": "{count, plural, =0 {لم يتم العثور على نتائج لـ} =1 {تم العثور على نتيجة واحدة لـ} other {تم العثور على # نتائج لـ}}",
-  "sections": {
+  "dashboardSearch": {
+    "eyebrow": "البحث الشامل",
+    "title": "البحث في دسترس",
+    "description": "ابحث عن الشركات والخبراء والفرص والحالات التجارية في مساحة عملك.",
+    "searchLabel": "البحث في دسترس",
+    "searchPlaceholder": "البحث عن الشركات والخبراء والفرص والحالات...",
+    "searchButton": "بحث",
+    "initialState": "أدخل كلمة مفتاحية للبحث في دسترس.",
+    "resultsSummary": "{count, plural, =0 {لم يتم العثور على نتائج لـ} =1 {تم العثور على نتيجة واحدة لـ} other {تم العثور على # نتائج لـ}}",
+    "sections": {
+      "companies": {
+        "title": "الشركات",
+        "empty": "لم يتم العثور على شركات."
+      },
+      "experts": {
+        "title": "الخبراء",
+        "empty": "لم يتم العثور على خبراء."
+      },
+      "opportunities": {
+        "title": "الفرص",
+        "empty": "لم يتم العثور على فرص."
+      },
+      "tradeCases": {
+        "title": "الحالات التجارية",
+        "empty": "لم يتم العثور على حالات."
+      }
+    },
+    "statuses": {
+      "open": "مفتوحة",
+      "inProgress": "قيد التنفيذ",
+      "completed": "مكتملة",
+      "closed": "مغلقة",
+      "pending": "قيد الانتظار",
+      "cancelled": "ملغاة"
+    }
+  },
+  "companyProfile": {
+    "metadata": {
+      "notFoundTitle": "لم يتم العثور على الشركة",
+      "notFoundDescription": "تعذر العثور على ملف الشركة المطلوب.",
+      "description": "{name} شركة متخصصة في {category} من {country}. استكشف ملف هذه الشركة على دسترس."
+    },
+    "notFound": "لم يتم العثور على الشركة",
+    "backToCompanies": "العودة إلى الشركات ←",
+    "statusLabel": "الحالة",
+    "notAvailable": "غير متاح",
+    "notProvided": "غير مذكور",
+    "companyRating": "تقييم الشركة",
+    "companyDescription": "وصف الشركة",
+    "recentReviews": "أحدث المراجعات",
+    "companyInformation": "معلومات الشركة",
+    "noReviews": "لا توجد مراجعات حتى الآن.",
+    "noCommentProvided": "لم يتم تقديم تعليق.",
+    "basedOnReviews": "{count, plural, =1 {استنادًا إلى مراجعة واحدة} other {استنادًا إلى # مراجعات}}",
+    "trustScoreValue": "درجة الثقة: {score} من 100",
+    "completedCasesValue": "الحالات المكتملة: {count}",
+    "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {مراجعة واحدة} other {# مراجعات}})",
+    "sendEmail": "إرسال بريد إلكتروني",
+    "visitWebsite": "زيارة الموقع",
+    "verificationStatus": "حالة التوثيق",
+    "editCompany": "تعديل الشركة",
+    "metrics": {
+      "trustScore": "درجة الثقة",
+      "rating": "التقييم",
+      "reviews": "المراجعات",
+      "verification": "التوثيق",
+      "country": "الدولة"
+    },
+    "fields": {
+      "email": "البريد الإلكتروني",
+      "website": "الموقع الإلكتروني",
+      "country": "الدولة",
+      "category": "الفئة",
+      "reputation": "السمعة"
+    },
+    "verificationBadges": {
+      "verified": "شركة موثقة",
+      "rejected": "مرفوضة",
+      "pending": "قيد التوثيق"
+    },
+    "verificationStatuses": {
+      "verified": "موثقة",
+      "rejected": "مرفوضة",
+      "pending": "قيد الانتظار"
+    },
+    "plans": {
+      "gold": "ذهبي",
+      "diamond": "ماسي",
+      "enterprise": "مؤسسي"
+    },
+    "statuses": {
+      "active": "نشطة",
+      "inactive": "غير نشطة",
+      "open": "مفتوحة",
+      "pending": "قيد الانتظار",
+      "verified": "موثقة",
+      "rejected": "مرفوضة",
+      "completed": "مكتملة",
+      "inProgress": "قيد التنفيذ"
+    },
+    "schema": {
+      "status": "الحالة",
+      "category": "الفئة"
+    }
+  },
+  "dashboardCompanies": {
+    "title": "إدارة الشركات",
+    "description": "إدارة وتصفح شركات التجارة الدولية.",
+    "addCompany": "إضافة شركة",
+    "stats": {
+      "total": "الإجمالي",
+      "verified": "موثقة",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوضة",
+      "premium": "مميزة"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "الصفحة {current} من {total}"
+    }
+  },
+  "dashboardExperts": {
+    "title": "إدارة الخبراء",
+    "description": "إدارة وتصفح خبراء التجارة الدولية.",
+    "addExpert": "إضافة خبير",
+    "stats": {
+      "total": "الإجمالي",
+      "verified": "موثقون",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوضون",
+      "premium": "مميزون"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "الصفحة {current} من {total}"
+    }
+  },
+  "dashboardMyCases": {
+    "title": "حالاتي النشطة",
+    "description": "الحالات التي تم فيها قبول عرض شركتك.",
+    "notAvailable": "غير متاح",
+    "notAssigned": "غير مُعيّن",
+    "caseNumber": "الحالة رقم {id}",
+    "documentCount": "{count, plural, =1 {مستند واحد} other {# مستندات}}",
+    "messageCount": "{count, plural, =1 {رسالة واحدة} other {# رسائل}}",
+    "stepsCompleted": "تم إكمال {completed} من أصل {total} مرحلة",
+    "updated": "تم التحديث في {date}",
+    "viewCase": "عرض الحالة ←",
+    "stats": {
+      "assignedCases": "الحالات المعيّنة",
+      "inProgress": "قيد التنفيذ",
+      "completed": "مكتملة",
+      "workload": "حجم العمل",
+      "workloadDescription": "الرسائل + المستندات"
+    },
+    "empty": {
+      "title": "لا توجد حالات نشطة حتى الآن",
+      "description": "عند قبول أحد عروض شركتك، ستظهر الحالة التجارية المعيّنة هنا.",
+      "browseOpenCases": "تصفح الحالات المفتوحة"
+    },
+    "fields": {
+      "acceptedCompany": "الشركة المقبولة",
+      "assignedExpert": "الخبير المعيّن",
+      "proposalPrice": "سعر العرض",
+      "timelineProgress": "تقدم المراحل"
+    },
+    "statuses": {
+      "open": "مفتوحة",
+      "inProgress": "قيد التنفيذ",
+      "completed": "مكتملة",
+      "cancelled": "ملغاة"
+    }
+  },
+  "dashboardMyCompanies": {
+    "title": "شركاتي",
+    "description": "إدارة ملفات الشركات التابعة لك وحالة التحقق ومستوى ظهورها.",
+    "addCompany": "إضافة شركة",
+    "created": "تم الإنشاء في {date}",
+    "viewCompany": "مشاهدة الشركة ←",
+    "categories": {
+      "general": "عام",
+      "customsClearance": "التخليص الجمركي",
+      "shipping": "الشحن",
+      "inspection": "التفتيش",
+      "insurance": "التأمين",
+      "sourcing": "التوريد",
+      "documentation": "الوثائق",
+      "payment": "الدفع"
+    },
+    "countries": {
+      "iran": "إيران"
+    },
+    "stats": {
+      "total": "الإجمالي",
+      "verified": "تم التحقق",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوض",
+      "premium": "مميز"
+    },
+    "empty": {
+      "title": "لا توجد شركات لديك بعد",
+      "description": "أنشئ أول ملف شركة للمشاركة في الفرص التجارية وإرسال العروض.",
+      "button": "إضافة شركة"
+    },
+    "verification": {
+      "verified": "تم التحقق",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوض"
+    },
+    "plans": {
+      "free": "مجاني",
+      "gold": "ذهبي",
+      "diamond": "ماسي",
+      "enterprise": "مؤسسي"
+    },
+    "statuses": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "suspended": "معلق"
+    }
+  },
+  "dashboardMyExperts": {
+    "title": "خبرائي",
+    "description": "أدر ملفات الخبراء التي تملكها وحالة التوثيق ومستوى ظهور الخطط.",
+    "addExpert": "إضافة خبير",
+    "created": "تم الإنشاء في {date}",
+    "viewExpert": "عرض الخبير ←",
+    "stats": {
+      "total": "الإجمالي",
+      "verified": "موثقون",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوضون",
+      "premium": "مميزون"
+    },
+    "empty": {
+      "title": "لا يوجد خبراء حتى الآن",
+      "description": "أنشئ أول ملف خبير لعرض خبرتك وتلقي الطلبات التجارية.",
+      "button": "إضافة خبير"
+    },
+    "verification": {
+      "verified": "موثق",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوض"
+    },
+    "plans": {
+      "free": "مجانية",
+      "gold": "ذهبية",
+      "diamond": "ماسية",
+      "enterprise": "مؤسسية"
+    },
+    "statuses": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "suspended": "معلق"
+    }
+  },
+  "dashboardMyProposals": {
+    "title": "عروضي",
+    "description": "تتبع أداء العروض ونسبة النجاح والقيمة المقدمة.",
+    "findOpenCases": "البحث عن حالات مفتوحة",
+    "empty": "لا توجد عروض حتى الآن.",
+    "notAvailable": "غير متاح",
+    "notAssigned": "غير مُعيّن",
+    "proposalNumber": "العرض رقم {id}",
+    "submittedOn": "تم الإرسال في {date}",
+    "caseStatus": "حالة الملف: {status}",
+    "viewCase": "عرض الحالة ←",
+    "stats": {
+      "totalProposals": "إجمالي العروض",
+      "pending": "قيد الانتظار",
+      "accepted": "مقبولة",
+      "rejected": "مرفوضة",
+      "winRate": "نسبة النجاح",
+      "acceptedValue": "القيمة المقبولة",
+      "submittedValue": "القيمة المقدمة: ${value}"
+    },
+    "filters": {
+      "all": "الكل: {count}",
+      "pending": "قيد الانتظار: {count}",
+      "accepted": "مقبولة: {count}",
+      "rejected": "مرفوضة: {count}"
+    },
+    "fields": {
+      "case": "الحالة",
+      "company": "الشركة",
+      "expert": "الخبير",
+      "price": "السعر"
+    },
+    "statuses": {
+      "pending": "قيد الانتظار",
+      "accepted": "مقبولة",
+      "rejected": "مرفوضة"
+    },
+    "caseStatuses": {
+      "open": "مفتوحة",
+      "inProgress": "قيد التنفيذ",
+      "completed": "مكتملة",
+      "cancelled": "ملغاة"
+    }
+  },
+  "dashboardMyTasks": {
+    "eyebrow": "مهامي",
+    "title": "العمل المعيّن",
+    "assignedSummary": "{count, plural, =0 {لا توجد مهام معيّنة} =1 {مهمة واحدة معيّنة} other {# مهام معيّنة}}",
+    "noDueDate": "لا يوجد موعد نهائي",
+    "viewProject": "عرض المشروع",
+    "stats": {
+      "assigned": "معيّنة",
+      "completed": "مكتملة",
+      "inProgress": "قيد التنفيذ",
+      "overdue": "متأخرة"
+    },
+    "empty": {
+      "title": "لا توجد مهام معيّنة",
+      "description": "ليس لديك أي عمل معيّن حتى الآن."
+    },
+    "fields": {
+      "project": "المشروع",
+      "projectStatus": "حالة المشروع",
+      "dueDate": "الموعد النهائي"
+    },
+    "taskStatuses": {
+      "todo": "للتنفيذ",
+      "inProgress": "قيد التنفيذ",
+      "review": "قيد المراجعة",
+      "completed": "مكتملة"
+    },
+    "projectStatuses": {
+      "open": "مفتوح",
+      "inProgress": "قيد التنفيذ",
+      "completed": "مكتمل",
+      "cancelled": "ملغى"
+    },
+    "priorities": {
+      "low": "منخفضة",
+      "medium": "متوسطة",
+      "high": "عالية",
+      "urgent": "عاجلة"
+    }
+  },
+  "dashboardProjects": {
+    "eyebrow": "المشاريع",
+    "title": "المشاريع التجارية",
+    "description": "أدر الحالات التجارية المقبولة وتابع تقدم التنفيذ.",
+    "customer": "العميل",
+    "empty": {
+      "title": "لا توجد مشاريع حتى الآن",
+      "description": "يتم إنشاء المشاريع تلقائيًا عند قبول أحد العروض.",
+      "browseOpenCases": "تصفح الحالات المفتوحة"
+    },
+    "statuses": {
+      "active": "نشط",
+      "pending": "قيد الانتظار",
+      "open": "مفتوح",
+      "inProgress": "قيد التنفيذ",
+      "completed": "مكتمل",
+      "cancelled": "ملغى"
+    }
+  },
+  "dashboardSavedCases": {
+    "title": "الحالات المحفوظة",
+    "description": "الحالات التجارية التي حفظتها لمراجعتها لاحقًا.",
+    "savedOn": "تم الحفظ في {date}",
+    "viewCase": "عرض الحالة ←",
+    "empty": {
+      "title": "لا توجد حالات محفوظة حتى الآن",
+      "description": "احفظ الحالات التجارية المهمة للوصول إليها لاحقًا.",
+      "button": "تصفح الحالات المفتوحة"
+    },
+    "metrics": {
+      "proposals": "العروض",
+      "documents": "المستندات",
+      "messages": "الرسائل"
+    },
+    "statuses": {
+      "open": "مفتوحة",
+      "inProgress": "قيد التنفيذ",
+      "completed": "مكتملة",
+      "cancelled": "ملغاة"
+    }
+  },
+  "dashboardSavedCompanies": {
+    "title": "الشركات المحفوظة",
+    "description": "الشركات التي حفظتها لمراجعتها والتواصل معها لاحقًا.",
+    "viewProfile": "عرض الملف الشخصي",
+    "empty": {
+      "title": "لا توجد شركات محفوظة حتى الآن",
+      "description": "احفظ الشركات الموثوقة لبناء شبكتك التجارية.",
+      "button": "تصفح الشركات"
+    }
+  },
+  "dashboardSavedExperts": {
+    "title": "الخبراء المحفوظون",
+    "description": "الخبراء الذين حفظتهم لمراجعتهم والتواصل معهم لاحقًا.",
+    "viewProfile": "عرض الملف الشخصي",
+    "empty": {
+      "title": "لا يوجد خبراء محفوظون حتى الآن",
+      "description": "احفظ المهنيين ذوي الخبرة للتواصل معهم بسرعة في المشاريع التجارية المستقبلية.",
+      "button": "تصفح الخبراء"
+    }
+  },
+  "dashboardSettings": {
+    "eyebrow": "إعدادات الحساب",
+    "title": "الإعدادات",
+    "description": "أدر حسابك وخطتك ومعلومات ملفك الشخصي في دسترس.",
+    "unlimited": "غير محدود",
+    "profileInformation": {
+      "title": "معلومات الملف الشخصي",
+      "notProvided": "غير مذكور",
+      "fields": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "role": "الدور",
+        "plan": "الخطة"
+      }
+    },
+    "planLimits": {
+      "title": "حدود الخطة",
+      "caseLimit": "حد الحالات",
+      "proposalLimit": "حد العروض"
+    },
+    "quickLinks": {
+      "title": "روابط سريعة",
+      "manageSubscription": "إدارة الاشتراك",
+      "myCompanies": "شركاتي",
+      "myExperts": "خبرائي"
+    },
+    "security": {
+      "title": "الأمان",
+      "description": "ستتم إضافة تغيير كلمة المرور والمصادقة الثنائية وسجل تسجيل الدخول في مرحلة أمان النسخة الإنتاجية."
+    },
+    "roles": {
+      "admin": "مدير",
+      "user": "مستخدم"
+    },
+    "plans": {
+      "free": "مجانية",
+      "gold": "ذهبية",
+      "diamond": "ماسية",
+      "enterprise": "مؤسسية"
+    }
+  },
+  "dashboardSubscription": {
+    "title": "الاشتراك",
+    "usageUnlimited": "غير محدود (المستخدم: {used})",
+    "premiumBadge": "مميز",
+    "description": "أدر خطة دسترس وحدود الاستخدام ومستوى الظهور المميز. المدفوعات غير مفعلة حتى الآن، وتتم إدارة الخطط حاليًا بواسطة المدير.",
+    "currentBadge": "الخطة الحالية",
+    "managePlan": "إدارة الخطة",
+    "currentPlan": "الخطة الحالية",
+    "usageLimited": "حدود الاستخدام",
+    "proposals": "العروض",
+    "activeCases": "الحالات النشطة",
+    "usage": {
+      "currentPlan": "الخطة الحالية",
+      "activeCasesUsed": "الحالات النشطة المستخدمة",
+      "proposalsUsed": "العروض المستخدمة",
+      "limitedValue": "{used} من {limit}",
+      "unlimitedValue": "{used} من غير محدود"
+    },
+    "planLabels": {
+      "free": "مجانية",
+      "gold": "ذهبية",
+      "diamond": "ماسية",
+      "enterprise": "مؤسسية"
+    },
+    "actions": {
+      "currentPlan": "الخطة الحالية",
+      "contactSales": "التواصل مع المبيعات",
+      "notAvailable": "غير متاحة",
+      "requestUpgrade": "طلب ترقية"
+    },
+    "plans": {
+      "free": {
+        "title": "مجانية",
+        "description": "لاختبار دسترس وبدء النشاط التجاري الأساسي.",
+        "price": "0 دولار",
+        "features": {
+          "activeCases": "3 حالات تجارية نشطة",
+          "proposals": "5 عروض",
+          "companyProfile": "ملف شركة أساسي",
+          "expertProfile": "ملف خبير أساسي"
+        }
+      },
+      "gold": {
+        "title": "ذهبية",
+        "description": "للفرق النامية التي تحتاج إلى ظهور وسعة أكبر.",
+        "price": "29 دولارًا شهريًا",
+        "features": {
+          "activeCases": "20 حالة تجارية نشطة",
+          "proposals": "20 عرضًا",
+          "badge": "شارة ذهبية",
+          "priorityListing": "إدراج ذو أولوية"
+        }
+      },
+      "diamond": {
+        "title": "ماسية",
+        "description": "لمقدمي الخدمات المحترفين ومشغلي التجارة المتكررين.",
+        "price": "99 دولارًا شهريًا",
+        "features": {
+          "activeCases": "حالات تجارية نشطة غير محدودة",
+          "proposals": "عروض غير محدودة",
+          "badge": "شارة ماسية",
+          "featuredListing": "إدراج مميز"
+        }
+      },
+      "enterprise": {
+        "title": "مؤسسية",
+        "description": "للشركات التجارية الكبيرة والوكالات وفرق المؤسسات.",
+        "price": "تسعير مخصص",
+        "features": {
+          "activeCases": "حالات تجارية نشطة غير محدودة",
+          "proposals": "عروض غير محدودة",
+          "badge": "شارة مؤسسية",
+          "visibility": "أعلى مستوى ظهور",
+          "accountManager": "إمكانية الوصول مستقبلًا إلى مدير حساب"
+        }
+      }
+    },
+    "upgradeNotice": {
+      "title": "هل تحتاج إلى خطة أعلى؟",
+      "description": "المدفوعات غير مفعلة حتى الآن. يمكن للمديرين حاليًا ترقية خطط المستخدمين يدويًا من لوحة إدارة المستخدمين.",
+      "back": "العودة إلى لوحة التحكم"
+    }
+  },
+  "dashboardVerifications": {
+    "title": "مركز التوثيق",
+    "description": "راجع وأدر طلبات توثيق الشركات والخبراء.",
+    "created": "تم الإنشاء في {date}",
+    "stats": {
+      "pending": {
+        "title": "قيد الانتظار",
+        "description": "الشركات + الخبراء"
+      },
+      "verified": {
+        "title": "موثقة",
+        "description": "الملفات المعتمدة"
+      },
+      "rejected": {
+        "title": "مرفوضة",
+        "description": "الملفات المرفوضة"
+      }
+    },
     "companies": {
-      "title": "الشركات",
-      "empty": "لم يتم العثور على شركات."
+      "title": "الشركات قيد الانتظار",
+      "description": "ملفات الشركات التي تنتظر مراجعة المدير.",
+      "empty": "لا توجد شركات قيد الانتظار."
     },
     "experts": {
-      "title": "الخبراء",
-      "empty": "لم يتم العثور على خبراء."
+      "title": "الخبراء قيد الانتظار",
+      "description": "ملفات الخبراء التي تنتظر مراجعة المدير.",
+      "empty": "لا يوجد خبراء قيد الانتظار."
     },
-    "opportunities": {
-      "title": "الفرص",
-      "empty": "لم يتم العثور على فرص."
-    },
-    "tradeCases": {
-      "title": "الحالات التجارية",
-      "empty": "لم يتم العثور على حالات."
+    "plans": {
+      "free": "مجانية",
+      "gold": "ذهبية",
+      "diamond": "ماسية",
+      "enterprise": "مؤسسية"
     }
   },
-  "statuses": {
-    "open": "مفتوحة",
-    "inProgress": "قيد التنفيذ",
-    "completed": "مكتملة",
-    "closed": "مغلقة",
-    "pending": "قيد الانتظار",
-    "cancelled": "ملغاة"
-  }
-},
-"companyProfile": {
-  "metadata": {
-    "notFoundTitle": "لم يتم العثور على الشركة",
-    "notFoundDescription": "تعذر العثور على ملف الشركة المطلوب.",
-    "description": "{name} شركة متخصصة في {category} من {country}. استكشف ملف هذه الشركة على دسترس."
-  },
-  "notFound": "لم يتم العثور على الشركة",
-  "backToCompanies": "العودة إلى الشركات ←",
-  "statusLabel": "الحالة",
-  "notAvailable": "غير متاح",
-  "notProvided": "غير مذكور",
-  "companyRating": "تقييم الشركة",
-  "companyDescription": "وصف الشركة",
-  "recentReviews": "أحدث المراجعات",
-  "companyInformation": "معلومات الشركة",
-  "noReviews": "لا توجد مراجعات حتى الآن.",
-  "noCommentProvided": "لم يتم تقديم تعليق.",
-  "basedOnReviews": "{count, plural, =1 {استنادًا إلى مراجعة واحدة} other {استنادًا إلى # مراجعات}}",
-  "trustScoreValue": "درجة الثقة: {score} من 100",
-  "completedCasesValue": "الحالات المكتملة: {count}",
-  "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {مراجعة واحدة} other {# مراجعات}})",
-  "sendEmail": "إرسال بريد إلكتروني",
-  "visitWebsite": "زيارة الموقع",
-  "verificationStatus": "حالة التوثيق",
-  "editCompany": "تعديل الشركة",
-  "metrics": {
-    "trustScore": "درجة الثقة",
-    "rating": "التقييم",
-    "reviews": "المراجعات",
-    "verification": "التوثيق",
-    "country": "الدولة"
-  },
-  "fields": {
-    "email": "البريد الإلكتروني",
-    "website": "الموقع الإلكتروني",
-    "country": "الدولة",
-    "category": "الفئة",
-    "reputation": "السمعة"
-  },
-  "verificationBadges": {
-    "verified": "شركة موثقة",
-    "rejected": "مرفوضة",
-    "pending": "قيد التوثيق"
-  },
-  "verificationStatuses": {
-    "verified": "موثقة",
-    "rejected": "مرفوضة",
-    "pending": "قيد الانتظار"
-  },
-  "plans": {
-    "gold": "ذهبي",
-    "diamond": "ماسي",
-    "enterprise": "مؤسسي"
-  },
-  "statuses": {
-    "active": "نشطة",
-    "inactive": "غير نشطة",
-    "open": "مفتوحة",
-    "pending": "قيد الانتظار",
-    "verified": "موثقة",
-    "rejected": "مرفوضة",
-    "completed": "مكتملة",
-    "inProgress": "قيد التنفيذ"
-  },
-  "schema": {
-    "status": "الحالة",
-    "category": "الفئة"
-  }
-},
-"dashboardCompanies": {
-  "title": "إدارة الشركات",
-  "description": "إدارة وتصفح شركات التجارة الدولية.",
-  "addCompany": "إضافة شركة",
-  "stats": {
-    "total": "الإجمالي",
-    "verified": "موثقة",
-    "pending": "قيد الانتظار",
-    "rejected": "مرفوضة",
-    "premium": "مميزة"
-  },
-  "pagination": {
-    "previous": "السابق",
-    "next": "التالي",
-    "page": "الصفحة {current} من {total}"
-  }
-},
-"dashboardExperts": {
-  "title": "إدارة الخبراء",
-  "description": "إدارة وتصفح خبراء التجارة الدولية.",
-  "addExpert": "إضافة خبير",
-  "stats": {
-    "total": "الإجمالي",
-    "verified": "موثقون",
-    "pending": "قيد الانتظار",
-    "rejected": "مرفوضون",
-    "premium": "مميزون"
-  },
-  "pagination": {
-    "previous": "السابق",
-    "next": "التالي",
-    "page": "الصفحة {current} من {total}"
-  }
-},
-"dashboardMyCases": {
-  "title": "حالاتي النشطة",
-  "description": "الحالات التي تم فيها قبول عرض شركتك.",
-  "notAvailable": "غير متاح",
-  "notAssigned": "غير مُعيّن",
-  "caseNumber": "الحالة رقم {id}",
-  "documentCount": "{count, plural, =1 {مستند واحد} other {# مستندات}}",
-  "messageCount": "{count, plural, =1 {رسالة واحدة} other {# رسائل}}",
-  "stepsCompleted": "تم إكمال {completed} من أصل {total} مرحلة",
-  "updated": "تم التحديث في {date}",
-  "viewCase": "عرض الحالة ←",
-  "stats": {
-    "assignedCases": "الحالات المعيّنة",
-    "inProgress": "قيد التنفيذ",
-    "completed": "مكتملة",
-    "workload": "حجم العمل",
-    "workloadDescription": "الرسائل + المستندات"
-  },
-  "empty": {
-    "title": "لا توجد حالات نشطة حتى الآن",
-    "description": "عند قبول أحد عروض شركتك، ستظهر الحالة التجارية المعيّنة هنا.",
-    "browseOpenCases": "تصفح الحالات المفتوحة"
-  },
-  "fields": {
-    "acceptedCompany": "الشركة المقبولة",
-    "assignedExpert": "الخبير المعيّن",
-    "proposalPrice": "سعر العرض",
-    "timelineProgress": "تقدم المراحل"
-  },
-  "statuses": {
-    "open": "مفتوحة",
-    "inProgress": "قيد التنفيذ",
-    "completed": "مكتملة",
-    "cancelled": "ملغاة"
-  }
-},
-"dashboardMyCompanies": {
-  "title": "شركاتي",
-  "description": "أدر ملفات الشركات التي تملكها وحالة التوثيق ومستوى ظهور الخطط.",
-  "addCompany": "إضافة شركة",
-  "created": "تم الإنشاء في {date}",
-  "viewCompany": "عرض الشركة ←",
-  "stats": {
-    "total": "الإجمالي",
-    "verified": "موثقة",
-    "pending": "قيد الانتظار",
-    "rejected": "مرفوضة",
-    "premium": "مميزة"
-  },
-  "empty": {
-    "title": "لا توجد شركات حتى الآن",
-    "description": "أنشئ أول ملف شركة للمشاركة في الفرص التجارية وإرسال العروض.",
-    "button": "إضافة شركة"
-  },
-  "verification": {
-    "verified": "موثقة",
-    "pending": "قيد الانتظار",
-    "rejected": "مرفوضة"
-  },
-  "plans": {
-    "free": "مجانية",
-    "gold": "ذهبية",
-    "diamond": "ماسية",
-    "enterprise": "مؤسسية"
-  },
-  "statuses": {
-    "active": "نشطة",
-    "inactive": "غير نشطة",
-    "suspended": "معلقة"
-  }
-},
-"dashboardMyExperts": {
-  "title": "خبرائي",
-  "description": "أدر ملفات الخبراء التي تملكها وحالة التوثيق ومستوى ظهور الخطط.",
-  "addExpert": "إضافة خبير",
-  "created": "تم الإنشاء في {date}",
-  "viewExpert": "عرض الخبير ←",
-  "stats": {
-    "total": "الإجمالي",
-    "verified": "موثقون",
-    "pending": "قيد الانتظار",
-    "rejected": "مرفوضون",
-    "premium": "مميزون"
-  },
-  "empty": {
-    "title": "لا يوجد خبراء حتى الآن",
-    "description": "أنشئ أول ملف خبير لعرض خبرتك وتلقي الطلبات التجارية.",
-    "button": "إضافة خبير"
-  },
-  "verification": {
-    "verified": "موثق",
-    "pending": "قيد الانتظار",
-    "rejected": "مرفوض"
-  },
-  "plans": {
-    "free": "مجانية",
-    "gold": "ذهبية",
-    "diamond": "ماسية",
-    "enterprise": "مؤسسية"
-  },
-  "statuses": {
-    "active": "نشط",
-    "inactive": "غير نشط",
-    "suspended": "معلق"
-  }
-},
-"dashboardMyProposals": {
-  "title": "عروضي",
-  "description": "تتبع أداء العروض ونسبة النجاح والقيمة المقدمة.",
-  "findOpenCases": "البحث عن حالات مفتوحة",
-  "empty": "لا توجد عروض حتى الآن.",
-  "notAvailable": "غير متاح",
-  "notAssigned": "غير مُعيّن",
-  "proposalNumber": "العرض رقم {id}",
-  "submittedOn": "تم الإرسال في {date}",
-  "caseStatus": "حالة الملف: {status}",
-  "viewCase": "عرض الحالة ←",
-  "stats": {
-    "totalProposals": "إجمالي العروض",
-    "pending": "قيد الانتظار",
-    "accepted": "مقبولة",
-    "rejected": "مرفوضة",
-    "winRate": "نسبة النجاح",
-    "acceptedValue": "القيمة المقبولة",
-    "submittedValue": "القيمة المقدمة: ${value}"
-  },
-  "filters": {
-    "all": "الكل: {count}",
-    "pending": "قيد الانتظار: {count}",
-    "accepted": "مقبولة: {count}",
-    "rejected": "مرفوضة: {count}"
-  },
-  "fields": {
-    "case": "الحالة",
-    "company": "الشركة",
-    "expert": "الخبير",
-    "price": "السعر"
-  },
-  "statuses": {
-    "pending": "قيد الانتظار",
-    "accepted": "مقبولة",
-    "rejected": "مرفوضة"
-  },
-  "caseStatuses": {
-    "open": "مفتوحة",
-    "inProgress": "قيد التنفيذ",
-    "completed": "مكتملة",
-    "cancelled": "ملغاة"
-  }
-},
-"dashboardMyTasks": {
-  "eyebrow": "مهامي",
-  "title": "العمل المعيّن",
-  "assignedSummary": "{count, plural, =0 {لا توجد مهام معيّنة} =1 {مهمة واحدة معيّنة} other {# مهام معيّنة}}",
-  "noDueDate": "لا يوجد موعد نهائي",
-  "viewProject": "عرض المشروع",
-  "stats": {
-    "assigned": "معيّنة",
-    "completed": "مكتملة",
-    "inProgress": "قيد التنفيذ",
-    "overdue": "متأخرة"
-  },
-  "empty": {
-    "title": "لا توجد مهام معيّنة",
-    "description": "ليس لديك أي عمل معيّن حتى الآن."
-  },
-  "fields": {
-    "project": "المشروع",
-    "projectStatus": "حالة المشروع",
-    "dueDate": "الموعد النهائي"
-  },
-  "taskStatuses": {
-    "todo": "للتنفيذ",
-    "inProgress": "قيد التنفيذ",
-    "review": "قيد المراجعة",
-    "completed": "مكتملة"
-  },
-  "projectStatuses": {
-    "open": "مفتوح",
-    "inProgress": "قيد التنفيذ",
-    "completed": "مكتمل",
-    "cancelled": "ملغى"
-  },
-  "priorities": {
-    "low": "منخفضة",
-    "medium": "متوسطة",
-    "high": "عالية",
-    "urgent": "عاجلة"
-  }
-},
-"dashboardProjects": {
-  "eyebrow": "المشاريع",
-  "title": "المشاريع التجارية",
-  "description": "أدر الحالات التجارية المقبولة وتابع تقدم التنفيذ.",
-  "customer": "العميل",
-  "empty": {
-    "title": "لا توجد مشاريع حتى الآن",
-    "description": "يتم إنشاء المشاريع تلقائيًا عند قبول أحد العروض.",
-    "browseOpenCases": "تصفح الحالات المفتوحة"
-  },
-  "statuses": {
-    "open": "مفتوح",
-    "inProgress": "قيد التنفيذ",
-    "completed": "مكتمل",
-    "cancelled": "ملغى"
-  }
-},
-"dashboardSavedCases": {
-  "title": "الحالات المحفوظة",
-  "description": "الحالات التجارية التي حفظتها لمراجعتها لاحقًا.",
-  "savedOn": "تم الحفظ في {date}",
-  "viewCase": "عرض الحالة ←",
-  "empty": {
-    "title": "لا توجد حالات محفوظة حتى الآن",
-    "description": "احفظ الحالات التجارية المهمة للوصول إليها لاحقًا.",
-    "button": "تصفح الحالات المفتوحة"
-  },
-  "metrics": {
-    "proposals": "العروض",
-    "documents": "المستندات",
-    "messages": "الرسائل"
-  },
-  "statuses": {
-    "open": "مفتوحة",
-    "inProgress": "قيد التنفيذ",
-    "completed": "مكتملة",
-    "cancelled": "ملغاة"
-  }
-},
-"dashboardSavedCompanies": {
-  "title": "الشركات المحفوظة",
-  "description": "الشركات التي حفظتها لمراجعتها والتواصل معها لاحقًا.",
-  "viewProfile": "عرض الملف الشخصي",
-  "empty": {
-    "title": "لا توجد شركات محفوظة حتى الآن",
-    "description": "احفظ الشركات الموثوقة لبناء شبكتك التجارية.",
-    "button": "تصفح الشركات"
-  }
-},
-"dashboardSavedExperts": {
-  "title": "الخبراء المحفوظون",
-  "description": "الخبراء الذين حفظتهم لمراجعتهم والتواصل معهم لاحقًا.",
-  "viewProfile": "عرض الملف الشخصي",
-  "empty": {
-    "title": "لا يوجد خبراء محفوظون حتى الآن",
-    "description": "احفظ المهنيين ذوي الخبرة للتواصل معهم بسرعة في المشاريع التجارية المستقبلية.",
-    "button": "تصفح الخبراء"
-  }
-},
-"dashboardSettings": {
-  "eyebrow": "إعدادات الحساب",
-  "title": "الإعدادات",
-  "description": "أدر حسابك وخطتك ومعلومات ملفك الشخصي في دسترس.",
-  "unlimited": "غير محدود",
-  "profileInformation": {
-    "title": "معلومات الملف الشخصي",
-    "notProvided": "غير مذكور",
+  "publicCompanyProfile": {
+    "categories": {
+      "general": "عام",
+      "customsClearance": "التخليص الجمركي",
+      "shipping": "الشحن",
+      "inspection": "التفتيش",
+      "insurance": "التأمين",
+      "sourcing": "التوريد",
+      "documentation": "الوثائق",
+      "payment": "الدفع"
+    },
+    "countries": {
+      "iran": "إيران"
+    },
+    "metadata": {
+      "notFoundTitle": "الشركة غير موجودة",
+      "notFoundDescription": "تعذر العثور على ملف الشركة.",
+      "description": "{name} هي شركة {category} في {country}."
+    },
+    "notFound": "الشركة غير موجودة",
+    "backToCompanies": "← العودة إلى الشركات",
+    "statusLabel": "الحالة",
+    "statuses": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "open": "مفتوح",
+      "pending": "قيد الانتظار",
+      "verified": "موثق",
+      "rejected": "مرفوض",
+      "completed": "مكتمل",
+      "inProgress": "قيد التنفيذ"
+    },
+    "verificationStatuses": {
+      "verified": "موثق",
+      "pending": "قيد المراجعة",
+      "rejected": "مرفوض"
+    },
+    "verificationBadges": {
+      "verified": "موثق",
+      "pending": "قيد المراجعة",
+      "rejected": "مرفوض"
+    },
+    "plans": {
+      "free": "مجاني",
+      "gold": "ذهبي",
+      "diamond": "ماسي",
+      "enterprise": "مؤسسي"
+    },
+    "metrics": {
+      "trustScore": "درجة الثقة",
+      "rating": "التقييم",
+      "reviews": "المراجعات",
+      "verification": "التوثيق",
+      "country": "الدولة"
+    },
+    "companyRating": "تقييم الشركة",
+    "basedOnReviews": "استنادًا إلى {count} مراجعة",
+    "trustScoreValue": "درجة الثقة: {score}/100",
+    "completedCasesValue": "{count} قضية تجارية مكتملة",
+    "companyDescription": "وصف الشركة",
+    "recentReviews": "آخر المراجعات",
+    "noReviews": "لا توجد مراجعات حتى الآن.",
+    "noCommentProvided": "لا يوجد تعليق.",
+    "notAvailable": "غير متوفر",
+    "notProvided": "غير متوفر",
+    "companyInformation": "معلومات الشركة",
     "fields": {
-      "name": "الاسم",
       "email": "البريد الإلكتروني",
-      "role": "الدور",
-      "plan": "الخطة"
+      "website": "الموقع الإلكتروني",
+      "country": "الدولة",
+      "category": "الفئة",
+      "reputation": "السمعة"
+    },
+    "ratingWithReviews": "{rating} / 5 ({count} مراجعة)",
+    "sendEmail": "إرسال بريد إلكتروني",
+    "visitWebsite": "زيارة الموقع",
+    "relatedExperts": {
+      "title": "الخبراء المرتبطون",
+      "empty": "لا يوجد خبراء مرتبطون.",
+      "verified": "خبير موثق"
+    },
+    "verificationStatus": "حالة التوثيق",
+    "editCompany": "تعديل الشركة",
+    "schema": {
+      "status": "الحالة",
+      "category": "الفئة"
     }
   },
-  "planLimits": {
-    "title": "حدود الخطة",
-    "caseLimit": "حد الحالات",
-    "proposalLimit": "حد العروض"
-  },
-  "quickLinks": {
-    "title": "روابط سريعة",
-    "manageSubscription": "إدارة الاشتراك",
-    "myCompanies": "شركاتي",
-    "myExperts": "خبرائي"
-  },
-  "security": {
-    "title": "الأمان",
-    "description": "ستتم إضافة تغيير كلمة المرور والمصادقة الثنائية وسجل تسجيل الدخول في مرحلة أمان النسخة الإنتاجية."
-  },
-  "roles": {
-    "admin": "مدير",
-    "user": "مستخدم"
-  },
-  "plans": {
-    "free": "مجانية",
-    "gold": "ذهبية",
-    "diamond": "ماسية",
-    "enterprise": "مؤسسية"
-  }
-},
-"dashboardSubscription": {
-  "title": "الاشتراك",
-  "description": "أدر خطة دسترس وحدود الاستخدام ومستوى الظهور المميز. المدفوعات غير مفعلة حتى الآن، وتتم إدارة الخطط حاليًا بواسطة المدير.",
-  "currentBadge": "الخطة الحالية",
-  "usage": {
-    "currentPlan": "الخطة الحالية",
-    "activeCasesUsed": "الحالات النشطة المستخدمة",
-    "proposalsUsed": "العروض المستخدمة",
-    "limitedValue": "{used} من {limit}",
-    "unlimitedValue": "{used} من غير محدود"
-  },
-  "planLabels": {
-    "free": "مجانية",
-    "gold": "ذهبية",
-    "diamond": "ماسية",
-    "enterprise": "مؤسسية"
-  },
-  "actions": {
-    "currentPlan": "الخطة الحالية",
-    "contactSales": "التواصل مع المبيعات",
-    "notAvailable": "غير متاحة",
-    "requestUpgrade": "طلب ترقية"
-  },
-  "plans": {
-    "free": {
-      "title": "مجانية",
-      "description": "لاختبار دسترس وبدء النشاط التجاري الأساسي.",
-      "price": "0 دولار",
-      "features": {
-        "activeCases": "3 حالات تجارية نشطة",
-        "proposals": "5 عروض",
-        "companyProfile": "ملف شركة أساسي",
-        "expertProfile": "ملف خبير أساسي"
-      }
-    },
-    "gold": {
-      "title": "ذهبية",
-      "description": "للفرق النامية التي تحتاج إلى ظهور وسعة أكبر.",
-      "price": "29 دولارًا شهريًا",
-      "features": {
-        "activeCases": "20 حالة تجارية نشطة",
-        "proposals": "20 عرضًا",
-        "badge": "شارة ذهبية",
-        "priorityListing": "إدراج ذو أولوية"
-      }
-    },
-    "diamond": {
-      "title": "ماسية",
-      "description": "لمقدمي الخدمات المحترفين ومشغلي التجارة المتكررين.",
-      "price": "99 دولارًا شهريًا",
-      "features": {
-        "activeCases": "حالات تجارية نشطة غير محدودة",
-        "proposals": "عروض غير محدودة",
-        "badge": "شارة ماسية",
-        "featuredListing": "إدراج مميز"
-      }
-    },
-    "enterprise": {
-      "title": "مؤسسية",
-      "description": "للشركات التجارية الكبيرة والوكالات وفرق المؤسسات.",
-      "price": "تسعير مخصص",
-      "features": {
-        "activeCases": "حالات تجارية نشطة غير محدودة",
-        "proposals": "عروض غير محدودة",
-        "badge": "شارة مؤسسية",
-        "visibility": "أعلى مستوى ظهور",
-        "accountManager": "إمكانية الوصول مستقبلًا إلى مدير حساب"
-      }
-    }
-  },
-  "upgradeNotice": {
-    "title": "هل تحتاج إلى خطة أعلى؟",
-    "description": "المدفوعات غير مفعلة حتى الآن. يمكن للمديرين حاليًا ترقية خطط المستخدمين يدويًا من لوحة إدارة المستخدمين.",
-    "back": "العودة إلى لوحة التحكم"
-  }
-},
-"dashboardVerifications": {
-  "title": "مركز التوثيق",
-  "description": "راجع وأدر طلبات توثيق الشركات والخبراء.",
-  "created": "تم الإنشاء في {date}",
-  "stats": {
-    "pending": {
-      "title": "قيد الانتظار",
-      "description": "الشركات + الخبراء"
-    },
-    "verified": {
-      "title": "موثقة",
-      "description": "الملفات المعتمدة"
-    },
-    "rejected": {
-      "title": "مرفوضة",
-      "description": "الملفات المرفوضة"
-    }
-  },
-  "companies": {
-    "title": "الشركات قيد الانتظار",
-    "description": "ملفات الشركات التي تنتظر مراجعة المدير.",
-    "empty": "لا توجد شركات قيد الانتظار."
-  },
-  "experts": {
-    "title": "الخبراء قيد الانتظار",
-    "description": "ملفات الخبراء التي تنتظر مراجعة المدير.",
-    "empty": "لا يوجد خبراء قيد الانتظار."
-  },
-  "plans": {
-    "free": "مجانية",
-    "gold": "ذهبية",
-    "diamond": "ماسية",
-    "enterprise": "مؤسسية"
-  }
-},
-"publicCompanyProfile": {
-  "metadata": {
-    "notFoundTitle": "الشركة غير موجودة",
-    "notFoundDescription": "تعذر العثور على ملف الشركة.",
-    "description": "{name} هي شركة {category} في {country}."
-  },
-
-  "notFound": "الشركة غير موجودة",
-  "backToCompanies": "← العودة إلى الشركات",
-
-  "statusLabel": "الحالة",
-
-  "statuses": {
-    "active": "نشط",
-    "inactive": "غير نشط",
-    "open": "مفتوح",
-    "pending": "قيد الانتظار",
-    "verified": "موثق",
-    "rejected": "مرفوض",
-    "completed": "مكتمل",
-    "inProgress": "قيد التنفيذ"
-  },
-
-  "verificationStatuses": {
-    "verified": "موثق",
-    "pending": "قيد المراجعة",
-    "rejected": "مرفوض"
-  },
-
-  "verificationBadges": {
-    "verified": "موثق",
-    "pending": "قيد المراجعة",
-    "rejected": "مرفوض"
-  },
-
-  "plans": {
-    "free": "مجاني",
-    "gold": "ذهبي",
-    "diamond": "ماسي",
-    "enterprise": "مؤسسي"
-  },
-
-  "metrics": {
-    "trustScore": "درجة الثقة",
-    "rating": "التقييم",
-    "reviews": "المراجعات",
-    "verification": "التوثيق",
-    "country": "الدولة"
-  },
-
-  "companyRating": "تقييم الشركة",
-  "basedOnReviews": "استنادًا إلى {count} مراجعة",
-  "trustScoreValue": "درجة الثقة: {score}/100",
-  "completedCasesValue": "{count} قضية تجارية مكتملة",
-
-  "companyDescription": "وصف الشركة",
-  "recentReviews": "آخر المراجعات",
-
-  "noReviews": "لا توجد مراجعات حتى الآن.",
-  "noCommentProvided": "لا يوجد تعليق.",
-  "notAvailable": "غير متوفر",
-  "notProvided": "غير متوفر",
-
-  "companyInformation": "معلومات الشركة",
-
-  "fields": {
-    "email": "البريد الإلكتروني",
-    "website": "الموقع الإلكتروني",
-    "country": "الدولة",
-    "category": "الفئة",
-    "reputation": "السمعة"
-  },
-
-  "ratingWithReviews": "{rating} / 5 ({count} مراجعة)",
-
-  "sendEmail": "إرسال بريد إلكتروني",
-  "visitWebsite": "زيارة الموقع",
-
-  "relatedExperts": {
-    "title": "الخبراء المرتبطون",
-    "empty": "لا يوجد خبراء مرتبطون.",
-    "verified": "خبير موثق"
-  },
-
-  "verificationStatus": "حالة التوثيق",
-
-  "editCompany": "تعديل الشركة",
-
-  "schema": {
-    "status": "الحالة",
-    "category": "الفئة"
-  }
-},
   "publicExpertProfile": {
     "metadata": {
       "notFoundTitle": "الخبير غير موجود",
@@ -2611,14 +2724,12 @@
     },
     "notFound": "الخبير غير موجود",
     "backToExperts": "← العودة إلى الخبراء",
-
     "plans": {
       "free": "مجاني",
       "gold": "ذهبي",
       "diamond": "ماسي",
       "enterprise": "مؤسسي"
     },
-
     "statuses": {
       "active": "نشط",
       "inactive": "غير نشط",
@@ -2627,7 +2738,6 @@
       "rejected": "مرفوض",
       "suspended": "معلق"
     },
-
     "metrics": {
       "trustScore": "درجة الثقة",
       "rating": "التقييم",
@@ -2635,219 +2745,411 @@
       "specialty": "التخصص",
       "country": "الدولة"
     },
-
     "experience": "الخبرة",
-
     "recentReviews": "أحدث المراجعات",
-
     "noReviews": "لا توجد مراجعات حتى الآن.",
-
     "anonymousUser": "مستخدم مجهول",
-
     "noCommentProvided": "لا يوجد تعليق.",
-
     "contactExpert": "معلومات التواصل",
-
     "fields": {
       "email": "البريد الإلكتروني",
       "country": "الدولة",
       "specialty": "التخصص",
       "reputation": "السمعة"
     },
-
     "ratingWithReviews": "{rating}/5 ({count} مراجعة)",
-
     "completedCases": "القضايا المكتملة",
-
     "sendEmail": "إرسال بريد إلكتروني",
-
     "relatedCompanies": {
       "title": "شركات ذات صلة",
       "empty": "لا توجد شركات ذات صلة.",
       "verified": "موثق"
     },
-
     "adminActions": "إجراءات الإدارة",
-
     "editExpert": "تعديل الخبير",
-
     "reviewNotice": "يتم احتساب التقييمات والمراجعات فقط من القضايا التجارية المكتملة.",
-
     "notAvailable": "غير متوفر"
   },
   "publicOpportunityProfile": {
-  "metadata": {
-    "notFoundTitle": "لم يتم العثور على الفرصة",
-    "notFoundDescription": "تعذر العثور على الفرصة التجارية المطلوبة."
-  },
-  "notFound": "لم يتم العثور على الفرصة",
-  "backToOpportunities": "← العودة إلى الفرص التجارية",
-  "tradeOpportunity": "فرصة تجارية",
-
-  "statuses": {
-    "open": "مفتوحة",
-    "inProgress": "قيد التنفيذ",
-    "closed": "مغلقة"
-  },
-
-  "metrics": {
-    "status": "الحالة",
-    "country": "الدولة",
-    "visibility": "الرؤية",
-    "platform": "المنصة",
-    "category": "الفئة",
-    "trust": "الثقة"
-  },
-
-  "values": {
-    "public": "عام",
-    "trade": "تجارة",
-    "verified": "موثق"
-  },
-
-  "opportunityDescription": "وصف الفرصة",
-
-  "howToRespond": {
-    "title": "كيفية الاستجابة",
-    "review": {
-      "title": "المراجعة",
-      "description": "اقرأ متطلبات الفرصة بالكامل بعناية."
+    "metadata": {
+      "notFoundTitle": "لم يتم العثور على الفرصة",
+      "notFoundDescription": "تعذر العثور على الفرصة التجارية المطلوبة."
     },
-    "contact": {
-      "title": "التواصل",
-      "description": "تواصل عبر Dasres أو باستخدام معلومات الاتصال المتاحة."
+    "notFound": "لم يتم العثور على الفرصة",
+    "backToOpportunities": "← العودة إلى الفرص التجارية",
+    "tradeOpportunity": "فرصة تجارية",
+    "statuses": {
+      "open": "مفتوحة",
+      "inProgress": "قيد التنفيذ",
+      "closed": "مغلقة"
     },
-    "collaborate": {
-      "title": "التعاون",
-      "description": "ابنِ شراكة تجارية دولية موثوقة."
+    "metrics": {
+      "status": "الحالة",
+      "country": "الدولة",
+      "visibility": "الرؤية",
+      "platform": "المنصة",
+      "category": "الفئة",
+      "trust": "الثقة"
+    },
+    "values": {
+      "public": "عام",
+      "trade": "تجارة",
+      "verified": "موثق"
+    },
+    "opportunityDescription": "وصف الفرصة",
+    "howToRespond": {
+      "title": "كيفية الاستجابة",
+      "review": {
+        "title": "المراجعة",
+        "description": "اقرأ متطلبات الفرصة بالكامل بعناية."
+      },
+      "contact": {
+        "title": "التواصل",
+        "description": "تواصل عبر Dasres أو باستخدام معلومات الاتصال المتاحة."
+      },
+      "collaborate": {
+        "title": "التعاون",
+        "description": "ابنِ شراكة تجارية دولية موثوقة."
+      }
+    },
+    "editOpportunity": "تعديل الفرصة",
+    "summary": {
+      "title": "ملخص الفرصة",
+      "country": "الدولة",
+      "status": "الحالة",
+      "type": "النوع"
+    },
+    "actions": {
+      "openTradeCase": "إنشاء قضية تجارية",
+      "findCompanies": "البحث عن الشركات",
+      "findExperts": "البحث عن الخبراء"
+    },
+    "relatedCompanies": {
+      "title": "الشركات ذات الصلة",
+      "empty": "لا توجد شركات موثقة لهذا البلد حتى الآن.",
+      "verified": "شركة موثقة"
+    },
+    "relatedExperts": {
+      "title": "الخبراء ذوو الصلة",
+      "empty": "لا يوجد خبراء موثقون لهذا البلد حتى الآن.",
+      "verified": "خبير موثق"
+    },
+    "trustNotice": {
+      "title": "إشعار الثقة",
+      "description": "تحقق دائمًا من تفاصيل التجارة والمستندات والطرف الآخر قبل إبرام أي اتفاق تجاري."
     }
   },
-
-  "editOpportunity": "تعديل الفرصة",
-
-  "summary": {
-    "title": "ملخص الفرصة",
-    "country": "الدولة",
+  "dashboardTopCompanies": {
+    "title": "أفضل الشركات تقييمًا",
+    "description": "ترتيب الشركات بناءً على التوثيق ودرجة الثقة والمراجعات.",
+    "empty": "لم يتم العثور على شركات.",
+    "verified": "موثقة",
+    "notAvailable": "غير متاح",
+    "metrics": {
+      "trust": "الثقة",
+      "rating": "التقييم",
+      "reviews": "المراجعات"
+    },
+    "plans": {
+      "free": "مجانية",
+      "gold": "ذهبية",
+      "diamond": "ماسية",
+      "enterprise": "مؤسسية"
+    }
+  },
+  "topExperts": {
+    "title": "برترین متخصصان",
+    "description": "رتبه‌بندی متخصصان بر اساس وضعیت تأیید، امتیاز اعتماد و نظرات کاربران.",
+    "empty": "هیچ متخصصی پیدا نشد.",
+    "verified": "تأییدشده",
+    "trust": "اعتماد",
+    "rating": "امتیاز",
+    "reviews": "نظرات",
+    "notAvailable": "ناموجود",
+    "plans": {
+      "FREE": "رایگان",
+      "GOLD": "طلایی",
+      "DIAMOND": "الماسی",
+      "ENTERPRISE": "سازمانی"
+    }
+  },
+  "publicExperts": {
+    "eyebrow": "شبكة الخبراء الموثّقين",
+    "title": "اعثر على خبراء تجارة موثوقين",
+    "description": "تواصل مع خبراء موثّقين في التجارة الدولية ضمن مجالات الجمارك والتوريد والخدمات اللوجستية والتفتيش وخدمات الأعمال العالمية.",
+    "notAvailable": "غير متاح",
+    "featured": {
+      "title": "الخبير المميز",
+      "empty": "لا يوجد خبير مميز متاح حالياً.",
+      "viewProfile": "عرض الملف الشخصي"
+    },
+    "metrics": {
+      "trust": "الثقة",
+      "rating": "التقييم",
+      "reviews": "المراجعات"
+    },
+    "statistics": {
+      "total": "إجمالي الخبراء",
+      "verified": "الخبراء الموثّقون",
+      "rated": "الخبراء الحاصلون على تقييم"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "الصفحة {current} من {total}"
+    }
+  },
+  "myReviews": {
+    "title": "مراجعاتي",
+    "description": "اعرض المراجعات التي تلقيتها والمراجعات التي قدمتها.",
+    "fallbackUser": "مستخدم",
+    "ratingOutOfFive": "{rating} من 5",
+    "statistics": {
+      "averageRating": "متوسط التقييم",
+      "received": "المراجعات المستلمة",
+      "given": "المراجعات المقدمة",
+      "basedOn": "استناداً إلى {count} مراجعة مستلمة"
+    },
+    "received": {
+      "title": "المراجعات التي تلقيتها",
+      "empty": "لم تتلقَّ أي مراجعات حتى الآن.",
+      "from": "من {name}"
+    },
+    "given": {
+      "title": "المراجعات التي قدمتها",
+      "empty": "لم تقدم أي مراجعات حتى الآن.",
+      "to": "إلى {name}"
+    }
+  },
+  "dashboardExpertProfile": {
+    "notFound": "لم يتم العثور على الخبير.",
+    "backToExperts": "العودة إلى الخبراء ←",
+    "notAvailable": "غير متاح",
+    "experience": "الخبرة",
+    "reviewNotice": "لا يمكن تقديم المراجعات إلا بعد إكمال حالة تجارية.",
+    "trustScoreValue": "{score} من {maximum}",
+    "metadata": {
+      "notFoundTitle": "لم يتم العثور على الخبير",
+      "notFoundDescription": "تعذر العثور على ملف الخبير المطلوب.",
+      "title": "{name} | {specialty}",
+      "description": "{name} خبير في مجال {specialty} من {country}. اكتشف ملف هذا الخبير على دسترس."
+    },
+    "plans": {
+      "free": "مجاني",
+      "gold": "ذهبي",
+      "diamond": "ماسي",
+      "enterprise": "مؤسسي"
+    },
+    "statuses": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "pending": "قيد الانتظار",
+      "verified": "موثّق",
+      "rejected": "مرفوض"
+    },
+    "metrics": {
+      "trustScore": "درجة الثقة",
+      "rating": "التقييم",
+      "reviews": "المراجعات",
+      "specialty": "التخصص",
+      "country": "الدولة"
+    },
+    "recentReviews": {
+      "title": "أحدث المراجعات",
+      "empty": "لا توجد مراجعات حتى الآن.",
+      "fallbackUser": "مستخدم",
+      "noComment": "لم يتم تقديم تعليق.",
+      "rating": "{rating} من {maximum}"
+    },
+    "contact": {
+      "title": "التواصل مع الخبير",
+      "email": "البريد الإلكتروني",
+      "country": "الدولة",
+      "specialty": "التخصص",
+      "reputation": "السمعة",
+      "trustScore": "درجة الثقة",
+      "completedCases": "الحالات المكتملة",
+      "sendEmail": "إرسال بريد إلكتروني",
+      "noReviews": "لا توجد مراجعات حتى الآن",
+      "reputationValue": "⭐ {rating} بناءً على {count} مراجعات"
+    },
+    "management": {
+      "title": "إجراءات الإدارة",
+      "edit": "تعديل الخبير"
+    }
+  },
+  "rootMetadata": {
+    "siteName": "دسترس",
+    "title": "دسترس | منظومة الثقة للتجارة العالمية",
+    "description": "تربط دسترس الشركات الموثقة والخبراء الموثوقين وفرص التجارة الدولية عبر منصة واحدة قائمة على إدارة الحالات.",
+    "keywords": {
+      "dasres": "دسترس",
+      "experts": "خبراء التجارة",
+      "companies": "الشركات الموثقة",
+      "opportunities": "الفرص التجارية",
+      "trade": "التجارة الدولية",
+      "business": "منصة الأعمال العالمية",
+      "international": "شبكة الأعمال الدولية"
+    },
+    "openGraph": {
+      "title": "دسترس | منظومة الثقة للتجارة العالمية",
+      "description": "اكتشف الشركات الموثقة والخبراء الموثوقين وفرص التجارة الدولية على دسترس.",
+      "imageAlt": "منصة دسترس للتجارة العالمية"
+    },
+    "twitter": {
+      "title": "دسترس | منظومة الثقة للتجارة العالمية",
+      "description": "تواصل مع الشركات الموثقة والخبراء الموثوقين في التجارة الدولية."
+    }
+  },
+  "publicCompanies": {
+    "eyebrow": "شبكة الشركات الموثقة",
+    "title": "اكتشف شركات تجارية موثوقة",
+    "description": "تصفح الشركات الدولية العاملة في الجمارك والشحن والتفتيش والتوريد والخدمات اللوجستية وخدمات التجارة العالمية.",
+    "statistics": {
+      "total": "إجمالي الشركات",
+      "verified": "الشركات الموثقة",
+      "rated": "الشركات الحاصلة على تقييم"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "الصفحة {current} من {total}"
+    }
+  },
+  "publicOpportunities": {
+    "eyebrow": "سوق التجارة العالمية",
+    "title": "اكتشف الفرص الدولية",
+    "description": "استكشف الفرص التجارية من الشركات حول العالم، وتواصل مع المشترين والموردين، ووسّع أعمالك الدولية.",
+    "statistics": {
+      "total": "إجمالي الفرص",
+      "open": "الفرص المفتوحة",
+      "countries": "الدول"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "الصفحة {current} من {total}"
+    }
+  },
+  "companyVerificationButtons": {
+    "verify": "تأكيد",
+    "reject": "رفض"
+  },
+  "verificationExpertActions": {
+    "verify": "تأكيد",
+    "reject": "رفض"
+  },
+  "verificationCompanyActions": {
+    "verify": "تأكيد",
+    "reject": "رفض"
+  },
+  "countryFilter": {
+    "allCountries": "جميع الدول"
+  },
+  "notFound": {
+    "label": "الصفحة غير موجودة",
+    "title": "هذه الصفحة غير موجودة.",
+    "description": "قد تكون الصفحة التي تبحث عنها قد نُقلت أو حُذفت أو لم تعد موجودة في Dasres.",
+    "goHome": "الصفحة الرئيسية",
+    "goDashboard": "لوحة التحكم"
+  },
+  "saveCaseButton": {
+    "saving": "جارٍ الحفظ...",
+    "unsave": "إلغاء الحفظ",
+    "save": "☆ حفظ القضية"
+  },
+  "saveCompanyButton": {
+    "saved": "تم الحفظ ★",
+    "save": "حفظ ☆"
+  },
+  "saveExpertButton": {
+    "saved": "تم الحفظ ★",
+    "save": "حفظ ☆"
+  },
+  "dashboardOpportunityDetail": {
+    "backToDashboardOpportunities": "→ العودة إلى فرص لوحة التحكم",
+    "tradeOpportunity": "فرصة تجارية",
+    "globalMarketplace": "السوق العالمي",
     "status": "الحالة",
-    "type": "النوع"
+    "country": "الدولة",
+    "visibility": "طريقة العرض",
+    "dashboard": "لوحة التحكم",
+    "opportunityDescription": "وصف الفرصة",
+    "adminActions": "إجراءات المسؤول",
+    "editOpportunity": "تعديل الفرصة",
+    "opportunitySummary": "ملخص الفرصة",
+    "type": "النوع",
+    "viewPublicPage": "عرض الصفحة العامة",
+    "backToManagement": "العودة إلى الإدارة",
+    "adminNote": "ملاحظة المسؤول",
+    "adminNoteDescription": "تُستخدم هذه الصفحة لإدارة الفرص التجارية داخل لوحة التحكم. يرى الزوار صفحة عامة منفصلة للفرصة.",
+    "statuses": {
+      "open": "مفتوحة",
+      "inProgress": "قيد التنفيذ",
+      "closed": "مغلقة"
+    }
   },
-
-  "actions": {
-    "openTradeCase": "إنشاء قضية تجارية",
-    "findCompanies": "البحث عن الشركات",
-    "findExperts": "البحث عن الخبراء"
+  "common": {
+    "years": "{count} سنوات",
+    "hours": "ساعة",
+    "countries": {
+      "iran": "إيران",
+      "uae": "الإمارات العربية المتحدة",
+      "UAE": "الإمارات العربية المتحدة",
+      "china": "الصين",
+      "Iran": "إيران"
+    },
+    "categories": {
+      "General": "عام",
+      "Shipping": "الشحن",
+      "Inspection": "الفحص",
+      "Customs Clearance": "التخليص الجمركي",
+      "customs_clearance": "التخليص الجمركي",
+      "shipping": "الشحن",
+      "inspection": "الفحص",
+      "insurance": "التأمين",
+      "sourcing": "توفير المنتجات"
+    },
+    "specialties": {
+      "Shipping": "الشحن",
+      "Inspection": "الفحص",
+      "clearance": "التخليص الجمركي",
+      "clearence": "التخليص الجمركي",
+      "Customs Clearance": "التخليص الجمركي",
+      "ticket_general": "عام",
+      "ticket_technical": "تقني",
+      "ticket_billing": "الفوترة",
+      "ticket_support": "الدعم"
+    }
   },
-
-  "relatedCompanies": {
-    "title": "الشركات ذات الصلة",
-    "empty": "لا توجد شركات موثقة لهذا البلد حتى الآن.",
-    "verified": "شركة موثقة"
+  "ticketCategories": {
+    "general": "عام",
+    "technical": "تقني",
+    "billing": "الفوترة",
+    "support": "الدعم"
   },
-
-  "relatedExperts": {
-    "title": "الخبراء ذوو الصلة",
-    "empty": "لا يوجد خبراء موثقون لهذا البلد حتى الآن.",
-    "verified": "خبير موثق"
+  "statuses": {
+    "open": "مفتوح",
+    "in_progress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "pending": "قيد الانتظار",
+    "accepted": "مقبول",
+    "rejected": "مرفوض",
+    "active": "نشط",
+    "on_hold": "متوقف",
+    "todo": "للتنفيذ",
+    "review": "قيد المراجعة"
   },
-
-  "trustNotice": {
-    "title": "إشعار الثقة",
-    "description": "تحقق دائمًا من تفاصيل التجارة والمستندات والطرف الآخر قبل إبرام أي اتفاق تجاري."
-  }
-},
-"dashboardTopCompanies": {
-  "title": "أفضل الشركات تقييمًا",
-  "description": "ترتيب الشركات بناءً على التوثيق ودرجة الثقة والمراجعات.",
-  "empty": "لم يتم العثور على شركات.",
-  "verified": "موثقة",
-  "notAvailable": "غير متاح",
-  "metrics": {
-    "trust": "الثقة",
-    "rating": "التقييم",
-    "reviews": "المراجعات"
-  },
-  "plans": {
-    "free": "مجانية",
-    "gold": "ذهبية",
-    "diamond": "ماسية",
-    "enterprise": "مؤسسية"
-  }
-},
-"topExperts": {
-  "title": "برترین متخصصان",
-  "description": "رتبه‌بندی متخصصان بر اساس وضعیت تأیید، امتیاز اعتماد و نظرات کاربران.",
-  "empty": "هیچ متخصصی پیدا نشد.",
-  "verified": "تأییدشده",
-  "trust": "اعتماد",
-  "rating": "امتیاز",
-  "reviews": "نظرات",
-  "notAvailable": "ناموجود",
-  "plans": {
-    "FREE": "رایگان",
-    "GOLD": "طلایی",
-    "DIAMOND": "الماسی",
-    "ENTERPRISE": "سازمانی"
-  }
-},
-"publicExperts": {
-  "eyebrow": "شبكة الخبراء الموثّقين",
-  "title": "اعثر على خبراء تجارة موثوقين",
-  "description": "تواصل مع خبراء موثّقين في التجارة الدولية ضمن مجالات الجمارك والتوريد والخدمات اللوجستية والتفتيش وخدمات الأعمال العالمية.",
-  "notAvailable": "غير متاح",
-  "featured": {
-    "title": "الخبير المميز",
-    "empty": "لا يوجد خبير مميز متاح حالياً."
-  },
-  "metrics": {
-    "trust": "الثقة",
-    "rating": "التقييم",
-    "reviews": "المراجعات"
-  },
-  "statistics": {
-    "total": "إجمالي الخبراء",
-    "verified": "الخبراء الموثّقون",
-    "rated": "الخبراء الحاصلون على تقييم"
-  },
-  "pagination": {
-    "previous": "السابق",
-    "next": "التالي",
-    "page": "الصفحة {current} من {total}"
-  }
-},
-"myReviews": {
-  "title": "مراجعاتي",
-  "description": "اعرض المراجعات التي تلقيتها والمراجعات التي قدمتها.",
-  "fallbackUser": "مستخدم",
-  "ratingOutOfFive": "{rating} من 5",
-  "statistics": {
-    "averageRating": "متوسط التقييم",
-    "received": "المراجعات المستلمة",
-    "given": "المراجعات المقدمة",
-    "basedOn": "استناداً إلى {count} مراجعة مستلمة"
-  },
-  "received": {
-    "title": "المراجعات التي تلقيتها",
-    "empty": "لم تتلقَّ أي مراجعات حتى الآن.",
-    "from": "من {name}"
-  },
-  "given": {
-    "title": "المراجعات التي قدمتها",
-    "empty": "لم تقدم أي مراجعات حتى الآن.",
-    "to": "إلى {name}"
-  }
-},
-"dashboardExpertProfile": {
-  "notFound": "لم يتم العثور على الخبير.",
-  "backToExperts": "العودة إلى الخبراء ←",
-  "notAvailable": "غير متاح",
-  "experience": "الخبرة",
-  "reviewNotice": "لا يمكن تقديم المراجعات إلا بعد إكمال حالة تجارية.",
-  "trustScoreValue": "{score} من {maximum}",
-  "metadata": {
-    "notFoundTitle": "لم يتم العثور على الخبير",
-    "notFoundDescription": "تعذر العثور على ملف الخبير المطلوب.",
-    "title": "{name} | {specialty}",
-    "description": "{name} خبير في مجال {specialty} من {country}. اكتشف ملف هذا الخبير على دسترس."
+  "categories": {
+    "general": "عام",
+    "customs_clearance": "التخليص الجمركي",
+    "shipping": "الشحن",
+    "inspection": "الفحص",
+    "insurance": "التأمين",
+    "sourcing": "التوريد",
+    "documentation": "التوثيق",
+    "payment": "الدفع"
   },
   "plans": {
     "free": "مجاني",
@@ -2855,153 +3157,9 @@
     "diamond": "ماسي",
     "enterprise": "مؤسسي"
   },
-  "statuses": {
-    "active": "نشط",
-    "inactive": "غير نشط",
+  "verification": {
     "pending": "قيد الانتظار",
-    "verified": "موثّق",
+    "verified": "تم التحقق",
     "rejected": "مرفوض"
-  },
-  "metrics": {
-    "trustScore": "درجة الثقة",
-    "rating": "التقييم",
-    "reviews": "المراجعات",
-    "specialty": "التخصص",
-    "country": "الدولة"
-  },
-  "recentReviews": {
-    "title": "أحدث المراجعات",
-    "empty": "لا توجد مراجعات حتى الآن.",
-    "fallbackUser": "مستخدم",
-    "noComment": "لم يتم تقديم تعليق.",
-    "rating": "{rating} من {maximum}"
-  },
-  "contact": {
-    "title": "التواصل مع الخبير",
-    "email": "البريد الإلكتروني",
-    "country": "الدولة",
-    "specialty": "التخصص",
-    "reputation": "السمعة",
-    "trustScore": "درجة الثقة",
-    "completedCases": "الحالات المكتملة",
-    "sendEmail": "إرسال بريد إلكتروني",
-    "noReviews": "لا توجد مراجعات حتى الآن",
-    "reputationValue": "⭐ {rating} بناءً على {count} مراجعات"
-  },
-  "management": {
-    "title": "إجراءات الإدارة",
-    "edit": "تعديل الخبير"
   }
-},
-"rootMetadata": {
-  "siteName": "دسترس",
-  "title": "دسترس | منظومة الثقة للتجارة العالمية",
-  "description": "تربط دسترس الشركات الموثقة والخبراء الموثوقين وفرص التجارة الدولية عبر منصة واحدة قائمة على إدارة الحالات.",
-  "keywords": {
-    "dasres": "دسترس",
-    "experts": "خبراء التجارة",
-    "companies": "الشركات الموثقة",
-    "opportunities": "الفرص التجارية",
-    "trade": "التجارة الدولية",
-    "business": "منصة الأعمال العالمية",
-    "international": "شبكة الأعمال الدولية"
-  },
-  "openGraph": {
-    "title": "دسترس | منظومة الثقة للتجارة العالمية",
-    "description": "اكتشف الشركات الموثقة والخبراء الموثوقين وفرص التجارة الدولية على دسترس.",
-    "imageAlt": "منصة دسترس للتجارة العالمية"
-  },
-  "twitter": {
-    "title": "دسترس | منظومة الثقة للتجارة العالمية",
-    "description": "تواصل مع الشركات الموثقة والخبراء الموثوقين في التجارة الدولية."
-  }
-},
-"publicCompanies": {
-  "eyebrow": "شبكة الشركات الموثقة",
-  "title": "اكتشف شركات تجارية موثوقة",
-  "description": "تصفح الشركات الدولية العاملة في الجمارك والشحن والتفتيش والتوريد والخدمات اللوجستية وخدمات التجارة العالمية.",
-  "statistics": {
-    "total": "إجمالي الشركات",
-    "verified": "الشركات الموثقة",
-    "rated": "الشركات الحاصلة على تقييم"
-  },
-  "pagination": {
-    "previous": "السابق",
-    "next": "التالي",
-    "page": "الصفحة {current} من {total}"
-  }
-},
-"publicOpportunities": {
-  "eyebrow": "سوق التجارة العالمية",
-  "title": "اكتشف الفرص الدولية",
-  "description": "استكشف الفرص التجارية من الشركات حول العالم، وتواصل مع المشترين والموردين، ووسّع أعمالك الدولية.",
-  "statistics": {
-    "total": "إجمالي الفرص",
-    "open": "الفرص المفتوحة",
-    "countries": "الدول"
-  },
-  "pagination": {
-    "previous": "السابق",
-    "next": "التالي",
-    "page": "الصفحة {current} من {total}"
-  }
-},
-"companyVerificationButtons": {
-  "verify": "تأكيد",
-  "reject": "رفض"
-},
-"verificationExpertActions": {
-  "verify": "تأكيد",
-  "reject": "رفض"
-},
-"verificationCompanyActions": {
-  "verify": "تأكيد",
-  "reject": "رفض"
-},
-"countryFilter": {
-  "allCountries": "All Countries"
-},
-"notFound": {
-  "label": "الصفحة غير موجودة",
-  "title": "هذه الصفحة غير موجودة.",
-  "description": "قد تكون الصفحة التي تبحث عنها قد نُقلت أو حُذفت أو لم تعد موجودة في Dasres.",
-  "goHome": "الصفحة الرئيسية",
-  "goDashboard": "لوحة التحكم"
-},
-"saveCaseButton": {
-  "saving": "جارٍ الحفظ...",
-  "unsave": "إلغاء الحفظ",
-  "save": "☆ حفظ القضية"
-},
-"saveCompanyButton": {
-  "saved": "تم الحفظ ★",
-  "save": "حفظ ☆"
-},
-"saveExpertButton": {
-  "saved": "تم الحفظ ★",
-  "save": "حفظ ☆"
-},
-"dashboardOpportunityDetail": {
-  "backToDashboardOpportunities": "→ العودة إلى فرص لوحة التحكم",
-  "tradeOpportunity": "فرصة تجارية",
-  "globalMarketplace": "السوق العالمي",
-  "status": "الحالة",
-  "country": "الدولة",
-  "visibility": "طريقة العرض",
-  "dashboard": "لوحة التحكم",
-  "opportunityDescription": "وصف الفرصة",
-  "adminActions": "إجراءات المسؤول",
-  "editOpportunity": "تعديل الفرصة",
-  "opportunitySummary": "ملخص الفرصة",
-  "type": "النوع",
-  "viewPublicPage": "عرض الصفحة العامة",
-  "backToManagement": "العودة إلى الإدارة",
-  "adminNote": "ملاحظة المسؤول",
-  "adminNoteDescription": "تُستخدم هذه الصفحة لإدارة الفرص التجارية داخل لوحة التحكم. يرى الزوار صفحة عامة منفصلة للفرصة.",
-  "statuses": {
-    "open": "مفتوحة",
-    "inProgress": "قيد التنفيذ",
-    "closed": "مغلقة"
-  }
-}
 }

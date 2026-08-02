@@ -21,6 +21,7 @@
     "toggleMenu": "Toggle menu"
   },
   "hero": {
+    "platformValue": "Global Trade Network",
     "eyebrow": "Verified trade network for global B2B services",
     "titleLine1": "Build trust in",
     "titleLine2": "global trade",
@@ -127,7 +128,8 @@
     "viewAll": "View All",
     "statusOpen": "Open",
     "openOpportunity": "Open Opportunity",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "empty": "No opportunities available at the moment."
   },
   "footer": {
     "ctaEyebrow": "Ready to manage trade with confidence?",
@@ -321,7 +323,7 @@
     "notifications": "Notifications",
     "openTickets": "Open Tickets"
   },
- "dashboardMyTasksWidget": {
+  "dashboardMyTasksWidget": {
     "title": "My Assigned Tasks",
     "viewAll": "View all",
     "empty": "No assigned tasks.",
@@ -333,6 +335,18 @@
     }
   },
   "dashboardTopRated": {
+    "countries": {
+      "iran": "Iran",
+      "uae": "UAE",
+      "china": "China"
+    },
+    "categories": {
+      "shipping": "Shipping",
+      "customs_clearance": "Customs Clearance",
+      "inspection": "Inspection",
+      "insurance": "Insurance",
+      "sourcing": "Sourcing"
+    },
     "viewAll": "View all",
     "reviewCount": "Based on {count, plural, one {# review} other {# reviews}}",
     "experts": {
@@ -359,6 +373,11 @@
     "opportunities": {
       "title": "Latest Opportunities",
       "empty": "No opportunities found."
+    },
+    "statuses": {
+      "open": "Open",
+      "closed": "Closed",
+      "pending": "Pending"
     }
   },
   "dashboardRecentActivity": {
@@ -384,7 +403,27 @@
       "companyVerified": "Company Verified",
       "companyRejected": "Company Rejected",
       "projectTaskUpdated": "Project Task Updated",
+      "projectTaskStatusUpdated": "Project Task Status Updated",
       "projectTaskChecklistToggled": "Project Task Checklist Updated"
+    },
+    "details": {
+      "projectTaskStatusUpdated": "Task \"{title}\" status changed to {status}.",
+      "projectTaskAttachmentUploaded": "Attachment {file} uploaded.",
+      "projectTaskUpdated": "Project task \"{title}\" was updated.",
+      "projectTaskChecklistToggled": "Checklist item \"{item}\" was changed.",
+      "projectTaskStatusUpdatedPrefix": "Project task status updated:",
+      "attachmentUploadedPrefix": "Attachment uploaded:",
+      "projectTaskUpdatedPrefix": "Project task updated:"
+    },
+    "checklist": {
+      "completed": "Completed",
+      "incomplete": "Incomplete"
+    },
+    "statuses": {
+      "todo": "To Do",
+      "in_progress": "In Progress",
+      "review": "Review",
+      "completed": "Completed"
     }
   },
   "dashboardProfileCard": {
@@ -399,17 +438,20 @@
   },
   "dashboardPage": {
     "title": "Dashboard",
+    "badge": "Business Management Panel",
     "description": "Manage your Dasres account, profiles and trade activities.",
     "roles": {
       "admin": "Admin",
       "user": "User"
     },
     "admin": {
+      "title": "System Management",
       "commandCenter": "Admin Command Center",
-      "description": "High-level operational overview of Dasres.",
+      "description": "Overview of Dasres platform operational status",
       "reviewVerifications": "Review Verifications",
       "pendingVerifications": "Pending Verifications",
       "totalReviews": "Total Reviews",
+      "reviews": "Reviews",
       "premiumUsers": "Premium Users",
       "openTickets": "Open Tickets",
       "panel": "Admin Panel",
@@ -490,9 +532,16 @@
     "overallProgress": "Overall Progress",
     "status": {
       "todo": "To Do",
+      "pending": "Pending",
+      "open": "Open",
       "inProgress": "In Progress",
-      "review": "Review",
+      "review": "Under Review",
       "completed": "Completed",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "closed": "Closed",
+      "active": "Active",
+      "expired": "Expired",
       "cancelled": "Cancelled"
     },
     "metrics": {
@@ -535,7 +584,8 @@
     "duration": "{count, plural, one {# day} other {# days}}",
     "empty": "No critical dependency detected.",
     "dependsOn": "Depends on: {task}",
-    "critical": "Critical"
+    "critical": "Critical",
+    "pathStart": "Critical path start"
   },
   "projectAIInsights": {
     "title": "AI Copilot Insights",
@@ -839,6 +889,16 @@
       "day": "{title} • {duration} day(s)",
       "week": "{title} • {duration} week(s)",
       "month": "{title} • {duration} month(s)"
+    },
+    "tooltips": {
+      "baseline": "Baseline",
+      "dependencyInput": "Input Dependency",
+      "dependencyOutput": "Output Dependency",
+      "duration": {
+        "day": "Duration: {duration} days",
+        "week": "Duration: {duration} weeks",
+        "month": "Duration: {duration} months"
+      }
     }
   },
   "projectWorkloadView": {
@@ -870,7 +930,14 @@
     "pending": "Pending",
     "notCompletedYet": "Not completed yet",
     "unknownDate": "Unknown date",
-    "emptyState": "No timeline steps are available."
+    "emptyState": "No timeline steps are available.",
+    "steps": {
+      "requestSubmitted": "Request Submitted",
+      "providerMatching": "Provider Matching",
+      "documentsReview": "Documents Review",
+      "serviceInProgress": "Service In Progress",
+      "completed": "Completed"
+    }
   },
   "projectDocuments": {
     "title": "Document Center",
@@ -885,6 +952,7 @@
     "unknownSize": "Unknown size",
     "unknownDate": "Unknown date",
     "rejectionReason": "Rejection reason",
+    "rejectedByAdmin": "Rejected by admin",
     "approvalStatuses": {
       "approved": "Approved",
       "rejected": "Rejected",
@@ -941,22 +1009,33 @@
     }
   },
   "projectActivitySection": {
-    "title": "Recent Activity",
-    "emptyState": "No activity yet.",
+    "details": {
+      "taskStatusUpdated": "Task \"{title}\" status changed to {status}.",
+      "documentUploaded": "File {file} uploaded."
+    },
+    "title": "Recent Activities",
+    "emptyState": "No activities have been recorded yet.",
     "unknownDate": "Unknown date",
     "actions": {
-      "project_created": "Project Created",
-      "project_updated": "Project Updated",
-      "task_created": "Task Created",
-      "task_updated": "Task Updated",
-      "task_assigned": "Task Assigned",
-      "task_completed": "Task Completed",
-      "task_status_updated": "Task Status Updated",
-      "comment_added": "Comment Added",
-      "document_uploaded": "Document Uploaded",
-      "document_approved": "Document Approved",
-      "document_rejected": "Document Rejected",
-      "message_sent": "Message Sent"
+      "project_created": "Project created",
+      "project_updated": "Project updated",
+      "task_created": "Task created",
+      "task_updated": "Task updated",
+      "task_assigned": "Task assigned",
+      "task_completed": "Task completed",
+      "task_status_updated": "Task status updated",
+      "project_task_status_updated": "Project task status updated",
+      "comment_added": "Comment added",
+      "document_uploaded": "Document uploaded",
+      "document_approved": "Document approved",
+      "document_rejected": "Document rejected",
+      "message_sent": "Message sent"
+    },
+    "statuses": {
+      "todo": "To Do",
+      "in_progress": "In Progress",
+      "review": "Review",
+      "completed": "Completed"
     }
   },
   "projectListProgress": {
@@ -1010,6 +1089,7 @@
     }
   },
   "statusBadge": {
+    "todo": "To Do",
     "pending": "Pending",
     "open": "Open",
     "in_progress": "In Progress",
@@ -1062,6 +1142,16 @@
     "requestedBy": "Requested by:",
     "created": "Created: {date}",
     "viewCase": "View Case",
+    "categories": {
+      "general": "General",
+      "customsClearance": "Customs Clearance",
+      "shipping": "Shipping",
+      "inspection": "Inspection",
+      "insurance": "Insurance",
+      "sourcing": "Sourcing",
+      "documentation": "Documentation",
+      "payment": "Payment"
+    },
     "sort": {
       "label": "Sort by:",
       "newest": "Newest",
@@ -1351,14 +1441,14 @@
     },
     "list": {
       "title": "Notifications",
-      "description": "Track your case updates, proposals, messages, documents and system alerts.",
+      "description": "Follow updates for cases, proposals, messages, documents, and system alerts.",
       "total": "Total Notifications",
       "unread": "Unread",
       "read": "Read",
       "centerTitle": "Notification Center",
-      "centerDescription": "Manage your case updates, messages, documents and system alerts.",
+      "centerDescription": "Manage updates for cases, messages, documents, and system alerts.",
       "empty": "No notifications yet.",
-      "open": "Open →",
+      "open": "View →",
       "types": {
         "proposal": "Proposal",
         "accepted": "Accepted",
@@ -1371,8 +1461,14 @@
         "comment": "Comment",
         "ticket": "Ticket",
         "deadline": "Deadline",
-        "projectDone": "Project Done",
+        "projectDone": "Project Completed",
         "system": "System"
+      },
+      "messages": {
+        "ticketCreated": "{user} created a new ticket: {subject}",
+        "ticketReply": "{user} replied to ticket: {subject}",
+        "proposalReceived": "A new proposal has been received.",
+        "projectCompleted": "The project has been completed."
       }
     }
   },
@@ -1460,108 +1556,108 @@
   },
   "companies": {
     "edit": {
-  "title": "Edit Company",
-  "description": "Update company information, trade category and logo.",
-  "loading": "Loading company...",
-  "currentLogo": "Current Logo",
-  "currentLogoAlt": "Current company logo",
-  "update": "Update Company",
-  "updating": "Updating...",
-  "fields": {
-    "name": {
-      "label": "Company Name",
-      "placeholder": "Company Name"
+      "title": "Edit Company",
+      "description": "Update company information, trade category and logo.",
+      "loading": "Loading company...",
+      "currentLogo": "Current Logo",
+      "currentLogoAlt": "Current company logo",
+      "update": "Update Company",
+      "updating": "Updating...",
+      "fields": {
+        "name": {
+          "label": "Company Name",
+          "placeholder": "Company Name"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Country"
+        },
+        "category": {
+          "label": "Trade Category"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Description"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "website": {
+          "label": "Website",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "Replace Logo",
+          "help": "Leave empty to keep the current logo. Supported formats: JPG, PNG and WEBP."
+        }
+      },
+      "categories": {
+        "general": "General",
+        "customsClearance": "Customs Clearance",
+        "shipping": "Shipping",
+        "inspection": "Inspection",
+        "insurance": "Insurance",
+        "sourcing": "Sourcing",
+        "documentation": "Documentation",
+        "payment": "Payment"
+      },
+      "errors": {
+        "loadFailed": "Error loading company.",
+        "updateFailed": "Error updating company.",
+        "networkError": "Something went wrong."
+      }
     },
-    "country": {
-      "label": "Country",
-      "placeholder": "Country"
-    },
-    "category": {
-      "label": "Trade Category"
-    },
-    "description": {
-      "label": "Description",
-      "placeholder": "Description"
-    },
-    "email": {
-      "label": "Email",
-      "placeholder": "Email"
-    },
-    "website": {
-      "label": "Website",
-      "placeholder": "https://example.com"
-    },
-    "logo": {
-      "label": "Replace Logo",
-      "help": "Leave empty to keep the current logo. Supported formats: JPG, PNG and WEBP."
-    }
-  },
-  "categories": {
-    "general": "General",
-    "customsClearance": "Customs Clearance",
-    "shipping": "Shipping",
-    "inspection": "Inspection",
-    "insurance": "Insurance",
-    "sourcing": "Sourcing",
-    "documentation": "Documentation",
-    "payment": "Payment"
-  },
-  "errors": {
-    "loadFailed": "Error loading company.",
-    "updateFailed": "Error updating company.",
-    "networkError": "Something went wrong."
-  }
-},
     "new": {
-  "title": "Add Company",
-  "description": "Create a company profile and add it to the Dasres trade network.",
-  "create": "Create Company",
-  "creating": "Creating...",
-  "success": "Company created successfully.",
-  "fields": {
-    "name": {
-      "label": "Company Name",
-      "placeholder": "Company Name"
+      "title": "Add Company",
+      "description": "Create a company profile and add it to the Dasres trade network.",
+      "create": "Create Company",
+      "creating": "Creating...",
+      "success": "Company created successfully.",
+      "fields": {
+        "name": {
+          "label": "Company Name",
+          "placeholder": "Company Name"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Country"
+        },
+        "category": {
+          "label": "Trade Category"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Description"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "website": {
+          "label": "Website",
+          "placeholder": "https://example.com"
+        },
+        "logo": {
+          "label": "Company Logo",
+          "help": "Supported formats: JPG, PNG and WEBP."
+        }
+      },
+      "categories": {
+        "general": "General",
+        "customsClearance": "Customs Clearance",
+        "shipping": "Shipping",
+        "inspection": "Inspection",
+        "insurance": "Insurance",
+        "sourcing": "Sourcing",
+        "documentation": "Documentation",
+        "payment": "Payment"
+      },
+      "errors": {
+        "createFailed": "Error creating company.",
+        "networkError": "Something went wrong."
+      }
     },
-    "country": {
-      "label": "Country",
-      "placeholder": "Country"
-    },
-    "category": {
-      "label": "Trade Category"
-    },
-    "description": {
-      "label": "Description",
-      "placeholder": "Description"
-    },
-    "email": {
-      "label": "Email",
-      "placeholder": "Email"
-    },
-    "website": {
-      "label": "Website",
-      "placeholder": "https://example.com"
-    },
-    "logo": {
-      "label": "Company Logo",
-      "help": "Supported formats: JPG, PNG and WEBP."
-    }
-  },
-  "categories": {
-    "general": "General",
-    "customsClearance": "Customs Clearance",
-    "shipping": "Shipping",
-    "inspection": "Inspection",
-    "insurance": "Insurance",
-    "sourcing": "Sourcing",
-    "documentation": "Documentation",
-    "payment": "Payment"
-  },
-  "errors": {
-    "createFailed": "Error creating company.",
-    "networkError": "Something went wrong."
-  }
-},
     "deleteButton": {
       "button": "Delete Company",
       "deleting": "Deleting...",
@@ -1609,118 +1705,118 @@
   },
   "experts": {
     "edit": {
-  "title": "Edit Expert",
-  "description": "Update expert profile information and profile image.",
-  "loading": "Loading expert...",
-  "currentImage": "Current Profile Image",
-  "currentImageAlt": "Current expert image",
-  "update": "Update Expert",
-  "updating": "Updating...",
-  "fields": {
-    "name": {
-      "label": "Name",
-      "placeholder": "Full name"
+      "title": "Edit Expert",
+      "description": "Update expert profile information and profile image.",
+      "loading": "Loading expert...",
+      "currentImage": "Current Profile Image",
+      "currentImageAlt": "Current expert image",
+      "update": "Update Expert",
+      "updating": "Updating...",
+      "fields": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Full name"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Country"
+        },
+        "specialty": {
+          "label": "Specialty",
+          "placeholder": "Trade specialty"
+        },
+        "experience": {
+          "label": "Experience",
+          "placeholder": "Describe professional experience"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "image": {
+          "label": "Replace Image",
+          "help": "Leave empty to keep the current image. Supported formats: JPG, PNG and WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "Error loading expert.",
+        "updateFailed": "Error updating expert.",
+        "networkError": "Something went wrong."
+      }
     },
-    "country": {
-      "label": "Country",
-      "placeholder": "Country"
-    },
-    "specialty": {
-      "label": "Specialty",
-      "placeholder": "Trade specialty"
-    },
-    "experience": {
-      "label": "Experience",
-      "placeholder": "Describe professional experience"
-    },
-    "email": {
-      "label": "Email",
-      "placeholder": "Email"
-    },
-    "image": {
-      "label": "Replace Image",
-      "help": "Leave empty to keep the current image. Supported formats: JPG, PNG and WEBP."
-    }
-  },
-  "errors": {
-    "loadFailed": "Error loading expert.",
-    "updateFailed": "Error updating expert.",
-    "networkError": "Something went wrong."
-  }
-},
     "new": {
-  "title": "Add Expert",
-  "description": "Create an expert profile and add it to the Dasres trade network.",
-  "create": "Create Expert",
-  "creating": "Creating...",
-  "success": "Expert created successfully.",
-  "fields": {
-    "name": {
-      "label": "Name",
-      "placeholder": "Full name"
+      "title": "Add Expert",
+      "description": "Create an expert profile and add it to the Dasres trade network.",
+      "create": "Create Expert",
+      "creating": "Creating...",
+      "success": "Expert created successfully.",
+      "fields": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Full name"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Country"
+        },
+        "specialty": {
+          "label": "Specialty",
+          "placeholder": "Trade specialty"
+        },
+        "experience": {
+          "label": "Experience",
+          "placeholder": "Describe professional experience"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "image": {
+          "label": "Profile Image",
+          "help": "Supported formats: JPG, PNG and WEBP."
+        }
+      },
+      "errors": {
+        "createFailed": "Error creating expert.",
+        "networkError": "Something went wrong."
+      }
     },
-    "country": {
-      "label": "Country",
-      "placeholder": "Country"
-    },
-    "specialty": {
-      "label": "Specialty",
-      "placeholder": "Trade specialty"
-    },
-    "experience": {
-      "label": "Experience",
-      "placeholder": "Describe professional experience"
-    },
-    "email": {
-      "label": "Email",
-      "placeholder": "Email"
-    },
-    "image": {
-      "label": "Profile Image",
-      "help": "Supported formats: JPG, PNG and WEBP."
-    }
-  },
-  "errors": {
-    "createFailed": "Error creating expert.",
-    "networkError": "Something went wrong."
-  }
-},
     "search": {
-  "searchLabel": "Search experts",
-  "searchPlaceholder": "🔍 Search experts...",
-  "countryLabel": "Country",
-  "ratingFilterLabel": "Rating filter",
-  "allCountries": "All Countries",
-  "allRatings": "All Ratings",
-  "fiveStars": "5 Stars",
-  "fourPlusStars": "4+ Stars",
-  "verifiedOnly": "Verified Only",
-  "viewProfile": "View Profile →",
-  "available": "Available",
-  "noRating": "No rating yet",
-  "notAvailable": "N/A",
-  "empty": "No experts match the selected filters.",
-  "reviewCount": "{count, plural, =1 {1 review} other {# reviews}}",
-  "featured": {
-    "title": "Featured Experts",
-    "description": "Premium experts with higher visibility on Dasres."
-  },
-  "verification": {
-    "verified": "Verified",
-    "rejected": "Rejected",
-    "pending": "Pending"
-  },
-  "plans": {
-    "gold": "GOLD",
-    "diamond": "DIAMOND",
-    "enterprise": "ENTERPRISE"
-  },
-  "metrics": {
-    "trust": "Trust",
-    "rating": "Rating",
-    "reviews": "Reviews"
-  }
-},
+      "searchLabel": "Search experts",
+      "searchPlaceholder": "🔍 Search experts...",
+      "countryLabel": "Country",
+      "ratingFilterLabel": "Rating filter",
+      "allCountries": "All Countries",
+      "allRatings": "All Ratings",
+      "fiveStars": "5 Stars",
+      "fourPlusStars": "4+ Stars",
+      "verifiedOnly": "Verified Only",
+      "viewProfile": "View Profile →",
+      "available": "Available",
+      "noRating": "No rating yet",
+      "notAvailable": "N/A",
+      "empty": "No experts match the selected filters.",
+      "reviewCount": "{count, plural, =1 {1 review} other {# reviews}}",
+      "featured": {
+        "title": "Featured Experts",
+        "description": "Premium experts with higher visibility on Dasres."
+      },
+      "verification": {
+        "verified": "Verified",
+        "rejected": "Rejected",
+        "pending": "Pending"
+      },
+      "plans": {
+        "gold": "GOLD",
+        "diamond": "DIAMOND",
+        "enterprise": "ENTERPRISE"
+      },
+      "metrics": {
+        "trust": "Trust",
+        "rating": "Rating",
+        "reviews": "Reviews"
+      }
+    },
     "deleteButton": {
       "button": "Delete Expert",
       "deleting": "Deleting...",
@@ -1732,105 +1828,105 @@
   },
   "opportunities": {
     "dashboard": {
-  "title": "Opportunities Management",
-  "description": "Browse and manage international trade opportunities.",
-  "addOpportunity": "Add Opportunity",
-  "latestOpportunity": "Latest Opportunity",
-  "stats": {
-    "total": "Total",
-    "active": "Active",
-    "closed": "Closed",
-    "countries": "Countries"
-  },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {current} of {total}"
-  }
-},
+      "title": "Opportunities Management",
+      "description": "Browse and manage international trade opportunities.",
+      "addOpportunity": "Add Opportunity",
+      "latestOpportunity": "Latest Opportunity",
+      "stats": {
+        "total": "Total",
+        "active": "Active",
+        "closed": "Closed",
+        "countries": "Countries"
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {current} of {total}"
+      }
+    },
     "new": {
-  "title": "Add Opportunity",
-  "description": "Create a new trade opportunity and publish it on the Dasres marketplace.",
-  "create": "Create Opportunity",
-  "creating": "Creating...",
-  "success": "Opportunity created successfully.",
-  "fields": {
-    "title": {
-      "label": "Title",
-      "placeholder": "Opportunity title"
+      "title": "Add Opportunity",
+      "description": "Create a new trade opportunity and publish it on the Dasres marketplace.",
+      "create": "Create Opportunity",
+      "creating": "Creating...",
+      "success": "Opportunity created successfully.",
+      "fields": {
+        "title": {
+          "label": "Title",
+          "placeholder": "Opportunity title"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Country"
+        },
+        "image": {
+          "label": "Opportunity Image",
+          "help": "Supported formats: JPG, PNG and WEBP."
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Describe the trade opportunity"
+        }
+      },
+      "errors": {
+        "createFailed": "Error creating opportunity.",
+        "networkError": "Something went wrong."
+      }
     },
-    "country": {
-      "label": "Country",
-      "placeholder": "Country"
+    "edit": {
+      "title": "Edit Opportunity",
+      "description": "Update opportunity information and image.",
+      "loading": "Loading opportunity...",
+      "currentImage": "Current Opportunity Image",
+      "currentImageAlt": "Current opportunity image",
+      "update": "Update Opportunity",
+      "updating": "Updating...",
+      "fields": {
+        "title": {
+          "label": "Title",
+          "placeholder": "Opportunity title"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Country"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Describe the trade opportunity"
+        },
+        "image": {
+          "label": "Replace Image",
+          "help": "Leave empty to keep the current image. Supported formats: JPG, PNG and WEBP."
+        }
+      },
+      "errors": {
+        "loadFailed": "Error loading opportunity.",
+        "updateFailed": "Error updating opportunity.",
+        "networkError": "Something went wrong."
+      }
     },
-    "image": {
-      "label": "Opportunity Image",
-      "help": "Supported formats: JPG, PNG and WEBP."
-    },
-    "description": {
-      "label": "Description",
-      "placeholder": "Describe the trade opportunity"
-    }
-  },
-  "errors": {
-    "createFailed": "Error creating opportunity.",
-    "networkError": "Something went wrong."
-  }
-},
-"edit": {
-  "title": "Edit Opportunity",
-  "description": "Update opportunity information and image.",
-  "loading": "Loading opportunity...",
-  "currentImage": "Current Opportunity Image",
-  "currentImageAlt": "Current opportunity image",
-  "update": "Update Opportunity",
-  "updating": "Updating...",
-  "fields": {
-    "title": {
-      "label": "Title",
-      "placeholder": "Opportunity title"
-    },
-    "country": {
-      "label": "Country",
-      "placeholder": "Country"
-    },
-    "description": {
-      "label": "Description",
-      "placeholder": "Describe the trade opportunity"
-    },
-    "image": {
-      "label": "Replace Image",
-      "help": "Leave empty to keep the current image. Supported formats: JPG, PNG and WEBP."
-    }
-  },
-  "errors": {
-    "loadFailed": "Error loading opportunity.",
-    "updateFailed": "Error updating opportunity.",
-    "networkError": "Something went wrong."
-  }
-},
     "search": {
-  "searchLabel": "Search opportunities",
-  "searchPlaceholder": "🔍 Search opportunities...",
-  "countryLabel": "Country",
-  "statusLabel": "Status",
-  "allCountries": "All Countries",
-  "allStatuses": "All Statuses",
-  "viewOpportunity": "View Opportunity →",
-  "statuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "closed": "Closed"
-  },
-  "featured": {
-    "title": "Featured Opportunities",
-    "description": "Active trade opportunities currently open for collaboration."
-  },
-  "empty": {
-    "title": "No opportunities found",
-    "description": "Try changing your search or filters."
-  }
-},
+      "searchLabel": "Search opportunities",
+      "searchPlaceholder": "🔍 Search opportunities...",
+      "countryLabel": "Country",
+      "statusLabel": "Status",
+      "allCountries": "All Countries",
+      "allStatuses": "All Statuses",
+      "viewOpportunity": "View Opportunity →",
+      "statuses": {
+        "open": "Open",
+        "inProgress": "In Progress",
+        "closed": "Closed"
+      },
+      "featured": {
+        "title": "Featured Opportunities",
+        "description": "Active trade opportunities currently open for collaboration."
+      },
+      "empty": {
+        "title": "No opportunities found",
+        "description": "Try changing your search or filters."
+      }
+    },
     "deleteButton": {
       "button": "Delete Opportunity",
       "deleting": "Deleting...",
@@ -1937,671 +2033,689 @@
     }
   },
   "createCaseForm": {
-  "titleLabel": "Case Title",
-  "titlePlaceholder": "Need customs clearance in Dubai",
-  "categoryLabel": "Case Category",
-  "categoryHelp": "This helps Dasres match the case with relevant companies and experts.",
-  "descriptionLabel": "Description",
-  "descriptionPlaceholder": "Describe the shipment, service needed, country, documents, timeline, and any special requirements...",
-  "create": "Create Case",
-  "creating": "Creating...",
-  "categories": {
-    "general": "General",
-    "customsClearance": "Customs Clearance",
-    "shipping": "Shipping",
-    "inspection": "Inspection",
-    "insurance": "Insurance",
-    "sourcing": "Sourcing",
-    "documentation": "Documentation",
-    "payment": "Payment"
+    "titleLabel": "Case Title",
+    "titlePlaceholder": "Need customs clearance in Dubai",
+    "categoryLabel": "Case Category",
+    "categoryHelp": "This helps Dasres match the case with relevant companies and experts.",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Describe the shipment, service needed, country, documents, timeline, and any special requirements...",
+    "create": "Create Case",
+    "creating": "Creating...",
+    "categories": {
+      "general": "General",
+      "customsClearance": "Customs Clearance",
+      "shipping": "Shipping",
+      "inspection": "Inspection",
+      "insurance": "Insurance",
+      "sourcing": "Sourcing",
+      "documentation": "Documentation",
+      "payment": "Payment"
+    },
+    "backToCases": "← Back to Cases",
+    "pageTitle": "Create New Trade Case",
+    "pageDescription": "Submit a new trade service request. A provider or expert can be assigned later.",
+    "plans": {
+      "free": "Free",
+      "gold": "Gold",
+      "diamond": "Diamond",
+      "enterprise": "Enterprise"
+    },
+    "errors": {
+      "planLimit": "Your {plan} plan allows up to {limit} active trade cases. Upgrade your plan to create more cases.",
+      "titleAndDescriptionRequired": "Title and description are required.",
+      "invalidCategory": "Invalid case category."
+    }
   },
-  "backToCases": "← Back to Cases",
-"pageTitle": "Create New Trade Case",
-"pageDescription": "Submit a new trade service request. A provider or expert can be assigned later.",
-"plans": {
-  "free": "Free",
-  "gold": "Gold",
-  "diamond": "Diamond",
-  "enterprise": "Enterprise"
-},
-"errors": {
-  "planLimit": "Your {plan} plan allows up to {limit} active trade cases. Upgrade your plan to create more cases.",
-  "titleAndDescriptionRequired": "Title and description are required.",
-  "invalidCategory": "Invalid case category."
-}
-},
-"dashboardSearch": {
-  "eyebrow": "Global Search",
-  "title": "Search Dasres",
-  "description": "Find companies, experts, opportunities and trade cases across your workspace.",
-  "searchLabel": "Search Dasres",
-  "searchPlaceholder": "Search companies, experts, opportunities, cases...",
-  "searchButton": "Search",
-  "initialState": "Enter a keyword to search across Dasres.",
-  "resultsSummary": "{count, plural, =0 {No results found for} =1 {1 result found for} other {# results found for}}",
-  "sections": {
+  "dashboardSearch": {
+    "eyebrow": "Global Search",
+    "title": "Search Dasres",
+    "description": "Find companies, experts, opportunities and trade cases across your workspace.",
+    "searchLabel": "Search Dasres",
+    "searchPlaceholder": "Search companies, experts, opportunities, cases...",
+    "searchButton": "Search",
+    "initialState": "Enter a keyword to search across Dasres.",
+    "resultsSummary": "{count, plural, =0 {No results found for} =1 {1 result found for} other {# results found for}}",
+    "sections": {
+      "companies": {
+        "title": "Companies",
+        "empty": "No companies found."
+      },
+      "experts": {
+        "title": "Experts",
+        "empty": "No experts found."
+      },
+      "opportunities": {
+        "title": "Opportunities",
+        "empty": "No opportunities found."
+      },
+      "tradeCases": {
+        "title": "Trade Cases",
+        "empty": "No cases found."
+      }
+    },
+    "statuses": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "closed": "Closed",
+      "pending": "Pending",
+      "cancelled": "Cancelled"
+    }
+  },
+  "companyProfile": {
+    "metadata": {
+      "notFoundTitle": "Company Not Found",
+      "notFoundDescription": "The requested company profile could not be found.",
+      "description": "{name} is a {category} company from {country}. Discover this company profile on Dasres."
+    },
+    "notFound": "Company Not Found",
+    "backToCompanies": "← Back to Companies",
+    "statusLabel": "Status",
+    "notAvailable": "N/A",
+    "notProvided": "Not provided",
+    "companyRating": "Company Rating",
+    "companyDescription": "Company Description",
+    "recentReviews": "Recent Reviews",
+    "companyInformation": "Company Information",
+    "noReviews": "No reviews yet.",
+    "noCommentProvided": "No comment provided.",
+    "basedOnReviews": "{count, plural, =1 {Based on 1 review} other {Based on # reviews}}",
+    "trustScoreValue": "Trust Score: {score}/100",
+    "completedCasesValue": "Completed Cases: {count}",
+    "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {1 review} other {# reviews}})",
+    "sendEmail": "Send Email",
+    "visitWebsite": "Visit Website",
+    "verificationStatus": "Verification Status",
+    "editCompany": "Edit Company",
+    "metrics": {
+      "trustScore": "Trust Score",
+      "rating": "Rating",
+      "reviews": "Reviews",
+      "verification": "Verification",
+      "country": "Country"
+    },
+    "fields": {
+      "email": "Email",
+      "website": "Website",
+      "country": "Country",
+      "category": "Category",
+      "reputation": "Reputation"
+    },
+    "verificationBadges": {
+      "verified": "Verified Company",
+      "rejected": "Rejected",
+      "pending": "Pending Verification"
+    },
+    "verificationStatuses": {
+      "verified": "Verified",
+      "rejected": "Rejected",
+      "pending": "Pending"
+    },
+    "plans": {
+      "gold": "GOLD",
+      "diamond": "DIAMOND",
+      "enterprise": "ENTERPRISE"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "open": "Open",
+      "pending": "Pending",
+      "verified": "Verified",
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "inProgress": "In Progress"
+    },
+    "schema": {
+      "status": "Status",
+      "category": "Category"
+    }
+  },
+  "dashboardCompanies": {
+    "title": "Companies Management",
+    "description": "Manage and browse international trade companies.",
+    "addCompany": "Add Company",
+    "stats": {
+      "total": "Total",
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "premium": "Premium"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {current} of {total}"
+    }
+  },
+  "dashboardExperts": {
+    "title": "Experts Management",
+    "description": "Manage and browse international trade experts.",
+    "addExpert": "Add Expert",
+    "stats": {
+      "total": "Total",
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "premium": "Premium"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {current} of {total}"
+    }
+  },
+  "dashboardMyCases": {
+    "title": "My Active Cases",
+    "description": "Cases where your company proposal has been accepted.",
+    "notAvailable": "N/A",
+    "notAssigned": "Not assigned",
+    "caseNumber": "Case #{id}",
+    "documentCount": "{count, plural, =1 {1 Document} other {# Documents}}",
+    "messageCount": "{count, plural, =1 {1 Message} other {# Messages}}",
+    "stepsCompleted": "{completed} / {total} steps completed",
+    "updated": "Updated {date}",
+    "viewCase": "View Case →",
+    "stats": {
+      "assignedCases": "Assigned Cases",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "workload": "Workload",
+      "workloadDescription": "Messages + Documents"
+    },
+    "empty": {
+      "title": "No Active Cases Yet",
+      "description": "Once one of your company proposals is accepted, the assigned trade case will appear here.",
+      "browseOpenCases": "Browse Open Cases"
+    },
+    "fields": {
+      "acceptedCompany": "Accepted Company",
+      "assignedExpert": "Assigned Expert",
+      "proposalPrice": "Proposal Price",
+      "timelineProgress": "Timeline Progress"
+    },
+    "statuses": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "dashboardMyCompanies": {
+    "title": "My Companies",
+    "description": "Manage company profiles you own, their verification status, and visibility level.",
+    "addCompany": "Add Company",
+    "created": "Created on {date}",
+    "viewCompany": "View Company →",
+    "categories": {
+      "general": "General",
+      "customsClearance": "Customs Clearance",
+      "shipping": "Shipping",
+      "inspection": "Inspection",
+      "insurance": "Insurance",
+      "sourcing": "Sourcing",
+      "documentation": "Documentation",
+      "payment": "Payment"
+    },
+    "countries": {
+      "iran": "Iran"
+    },
+    "stats": {
+      "total": "Total",
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "premium": "Premium"
+    },
+    "empty": {
+      "title": "You do not have any companies yet",
+      "description": "Create your first company profile to participate in business opportunities and submit proposals.",
+      "button": "Add Company"
+    },
+    "verification": {
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "plans": {
+      "free": "Free",
+      "gold": "Gold",
+      "diamond": "Diamond",
+      "enterprise": "Enterprise"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended"
+    }
+  },
+  "dashboardMyExperts": {
+    "title": "My Experts",
+    "description": "Manage your owned expert profiles, verification status and plan visibility.",
+    "addExpert": "Add Expert",
+    "created": "Created: {date}",
+    "viewExpert": "View Expert →",
+    "stats": {
+      "total": "Total",
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "premium": "Premium"
+    },
+    "empty": {
+      "title": "No experts yet",
+      "description": "Create your first expert profile to showcase your experience and receive trade requests.",
+      "button": "Add Expert"
+    },
+    "verification": {
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "plans": {
+      "free": "FREE",
+      "gold": "GOLD",
+      "diamond": "DIAMOND",
+      "enterprise": "ENTERPRISE"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended"
+    }
+  },
+  "dashboardMyProposals": {
+    "title": "My Proposals",
+    "description": "Track proposal performance, win rate and submitted value.",
+    "findOpenCases": "Find Open Cases",
+    "empty": "No proposals yet.",
+    "notAvailable": "N/A",
+    "notAssigned": "Not assigned",
+    "proposalNumber": "Proposal #{id}",
+    "submittedOn": "Submitted on {date}",
+    "caseStatus": "Case Status: {status}",
+    "viewCase": "View Case →",
+    "stats": {
+      "totalProposals": "Total Proposals",
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "winRate": "Win Rate",
+      "acceptedValue": "Accepted Value",
+      "submittedValue": "Submitted: ${value}"
+    },
+    "filters": {
+      "all": "All: {count}",
+      "pending": "Pending: {count}",
+      "accepted": "Accepted: {count}",
+      "rejected": "Rejected: {count}"
+    },
+    "fields": {
+      "case": "Case",
+      "company": "Company",
+      "expert": "Expert",
+      "price": "Price"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "caseStatuses": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "dashboardMyTasks": {
+    "eyebrow": "My Tasks",
+    "title": "Assigned Work",
+    "assignedSummary": "{count, plural, =0 {No assigned tasks} =1 {1 assigned task} other {# assigned tasks}}",
+    "noDueDate": "No due date",
+    "viewProject": "View Project",
+    "stats": {
+      "assigned": "Assigned",
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "overdue": "Overdue"
+    },
+    "empty": {
+      "title": "No Assigned Tasks",
+      "description": "You don't have any assigned work yet."
+    },
+    "fields": {
+      "project": "Project",
+      "projectStatus": "Project Status",
+      "dueDate": "Due Date"
+    },
+    "taskStatuses": {
+      "todo": "Todo",
+      "inProgress": "In Progress",
+      "review": "Review",
+      "completed": "Completed"
+    },
+    "projectStatuses": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "urgent": "Urgent"
+    }
+  },
+  "dashboardProjects": {
+    "eyebrow": "Projects",
+    "title": "Trade Projects",
+    "description": "Manage accepted trade cases and track execution progress.",
+    "customer": "Customer",
+    "empty": {
+      "title": "No Projects Yet",
+      "description": "Projects are created automatically when a proposal is accepted.",
+      "browseOpenCases": "Browse Open Cases"
+    },
+    "statuses": {
+      "active": "Active",
+      "pending": "Pending",
+      "open": "Open",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "dashboardSavedCases": {
+    "title": "Saved Cases",
+    "description": "Trade cases you saved for later review.",
+    "savedOn": "Saved: {date}",
+    "viewCase": "View Case →",
+    "empty": {
+      "title": "No saved cases yet",
+      "description": "Save interesting trade cases to access them later.",
+      "button": "Browse Open Cases"
+    },
+    "metrics": {
+      "proposals": "Proposals",
+      "documents": "Documents",
+      "messages": "Messages"
+    },
+    "statuses": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "dashboardSavedCompanies": {
+    "title": "Saved Companies",
+    "description": "Companies you saved to review and contact later.",
+    "viewProfile": "View Profile",
+    "empty": {
+      "title": "No saved companies yet",
+      "description": "Save trusted companies to build your trade network.",
+      "button": "Browse Companies"
+    }
+  },
+  "dashboardSavedExperts": {
+    "title": "Saved Experts",
+    "description": "Experts you saved to review and contact later.",
+    "viewProfile": "View Profile",
+    "empty": {
+      "title": "No saved experts yet",
+      "description": "Save experienced professionals to quickly contact them for future trade projects.",
+      "button": "Browse Experts"
+    }
+  },
+  "dashboardSettings": {
+    "eyebrow": "Account Settings",
+    "title": "Settings",
+    "description": "Manage your Dasres account, plan and profile information.",
+    "unlimited": "Unlimited",
+    "profileInformation": {
+      "title": "Profile Information",
+      "notProvided": "Not provided",
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "plan": "Plan"
+      }
+    },
+    "planLimits": {
+      "title": "Plan Limits",
+      "caseLimit": "Case Limit",
+      "proposalLimit": "Proposal Limit"
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "manageSubscription": "Manage Subscription",
+      "myCompanies": "My Companies",
+      "myExperts": "My Experts"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Password changes, two-factor authentication and login history will be added in the production security phase."
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "User"
+    },
+    "plans": {
+      "free": "FREE",
+      "gold": "GOLD",
+      "diamond": "DIAMOND",
+      "enterprise": "ENTERPRISE"
+    }
+  },
+  "dashboardSubscription": {
+    "title": "Subscription",
+    "usageUnlimited": "Unlimited (used: {used})",
+    "premiumBadge": "Premium",
+    "description": "Manage your Dasres plan, usage limits and premium visibility. Payments are not enabled yet; plans are currently managed by admin.",
+    "currentBadge": "CURRENT",
+    "managePlan": "Manage Plan",
+    "currentPlan": "Current Plan",
+    "usageLimited": "Usage Limit",
+    "proposals": "Proposals",
+    "activeCases": "Active Cases",
+    "usage": {
+      "currentPlan": "Current Plan",
+      "activeCasesUsed": "Active Cases Used",
+      "proposalsUsed": "Proposals Used",
+      "limitedValue": "{used} / {limit}",
+      "unlimitedValue": "{used} / Unlimited"
+    },
+    "planLabels": {
+      "free": "FREE",
+      "gold": "GOLD",
+      "diamond": "DIAMOND",
+      "enterprise": "ENTERPRISE"
+    },
+    "actions": {
+      "currentPlan": "Current Plan",
+      "contactSales": "Contact Sales",
+      "notAvailable": "Not Available",
+      "requestUpgrade": "Request Upgrade"
+    },
+    "plans": {
+      "free": {
+        "title": "Free",
+        "description": "For testing Dasres and starting basic trade activity.",
+        "price": "$0",
+        "features": {
+          "activeCases": "3 active trade cases",
+          "proposals": "5 proposals",
+          "companyProfile": "Basic company profile",
+          "expertProfile": "Basic expert profile"
+        }
+      },
+      "gold": {
+        "title": "Gold",
+        "description": "For growing teams that need more visibility and capacity.",
+        "price": "$29/mo",
+        "features": {
+          "activeCases": "20 active trade cases",
+          "proposals": "20 proposals",
+          "badge": "Gold badge",
+          "priorityListing": "Priority listing"
+        }
+      },
+      "diamond": {
+        "title": "Diamond",
+        "description": "For serious providers and frequent trade operators.",
+        "price": "$99/mo",
+        "features": {
+          "activeCases": "Unlimited active trade cases",
+          "proposals": "Unlimited proposals",
+          "badge": "Diamond badge",
+          "featuredListing": "Featured listing"
+        }
+      },
+      "enterprise": {
+        "title": "Enterprise",
+        "description": "For large trade companies, agencies and enterprise teams.",
+        "price": "Custom Pricing",
+        "features": {
+          "activeCases": "Unlimited active trade cases",
+          "proposals": "Unlimited proposals",
+          "badge": "Enterprise badge",
+          "visibility": "Highest visibility",
+          "accountManager": "Future account manager access"
+        }
+      }
+    },
+    "upgradeNotice": {
+      "title": "Need a higher plan?",
+      "description": "Payments are not active yet. For now, admins can manually upgrade user plans from the user management panel.",
+      "back": "Back to Dashboard"
+    }
+  },
+  "dashboardVerifications": {
+    "title": "Verification Center",
+    "description": "Review and manage company and expert verification requests.",
+    "created": "Created: {date}",
+    "stats": {
+      "pending": {
+        "title": "Pending",
+        "description": "Companies + Experts"
+      },
+      "verified": {
+        "title": "Verified",
+        "description": "Approved profiles"
+      },
+      "rejected": {
+        "title": "Rejected",
+        "description": "Rejected profiles"
+      }
+    },
     "companies": {
-      "title": "Companies",
-      "empty": "No companies found."
+      "title": "Pending Companies",
+      "description": "Company profiles waiting for admin review.",
+      "empty": "No pending companies."
     },
     "experts": {
-      "title": "Experts",
-      "empty": "No experts found."
+      "title": "Pending Experts",
+      "description": "Expert profiles waiting for admin review.",
+      "empty": "No pending experts."
     },
-    "opportunities": {
-      "title": "Opportunities",
-      "empty": "No opportunities found."
-    },
-    "tradeCases": {
-      "title": "Trade Cases",
-      "empty": "No cases found."
+    "plans": {
+      "free": "FREE",
+      "gold": "GOLD",
+      "diamond": "DIAMOND",
+      "enterprise": "ENTERPRISE"
     }
   },
-  "statuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "closed": "Closed",
-    "pending": "Pending",
-    "cancelled": "Cancelled"
-  }
-},
-"companyProfile": {
-  "metadata": {
-    "notFoundTitle": "Company Not Found",
-    "notFoundDescription": "The requested company profile could not be found.",
-    "description": "{name} is a {category} company from {country}. Discover this company profile on Dasres."
-  },
-  "notFound": "Company Not Found",
-  "backToCompanies": "← Back to Companies",
-  "statusLabel": "Status",
-  "notAvailable": "N/A",
-  "notProvided": "Not provided",
-  "companyRating": "Company Rating",
-  "companyDescription": "Company Description",
-  "recentReviews": "Recent Reviews",
-  "companyInformation": "Company Information",
-  "noReviews": "No reviews yet.",
-  "noCommentProvided": "No comment provided.",
-  "basedOnReviews": "{count, plural, =1 {Based on 1 review} other {Based on # reviews}}",
-  "trustScoreValue": "Trust Score: {score}/100",
-  "completedCasesValue": "Completed Cases: {count}",
-  "ratingWithReviews": "⭐ {rating} ({count, plural, =1 {1 review} other {# reviews}})",
-  "sendEmail": "Send Email",
-  "visitWebsite": "Visit Website",
-  "verificationStatus": "Verification Status",
-  "editCompany": "Edit Company",
-  "metrics": {
-    "trustScore": "Trust Score",
-    "rating": "Rating",
-    "reviews": "Reviews",
-    "verification": "Verification",
-    "country": "Country"
-  },
-  "fields": {
-    "email": "Email",
-    "website": "Website",
-    "country": "Country",
-    "category": "Category",
-    "reputation": "Reputation"
-  },
-  "verificationBadges": {
-    "verified": "Verified Company",
-    "rejected": "Rejected",
-    "pending": "Pending Verification"
-  },
-  "verificationStatuses": {
-    "verified": "Verified",
-    "rejected": "Rejected",
-    "pending": "Pending"
-  },
-  "plans": {
-    "gold": "GOLD",
-    "diamond": "DIAMOND",
-    "enterprise": "ENTERPRISE"
-  },
-  "statuses": {
-    "active": "Active",
-    "inactive": "Inactive",
-    "open": "Open",
-    "pending": "Pending",
-    "verified": "Verified",
-    "rejected": "Rejected",
-    "completed": "Completed",
-    "inProgress": "In Progress"
-  },
-  "schema": {
-    "status": "Status",
-    "category": "Category"
-  }
-},
-"dashboardCompanies": {
-  "title": "Companies Management",
-  "description": "Manage and browse international trade companies.",
-  "addCompany": "Add Company",
-  "stats": {
-    "total": "Total",
-    "verified": "Verified",
-    "pending": "Pending",
-    "rejected": "Rejected",
-    "premium": "Premium"
-  },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {current} of {total}"
-  }
-},
-"dashboardExperts": {
-  "title": "Experts Management",
-  "description": "Manage and browse international trade experts.",
-  "addExpert": "Add Expert",
-  "stats": {
-    "total": "Total",
-    "verified": "Verified",
-    "pending": "Pending",
-    "rejected": "Rejected",
-    "premium": "Premium"
-  },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {current} of {total}"
-  }
-},
-"dashboardMyCases": {
-  "title": "My Active Cases",
-  "description": "Cases where your company proposal has been accepted.",
-  "notAvailable": "N/A",
-  "notAssigned": "Not assigned",
-  "caseNumber": "Case #{id}",
-  "documentCount": "{count, plural, =1 {1 Document} other {# Documents}}",
-  "messageCount": "{count, plural, =1 {1 Message} other {# Messages}}",
-  "stepsCompleted": "{completed} / {total} steps completed",
-  "updated": "Updated {date}",
-  "viewCase": "View Case →",
-  "stats": {
-    "assignedCases": "Assigned Cases",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "workload": "Workload",
-    "workloadDescription": "Messages + Documents"
-  },
-  "empty": {
-    "title": "No Active Cases Yet",
-    "description": "Once one of your company proposals is accepted, the assigned trade case will appear here.",
-    "browseOpenCases": "Browse Open Cases"
-  },
-  "fields": {
-    "acceptedCompany": "Accepted Company",
-    "assignedExpert": "Assigned Expert",
-    "proposalPrice": "Proposal Price",
-    "timelineProgress": "Timeline Progress"
-  },
-  "statuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "cancelled": "Cancelled"
-  }
-},
-"dashboardMyCompanies": {
-  "title": "My Companies",
-  "description": "Manage your owned company profiles, verification status and plan visibility.",
-  "addCompany": "Add Company",
-  "created": "Created: {date}",
-  "viewCompany": "View Company →",
-  "stats": {
-    "total": "Total",
-    "verified": "Verified",
-    "pending": "Pending",
-    "rejected": "Rejected",
-    "premium": "Premium"
-  },
-  "empty": {
-    "title": "No companies yet",
-    "description": "Create your first company profile to participate in trade opportunities and submit proposals.",
-    "button": "Add Company"
-  },
-  "verification": {
-    "verified": "Verified",
-    "pending": "Pending",
-    "rejected": "Rejected"
-  },
-  "plans": {
-    "free": "FREE",
-    "gold": "GOLD",
-    "diamond": "DIAMOND",
-    "enterprise": "ENTERPRISE"
-  },
-  "statuses": {
-    "active": "Active",
-    "inactive": "Inactive",
-    "suspended": "Suspended"
-  }
-},
-"dashboardMyExperts": {
-  "title": "My Experts",
-  "description": "Manage your owned expert profiles, verification status and plan visibility.",
-  "addExpert": "Add Expert",
-  "created": "Created: {date}",
-  "viewExpert": "View Expert →",
-  "stats": {
-    "total": "Total",
-    "verified": "Verified",
-    "pending": "Pending",
-    "rejected": "Rejected",
-    "premium": "Premium"
-  },
-  "empty": {
-    "title": "No experts yet",
-    "description": "Create your first expert profile to showcase your experience and receive trade requests.",
-    "button": "Add Expert"
-  },
-  "verification": {
-    "verified": "Verified",
-    "pending": "Pending",
-    "rejected": "Rejected"
-  },
-  "plans": {
-    "free": "FREE",
-    "gold": "GOLD",
-    "diamond": "DIAMOND",
-    "enterprise": "ENTERPRISE"
-  },
-  "statuses": {
-    "active": "Active",
-    "inactive": "Inactive",
-    "suspended": "Suspended"
-  }
-},
-"dashboardMyProposals": {
-  "title": "My Proposals",
-  "description": "Track proposal performance, win rate and submitted value.",
-  "findOpenCases": "Find Open Cases",
-  "empty": "No proposals yet.",
-  "notAvailable": "N/A",
-  "notAssigned": "Not assigned",
-  "proposalNumber": "Proposal #{id}",
-  "submittedOn": "Submitted on {date}",
-  "caseStatus": "Case Status: {status}",
-  "viewCase": "View Case →",
-  "stats": {
-    "totalProposals": "Total Proposals",
-    "pending": "Pending",
-    "accepted": "Accepted",
-    "rejected": "Rejected",
-    "winRate": "Win Rate",
-    "acceptedValue": "Accepted Value",
-    "submittedValue": "Submitted: ${value}"
-  },
-  "filters": {
-    "all": "All: {count}",
-    "pending": "Pending: {count}",
-    "accepted": "Accepted: {count}",
-    "rejected": "Rejected: {count}"
-  },
-  "fields": {
-    "case": "Case",
-    "company": "Company",
-    "expert": "Expert",
-    "price": "Price"
-  },
-  "statuses": {
-    "pending": "Pending",
-    "accepted": "Accepted",
-    "rejected": "Rejected"
-  },
-  "caseStatuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "cancelled": "Cancelled"
-  }
-},
-"dashboardMyTasks": {
-  "eyebrow": "My Tasks",
-  "title": "Assigned Work",
-  "assignedSummary": "{count, plural, =0 {No assigned tasks} =1 {1 assigned task} other {# assigned tasks}}",
-  "noDueDate": "No due date",
-  "viewProject": "View Project",
-  "stats": {
-    "assigned": "Assigned",
-    "completed": "Completed",
-    "inProgress": "In Progress",
-    "overdue": "Overdue"
-  },
-  "empty": {
-    "title": "No Assigned Tasks",
-    "description": "You don't have any assigned work yet."
-  },
-  "fields": {
-    "project": "Project",
-    "projectStatus": "Project Status",
-    "dueDate": "Due Date"
-  },
-  "taskStatuses": {
-    "todo": "Todo",
-    "inProgress": "In Progress",
-    "review": "Review",
-    "completed": "Completed"
-  },
-  "projectStatuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "cancelled": "Cancelled"
-  },
-  "priorities": {
-    "low": "Low",
-    "medium": "Medium",
-    "high": "High",
-    "urgent": "Urgent"
-  }
-},
-"dashboardProjects": {
-  "eyebrow": "Projects",
-  "title": "Trade Projects",
-  "description": "Manage accepted trade cases and track execution progress.",
-  "customer": "Customer",
-  "empty": {
-    "title": "No Projects Yet",
-    "description": "Projects are created automatically when a proposal is accepted.",
-    "browseOpenCases": "Browse Open Cases"
-  },
-  "statuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "cancelled": "Cancelled"
-  }
-},
-"dashboardSavedCases": {
-  "title": "Saved Cases",
-  "description": "Trade cases you saved for later review.",
-  "savedOn": "Saved: {date}",
-  "viewCase": "View Case →",
-  "empty": {
-    "title": "No saved cases yet",
-    "description": "Save interesting trade cases to access them later.",
-    "button": "Browse Open Cases"
-  },
-  "metrics": {
-    "proposals": "Proposals",
-    "documents": "Documents",
-    "messages": "Messages"
-  },
-  "statuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "cancelled": "Cancelled"
-  }
-},
-"dashboardSavedCompanies": {
-  "title": "Saved Companies",
-  "description": "Companies you saved to review and contact later.",
-  "viewProfile": "View Profile",
-  "empty": {
-    "title": "No saved companies yet",
-    "description": "Save trusted companies to build your trade network.",
-    "button": "Browse Companies"
-  }
-},
-"dashboardSavedExperts": {
-  "title": "Saved Experts",
-  "description": "Experts you saved to review and contact later.",
-  "viewProfile": "View Profile",
-  "empty": {
-    "title": "No saved experts yet",
-    "description": "Save experienced professionals to quickly contact them for future trade projects.",
-    "button": "Browse Experts"
-  }
-},
-"dashboardSettings": {
-  "eyebrow": "Account Settings",
-  "title": "Settings",
-  "description": "Manage your Dasres account, plan and profile information.",
-  "unlimited": "Unlimited",
-  "profileInformation": {
-    "title": "Profile Information",
+  "publicCompanyProfile": {
+    "categories": {
+      "general": "General",
+      "customsClearance": "Customs Clearance",
+      "shipping": "Shipping",
+      "inspection": "Inspection",
+      "insurance": "Insurance",
+      "sourcing": "Sourcing",
+      "documentation": "Documentation",
+      "payment": "Payment"
+    },
+    "countries": {
+      "iran": "Iran"
+    },
+    "metadata": {
+      "notFoundTitle": "Company Not Found",
+      "notFoundDescription": "The requested company profile could not be found.",
+      "description": "{name} is a {category} company located in {country}."
+    },
+    "notFound": "Company not found",
+    "backToCompanies": "← Back to Companies",
+    "statusLabel": "Status",
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "open": "Open",
+      "pending": "Pending",
+      "verified": "Verified",
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "inProgress": "In Progress"
+    },
+    "verificationStatuses": {
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "verificationBadges": {
+      "verified": "Verified",
+      "pending": "Pending Verification",
+      "rejected": "Rejected"
+    },
+    "plans": {
+      "free": "Free",
+      "gold": "Gold",
+      "diamond": "Diamond",
+      "enterprise": "Enterprise"
+    },
+    "metrics": {
+      "trustScore": "Trust Score",
+      "rating": "Rating",
+      "reviews": "Reviews",
+      "verification": "Verification",
+      "country": "Country"
+    },
+    "companyRating": "Company Rating",
+    "basedOnReviews": "Based on {count} reviews",
+    "trustScoreValue": "Trust Score: {score}/100",
+    "completedCasesValue": "{count} completed trade cases",
+    "companyDescription": "Company Description",
+    "recentReviews": "Recent Reviews",
+    "noReviews": "No reviews yet.",
+    "noCommentProvided": "No comment provided.",
+    "notAvailable": "N/A",
     "notProvided": "Not provided",
+    "companyInformation": "Company Information",
     "fields": {
-      "name": "Name",
       "email": "Email",
-      "role": "Role",
-      "plan": "Plan"
+      "website": "Website",
+      "country": "Country",
+      "category": "Category",
+      "reputation": "Reputation"
+    },
+    "ratingWithReviews": "{rating} / 5 ({count} reviews)",
+    "sendEmail": "Send Email",
+    "visitWebsite": "Visit Website",
+    "relatedExperts": {
+      "title": "Related Experts",
+      "empty": "No related experts found.",
+      "verified": "Verified Expert"
+    },
+    "verificationStatus": "Verification Status",
+    "editCompany": "Edit Company",
+    "schema": {
+      "status": "Status",
+      "category": "Category"
     }
   },
-  "planLimits": {
-    "title": "Plan Limits",
-    "caseLimit": "Case Limit",
-    "proposalLimit": "Proposal Limit"
-  },
-  "quickLinks": {
-    "title": "Quick Links",
-    "manageSubscription": "Manage Subscription",
-    "myCompanies": "My Companies",
-    "myExperts": "My Experts"
-  },
-  "security": {
-    "title": "Security",
-    "description": "Password changes, two-factor authentication and login history will be added in the production security phase."
-  },
-  "roles": {
-    "admin": "Admin",
-    "user": "User"
-  },
-  "plans": {
-    "free": "FREE",
-    "gold": "GOLD",
-    "diamond": "DIAMOND",
-    "enterprise": "ENTERPRISE"
-  }
-},
-"dashboardSubscription": {
-  "title": "Subscription",
-  "description": "Manage your Dasres plan, usage limits and premium visibility. Payments are not enabled yet; plans are currently managed by admin.",
-  "currentBadge": "CURRENT",
-  "usage": {
-    "currentPlan": "Current Plan",
-    "activeCasesUsed": "Active Cases Used",
-    "proposalsUsed": "Proposals Used",
-    "limitedValue": "{used} / {limit}",
-    "unlimitedValue": "{used} / Unlimited"
-  },
-  "planLabels": {
-    "free": "FREE",
-    "gold": "GOLD",
-    "diamond": "DIAMOND",
-    "enterprise": "ENTERPRISE"
-  },
-  "actions": {
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact Sales",
-    "notAvailable": "Not Available",
-    "requestUpgrade": "Request Upgrade"
-  },
-  "plans": {
-    "free": {
-      "title": "Free",
-      "description": "For testing Dasres and starting basic trade activity.",
-      "price": "$0",
-      "features": {
-        "activeCases": "3 active trade cases",
-        "proposals": "5 proposals",
-        "companyProfile": "Basic company profile",
-        "expertProfile": "Basic expert profile"
-      }
-    },
-    "gold": {
-      "title": "Gold",
-      "description": "For growing teams that need more visibility and capacity.",
-      "price": "$29/mo",
-      "features": {
-        "activeCases": "20 active trade cases",
-        "proposals": "20 proposals",
-        "badge": "Gold badge",
-        "priorityListing": "Priority listing"
-      }
-    },
-    "diamond": {
-      "title": "Diamond",
-      "description": "For serious providers and frequent trade operators.",
-      "price": "$99/mo",
-      "features": {
-        "activeCases": "Unlimited active trade cases",
-        "proposals": "Unlimited proposals",
-        "badge": "Diamond badge",
-        "featuredListing": "Featured listing"
-      }
-    },
-    "enterprise": {
-      "title": "Enterprise",
-      "description": "For large trade companies, agencies and enterprise teams.",
-      "price": "Custom Pricing",
-      "features": {
-        "activeCases": "Unlimited active trade cases",
-        "proposals": "Unlimited proposals",
-        "badge": "Enterprise badge",
-        "visibility": "Highest visibility",
-        "accountManager": "Future account manager access"
-      }
-    }
-  },
-  "upgradeNotice": {
-    "title": "Need a higher plan?",
-    "description": "Payments are not active yet. For now, admins can manually upgrade user plans from the user management panel.",
-    "back": "Back to Dashboard"
-  }
-},
-"dashboardVerifications": {
-  "title": "Verification Center",
-  "description": "Review and manage company and expert verification requests.",
-  "created": "Created: {date}",
-  "stats": {
-    "pending": {
-      "title": "Pending",
-      "description": "Companies + Experts"
-    },
-    "verified": {
-      "title": "Verified",
-      "description": "Approved profiles"
-    },
-    "rejected": {
-      "title": "Rejected",
-      "description": "Rejected profiles"
-    }
-  },
-  "companies": {
-    "title": "Pending Companies",
-    "description": "Company profiles waiting for admin review.",
-    "empty": "No pending companies."
-  },
-  "experts": {
-    "title": "Pending Experts",
-    "description": "Expert profiles waiting for admin review.",
-    "empty": "No pending experts."
-  },
-  "plans": {
-    "free": "FREE",
-    "gold": "GOLD",
-    "diamond": "DIAMOND",
-    "enterprise": "ENTERPRISE"
-  }
-},
-"publicCompanyProfile": {
-  "metadata": {
-    "notFoundTitle": "Company Not Found",
-    "notFoundDescription": "The requested company profile could not be found.",
-    "description": "{name} is a {category} company located in {country}."
-  },
-  "notFound": "Company not found",
-  "backToCompanies": "← Back to Companies",
-
-  "statusLabel": "Status",
-
-  "statuses": {
-    "active": "Active",
-    "inactive": "Inactive",
-    "open": "Open",
-    "pending": "Pending",
-    "verified": "Verified",
-    "rejected": "Rejected",
-    "completed": "Completed",
-    "inProgress": "In Progress"
-  },
-
-  "verificationStatuses": {
-    "verified": "Verified",
-    "pending": "Pending",
-    "rejected": "Rejected"
-  },
-
-  "verificationBadges": {
-    "verified": "Verified",
-    "pending": "Pending Verification",
-    "rejected": "Rejected"
-  },
-
-  "plans": {
-    "free": "Free",
-    "gold": "Gold",
-    "diamond": "Diamond",
-    "enterprise": "Enterprise"
-  },
-
-  "metrics": {
-    "trustScore": "Trust Score",
-    "rating": "Rating",
-    "reviews": "Reviews",
-    "verification": "Verification",
-    "country": "Country"
-  },
-
-  "companyRating": "Company Rating",
-  "basedOnReviews": "Based on {count} reviews",
-  "trustScoreValue": "Trust Score: {score}/100",
-  "completedCasesValue": "{count} completed trade cases",
-
-  "companyDescription": "Company Description",
-  "recentReviews": "Recent Reviews",
-
-  "noReviews": "No reviews yet.",
-  "noCommentProvided": "No comment provided.",
-  "notAvailable": "N/A",
-  "notProvided": "Not provided",
-
-  "companyInformation": "Company Information",
-
-  "fields": {
-    "email": "Email",
-    "website": "Website",
-    "country": "Country",
-    "category": "Category",
-    "reputation": "Reputation"
-  },
-
-  "ratingWithReviews": "{rating} / 5 ({count} reviews)",
-
-  "sendEmail": "Send Email",
-  "visitWebsite": "Visit Website",
-
-  "relatedExperts": {
-    "title": "Related Experts",
-    "empty": "No related experts found.",
-    "verified": "Verified Expert"
-  },
-
-  "verificationStatus": "Verification Status",
-
-  "editCompany": "Edit Company",
-
-  "schema": {
-    "status": "Status",
-    "category": "Category"
-  }
-},
   "publicExpertProfile": {
     "metadata": {
       "notFoundTitle": "Expert Not Found",
@@ -2610,14 +2724,12 @@
     },
     "notFound": "Expert Not Found",
     "backToExperts": "← Back to Experts",
-
     "plans": {
       "free": "Free",
       "gold": "Gold",
       "diamond": "Diamond",
       "enterprise": "Enterprise"
     },
-
     "statuses": {
       "active": "Active",
       "inactive": "Inactive",
@@ -2626,7 +2738,6 @@
       "rejected": "Rejected",
       "suspended": "Suspended"
     },
-
     "metrics": {
       "trustScore": "Trust Score",
       "rating": "Rating",
@@ -2634,219 +2745,411 @@
       "specialty": "Specialty",
       "country": "Country"
     },
-
     "experience": "Experience",
-
     "recentReviews": "Recent Reviews",
-
     "noReviews": "No reviews yet.",
-
     "anonymousUser": "Anonymous User",
-
     "noCommentProvided": "No comment provided.",
-
     "contactExpert": "Contact Expert",
-
     "fields": {
       "email": "Email",
       "country": "Country",
       "specialty": "Specialty",
       "reputation": "Reputation"
     },
-
     "ratingWithReviews": "{rating}/5 ({count} reviews)",
-
     "completedCases": "Completed Cases",
-
     "sendEmail": "Send Email",
-
     "relatedCompanies": {
       "title": "Related Companies",
       "empty": "No related companies found.",
       "verified": "Verified"
     },
-
     "adminActions": "Admin Actions",
-
     "editExpert": "Edit Expert",
-
     "reviewNotice": "Ratings and reviews are only collected from completed trade cases.",
-
     "notAvailable": "N/A"
   },
   "publicOpportunityProfile": {
-  "metadata": {
-    "notFoundTitle": "Opportunity Not Found",
-    "notFoundDescription": "The requested opportunity could not be found."
+    "metadata": {
+      "notFoundTitle": "Opportunity Not Found",
+      "notFoundDescription": "The requested opportunity could not be found."
+    },
+    "notFound": "Opportunity Not Found",
+    "backToOpportunities": "← Back to Opportunities",
+    "tradeOpportunity": "Trade Opportunity",
+    "statuses": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "closed": "Closed"
+    },
+    "metrics": {
+      "status": "Status",
+      "country": "Country",
+      "visibility": "Visibility",
+      "platform": "Platform",
+      "category": "Category",
+      "trust": "Trust"
+    },
+    "values": {
+      "public": "Public",
+      "trade": "Trade",
+      "verified": "Verified"
+    },
+    "opportunityDescription": "Opportunity Description",
+    "howToRespond": {
+      "title": "How to Respond",
+      "review": {
+        "title": "Review",
+        "description": "Read the full opportunity requirements carefully."
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "Reach out through Dasres or the provided contact details."
+      },
+      "collaborate": {
+        "title": "Collaborate",
+        "description": "Build a trusted international trade partnership."
+      }
+    },
+    "editOpportunity": "Edit Opportunity",
+    "summary": {
+      "title": "Opportunity Summary",
+      "country": "Country",
+      "status": "Status",
+      "type": "Type"
+    },
+    "actions": {
+      "openTradeCase": "Open Trade Case",
+      "findCompanies": "Find Companies",
+      "findExperts": "Find Experts"
+    },
+    "relatedCompanies": {
+      "title": "Related Companies",
+      "empty": "No verified companies found for this country yet.",
+      "verified": "Verified Company"
+    },
+    "relatedExperts": {
+      "title": "Related Experts",
+      "empty": "No verified experts found for this country yet.",
+      "verified": "Verified Expert"
+    },
+    "trustNotice": {
+      "title": "Trust Notice",
+      "description": "Always verify trade details, documents and counterparties before entering into any commercial agreement."
+    }
   },
-  "notFound": "Opportunity Not Found",
-  "backToOpportunities": "← Back to Opportunities",
-  "tradeOpportunity": "Trade Opportunity",
-
-  "statuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "closed": "Closed"
+  "dashboardTopCompanies": {
+    "title": "Top Rated Companies",
+    "description": "Ranked companies based on verification, trust score and reviews.",
+    "empty": "No companies found.",
+    "verified": "Verified",
+    "notAvailable": "N/A",
+    "metrics": {
+      "trust": "Trust",
+      "rating": "Rating",
+      "reviews": "Reviews"
+    },
+    "plans": {
+      "free": "FREE",
+      "gold": "GOLD",
+      "diamond": "DIAMOND",
+      "enterprise": "ENTERPRISE"
+    }
   },
-
-  "metrics": {
+  "topExperts": {
+    "title": "Top Rated Experts",
+    "description": "Ranked experts based on verification, trust score and reviews.",
+    "empty": "No experts found.",
+    "verified": "Verified",
+    "trust": "Trust",
+    "rating": "Rating",
+    "reviews": "Reviews",
+    "notAvailable": "N/A",
+    "plans": {
+      "FREE": "Free",
+      "GOLD": "Gold",
+      "DIAMOND": "Diamond",
+      "ENTERPRISE": "Enterprise"
+    }
+  },
+  "publicExperts": {
+    "eyebrow": "Verified Expert Network",
+    "title": "Find trusted trade experts",
+    "description": "Connect with verified international trade professionals across customs, sourcing, logistics, inspection and global business services.",
+    "notAvailable": "N/A",
+    "featured": {
+      "title": "Featured Expert",
+      "empty": "No featured expert is currently available.",
+      "viewProfile": "View Profile"
+    },
+    "metrics": {
+      "trust": "Trust",
+      "rating": "Rating",
+      "reviews": "Reviews"
+    },
+    "statistics": {
+      "total": "Total Experts",
+      "verified": "Verified Experts",
+      "rated": "Rated Experts"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {current} of {total}"
+    }
+  },
+  "myReviews": {
+    "title": "My Reviews",
+    "description": "View reviews you received and reviews you submitted.",
+    "fallbackUser": "User",
+    "ratingOutOfFive": "{rating}/5",
+    "statistics": {
+      "averageRating": "Average Rating",
+      "received": "Reviews Received",
+      "given": "Reviews Given",
+      "basedOn": "Based on {count} received reviews"
+    },
+    "received": {
+      "title": "Reviews I Received",
+      "empty": "You have not received any reviews yet.",
+      "from": "From {name}"
+    },
+    "given": {
+      "title": "Reviews I Gave",
+      "empty": "You have not submitted any reviews yet.",
+      "to": "To {name}"
+    }
+  },
+  "dashboardExpertProfile": {
+    "notFound": "Expert not found.",
+    "backToExperts": "← Back to Experts",
+    "notAvailable": "N/A",
+    "experience": "Experience",
+    "reviewNotice": "Reviews can only be submitted after a completed trade case.",
+    "trustScoreValue": "{score}/{maximum}",
+    "metadata": {
+      "notFoundTitle": "Expert Not Found",
+      "notFoundDescription": "The requested expert profile could not be found.",
+      "title": "{name} | {specialty}",
+      "description": "{name} is an expert in {specialty} from {country}. Discover this expert profile on Dasres."
+    },
+    "plans": {
+      "free": "Free",
+      "gold": "Gold",
+      "diamond": "Diamond",
+      "enterprise": "Enterprise"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "verified": "Verified",
+      "rejected": "Rejected"
+    },
+    "metrics": {
+      "trustScore": "Trust Score",
+      "rating": "Rating",
+      "reviews": "Reviews",
+      "specialty": "Specialty",
+      "country": "Country"
+    },
+    "recentReviews": {
+      "title": "Recent Reviews",
+      "empty": "No reviews yet.",
+      "fallbackUser": "User",
+      "noComment": "No comment provided.",
+      "rating": "{rating}/{maximum}"
+    },
+    "contact": {
+      "title": "Contact Expert",
+      "email": "Email",
+      "country": "Country",
+      "specialty": "Specialty",
+      "reputation": "Reputation",
+      "trustScore": "Trust Score",
+      "completedCases": "Completed Cases",
+      "sendEmail": "Send Email",
+      "noReviews": "No reviews yet",
+      "reputationValue": "⭐ {rating} ({count} reviews)"
+    },
+    "management": {
+      "title": "Management Actions",
+      "edit": "Edit Expert"
+    }
+  },
+  "rootMetadata": {
+    "siteName": "Dasres",
+    "title": "Dasres | Trust Ecosystem for Global Trade",
+    "description": "Dasres connects verified companies, trusted experts and international trade opportunities through one case-based platform.",
+    "keywords": {
+      "dasres": "Dasres",
+      "experts": "trade experts",
+      "companies": "verified companies",
+      "opportunities": "trade opportunities",
+      "trade": "international trade",
+      "business": "global business platform",
+      "international": "international business network"
+    },
+    "openGraph": {
+      "title": "Dasres | Trust Ecosystem for Global Trade",
+      "description": "Discover verified companies, trusted experts and international trade opportunities on Dasres.",
+      "imageAlt": "Dasres global trade platform"
+    },
+    "twitter": {
+      "title": "Dasres | Trust Ecosystem for Global Trade",
+      "description": "Connect with verified companies and trusted experts for international trade."
+    }
+  },
+  "publicCompanies": {
+    "eyebrow": "Verified Company Network",
+    "title": "Discover trusted trade companies",
+    "description": "Browse verified international companies across customs, shipping, inspection, sourcing, logistics and global trade services.",
+    "statistics": {
+      "total": "Total Companies",
+      "verified": "Verified Companies",
+      "rated": "Rated Companies"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {current} of {total}"
+    }
+  },
+  "publicOpportunities": {
+    "eyebrow": "Global Trade Marketplace",
+    "title": "Discover international opportunities",
+    "description": "Explore verified trade opportunities from companies around the world, connect with buyers and suppliers, and expand your international business.",
+    "statistics": {
+      "total": "Total Opportunities",
+      "open": "Open Opportunities",
+      "countries": "Countries"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {current} of {total}"
+    }
+  },
+  "companyVerificationButtons": {
+    "verify": "Verify",
+    "reject": "Reject"
+  },
+  "verificationExpertActions": {
+    "verify": "Verify",
+    "reject": "Reject"
+  },
+  "verificationCompanyActions": {
+    "verify": "Verify",
+    "reject": "Reject"
+  },
+  "countryFilter": {
+    "allCountries": "All Countries"
+  },
+  "notFound": {
+    "label": "Page Not Found",
+    "title": "This page does not exist.",
+    "description": "The page you are looking for may have been moved, deleted or does not exist in Dasres.",
+    "goHome": "Go Home",
+    "goDashboard": "Go Dashboard"
+  },
+  "saveCaseButton": {
+    "saving": "Saving...",
+    "unsave": "Unsave",
+    "save": "☆ Save Case"
+  },
+  "saveCompanyButton": {
+    "saved": "Saved ★",
+    "save": "Save ☆"
+  },
+  "saveExpertButton": {
+    "saved": "Saved ★",
+    "save": "Save ☆"
+  },
+  "dashboardOpportunityDetail": {
+    "backToDashboardOpportunities": "← Back to Dashboard Opportunities",
+    "tradeOpportunity": "Trade Opportunity",
+    "globalMarketplace": "Global Marketplace",
     "status": "Status",
     "country": "Country",
     "visibility": "Visibility",
-    "platform": "Platform",
-    "category": "Category",
-    "trust": "Trust"
-  },
-
-  "values": {
-    "public": "Public",
-    "trade": "Trade",
-    "verified": "Verified"
-  },
-
-  "opportunityDescription": "Opportunity Description",
-
-  "howToRespond": {
-    "title": "How to Respond",
-    "review": {
-      "title": "Review",
-      "description": "Read the full opportunity requirements carefully."
-    },
-    "contact": {
-      "title": "Contact",
-      "description": "Reach out through Dasres or the provided contact details."
-    },
-    "collaborate": {
-      "title": "Collaborate",
-      "description": "Build a trusted international trade partnership."
+    "dashboard": "Dashboard",
+    "opportunityDescription": "Opportunity Description",
+    "adminActions": "Admin Actions",
+    "editOpportunity": "Edit Opportunity",
+    "opportunitySummary": "Opportunity Summary",
+    "type": "Type",
+    "viewPublicPage": "View Public Page",
+    "backToManagement": "Back to Management",
+    "adminNote": "Admin Note",
+    "adminNoteDescription": "This page is used for managing trade opportunities inside the dashboard. Public visitors see the separate public opportunity page.",
+    "statuses": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "closed": "Closed"
     }
   },
-
-  "editOpportunity": "Edit Opportunity",
-
-  "summary": {
-    "title": "Opportunity Summary",
-    "country": "Country",
-    "status": "Status",
-    "type": "Type"
+  "common": {
+    "years": "{count} years",
+    "hours": "hours",
+    "countries": {
+      "iran": "Iran",
+      "uae": "United Arab Emirates",
+      "UAE": "United Arab Emirates",
+      "china": "China",
+      "Iran": "Iran"
+    },
+    "categories": {
+      "General": "General",
+      "Shipping": "Shipping",
+      "Inspection": "Inspection",
+      "Customs Clearance": "Customs Clearance",
+      "customs_clearance": "Customs Clearance",
+      "shipping": "Shipping",
+      "inspection": "Inspection",
+      "insurance": "Insurance",
+      "sourcing": "Sourcing"
+    },
+    "specialties": {
+      "Shipping": "Shipping",
+      "Inspection": "Inspection",
+      "clearance": "Customs Clearance",
+      "clearence": "Customs Clearance",
+      "Customs Clearance": "Customs Clearance",
+      "ticket_general": "General",
+      "ticket_technical": "Technical",
+      "ticket_billing": "Billing",
+      "ticket_support": "Support"
+    }
   },
-
-  "actions": {
-    "openTradeCase": "Open Trade Case",
-    "findCompanies": "Find Companies",
-    "findExperts": "Find Experts"
+  "ticketCategories": {
+    "general": "General",
+    "technical": "Technical",
+    "billing": "Billing",
+    "support": "Support"
   },
-
-  "relatedCompanies": {
-    "title": "Related Companies",
-    "empty": "No verified companies found for this country yet.",
-    "verified": "Verified Company"
+  "statuses": {
+    "open": "Open",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "active": "Active",
+    "on_hold": "On Hold",
+    "todo": "To Do",
+    "review": "Review"
   },
-
-  "relatedExperts": {
-    "title": "Related Experts",
-    "empty": "No verified experts found for this country yet.",
-    "verified": "Verified Expert"
-  },
-
-  "trustNotice": {
-    "title": "Trust Notice",
-    "description": "Always verify trade details, documents and counterparties before entering into any commercial agreement."
-  }
-},
-"dashboardTopCompanies": {
-  "title": "Top Rated Companies",
-  "description": "Ranked companies based on verification, trust score and reviews.",
-  "empty": "No companies found.",
-  "verified": "Verified",
-  "notAvailable": "N/A",
-  "metrics": {
-    "trust": "Trust",
-    "rating": "Rating",
-    "reviews": "Reviews"
-  },
-  "plans": {
-    "free": "FREE",
-    "gold": "GOLD",
-    "diamond": "DIAMOND",
-    "enterprise": "ENTERPRISE"
-  }
-},
-"topExperts": {
-  "title": "Top Rated Experts",
-  "description": "Ranked experts based on verification, trust score and reviews.",
-  "empty": "No experts found.",
-  "verified": "Verified",
-  "trust": "Trust",
-  "rating": "Rating",
-  "reviews": "Reviews",
-  "notAvailable": "N/A",
-  "plans": {
-    "FREE": "Free",
-    "GOLD": "Gold",
-    "DIAMOND": "Diamond",
-    "ENTERPRISE": "Enterprise"
-  }
-},
-"publicExperts": {
-  "eyebrow": "Verified Expert Network",
-  "title": "Find trusted trade experts",
-  "description": "Connect with verified international trade professionals across customs, sourcing, logistics, inspection and global business services.",
-  "notAvailable": "N/A",
-  "featured": {
-    "title": "Featured Expert",
-    "empty": "No featured expert is currently available."
-  },
-  "metrics": {
-    "trust": "Trust",
-    "rating": "Rating",
-    "reviews": "Reviews"
-  },
-  "statistics": {
-    "total": "Total Experts",
-    "verified": "Verified Experts",
-    "rated": "Rated Experts"
-  },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {current} of {total}"
-  }
-},
-"myReviews": {
-  "title": "My Reviews",
-  "description": "View reviews you received and reviews you submitted.",
-  "fallbackUser": "User",
-  "ratingOutOfFive": "{rating}/5",
-  "statistics": {
-    "averageRating": "Average Rating",
-    "received": "Reviews Received",
-    "given": "Reviews Given",
-    "basedOn": "Based on {count} received reviews"
-  },
-  "received": {
-    "title": "Reviews I Received",
-    "empty": "You have not received any reviews yet.",
-    "from": "From {name}"
-  },
-  "given": {
-    "title": "Reviews I Gave",
-    "empty": "You have not submitted any reviews yet.",
-    "to": "To {name}"
-  }
-},
-"dashboardExpertProfile": {
-  "notFound": "Expert not found.",
-  "backToExperts": "← Back to Experts",
-  "notAvailable": "N/A",
-  "experience": "Experience",
-  "reviewNotice": "Reviews can only be submitted after a completed trade case.",
-  "trustScoreValue": "{score}/{maximum}",
-  "metadata": {
-    "notFoundTitle": "Expert Not Found",
-    "notFoundDescription": "The requested expert profile could not be found.",
-    "title": "{name} | {specialty}",
-    "description": "{name} is an expert in {specialty} from {country}. Discover this expert profile on Dasres."
+  "categories": {
+    "general": "General",
+    "customs_clearance": "Customs Clearance",
+    "shipping": "Shipping",
+    "inspection": "Inspection",
+    "insurance": "Insurance",
+    "sourcing": "Sourcing",
+    "documentation": "Documentation",
+    "payment": "Payment"
   },
   "plans": {
     "free": "Free",
@@ -2854,153 +3157,9 @@
     "diamond": "Diamond",
     "enterprise": "Enterprise"
   },
-  "statuses": {
-    "active": "Active",
-    "inactive": "Inactive",
+  "verification": {
     "pending": "Pending",
     "verified": "Verified",
     "rejected": "Rejected"
-  },
-  "metrics": {
-    "trustScore": "Trust Score",
-    "rating": "Rating",
-    "reviews": "Reviews",
-    "specialty": "Specialty",
-    "country": "Country"
-  },
-  "recentReviews": {
-    "title": "Recent Reviews",
-    "empty": "No reviews yet.",
-    "fallbackUser": "User",
-    "noComment": "No comment provided.",
-    "rating": "{rating}/{maximum}"
-  },
-  "contact": {
-    "title": "Contact Expert",
-    "email": "Email",
-    "country": "Country",
-    "specialty": "Specialty",
-    "reputation": "Reputation",
-    "trustScore": "Trust Score",
-    "completedCases": "Completed Cases",
-    "sendEmail": "Send Email",
-    "noReviews": "No reviews yet",
-    "reputationValue": "⭐ {rating} ({count} reviews)"
-  },
-  "management": {
-    "title": "Management Actions",
-    "edit": "Edit Expert"
   }
-},
-"rootMetadata": {
-  "siteName": "Dasres",
-  "title": "Dasres | Trust Ecosystem for Global Trade",
-  "description": "Dasres connects verified companies, trusted experts and international trade opportunities through one case-based platform.",
-  "keywords": {
-    "dasres": "Dasres",
-    "experts": "trade experts",
-    "companies": "verified companies",
-    "opportunities": "trade opportunities",
-    "trade": "international trade",
-    "business": "global business platform",
-    "international": "international business network"
-  },
-  "openGraph": {
-    "title": "Dasres | Trust Ecosystem for Global Trade",
-    "description": "Discover verified companies, trusted experts and international trade opportunities on Dasres.",
-    "imageAlt": "Dasres global trade platform"
-  },
-  "twitter": {
-    "title": "Dasres | Trust Ecosystem for Global Trade",
-    "description": "Connect with verified companies and trusted experts for international trade."
-  }
-},
-"publicCompanies": {
-  "eyebrow": "Verified Company Network",
-  "title": "Discover trusted trade companies",
-  "description": "Browse verified international companies across customs, shipping, inspection, sourcing, logistics and global trade services.",
-  "statistics": {
-    "total": "Total Companies",
-    "verified": "Verified Companies",
-    "rated": "Rated Companies"
-  },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {current} of {total}"
-  }
-},
-"publicOpportunities": {
-  "eyebrow": "Global Trade Marketplace",
-  "title": "Discover international opportunities",
-  "description": "Explore verified trade opportunities from companies around the world, connect with buyers and suppliers, and expand your international business.",
-  "statistics": {
-    "total": "Total Opportunities",
-    "open": "Open Opportunities",
-    "countries": "Countries"
-  },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {current} of {total}"
-  }
-},
-"companyVerificationButtons": {
-  "verify": "Verify",
-  "reject": "Reject"
-},
-"verificationExpertActions": {
-  "verify": "Verify",
-  "reject": "Reject"
-},
-"verificationCompanyActions": {
-  "verify": "Verify",
-  "reject": "Reject"
-},
-"countryFilter": {
-  "allCountries": "All Countries"
-},
-"notFound": {
-  "label": "Page Not Found",
-  "title": "This page does not exist.",
-  "description": "The page you are looking for may have been moved, deleted or does not exist in Dasres.",
-  "goHome": "Go Home",
-  "goDashboard": "Go Dashboard"
-},
-"saveCaseButton": {
-  "saving": "Saving...",
-  "unsave": "Unsave",
-  "save": "☆ Save Case"
-},
-"saveCompanyButton": {
-  "saved": "Saved ★",
-  "save": "Save ☆"
-},
-"saveExpertButton": {
-  "saved": "Saved ★",
-  "save": "Save ☆"
-},
-"dashboardOpportunityDetail": {
-  "backToDashboardOpportunities": "← Back to Dashboard Opportunities",
-  "tradeOpportunity": "Trade Opportunity",
-  "globalMarketplace": "Global Marketplace",
-  "status": "Status",
-  "country": "Country",
-  "visibility": "Visibility",
-  "dashboard": "Dashboard",
-  "opportunityDescription": "Opportunity Description",
-  "adminActions": "Admin Actions",
-  "editOpportunity": "Edit Opportunity",
-  "opportunitySummary": "Opportunity Summary",
-  "type": "Type",
-  "viewPublicPage": "View Public Page",
-  "backToManagement": "Back to Management",
-  "adminNote": "Admin Note",
-  "adminNoteDescription": "This page is used for managing trade opportunities inside the dashboard. Public visitors see the separate public opportunity page.",
-  "statuses": {
-    "open": "Open",
-    "inProgress": "In Progress",
-    "closed": "Closed"
-  }
-}
 }
