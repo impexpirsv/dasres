@@ -29,11 +29,20 @@ function getStatusClass(status: string) {
 export default async function SavedCasesPage() {
   const user = await requireUser();
 
-  const t = await getTranslations(
-    "dashboardSavedCases",
-  );
+  const [t, tcat] = await Promise.all([
+    getTranslations("dashboardSavedCases"),
+    getTranslations("common.categories"),
+  ]);
 
   const locale = await getLocale();
+
+
+  function translateCategory(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return tcat.has(normalized) ? tcat(normalized) : tcat.has(lower) ? tcat(lower) : tcat.has(underscored) ? tcat(underscored) : normalized;
+  }
 
   const savedCases =
     await prisma.savedCase.findMany({
@@ -113,7 +122,7 @@ export default async function SavedCasesPage() {
                 >
                   <div className="mb-4 flex flex-wrap items-center gap-3">
                     <span className="rounded-full border border-purple-800 bg-purple-600/20 px-3 py-1 text-xs text-purple-300">
-                      {tradeCase.category}
+                      {translateCategory(tradeCase.category)}
                     </span>
 
                     <span

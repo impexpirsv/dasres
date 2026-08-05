@@ -38,7 +38,7 @@ export default function ProjectTimeline({
   }
 
   return (
-    <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <section className="workspace-panel">
       <h2 className="mb-5 text-2xl font-bold text-white">
         {t("title")}
       </h2>
@@ -52,7 +52,7 @@ export default function ProjectTimeline({
           {steps.map((step, index) => (
             <li
               key={step.id}
-              className="flex items-start gap-4 rounded-2xl border border-slate-800 bg-slate-950 p-4"
+              className="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-950 p-3 sm:gap-4 sm:p-4"
             >
               <div
                 aria-hidden="true"
@@ -67,7 +67,9 @@ export default function ProjectTimeline({
 
               <div className="min-w-0">
                 <p className="break-words font-semibold text-white">
-                  {step.title}
+               {t.has(`steps.${step.title}`)
+  ? t(`steps.${step.title}`)
+  : step.title}
                 </p>
 
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-500">

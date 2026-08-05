@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { unstable_cache } from "next/cache";
 import {
@@ -6,6 +7,12 @@ import {
 } from "next-intl/server";
 
 import { prisma } from "../../lib/prisma";
+import { serializeJsonLd } from "../../lib/seo/jsonld";
+import {
+  createPublicPageMetadata,
+  getPaginationMetadataState,
+} from "../../lib/seo/metadata";
+import { createDirectoryPageJsonLd } from "../../lib/seo/structured-data";
 import OpportunitiesSearch from "../components/OpportunitiesSearch";
 
 const PAGE_SIZE = 10;
@@ -16,6 +23,15 @@ type OpportunitiesPageProps = {
   }>;
 };
 
+const getOpportunitiesCount = unstable_cache(
+  () => prisma.opportunity.count(),
+  ["public-opportunities-count"],
+  {
+    revalidate: 300,
+    tags: ["public-opportunities"],
+  },
+);
+
 const getOpportunitiesPageData = unstable_cache(
   async (requestedPage: number) => {
     const [
@@ -23,7 +39,7 @@ const getOpportunitiesPageData = unstable_cache(
       openOpportunitiesCount,
       opportunityCountries,
     ] = await Promise.all([
-      prisma.opportunity.count(),
+      getOpportunitiesCount(),
 
       prisma.opportunity.count({
         where: {
@@ -86,6 +102,41 @@ const getOpportunitiesPageData = unstable_cache(
   },
 );
 
+export async function generateMetadata({
+  searchParams,
+}: OpportunitiesPageProps): Promise<Metadata> {
+  const [params, t] = await Promise.all([
+    searchParams,
+    getTranslations("publicOpportunities"),
+  ]);
+  const rawPage = params?.page;
+  const totalOpportunities =
+    await getOpportunitiesCount();
+  const totalPages = Math.max(
+    1,
+    Math.ceil(totalOpportunities / PAGE_SIZE),
+  );
+  const pagination = getPaginationMetadataState({
+    pathname: "/opportunities",
+    rawPage,
+    totalPages,
+  });
+
+  return createPublicPageMetadata({
+    title: t("title"),
+    description: t("description"),
+    canonical: pagination.isValid
+      ? pagination.canonical
+      : undefined,
+    robots: pagination.isValid
+      ? undefined
+      : {
+          index: false,
+          follow: true,
+        },
+  });
+}
+
 export default async function OpportunitiesPage({
   searchParams,
 }: OpportunitiesPageProps) {
@@ -101,9 +152,10 @@ export default async function OpportunitiesPage({
 
   const locale = await getLocale();
 
-  const t = await getTranslations(
-    "publicOpportunities",
-  );
+  const [t, navigation] = await Promise.all([
+    getTranslations("publicOpportunities"),
+    getTranslations("navbar"),
+  ]);
 
   const numberFormatter =
     new Intl.NumberFormat(locale);
@@ -118,9 +170,40 @@ export default async function OpportunitiesPage({
   } = await getOpportunitiesPageData(
     requestedPage,
   );
+  const pagination = getPaginationMetadataState({
+    pathname: "/opportunities",
+    rawPage: params?.page,
+    totalPages,
+  });
+  const directoryJsonLd = pagination.isValid
+    ? createDirectoryPageJsonLd({
+        canonicalPath: pagination.canonical,
+        name: t("title"),
+        description: t("description"),
+        language: locale,
+        breadcrumbs: [
+          {
+            name: navigation("home"),
+            pathname: "/",
+          },
+          {
+            name: navigation("opportunities"),
+            pathname: pagination.canonical,
+          },
+        ],
+      })
+    : null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+      {directoryJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(directoryJsonLd),
+          }}
+        />
+      )}
       <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="mb-12">
           <p className="mb-3 font-semibold text-blue-400">

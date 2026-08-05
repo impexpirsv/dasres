@@ -2,81 +2,132 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
 export default async function DashboardQuickActions() {
-  const t = await getTranslations("dashboardQuickActions");
+  const t = await getTranslations(
+    "dashboardQuickActions",
+  );
+
+
+  const actions = [
+    {
+      href: "/dashboard/cases/new",
+      icon: "➕",
+      title: t("createCase.title"),
+      description: t("createCase.description"),
+      color: "blue",
+    },
+    {
+      href: "/dashboard/open-cases",
+      icon: "📂",
+      title: t("openCases.title"),
+      description: t("openCases.description"),
+      color: "cyan",
+    },
+    {
+      href: "/dashboard/my-companies",
+      icon: "🏢",
+      title: t("myCompanies.title"),
+      description: t("myCompanies.description"),
+      color: "emerald",
+    },
+    {
+      href: "/dashboard/my-experts",
+      icon: "👨‍💼",
+      title: t("myExperts.title"),
+      description: t("myExperts.description"),
+      color: "purple",
+    },
+  ];
+
+
+  const colorMap: Record<string, string> = {
+    blue:
+      "hover:border-blue-500/70 hover:shadow-blue-500/10",
+    cyan:
+      "hover:border-cyan-500/70 hover:shadow-cyan-500/10",
+    emerald:
+      "hover:border-emerald-500/70 hover:shadow-emerald-500/10",
+    purple:
+      "hover:border-purple-500/70 hover:shadow-purple-500/10",
+  };
+
 
   return (
-    <section className="mb-12">
-      <div className="flex items-center justify-between gap-4 mb-6">
-        <h2 className="text-2xl font-bold">
-          {t("title")}
-        </h2>
+    <section className="mb-10">
 
-        <p className="text-slate-400 text-sm">
-          {t("description")}
-        </p>
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+
+        <div>
+
+          <h2 className="text-3xl font-black text-white">
+            {t("title")}
+          </h2>
+
+
+          <p className="mt-2 text-sm text-slate-400">
+            {t("description")}
+          </p>
+
+        </div>
+
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
-        <Link
-          href="/dashboard/cases/new"
-          className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-blue-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300"
-        >
-          <div className="text-4xl mb-4">➕</div>
 
-          <h3 className="text-xl font-bold">
-            {t("createCase.title")}
-          </h3>
 
-          <p className="text-slate-400 mt-2">
-            {t("createCase.description")}
-          </p>
-        </Link>
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
 
-        <Link
-          href="/dashboard/open-cases"
-          className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-cyan-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300"
-        >
-          <div className="text-4xl mb-4">📂</div>
+        {actions.map((action) => (
 
-          <h3 className="text-xl font-bold">
-            {t("openCases.title")}
-          </h3>
+          <Link
+            key={action.href}
+            href={action.href}
+            className={`
+              group
 
-          <p className="text-slate-400 mt-2">
-            {t("openCases.description")}
-          </p>
-        </Link>
+              ui-card
+              ui-card-interactive
+              bg-gradient-to-br
+              from-slate-900
+              to-slate-950
 
-        <Link
-          href="/dashboard/my-companies"
-          className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-emerald-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300"
-        >
-          <div className="text-4xl mb-4">🏢</div>
+              ${colorMap[action.color]}
+            `}
+          >
 
-          <h3 className="text-xl font-bold">
-            {t("myCompanies.title")}
-          </h3>
+            <div
+              className="
+                mb-4
+                flex
+                h-11
+                w-11
+                items-center
+                justify-center
+                rounded-2xl
+                bg-slate-800/80
+                text-2xl
+                transition
+                group-hover:scale-110
+              "
+            >
+              {action.icon}
+            </div>
 
-          <p className="text-slate-400 mt-2">
-            {t("myCompanies.description")}
-          </p>
-        </Link>
 
-        <Link
-          href="/dashboard/my-experts"
-          className="rounded-3xl border border-slate-800 bg-slate-900 p-6 hover:border-purple-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300"
-        >
-          <div className="text-4xl mb-4">👨‍💼</div>
+            <h3 className="text-xl font-black text-white">
+              {action.title}
+            </h3>
 
-          <h3 className="text-xl font-bold">
-            {t("myExperts.title")}
-          </h3>
 
-          <p className="text-slate-400 mt-2">
-            {t("myExperts.description")}
-          </p>
-        </Link>
+            <p className="mt-3 text-sm leading-6 text-slate-400">
+              {action.description}
+            </p>
+
+
+          </Link>
+
+        ))}
+
       </div>
+
     </section>
   );
 }

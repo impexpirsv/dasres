@@ -133,7 +133,45 @@ export default async function MyCompaniesPage() {
         return status;
     }
   }
+function getCategoryLabel(category: string) {
+  switch (category) {
+    case "General":
+      return t("categories.general");
 
+    case "Customs Clearance":
+      return t("categories.customsClearance");
+
+    case "Shipping":
+      return t("categories.shipping");
+
+    case "Inspection":
+      return t("categories.inspection");
+
+    case "Insurance":
+      return t("categories.insurance");
+
+    case "Sourcing":
+      return t("categories.sourcing");
+
+    case "Documentation":
+      return t("categories.documentation");
+
+    case "Payment":
+      return t("categories.payment");
+
+    default:
+      return category;
+  }
+}
+function getCountryLabel(country: string) {
+  switch (country.toLowerCase()) {
+    case "iran":
+      return t("countries.iran");
+
+    default:
+      return country;
+  }
+}
   const stats = [
     {
       key: "total",
@@ -264,11 +302,11 @@ export default async function MyCompaniesPage() {
                 </h2>
 
                 <p className="mb-2 text-blue-400">
-                  {company.category}
+               {getCategoryLabel(company.category)}
                 </p>
 
                 <p className="mb-5 text-slate-400">
-                  {company.country}
+                 {getCountryLabel(company.country)}
                 </p>
 
                 <p className="line-clamp-2 text-sm text-slate-500">

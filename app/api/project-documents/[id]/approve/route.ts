@@ -1,7 +1,7 @@
-import { Prisma } from "@prisma/client";
-import { prisma } from "../../../../../lib/prisma";
+import { apiHandler } from "../../../../../lib/api";
 import { requireAdmin } from "../../../../../lib/auth";
 import { notifyDocumentApproved } from "../../../../../lib/notificationEvents";
+import { approveProjectDocument } from "../../../../../lib/project-documents";
 import { parseId } from "../../../../../lib/validation";
 
 export async function PATCH(
@@ -9,99 +9,52 @@ export async function PATCH(
   {
     params,
   }: {
-    params: Promise<{ id: string }>;
+    params: Promise<{
+      id: string;
+    }>;
   },
 ) {
-  try {
+  return apiHandler(async () => {
     const user = await requireAdmin();
-
     const { id } = await params;
     const documentId = parseId(
       id,
       "document id",
     );
 
-    const existingDocument =
-      await prisma.projectTaskAttachment.findUnique({
-        where: {
-          id: documentId,
-        },
-        select: {
-          id: true,
-          approvalStatus: true,
-          uploadedById: true,
-          task: {
-            select: {
-              projectId: true,
-            },
-          },
-        },
+    const result =
+      await approveProjectDocument({
+        documentId,
+        authenticatedUserId: user.id,
       });
 
-    if (!existingDocument) {
-      return Response.json(
-        {
-          code: "PROJECT_DOCUMENT_NOT_FOUND",
-        },
-        {
-          status: 404,
-        },
-      );
-    }
-
-    if (
-      existingDocument.approvalStatus ===
-      "APPROVED"
-    ) {
+    if (result.alreadyInRequestedState) {
       return Response.json({
-        code: "PROJECT_DOCUMENT_ALREADY_APPROVED",
+        code:
+          "PROJECT_DOCUMENT_ALREADY_APPROVED",
+        document: result.document,
       });
     }
 
-    const document =
-      await prisma.projectTaskAttachment.update({
-        where: {
-          id: documentId,
-        },
-        data: {
-          approvalStatus: "APPROVED",
-          approvedById: user.id,
-          approvedAt: new Date(),
-          rejectionReason: null,
-        },
-        select: {
-          id: true,
-          fileName: true,
-          fileUrl: true,
-          approvalStatus: true,
-          approvedById: true,
-          approvedAt: true,
-          rejectionReason: true,
-          uploadedById: true,
-          taskId: true,
-          task: {
-            select: {
-              projectId: true,
-            },
-          },
-        },
-      });
-
     if (
-      document.uploadedById &&
-      document.uploadedById !== user.id
+      result.document.uploadedById !== null &&
+      result.document.uploadedById !== user.id
     ) {
       try {
         await notifyDocumentApproved({
-          userId: document.uploadedById,
-          projectId: document.task.projectId,
+          userId:
+            result.document.uploadedById,
+          projectId:
+            result.document.task.projectId,
         });
       } catch (notificationError) {
         console.error(
           "PROJECT_DOCUMENT_APPROVAL_NOTIFICATION_ERROR",
           {
-            documentId: document.id,
-            userId: document.uploadedById,
+            documentId:
+              result.document.id,
+            userId:
+              result.document.uploadedById,
             error: notificationError,
           },
         );
@@ -110,42 +63,7 @@ export async function PATCH(
 
     return Response.json({
       code: "PROJECT_DOCUMENT_APPROVED",
-      document,
+      document: result.document,
     });
-  } catch (error) {
-    if (error instanceof Response) {
-      return error;
-    }
-
-    if (
-      error instanceof
-        Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2025"
-    ) {
-      return Response.json(
-        {
-          code: "PROJECT_DOCUMENT_NOT_FOUND",
-        },
-        {
-          status: 404,
-        },
-      );
-    }
-
-    console.error(
-      "PROJECT_DOCUMENT_APPROVE_ERROR",
-      {
-        error,
-      },
-    );
-
-    return Response.json(
-      {
-        code: "PROJECT_DOCUMENT_APPROVE_FAILED",
-      },
-      {
-        status: 500,
-      },
-    );
-  }
+  });
 }

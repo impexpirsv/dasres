@@ -1,4 +1,498 @@
 {
+  "knowledgeHub": {
+    "common": {
+      "categoryNavigation": "Wissenszentrum",
+      "openLink": "Hilfezentrum",
+      "relatedCategories": "Wissenszentrum"
+    },
+    "help": {
+      "eyebrow": "Hilfezentrum",
+      "title": "Hilfezentrum",
+      "summary": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+      "browseTitle": "Hilfezentrum",
+      "browseDescription": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+      "entriesTitle": "Hilfezentrum",
+      "relatedTitle": "Wissenszentrum",
+      "categories": {
+        "getting-started": {
+          "title": "Erste Schritte",
+          "summary": "Erste Schritte — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Erste Schritte",
+          "seoDescription": "Erste Schritte — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "accounts-and-access": {
+          "title": "Konten und Zugriff",
+          "summary": "Konten und Zugriff — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Konten und Zugriff",
+          "seoDescription": "Konten und Zugriff — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "cases-and-proposals": {
+          "title": "Fälle und Vorschläge",
+          "summary": "Fälle und Vorschläge — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Fälle und Vorschläge",
+          "seoDescription": "Fälle und Vorschläge — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "projects-and-tasks": {
+          "title": "Projekte und Aufgaben",
+          "summary": "Projekte und Aufgaben — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Projekte und Aufgaben",
+          "seoDescription": "Projekte und Aufgaben — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "companies-and-experts": {
+          "title": "Unternehmen und Experten",
+          "summary": "Unternehmen und Experten — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Unternehmen und Experten",
+          "seoDescription": "Unternehmen und Experten — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "tickets-and-support": {
+          "title": "Tickets und Support",
+          "summary": "Tickets und Support — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Tickets und Support",
+          "seoDescription": "Tickets und Support — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        }
+      },
+      "entries": {
+        "register": {
+          "title": "Erste Schritte 1",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "signIn": {
+          "title": "Konten und Zugriff 1",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "language": {
+          "title": "Fälle und Vorschläge 1",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "session": {
+          "title": "Projekte und Aufgaben 1",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "dashboard": {
+          "title": "Unternehmen und Experten 1",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "permissions": {
+          "title": "Tickets und Support 1",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "createCase": {
+          "title": "Erste Schritte 2",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "submitProposal": {
+          "title": "Konten und Zugriff 2",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "acceptProposal": {
+          "title": "Fälle und Vorschläge 2",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "projects": {
+          "title": "Projekte und Aufgaben 2",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "tasks": {
+          "title": "Unternehmen und Experten 2",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "documentsMessages": {
+          "title": "Tickets und Support 2",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "profiles": {
+          "title": "Erste Schritte 3",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "ownership": {
+          "title": "Konten und Zugriff 3",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "verification": {
+          "title": "Fälle und Vorschläge 3",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "createTicket": {
+          "title": "Projekte und Aufgaben 3",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "reply": {
+          "title": "Unternehmen und Experten 3",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "closeReopen": {
+          "title": "Tickets und Support 3",
+          "body": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        }
+      }
+    },
+    "resources": {
+      "eyebrow": "Wissenszentrum",
+      "title": "Wissenszentrum",
+      "summary": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+      "browseTitle": "Wissenszentrum",
+      "emptyTitle": "Wissenszentrum",
+      "emptyDescription": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+      "categories": {
+        "tutorials": {
+          "title": "Anleitungen",
+          "summary": "Anleitungen — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Anleitungen",
+          "seoDescription": "Anleitungen — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "purposeTitle": "Anleitungen",
+          "purpose": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "news": {
+          "title": "Handelsnachrichten",
+          "summary": "Handelsnachrichten — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Handelsnachrichten",
+          "seoDescription": "Handelsnachrichten — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "purposeTitle": "Handelsnachrichten",
+          "purpose": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "customs": {
+          "title": "Zollartikel",
+          "summary": "Zollartikel — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Zollartikel",
+          "seoDescription": "Zollartikel — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "purposeTitle": "Zollartikel",
+          "purpose": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "countries": {
+          "title": "Länderleitfäden",
+          "summary": "Länderleitfäden — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Länderleitfäden",
+          "seoDescription": "Länderleitfäden — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "purposeTitle": "Länderleitfäden",
+          "purpose": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "glossary": {
+          "title": "Glossar",
+          "summary": "Glossar — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Glossar",
+          "seoDescription": "Glossar — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "purposeTitle": "Glossar",
+          "purpose": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        },
+        "case-studies": {
+          "title": "Fallstudien",
+          "summary": "Fallstudien — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "seoTitle": "Fallstudien",
+          "seoDescription": "Fallstudien — Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "purposeTitle": "Fallstudien",
+          "purpose": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        }
+      },
+      "policy": {
+        "title": "Wissenszentrum",
+        "points": {
+          "changing": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "dates": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "sources": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "education": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "stale": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin."
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "Häufige Fragen",
+      "title": "Häufige Fragen",
+      "summary": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+      "sectionTitle": "Häufige Fragen",
+      "items": {
+        "verification": {
+          "question": "Erste Schritte?",
+          "answer": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "category": "Erste Schritte"
+        },
+        "plans": {
+          "question": "Konten und Zugriff?",
+          "answer": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "category": "Konten und Zugriff"
+        },
+        "cases": {
+          "question": "Fälle und Vorschläge?",
+          "answer": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "category": "Fälle und Vorschläge"
+        },
+        "proposals": {
+          "question": "Projekte und Aufgaben?",
+          "answer": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "category": "Projekte und Aufgaben"
+        },
+        "tickets": {
+          "question": "Unternehmen und Experten?",
+          "answer": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "category": "Unternehmen und Experten"
+        },
+        "language": {
+          "question": "Tickets und Support?",
+          "answer": "Diese Hilfe entspricht dem aktuellen Dasres-Verhalten; Anmeldung, Eigentum, Rollen, Status und Grenzen gelten weiterhin.",
+          "category": "Tickets und Support"
+        }
+      }
+    }
+  }
+  ,
+  "publicSite": {
+    "navigation": {
+      "primaryLabel": "Hauptnavigation",
+      "brandHomeLabel": "Dasres-Startseite",
+      "tagline": "Globaler Handel, vernetzt",
+      "companies": "Unternehmen",
+      "experts": "Experten",
+      "opportunities": "Chancen",
+      "pricing": "Tarife",
+      "resources": "Ressourcen",
+      "about": "Über uns",
+      "contact": "Kontakt",
+      "help": "Hilfe",
+      "login": "Anmelden",
+      "join": "Dasres beitreten",
+      "toggleMenu": "Navigation umschalten"
+    },
+    "footer": {
+      "navigationLabel": "Fußnavigation",
+      "trustStatement": "Geprüfte Unternehmen, Fachleute und internationale Handelschancen an einem Ort entdecken.",
+      "supportEntry": "Kontakt",
+      "groups": {
+        "platform": "Plattform",
+        "solutions": "Lösungen",
+        "resources": "Ressourcen",
+        "company": "Unternehmen",
+        "legal": "Rechtliches"
+      },
+      "links": {
+        "companies": "Unternehmen",
+        "experts": "Experten",
+        "opportunities": "Chancen",
+        "pricing": "Tarife",
+        "dashboard": "Dashboard",
+        "help": "Hilfe",
+        "resourceHub": "Ressourcen",
+        "faq": "FAQ",
+        "about": "Über uns",
+        "contact": "Kontakt",
+        "privacy": "Datenschutz",
+        "terms": "Bedingungen",
+        "cookies": "Cookies"
+      },
+      "copyright": "© {year} Dasres. Alle Rechte vorbehalten.",
+      "languageLabel": "Sprache"
+    },
+    "common": {
+      "home": "Startseite"
+    },
+    "pages": {
+      "about": {
+        "metadata": {
+          "title": "Über Dasres",
+          "description": "Über Dasres — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Ressourcen",
+        "title": "Über Dasres",
+        "description": "Über Dasres — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "sectionTitle": "Über Dasres",
+        "sectionDescription": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "cta": {
+          "title": "Über Dasres",
+          "description": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+          "label": "Unternehmen"
+        }
+      },
+      "contact": {
+        "metadata": {
+          "title": "Dasres kontaktieren",
+          "description": "Dasres kontaktieren — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Ressourcen",
+        "title": "Dasres kontaktieren",
+        "description": "Dasres kontaktieren — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "sectionTitle": "Dasres kontaktieren",
+        "sectionDescription": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "cta": {
+          "title": "Dasres kontaktieren",
+          "description": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+          "label": "Dashboard"
+        }
+      },
+      "help": {
+        "metadata": {
+          "title": "Hilfezentrum",
+          "description": "Hilfezentrum — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Ressourcen",
+        "title": "Hilfezentrum",
+        "description": "Hilfezentrum — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "sectionTitle": "Hilfezentrum",
+        "sectionDescription": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "cta": {
+          "title": "Hilfezentrum",
+          "description": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+          "label": "FAQ"
+        }
+      },
+      "faq": {
+        "metadata": {
+          "title": "Häufige Fragen",
+          "description": "Häufige Fragen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Ressourcen",
+        "title": "Häufige Fragen",
+        "description": "Häufige Fragen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "sectionTitle": "Häufige Fragen",
+        "sectionDescription": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "cta": {
+          "title": "Häufige Fragen",
+          "description": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+          "label": "Kontakt"
+        }
+      },
+      "resources": {
+        "metadata": {
+          "title": "Handelsressourcen",
+          "description": "Handelsressourcen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Ressourcen",
+        "title": "Handelsressourcen",
+        "description": "Handelsressourcen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "sectionTitle": "Handelsressourcen",
+        "sectionDescription": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "cards": {
+          "tutorials": {
+            "title": "Anleitungen",
+            "description": "Anleitungen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          },
+          "news": {
+            "title": "Handelsnachrichten",
+            "description": "Handelsnachrichten — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          },
+          "customs": {
+            "title": "Zollartikel",
+            "description": "Zollartikel — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          },
+          "countries": {
+            "title": "Länderleitfäden",
+            "description": "Länderleitfäden — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          },
+          "glossary": {
+            "title": "Glossar",
+            "description": "Glossar — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          },
+          "cases": {
+            "title": "Fallstudien",
+            "description": "Fallstudien — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          }
+        }
+      },
+      "pricing": {
+        "metadata": {
+          "title": "Pläne und Grenzen",
+          "description": "Pläne und Grenzen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Tarife",
+        "title": "Pläne und Grenzen",
+        "description": "Pläne und Grenzen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "sectionTitle": "Pläne und Grenzen",
+        "sectionDescription": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+      "activeCases": "Aktive Handelsfälle",
+      "proposals": "Vorschläge",
+      "unlimited": "Unbegrenzt",
+        "availabilityNotice": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "plans": {
+          "free": {
+            "name": "Kostenlos",
+            "description": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          },
+          "gold": {
+            "name": "Gold",
+            "description": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          },
+          "diamond": {
+            "name": "Diamant",
+            "description": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          },
+          "enterprise": {
+            "name": "Unternehmen",
+            "description": "Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+          }
+        }
+      },
+      "privacy": {
+        "metadata": {
+          "title": "Entwurf der Datenschutzrichtlinie",
+          "description": "Entwurf der Datenschutzrichtlinie — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Rechtliches",
+        "title": "Entwurf der Datenschutzrichtlinie",
+        "description": "Entwurf der Datenschutzrichtlinie — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "reviewNotice": "Entwurf zur rechtlichen Prüfung; er beschreibt das aktuelle Verhalten und ist keine endgültige Rechtsberatung.",
+        "sections": {
+          "scope": {
+            "title": "Entwurf der Datenschutzrichtlinie",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          },
+          "data": {
+            "title": "Datenschutz",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          },
+          "choices": {
+            "title": "Bedingungen",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          }
+        }
+      },
+      "terms": {
+        "metadata": {
+          "title": "Entwurf der Nutzungsbedingungen",
+          "description": "Entwurf der Nutzungsbedingungen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Rechtliches",
+        "title": "Entwurf der Nutzungsbedingungen",
+        "description": "Entwurf der Nutzungsbedingungen — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "reviewNotice": "Entwurf zur rechtlichen Prüfung; er beschreibt das aktuelle Verhalten und ist keine endgültige Rechtsberatung.",
+        "sections": {
+          "scope": {
+            "title": "Entwurf der Nutzungsbedingungen",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          },
+          "data": {
+            "title": "Datenschutz",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          },
+          "choices": {
+            "title": "Bedingungen",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          }
+        }
+      },
+      "cookies": {
+        "metadata": {
+          "title": "Entwurf der Cookie-Richtlinie",
+          "description": "Entwurf der Cookie-Richtlinie — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich."
+        },
+        "eyebrow": "Rechtliches",
+        "title": "Entwurf der Cookie-Richtlinie",
+        "description": "Entwurf der Cookie-Richtlinie — Aktuelle praktische Informationen über Dasres und seinen internationalen Handelsarbeitsbereich.",
+        "reviewNotice": "Entwurf zur rechtlichen Prüfung; er beschreibt das aktuelle Verhalten und ist keine endgültige Rechtsberatung.",
+        "sections": {
+          "scope": {
+            "title": "Entwurf der Cookie-Richtlinie",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          },
+          "data": {
+            "title": "Datenschutz",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          },
+          "choices": {
+            "title": "Bedingungen",
+            "description": "Der Entwurf behandelt Konten, öffentliche Profile, Chancen, Zusammenarbeit, Authentifizierung, Berechtigungen, Support und Sprache. Aufbewahrung, Handel, Gerichtsbarkeit und Streitfälle benötigen rechtliche Freigabe."
+          }
+        }
+      }
+    }
+  }
+  ,
   "common": {
     "years": "{count} Jahre",
     "hours": "Std.",

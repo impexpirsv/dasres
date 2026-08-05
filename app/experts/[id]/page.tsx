@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -6,6 +7,16 @@ import Image from "next/image";
 import { prisma } from "../../../lib/prisma";
 import { calculateTrustScore } from "../../../lib/ranking";
 import { requireUser } from "../../../lib/auth";
+import { serializeJsonLd } from "../../../lib/seo/jsonld";
+import {
+  getDefaultSocialImage,
+  getEntitySocialImage,
+  getOpenGraphLocale,
+} from "../../../lib/seo/social";
+import { createExpertPageJsonLd } from "../../../lib/seo/structured-data";
+import { getAbsoluteUrl } from "../../../lib/seo/urls";
+import { getExpert, getExpertViewAccess } from "../../../lib/experts/get-expert";
+import { AppError } from "../../../lib/errors";
 
 import DeleteExpertButton from "../../components/DeleteExpertButton";
 
@@ -64,18 +75,12 @@ function getStatusClass(status: string) {
 
 const getExpertMetadata = unstable_cache(
   async (expertId: number) => {
-    return prisma.expert.findUnique({
-      where: {
-        id: expertId,
-      },
-      select: {
-        id: true,
-        name: true,
-        specialty: true,
-        country: true,
-        imageUrl: true,
-      },
-    });
+    try {
+      return await getExpert({ expertId, viewer: null });
+    } catch (error) {
+      if (error instanceof AppError && error.status === 404) return null;
+      throw error;
+    }
   },
   ["public-expert-metadata"],
   {
@@ -119,12 +124,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const expertId = Number(id);
 
-  const t = await getTranslations("publicExpertProfile.metadata");
+  const [t, rootMetadata, locale] = await Promise.all([
+    getTranslations("publicExpertProfile.metadata"),
+    getTranslations("rootMetadata"),
+    getLocale(),
+  ]);
 
   if (!Number.isInteger(expertId) || expertId <= 0) {
     return {
       title: t("notFoundTitle"),
       description: t("notFoundDescription"),
+      alternates: {
+        canonical: null,
+      },
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 
@@ -134,6 +150,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: t("notFoundTitle"),
       description: t("notFoundDescription"),
+      alternates: {
+        canonical: null,
+      },
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 
@@ -144,33 +167,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     specialty: expert.specialty,
     country: expert.country,
   });
+  const canonicalPath = `/experts/${expert.id}`;
+  const canonicalUrl = getAbsoluteUrl(canonicalPath);
+  const socialImage =
+    getEntitySocialImage(expert.imageUrl, expert.name) ??
+    getDefaultSocialImage(rootMetadata("openGraph.imageAlt"));
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalPath,
+    },
     openGraph: {
       title,
       description,
+      url: canonicalUrl,
       type: "profile",
-      images: expert.imageUrl
-        ? [
-            {
-              url: expert.imageUrl,
-              alt: expert.name,
-            },
-          ]
-        : [
-            {
-              url: "/og-image.png",
-              alt: expert.name,
-            },
-          ],
+      locale: getOpenGraphLocale(locale),
+      images: [socialImage],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: expert.imageUrl ? [expert.imageUrl] : ["/og-image.png"],
+      images: [socialImage.url],
     },
   };
 }
@@ -179,9 +200,11 @@ export default async function ExpertProfilePage({ params }: Props) {
   const { id } = await params;
   const expertId = Number(id);
 
-  const t = await getTranslations("publicExpertProfile");
-
-  const locale = await getLocale();
+  const [t, navigation, locale] = await Promise.all([
+    getTranslations("publicExpertProfile"),
+    getTranslations("navbar"),
+    getLocale(),
+  ]);
 
   const numberFormatter = new Intl.NumberFormat(locale);
 
@@ -198,13 +221,15 @@ export default async function ExpertProfilePage({ params }: Props) {
     );
   }
 
-  const [user, expert] = await Promise.all([
-    requireUser(),
+  const user = await requireUser();
+  const expertAccess = await getExpertViewAccess({ expertId, viewer: user });
 
-    prisma.expert.findUnique({
-      where: {
-        id: expertId,
-      },
+  if (!expertAccess) {
+    notFound();
+  }
+
+  const expert = await prisma.expert.findFirst({
+      where: expertAccess.scope,
       include: {
         owner: {
           select: {
@@ -228,15 +253,10 @@ export default async function ExpertProfilePage({ params }: Props) {
           },
         },
       },
-    }),
-  ]);
+    });
 
   if (!expert) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
-        <h1 className="text-4xl font-bold">{t("notFound")}</h1>
-      </div>
-    );
+    notFound();
   }
 
   const isAdmin = user.role === "admin";
@@ -350,27 +370,53 @@ export default async function ExpertProfilePage({ params }: Props) {
     return null;
   }
 
-  const expertSchema = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: expert.name,
-    jobTitle: expert.specialty,
-    email: expert.email,
-    image: expert.imageUrl || undefined,
-    address: {
-      "@type": "PostalAddress",
-      addressCountry: expert.country,
-    },
-  };
+  const expertSchema =
+    expert.verificationStatus === "VERIFIED"
+      ? createExpertPageJsonLd({
+          page: {
+            canonicalPath: `/experts/${expert.id}`,
+            name: expert.name,
+            description: t("metadata.description", {
+              name: expert.name,
+              specialty: expert.specialty,
+              country: expert.country,
+            }),
+            language: locale,
+            breadcrumbs: [
+              {
+                name: navigation("home"),
+                pathname: "/",
+              },
+              {
+                name: navigation("experts"),
+                pathname: "/experts",
+              },
+              {
+                name: expert.name,
+                pathname: `/experts/${expert.id}`,
+              },
+            ],
+          },
+          expert: {
+            name: expert.name,
+            specialty: expert.specialty,
+            country: expert.country,
+            email: expert.email,
+            imageUrl: expert.imageUrl,
+          },
+        })
+      : null;
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(expertSchema),
-        }}
-      />
+      {expertSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(expertSchema),
+          }}
+        />
+      )}
 
       <div className="min-h-screen bg-slate-950 text-white">
         <div className="mx-auto max-w-6xl px-6 py-20">

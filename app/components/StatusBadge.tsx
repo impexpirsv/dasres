@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 export type Status =
+  | "TODO"
   | "PENDING"
   | "OPEN"
   | "IN_PROGRESS"
@@ -16,6 +17,8 @@ export type Status =
   | "CANCELLED";
 
 const statusClasses: Record<Status, string> = {
+  TODO:
+    "border-slate-500/30 bg-slate-500/10 text-slate-300",
   OPEN:
     "border-blue-500/30 bg-blue-500/10 text-blue-300",
   IN_PROGRESS:
@@ -40,24 +43,45 @@ const statusClasses: Record<Status, string> = {
     "border-red-500/30 bg-red-500/10 text-red-300",
 };
 
+const FALLBACK_STATUS_CLASS =
+  "border-slate-600 bg-slate-700/40 text-slate-300";
+
+function isKnownStatus(value: string): value is Status {
+  return Object.prototype.hasOwnProperty.call(
+    statusClasses,
+    value,
+  );
+}
+
 export default function StatusBadge({
   status,
   small = false,
 }: {
-  status: Status;
+  status: Status | string;
   small?: boolean;
 }) {
   const t = useTranslations("statusBadge");
 
+  const normalizedStatus = status.trim().toUpperCase();
+  const key = normalizedStatus.toLowerCase();
+
+  const label = t.has(key)
+    ? t(key)
+    : normalizedStatus.replaceAll("_", " ");
+
+  const className = isKnownStatus(normalizedStatus)
+    ? statusClasses[normalizedStatus]
+    : FALLBACK_STATUS_CLASS;
+
   return (
     <span
-      className={`inline-flex items-center rounded-full border font-semibold transition-all duration-200 ${
+      className={`ui-badge ${
         small
-          ? "px-2 py-1 text-[11px]"
-          : "px-3 py-1 text-xs"
-      } ${statusClasses[status]}`}
+          ? "min-h-6 px-2 text-[11px]"
+          : ""
+      } ${className}`}
     >
-      {t(status.toLowerCase())}
+      {label}
     </span>
   );
 }

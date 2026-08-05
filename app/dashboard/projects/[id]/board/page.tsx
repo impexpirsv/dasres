@@ -6,6 +6,7 @@ import {
 } from "next-intl/server";
 import { prisma } from "../../../../../lib/prisma";
 import { requireUser } from "../../../../../lib/auth";
+import { getAuthorizedProjectViewScope } from "../../../../../lib/projects/project-view-access";
 import ProjectBoard from "../../../../components/project/ProjectBoard";
 
 type Props = {
@@ -31,15 +32,21 @@ export default async function ProjectBoardPage({
     notFound();
   }
 
-  const project = await prisma.project.findUnique({
-    where: {
-      id: projectId,
-    },
+  const authorizedProjectScope = await getAuthorizedProjectViewScope({
+    projectId,
+    userId: user.id,
+    userRole: user.role,
+  });
+
+  if (!authorizedProjectScope) {
+    notFound();
+  }
+
+  const project = await prisma.project.findFirst({
+    where: authorizedProjectScope,
     select: {
       id: true,
       title: true,
-      createdBy: true,
-      assignedTo: true,
       tasks: {
         orderBy: {
           createdAt: "asc",
@@ -84,15 +91,6 @@ export default async function ProjectBoardPage({
   });
 
   if (!project) {
-    notFound();
-  }
-
-  const canAccessProject =
-    user.role === "admin" ||
-    project.createdBy === user.id ||
-    project.assignedTo === user.id;
-
-  if (!canAccessProject) {
     notFound();
   }
 

@@ -1,91 +1,53 @@
-import { prisma } from "../../../../../lib/prisma";
+import { apiHandler } from "../../../../../lib/api";
 import { requireUser } from "../../../../../lib/auth";
+import { toggleSavedCase } from "../../../../../lib/cases/toggle-saved-case";
+import { parseId } from "../../../../../lib/validation";
 
 export async function POST(
   _request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  try {
+  {
+    params,
+  }: {
+    params: Promise<{
+      id: string;
+    }>;
+  },
+): Promise<Response> {
+  return apiHandler(async () => {
     const user = await requireUser();
 
     const { id } = await params;
-    const caseId = Number(id);
+    const caseId = parseId(
+      id,
+      "case id",
+    );
 
-    if (!Number.isInteger(caseId) || caseId <= 0) {
-      return Response.json(
-        {
-          code: "INVALID_CASE_ID",
-        },
-        { status: 400 },
-      );
-    }
-
-    const tradeCase = await prisma.tradeCase.findUnique({
-      where: {
-        id: caseId,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (!tradeCase) {
-      return Response.json(
-        {
-          code: "CASE_NOT_FOUND",
-        },
-        { status: 404 },
-      );
-    }
-
-    const existingSavedCase =
-      await prisma.savedCase.findUnique({
-        where: {
-          userId_caseId: {
-            userId: user.id,
-            caseId,
-          },
-        },
-        select: {
-          id: true,
-        },
-      });
-
-    if (existingSavedCase) {
-      await prisma.savedCase.delete({
-        where: {
-          id: existingSavedCase.id,
-        },
-      });
-
-      return Response.json({
-        code: "CASE_REMOVED_FROM_SAVED",
-        saved: false,
-      });
-    }
-
-    await prisma.savedCase.create({
-      data: {
-        userId: user.id,
+    const result =
+      await toggleSavedCase({
         caseId,
-      },
-    });
+        authenticatedUserId:
+          user.id,
+      });
+
+    if (!result.saved) {
+      return Response.json({
+        code:
+          "CASE_REMOVED_FROM_SAVED",
+        saved: false,
+        savedCase: null,
+      });
+    }
 
     return Response.json(
       {
         code: "CASE_SAVED",
         saved: true,
+        savedCase:
+          result.savedCase,
       },
-      { status: 201 },
-    );
-  } catch (error) {
-    console.error("CASE_SAVE_TOGGLE_FAILED", error);
-
-    return Response.json(
       {
-        code: "CASE_SAVE_TOGGLE_FAILED",
+        status: 201,
       },
-      { status: 500 },
     );
-  }
+  });
 }

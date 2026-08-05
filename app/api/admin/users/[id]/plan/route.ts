@@ -1,85 +1,55 @@
-import { prisma } from "../../../../../../lib/prisma";
+import { apiHandler } from "../../../../../../lib/api";
 import { requireAdmin } from "../../../../../../lib/auth";
-
-const ALLOWED_PLANS = [
-  "FREE",
-  "GOLD",
-  "DIAMOND",
-  "ENTERPRISE",
-] as const;
-
-type PlanType = (typeof ALLOWED_PLANS)[number];
+import {
+  parseUpdateUserPlanInput,
+  updateUserPlan,
+} from "../../../../../../lib/users/update-user-plan";
+import { parseId } from "../../../../../../lib/validation";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  try {
-    await requireAdmin();
+  {
+    params,
+  }: {
+    params: Promise<{
+      id: string;
+    }>;
+  },
+): Promise<Response> {
+  return apiHandler(async () => {
+    const admin =
+      await requireAdmin();
 
     const { id } = await params;
-    const userId = Number(id);
+    const userId = parseId(
+      id,
+      "user id",
+    );
 
-    if (!Number.isInteger(userId) || userId <= 0) {
-      return Response.json(
-        {
-          code: "INVALID_USER_ID",
-        },
-        { status: 400 },
+    const input =
+      await parseUpdateUserPlanInput(
+        request,
       );
+
+    const result =
+      await updateUserPlan({
+        userId,
+        authenticatedAdminId:
+          admin.id,
+        input,
+      });
+
+    if (result.alreadyUpdated) {
+      return Response.json({
+        code:
+          "PLAN_ALREADY_UPDATED",
+        user: result.user,
+      });
     }
-
-    const body = await request.json();
-
-    const planType = String(
-      body?.planType ?? "",
-    ).toUpperCase() as PlanType;
-
-    if (!ALLOWED_PLANS.includes(planType)) {
-      return Response.json(
-        {
-          code: "INVALID_PLAN_TYPE",
-        },
-        { status: 400 },
-      );
-    }
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (!user) {
-      return Response.json(
-        {
-          code: "USER_NOT_FOUND",
-        },
-        { status: 404 },
-      );
-    }
-
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        planType,
-      },
-    });
 
     return Response.json({
       code: "PLAN_UPDATED",
+      user: result.user,
     });
-  } catch {
-    return Response.json(
-      {
-        code: "PLAN_UPDATE_FAILED",
-      },
-      { status: 500 },
-    );
-  }
+  });
 }

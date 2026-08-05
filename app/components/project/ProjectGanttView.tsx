@@ -91,10 +91,7 @@ function getColumnWidth(zoomLevel: ZoomLevel) {
   }
 }
 
-function getUnitStart(
-  date: Date,
-  zoomLevel: ZoomLevel,
-) {
+function getUnitStart(date: Date, zoomLevel: ZoomLevel) {
   const value = getDateOnly(date);
 
   if (!value) {
@@ -349,19 +346,58 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
   const chartHeight = datedTasksBase.length * rowHeight;
   const datedTaskById = new Map(datedTasksBase.map((task) => [task.id, task]));
 
-  const criticalTaskIds = new Set(
-    datedTasksBase
-      .filter((task) => {
-        if (!task.dependsOn) return false;
+  const criticalPathMemo = new Map<number, { ids: number[]; duration: number }>();
 
-        const dependency = datedTaskById.get(task.dependsOn.id);
+  function getCriticalPathToTask(
+    taskId: number,
+    visiting = new Set<number>(),
+  ): { ids: number[]; duration: number } {
+    const cached = criticalPathMemo.get(taskId);
 
-        if (!dependency) return false;
+    if (cached) {
+      return cached;
+    }
 
-        return dependency.end.getTime() >= task.start.getTime();
-      })
-      .map((task) => task.id),
+    const task = datedTaskById.get(taskId);
+
+    if (!task) {
+      return { ids: [], duration: 0 };
+    }
+
+    const taskDuration = getDaysBetween(task.start, task.end);
+
+    if (visiting.has(taskId)) {
+      return { ids: [task.id], duration: taskDuration };
+    }
+
+    const nextVisiting = new Set(visiting);
+    nextVisiting.add(taskId);
+
+    const dependencyId = task.dependsOn?.id;
+    const dependencyPath =
+      dependencyId !== undefined && datedTaskById.has(dependencyId)
+        ? getCriticalPathToTask(dependencyId, nextVisiting)
+        : { ids: [], duration: 0 };
+
+    const result = {
+      ids: [...dependencyPath.ids, task.id],
+      duration: dependencyPath.duration + taskDuration,
+    };
+
+    criticalPathMemo.set(taskId, result);
+    return result;
+  }
+
+  const longestCriticalPath = datedTasksBase.reduce(
+    (longest, task) => {
+      const candidate = getCriticalPathToTask(task.id);
+      return candidate.duration > longest.duration ? candidate : longest;
+    },
+    { ids: [] as number[], duration: 0 },
   );
+
+  const criticalTaskIds = new Set(longestCriticalPath.ids);
+
   const ganttTasks: GanttTask[] = datedTasksBase.map((task, index) => {
     const offset = getOffsetBetween(timelineStart, task.start, zoomLevel);
     const duration =
@@ -428,7 +464,7 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
     }
   }
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <div className="workspace-panel">
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-xl font-bold text-white">{t("title")}</h2>
@@ -451,7 +487,7 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
                   : "border-slate-800 bg-slate-950 text-slate-400 hover:text-white"
               }`}
             >
-              {level}
+             {t(`zoom.${level}`)}
             </button>
           ))}
 
@@ -465,7 +501,7 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
 
       <div
         dir={isRtl ? "rtl" : "ltr"}
-        className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950"
+        className="workspace-horizontal-scroll overflow-x-auto rounded-xl border border-slate-800 bg-slate-950"
       >
         <div
           dir="ltr"
@@ -656,8 +692,8 @@ export default function ProjectGanttView({ tasks }: { tasks: Task[] }) {
                   <div
                     className={`absolute top-0 flex items-center px-4 ${
                       isRtl
-                        ? "border-l border-slate-800 text-right"
-                        : "border-r border-slate-800 text-left"
+                        ? "border-s border-slate-800 text-end"
+                        : "border-e border-slate-800 text-start"
                     }`}
                     style={{
                       left: `${canvasPadding}px`,

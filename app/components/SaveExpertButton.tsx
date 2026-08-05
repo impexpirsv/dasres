@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+
+type SaveResponse = {
+  saved?: unknown;
+  message?: unknown;
+};
 
 export default function SaveExpertButton({
   expertId,
@@ -12,32 +17,81 @@ export default function SaveExpertButton({
 }) {
   const t = useTranslations("saveExpertButton");
 
-  const [saved, setSaved] =
-    useState(initialSaved);
+  const [saved, setSaved] = useState(initialSaved);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setSaved(initialSaved);
+  }, [initialSaved]);
 
   async function toggleSave() {
-    const response = await fetch(
-      `/api/experts/${expertId}/save`,
-      {
-        method: "POST",
+    if (loading) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(
+        `/api/experts/${expertId}/save`,
+        {
+          method: "POST",
+        },
+      );
+
+      let data: SaveResponse = {};
+
+      try {
+        data = (await response.json()) as SaveResponse;
+      } catch {
+        data = {};
       }
-    );
 
-    const data = await response.json();
+      if (!response.ok) {
+        setError(
+          typeof data.message === "string"
+            ? data.message
+            : "Unable to update saved expert.",
+        );
+        return;
+      }
 
-    setSaved(data.saved);
+      if (typeof data.saved !== "boolean") {
+        setError("Invalid response from server.");
+        return;
+      }
+
+      setSaved(data.saved);
+    } catch {
+      setError("Unable to update saved expert.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <button
-      onClick={toggleSave}
-      className={`px-4 py-2 rounded-xl text-sm font-medium transition ${
-        saved
-          ? "bg-yellow-500 text-black"
-          : "bg-slate-800 text-white"
-      }`}
-    >
-      {saved ? t("saved") : t("save")}
-    </button>
+    <div className="space-y-2">
+      <button
+        type="button"
+        onClick={() => void toggleSave()}
+        disabled={loading}
+        aria-busy={loading}
+        className={`rounded-xl px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60 ${
+          saved
+            ? "bg-yellow-500 text-black"
+            : "bg-slate-800 text-white"
+        }`}
+      >
+        {saved ? t("saved") : t("save")}
+      </button>
+
+      {error && (
+        <p role="alert" className="text-xs text-red-400">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }

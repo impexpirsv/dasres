@@ -1,4 +1,498 @@
 {
+  "knowledgeHub": {
+    "common": {
+      "categoryNavigation": "ナレッジハブ",
+      "openLink": "ヘルプセンター",
+      "relatedCategories": "ナレッジハブ"
+    },
+    "help": {
+      "eyebrow": "ヘルプセンター",
+      "title": "ヘルプセンター",
+      "summary": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+      "browseTitle": "ヘルプセンター",
+      "browseDescription": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+      "entriesTitle": "ヘルプセンター",
+      "relatedTitle": "ナレッジハブ",
+      "categories": {
+        "getting-started": {
+          "title": "はじめに",
+          "summary": "はじめに — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "はじめに",
+          "seoDescription": "はじめに — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "accounts-and-access": {
+          "title": "アカウントとアクセス",
+          "summary": "アカウントとアクセス — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "アカウントとアクセス",
+          "seoDescription": "アカウントとアクセス — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "cases-and-proposals": {
+          "title": "案件と提案",
+          "summary": "案件と提案 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "案件と提案",
+          "seoDescription": "案件と提案 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "projects-and-tasks": {
+          "title": "プロジェクトとタスク",
+          "summary": "プロジェクトとタスク — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "プロジェクトとタスク",
+          "seoDescription": "プロジェクトとタスク — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "companies-and-experts": {
+          "title": "企業と専門家",
+          "summary": "企業と専門家 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "企業と専門家",
+          "seoDescription": "企業と専門家 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "tickets-and-support": {
+          "title": "チケットとサポート",
+          "summary": "チケットとサポート — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "チケットとサポート",
+          "seoDescription": "チケットとサポート — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        }
+      },
+      "entries": {
+        "register": {
+          "title": "はじめに 1",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "signIn": {
+          "title": "アカウントとアクセス 1",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "language": {
+          "title": "案件と提案 1",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "session": {
+          "title": "プロジェクトとタスク 1",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "dashboard": {
+          "title": "企業と専門家 1",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "permissions": {
+          "title": "チケットとサポート 1",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "createCase": {
+          "title": "はじめに 2",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "submitProposal": {
+          "title": "アカウントとアクセス 2",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "acceptProposal": {
+          "title": "案件と提案 2",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "projects": {
+          "title": "プロジェクトとタスク 2",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "tasks": {
+          "title": "企業と専門家 2",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "documentsMessages": {
+          "title": "チケットとサポート 2",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "profiles": {
+          "title": "はじめに 3",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "ownership": {
+          "title": "アカウントとアクセス 3",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "verification": {
+          "title": "案件と提案 3",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "createTicket": {
+          "title": "プロジェクトとタスク 3",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "reply": {
+          "title": "企業と専門家 3",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "closeReopen": {
+          "title": "チケットとサポート 3",
+          "body": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        }
+      }
+    },
+    "resources": {
+      "eyebrow": "ナレッジハブ",
+      "title": "ナレッジハブ",
+      "summary": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+      "browseTitle": "ナレッジハブ",
+      "emptyTitle": "ナレッジハブ",
+      "emptyDescription": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+      "categories": {
+        "tutorials": {
+          "title": "チュートリアル",
+          "summary": "チュートリアル — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "チュートリアル",
+          "seoDescription": "チュートリアル — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "purposeTitle": "チュートリアル",
+          "purpose": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "news": {
+          "title": "貿易ニュース",
+          "summary": "貿易ニュース — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "貿易ニュース",
+          "seoDescription": "貿易ニュース — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "purposeTitle": "貿易ニュース",
+          "purpose": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "customs": {
+          "title": "税関記事",
+          "summary": "税関記事 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "税関記事",
+          "seoDescription": "税関記事 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "purposeTitle": "税関記事",
+          "purpose": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "countries": {
+          "title": "国別ガイド",
+          "summary": "国別ガイド — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "国別ガイド",
+          "seoDescription": "国別ガイド — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "purposeTitle": "国別ガイド",
+          "purpose": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "glossary": {
+          "title": "用語集",
+          "summary": "用語集 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "用語集",
+          "seoDescription": "用語集 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "purposeTitle": "用語集",
+          "purpose": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        },
+        "case-studies": {
+          "title": "事例",
+          "summary": "事例 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "seoTitle": "事例",
+          "seoDescription": "事例 — 本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "purposeTitle": "事例",
+          "purpose": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        }
+      },
+      "policy": {
+        "title": "ナレッジハブ",
+        "points": {
+          "changing": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "dates": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "sources": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "education": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "stale": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。"
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "よくある質問",
+      "title": "よくある質問",
+      "summary": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+      "sectionTitle": "よくある質問",
+      "items": {
+        "verification": {
+          "question": "はじめに?",
+          "answer": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "category": "はじめに"
+        },
+        "plans": {
+          "question": "アカウントとアクセス?",
+          "answer": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "category": "アカウントとアクセス"
+        },
+        "cases": {
+          "question": "案件と提案?",
+          "answer": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "category": "案件と提案"
+        },
+        "proposals": {
+          "question": "プロジェクトとタスク?",
+          "answer": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "category": "プロジェクトとタスク"
+        },
+        "tickets": {
+          "question": "企業と専門家?",
+          "answer": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "category": "企業と専門家"
+        },
+        "language": {
+          "question": "チケットとサポート?",
+          "answer": "本ガイドは現在の Dasres の動作に基づき、認証、所有権、役割、状態、プラン上限が適用されます。",
+          "category": "チケットとサポート"
+        }
+      }
+    }
+  }
+  ,
+  "publicSite": {
+    "navigation": {
+      "primaryLabel": "メインナビゲーション",
+      "brandHomeLabel": "Dasres ホーム",
+      "tagline": "世界の貿易をつなぐ",
+      "companies": "企業",
+      "experts": "専門家",
+      "opportunities": "商談機会",
+      "pricing": "プラン",
+      "resources": "リソース",
+      "about": "概要",
+      "contact": "お問い合わせ",
+      "help": "ヘルプ",
+      "login": "ログイン",
+      "join": "Dasres に参加",
+      "toggleMenu": "ナビゲーション切替"
+    },
+    "footer": {
+      "navigationLabel": "フッターナビゲーション",
+      "trustStatement": "検証済み企業、専門家、国際貿易の機会を一つの場所で見つけられます。",
+      "supportEntry": "お問い合わせ",
+      "groups": {
+        "platform": "プラットフォーム",
+        "solutions": "ソリューション",
+        "resources": "リソース",
+        "company": "会社",
+        "legal": "法務"
+      },
+      "links": {
+        "companies": "企業",
+        "experts": "専門家",
+        "opportunities": "商談機会",
+        "pricing": "プラン",
+        "dashboard": "ダッシュボード",
+        "help": "ヘルプ",
+        "resourceHub": "リソース",
+        "faq": "よくある質問",
+        "about": "概要",
+        "contact": "お問い合わせ",
+        "privacy": "プライバシー",
+        "terms": "規約",
+        "cookies": "Cookie"
+      },
+      "copyright": "© {year} Dasres. 無断転載を禁じます。",
+      "languageLabel": "言語"
+    },
+    "common": {
+      "home": "ホーム"
+    },
+    "pages": {
+      "about": {
+        "metadata": {
+          "title": "Dasres について",
+          "description": "Dasres について — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "リソース",
+        "title": "Dasres について",
+        "description": "Dasres について — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "sectionTitle": "Dasres について",
+        "sectionDescription": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "cta": {
+          "title": "Dasres について",
+          "description": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+          "label": "企業"
+        }
+      },
+      "contact": {
+        "metadata": {
+          "title": "Dasres へのお問い合わせ",
+          "description": "Dasres へのお問い合わせ — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "リソース",
+        "title": "Dasres へのお問い合わせ",
+        "description": "Dasres へのお問い合わせ — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "sectionTitle": "Dasres へのお問い合わせ",
+        "sectionDescription": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "cta": {
+          "title": "Dasres へのお問い合わせ",
+          "description": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+          "label": "ダッシュボード"
+        }
+      },
+      "help": {
+        "metadata": {
+          "title": "ヘルプセンター",
+          "description": "ヘルプセンター — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "リソース",
+        "title": "ヘルプセンター",
+        "description": "ヘルプセンター — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "sectionTitle": "ヘルプセンター",
+        "sectionDescription": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "cta": {
+          "title": "ヘルプセンター",
+          "description": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+          "label": "よくある質問"
+        }
+      },
+      "faq": {
+        "metadata": {
+          "title": "よくある質問",
+          "description": "よくある質問 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "リソース",
+        "title": "よくある質問",
+        "description": "よくある質問 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "sectionTitle": "よくある質問",
+        "sectionDescription": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "cta": {
+          "title": "よくある質問",
+          "description": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+          "label": "お問い合わせ"
+        }
+      },
+      "resources": {
+        "metadata": {
+          "title": "貿易リソース",
+          "description": "貿易リソース — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "リソース",
+        "title": "貿易リソース",
+        "description": "貿易リソース — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "sectionTitle": "貿易リソース",
+        "sectionDescription": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "cards": {
+          "tutorials": {
+            "title": "チュートリアル",
+            "description": "チュートリアル — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          },
+          "news": {
+            "title": "貿易ニュース",
+            "description": "貿易ニュース — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          },
+          "customs": {
+            "title": "税関記事",
+            "description": "税関記事 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          },
+          "countries": {
+            "title": "国別ガイド",
+            "description": "国別ガイド — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          },
+          "glossary": {
+            "title": "用語集",
+            "description": "用語集 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          },
+          "cases": {
+            "title": "事例",
+            "description": "事例 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          }
+        }
+      },
+      "pricing": {
+        "metadata": {
+          "title": "プランと上限",
+          "description": "プランと上限 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "プラン",
+        "title": "プランと上限",
+        "description": "プランと上限 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "sectionTitle": "プランと上限",
+        "sectionDescription": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+      "activeCases": "進行中の貿易案件",
+      "proposals": "提案",
+      "unlimited": "無制限",
+        "availabilityNotice": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "plans": {
+          "free": {
+            "name": "無料",
+            "description": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          },
+          "gold": {
+            "name": "ゴールド",
+            "description": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          },
+          "diamond": {
+            "name": "ダイヤモンド",
+            "description": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          },
+          "enterprise": {
+            "name": "エンタープライズ",
+            "description": "Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+          }
+        }
+      },
+      "privacy": {
+        "metadata": {
+          "title": "プライバシーポリシー草案",
+          "description": "プライバシーポリシー草案 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "法務",
+        "title": "プライバシーポリシー草案",
+        "description": "プライバシーポリシー草案 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "reviewNotice": "法務確認用の草案です。現在の動作を説明するもので、最終的な法的助言ではありません。",
+        "sections": {
+          "scope": {
+            "title": "プライバシーポリシー草案",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          },
+          "data": {
+            "title": "プライバシー",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          },
+          "choices": {
+            "title": "規約",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          }
+        }
+      },
+      "terms": {
+        "metadata": {
+          "title": "利用規約草案",
+          "description": "利用規約草案 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "法務",
+        "title": "利用規約草案",
+        "description": "利用規約草案 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "reviewNotice": "法務確認用の草案です。現在の動作を説明するもので、最終的な法的助言ではありません。",
+        "sections": {
+          "scope": {
+            "title": "利用規約草案",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          },
+          "data": {
+            "title": "プライバシー",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          },
+          "choices": {
+            "title": "規約",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          }
+        }
+      },
+      "cookies": {
+        "metadata": {
+          "title": "Cookie ポリシー草案",
+          "description": "Cookie ポリシー草案 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。"
+        },
+        "eyebrow": "法務",
+        "title": "Cookie ポリシー草案",
+        "description": "Cookie ポリシー草案 — Dasres と国際貿易ワークスペースに関する実用的な最新情報です。",
+        "reviewNotice": "法務確認用の草案です。現在の動作を説明するもので、最終的な法的助言ではありません。",
+        "sections": {
+          "scope": {
+            "title": "Cookie ポリシー草案",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          },
+          "data": {
+            "title": "プライバシー",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          },
+          "choices": {
+            "title": "規約",
+            "description": "本草案はアカウント、公開プロフィール、商談、共同作業、認証、権限、サポート、言語設定を対象とします。保存、商取引、管轄、紛争条件には法務承認が必要です。"
+          }
+        }
+      }
+    }
+  }
+  ,
   "common": {
     "years": "{count}年",
     "hours": "時間",

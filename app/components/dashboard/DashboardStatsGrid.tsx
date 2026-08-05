@@ -40,259 +40,211 @@ export default async function DashboardStatsGrid({
   unreadNotificationsCount,
   openTicketsCount,
 }: Props) {
-  const t = await getTranslations("dashboardStatsGrid");
+  const t = await getTranslations(
+    "dashboardStatsGrid",
+  );
 
   const isAdmin = userRole === "admin";
 
+
+  const cards = [
+    {
+      href: "/dashboard/saved-cases",
+      title: t("savedCases.title"),
+      value: savedCasesCount,
+      description: t("savedCases.description"),
+      color: "blue",
+    },
+    {
+      href: "/dashboard/saved-companies",
+      title: t("savedCompanies.title"),
+      value: savedCompaniesCount,
+      description: t("savedCompanies.description"),
+      color: "yellow",
+    },
+    {
+      href: "/dashboard/saved-experts",
+      title: t("savedExperts.title"),
+      value: savedExpertsCount,
+      description: t("savedExperts.description"),
+      color: "emerald",
+    },
+    {
+      href: isAdmin
+        ? "/dashboard/experts"
+        : "/dashboard/my-experts",
+      title: isAdmin
+        ? t("experts.adminTitle")
+        : t("experts.userTitle"),
+      value: expertsCount,
+      description: isAdmin
+        ? t("experts.adminDescription")
+        : t("experts.userDescription"),
+      color: "blue",
+    },
+    {
+      href: isAdmin
+        ? "/dashboard/companies"
+        : "/dashboard/my-companies",
+      title: isAdmin
+        ? t("companies.adminTitle")
+        : t("companies.userTitle"),
+      value: companiesCount,
+      description: isAdmin
+        ? t("companies.adminDescription")
+        : t("companies.userDescription"),
+      color: "cyan",
+    },
+    {
+      href: "/dashboard/opportunities",
+      title: t("opportunities.title"),
+      value: opportunitiesCount,
+      description: t("opportunities.description"),
+      color: "purple",
+    },
+    {
+      title: t("successRate.title"),
+      value: `${successRate}%`,
+      description: t(
+        "successRate.description",
+        {
+          completed: completedUserCases,
+          total: totalUserCases,
+        },
+      ),
+      color: "emerald",
+    },
+    {
+      href: "/dashboard/cases",
+      title: t("tradeCases.title"),
+      value: totalUserCases,
+      description: isAdmin
+        ? t("tradeCases.adminDescription")
+        : t("tradeCases.userDescription"),
+      color: "cyan",
+    },
+    {
+      href: "/dashboard/open-cases",
+      title: t("openCases.title"),
+      value: openCasesCount,
+      description: t("openCases.description"),
+      color: "emerald",
+    },
+    {
+      title: t("inProgress.title"),
+      value: inProgressCasesCount,
+      description: t("inProgress.description"),
+      color: "orange",
+    },
+    {
+      title: t("completed.title"),
+      value: completedCasesCount,
+      description: t("completed.description"),
+      color: "green",
+    },
+    {
+      href: "/dashboard/my-proposals",
+      title: t("proposals"),
+      value: myProposalsCount,
+      color: "yellow",
+    },
+    {
+      title: t("accepted"),
+      value: acceptedProposalsCount,
+      color: "green",
+    },
+    {
+      href: "/dashboard/notifications",
+      title: t("notifications"),
+      value: unreadNotificationsCount,
+      color: "blue",
+    },
+    {
+      href: "/dashboard/tickets",
+      title: t("openTickets"),
+      value: openTicketsCount,
+      color: "purple",
+    },
+  ];
+
+
+  const colorMap: Record<string, string> = {
+    blue: "text-blue-400 hover:border-blue-500/70",
+    cyan: "text-cyan-400 hover:border-cyan-500/70",
+    yellow: "text-yellow-400 hover:border-yellow-500/70",
+    emerald: "text-emerald-400 hover:border-emerald-500/70",
+    purple: "text-purple-400 hover:border-purple-500/70",
+    orange: "text-orange-400 hover:border-orange-500/70",
+    green: "text-green-400 hover:border-green-500/70",
+  };
+
+
   return (
-    <div className="grid md:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
-      <Link
-        href="/dashboard/saved-cases"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("savedCases.title")}
-        </h2>
+    <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5" aria-label={t("tradeCases.title")}>
 
-        <div className="text-5xl font-bold text-blue-400">
-          {savedCasesCount}
-        </div>
+      {cards.map((card, index) => {
 
-        <p className="text-slate-400 mt-3">
-          {t("savedCases.description")}
-        </p>
-      </Link>
+        const content = (
+          <div
+            className={`
+              group
+              h-full
+              ui-card
+              ui-card-interactive
+              bg-gradient-to-br
+              from-slate-900
+              to-slate-950
+              ${colorMap[card.color]}
+            `}
+          >
 
-      <Link
-        href="/dashboard/saved-companies"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("savedCompanies.title")}
-        </h2>
+            <h2 className="text-lg font-bold text-slate-200">
+              {card.title}
+            </h2>
 
-        <div className="text-5xl font-bold text-yellow-400">
-          {savedCompaniesCount}
-        </div>
 
-        <p className="text-slate-400 mt-3">
-          {t("savedCompanies.description")}
-        </p>
-      </Link>
+            <div
+              className={`
+                mt-3
+                text-4xl
+                font-black
+                ${colorMap[card.color].split(" ")[0]}
+              `}
+            >
+              {card.value}
+            </div>
 
-      <Link
-        href="/dashboard/saved-experts"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("savedExperts.title")}
-        </h2>
 
-        <div className="text-5xl font-bold text-emerald-400">
-          {savedExpertsCount}
-        </div>
+            {card.description && (
+              <p className="mt-3 text-sm leading-5 text-slate-400">
+                {card.description}
+              </p>
+            )}
 
-        <p className="text-slate-400 mt-3">
-          {t("savedExperts.description")}
-        </p>
-      </Link>
+          </div>
+        );
 
-      <Link
-        href={
-          isAdmin
-            ? "/dashboard/experts"
-            : "/dashboard/my-experts"
+
+        if (card.href) {
+          return (
+            <Link
+              key={index}
+              href={card.href}
+            >
+              {content}
+            </Link>
+          );
         }
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {isAdmin
-            ? t("experts.adminTitle")
-            : t("experts.userTitle")}
-        </h2>
 
-        <div className="text-5xl font-bold text-blue-400">
-          {expertsCount}
-        </div>
 
-        <p className="text-slate-400 mt-3">
-          {isAdmin
-            ? t("experts.adminDescription")
-            : t("experts.userDescription")}
-        </p>
-      </Link>
+        return (
+          <div key={index}>
+            {content}
+          </div>
+        );
 
-      <Link
-        href={
-          isAdmin
-            ? "/dashboard/companies"
-            : "/dashboard/my-companies"
-        }
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {isAdmin
-            ? t("companies.adminTitle")
-            : t("companies.userTitle")}
-        </h2>
+      })}
 
-        <div className="text-5xl font-bold text-blue-400">
-          {companiesCount}
-        </div>
-
-        <p className="text-slate-400 mt-3">
-          {isAdmin
-            ? t("companies.adminDescription")
-            : t("companies.userDescription")}
-        </p>
-      </Link>
-
-      <Link
-        href="/dashboard/opportunities"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("opportunities.title")}
-        </h2>
-
-        <div className="text-5xl font-bold text-blue-400">
-          {opportunitiesCount}
-        </div>
-
-        <p className="text-slate-400 mt-3">
-          {t("opportunities.description")}
-        </p>
-      </Link>
-
-      <div className="bg-slate-900 p-6 rounded-2xl border border-emerald-500">
-        <h2 className="text-xl font-semibold mb-3">
-          {t("successRate.title")}
-        </h2>
-
-        <div className="text-5xl font-bold text-emerald-400">
-          {successRate}%
-        </div>
-
-        <p className="text-slate-400 mt-3">
-          {t("successRate.description", {
-            completed: completedUserCases,
-            total: totalUserCases,
-          })}
-        </p>
-      </div>
-
-      <Link
-        href="/dashboard/cases"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-cyan-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("tradeCases.title")}
-        </h2>
-
-        <div className="text-5xl font-bold text-cyan-400">
-          {totalUserCases}
-        </div>
-
-        <p className="text-slate-400 mt-3">
-          {isAdmin
-            ? t("tradeCases.adminDescription")
-            : t("tradeCases.userDescription")}
-        </p>
-      </Link>
-
-      <Link
-        href="/dashboard/open-cases"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("openCases.title")}
-        </h2>
-
-        <div className="text-5xl font-bold text-emerald-400">
-          {openCasesCount}
-        </div>
-
-        <p className="text-slate-400 mt-3">
-          {t("openCases.description")}
-        </p>
-      </Link>
-
-      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <h2 className="text-xl font-semibold mb-3">
-          {t("inProgress.title")}
-        </h2>
-
-        <div className="text-5xl font-bold text-orange-400">
-          {inProgressCasesCount}
-        </div>
-
-        <p className="text-slate-400 mt-3">
-          {t("inProgress.description")}
-        </p>
-      </div>
-
-      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <h2 className="text-xl font-semibold mb-3">
-          {t("completed.title")}
-        </h2>
-
-        <div className="text-5xl font-bold text-green-400">
-          {completedCasesCount}
-        </div>
-
-        <p className="text-slate-400 mt-3">
-          {t("completed.description")}
-        </p>
-      </div>
-
-      <Link
-        href="/dashboard/my-proposals"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-yellow-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("proposals")}
-        </h2>
-
-        <div className="text-5xl font-bold text-yellow-400">
-          {myProposalsCount}
-        </div>
-      </Link>
-
-      <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <h2 className="text-xl font-semibold mb-3">
-          {t("accepted")}
-        </h2>
-
-        <div className="text-5xl font-bold text-green-400">
-          {acceptedProposalsCount}
-        </div>
-      </div>
-
-      <Link
-        href="/dashboard/notifications"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("notifications")}
-        </h2>
-
-        <div className="text-5xl font-bold text-blue-400">
-          {unreadNotificationsCount}
-        </div>
-      </Link>
-
-      <Link
-        href="/dashboard/tickets"
-        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500 transition"
-      >
-        <h2 className="text-xl font-semibold mb-3">
-          {t("openTickets")}
-        </h2>
-
-        <div className="text-5xl font-bold text-purple-400">
-          {openTicketsCount}
-        </div>
-      </Link>
-    </div>
+    </section>
   );
 }

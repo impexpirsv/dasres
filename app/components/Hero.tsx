@@ -1,206 +1,57 @@
 "use client";
 
 import Link from "next/link";
-import {
-  useFormatter,
-  useTranslations,
-} from "next-intl";
+import { useTranslations } from "next-intl";
+
+import HeroGlobe from "./homepage/HeroGlobe";
 
 export default function Hero() {
   const t = useTranslations("hero");
-  const format = useFormatter();
-
-  const proposalsCount = format.number(6);
-
-  const trustPercentage = format.number(0.83, {
-    style: "percent",
-    maximumFractionDigits: 0,
-  });
-
-  const ratingValue = format.number(5, {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  });
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(37,99,235,0.35),transparent_35%),radial-gradient(circle_at_85%_80%,rgba(6,182,212,0.2),transparent_35%)]" />
+    <section className="relative isolate overflow-hidden border-b border-slate-800/80">
+      <div className="absolute inset-0 -z-20 bg-slate-950" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_20%,rgba(37,99,235,0.25),transparent_34%),radial-gradient(circle_at_82%_55%,rgba(6,182,212,0.16),transparent_34%),linear-gradient(to_bottom,transparent,rgba(2,6,23,0.72))]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-[0.16] [background-image:linear-gradient(rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.12)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
 
-      <div className="absolute inset-0 bg-slate-950/85" />
-
-      <div className="relative mx-auto grid max-w-7xl items-center gap-16 px-6 py-24 lg:grid-cols-2 lg:py-32">
-
-        <div>
-          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-blue-500/30 bg-blue-500/10 px-5 py-2 text-sm font-medium text-blue-300 backdrop-blur">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            {t("eyebrow")}
+      <div className="ui-container grid min-h-[calc(100svh-5rem)] items-center gap-10 py-14 sm:py-20 lg:grid-cols-[minmax(0,0.92fr)_minmax(26rem,1.08fr)] lg:gap-8 lg:py-24 xl:gap-16">
+        <div className="relative z-10 max-w-3xl">
+          <div className="mb-6 inline-flex max-w-full items-center gap-3 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm font-semibold leading-5 text-blue-200 backdrop-blur sm:px-5">
+            <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.8)]" aria-hidden="true" />
+            <span className="break-words">{t("eyebrow")}</span>
           </div>
 
-
-          <h1 className="mb-6 text-5xl font-black leading-[1.15] tracking-tight md:text-7xl">
+          <h1 className="max-w-3xl text-balance text-[clamp(2.75rem,8vw,5.5rem)] font-extrabold leading-[1.02] tracking-[-0.035em] text-white">
             {t("titleLine1")}
-
-            <span className="block bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300 bg-clip-text text-transparent">
+            <span className="mt-2 block bg-gradient-to-r from-blue-300 via-cyan-300 to-emerald-300 bg-clip-text text-transparent">
               {t("titleLine2")}
             </span>
           </h1>
 
-
-          <p className="mb-10 max-w-xl text-lg leading-8 text-slate-300 md:text-xl">
+          <p className="mt-7 max-w-2xl text-pretty text-lg leading-8 text-slate-300 sm:text-xl sm:leading-9">
             {t("description")}
           </p>
 
-
-          <div className="flex flex-col gap-4 sm:flex-row">
-
-            <Link
-              href="/register"
-              className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-8 py-4 text-center font-bold text-white shadow-xl shadow-blue-600/25 transition hover:scale-[1.03] hover:shadow-blue-500/40"
-            >
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href="/register" className="ui-button ui-button-primary min-h-14 px-7 text-base sm:px-8">
               {t("join")}
             </Link>
-
-
-            <Link
-              href="/experts"
-              className="rounded-xl border border-slate-700 bg-slate-900/70 px-8 py-4 text-center font-semibold text-slate-200 transition hover:border-blue-500 hover:bg-slate-800"
-            >
-              {t("exploreExperts")}
+            <Link href="/experts" className="ui-button ui-button-ghost min-h-14 px-7 text-base text-slate-300 sm:px-8">
+              {t("exploreExperts")} <span aria-hidden="true">→</span>
             </Link>
-
-
-            <Link
-              href="/companies"
-              className="rounded-xl border border-slate-700 bg-slate-900/70 px-8 py-4 text-center font-semibold text-slate-200 transition hover:border-cyan-500 hover:bg-slate-800"
-            >
-              {t("browseCompanies")}
-            </Link>
-
           </div>
         </div>
 
-
-
-        <div className="relative">
-
-          <div className="absolute -inset-8 rounded-[3rem] bg-blue-500/20 blur-3xl" />
-
-
-          <div className="relative rounded-[2.5rem] border border-slate-800 bg-slate-900/70 p-6 shadow-2xl backdrop-blur-xl transition hover:-translate-y-1">
-
-            <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6">
-
-              <div className="mb-6 flex items-start justify-between gap-4">
-
-                <div>
-                  <p className="text-sm text-slate-500">
-                    {t("liveCaseLabel")}
-                  </p>
-
-                  <h2 className="mt-2 text-2xl font-bold">
-                    {t("liveCaseTitle")}
-                  </h2>
-                </div>
-
-
-                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-sm text-emerald-300">
-                  {t("verified")}
-                </span>
-
-              </div>
-
-
-              <div className="grid grid-cols-3 gap-3">
-
-                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 transition hover:border-blue-500">
-                  <p className="text-xs text-slate-500">
-                    {t("proposals")}
-                  </p>
-
-                  <p className="mt-2 text-2xl font-bold text-blue-400">
-                    {proposalsCount}
-                  </p>
-                </div>
-
-
-                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 transition hover:border-emerald-500">
-                  <p className="text-xs text-slate-500">
-                    {t("trust")}
-                  </p>
-
-                  <p className="mt-2 text-2xl font-bold text-emerald-400">
-                    {trustPercentage}
-                  </p>
-                </div>
-
-
-                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 transition hover:border-yellow-500">
-                  <p className="text-xs text-slate-500">
-                    {t("status")}
-                  </p>
-
-                  <p className="mt-2 text-sm font-bold text-yellow-400">
-                    {t("inProgress")}
-                  </p>
-                </div>
-
-              </div>
-
-            </div>
-
-
-
-            <div className="mt-5 grid gap-5 sm:grid-cols-2">
-
-              <div className="rounded-3xl border border-slate-800 bg-slate-950 p-5 transition hover:-translate-y-1 hover:border-blue-500">
-
-                <p className="text-sm text-slate-500">
-                  {t("topCompany")}
-                </p>
-
-                <h3 className="mt-2 text-xl font-bold">
-                  Sina Customs
-                </h3>
-
-                <p className="mt-1 text-blue-400">
-                  {t("customsClearance")}
-                </p>
-
-                <p className="mt-4 text-yellow-400">
-                  ⭐ {t("rating", {
-                    value: ratingValue,
-                  })}
-                </p>
-
-              </div>
-
-
-              <div className="rounded-3xl border border-slate-800 bg-slate-950 p-5 transition hover:-translate-y-1 hover:border-cyan-500">
-
-                <p className="text-sm text-slate-500">
-                  {t("topExpert")}
-                </p>
-
-                <h3 className="mt-2 text-xl font-bold">
-                  Ahad Customs
-                </h3>
-
-                <p className="mt-1 text-cyan-400">
-                  {t("tradeConsultant")}
-                </p>
-
-                <p className="mt-4 text-emerald-400">
-                  ✓ {t("verified")}
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
+        <div className="relative mx-auto w-full max-w-[42rem] lg:max-w-none" data-future-globe-slot="implemented">
+          <div className="absolute inset-x-[12%] bottom-[5%] h-[18%] rounded-full bg-cyan-400/15 blur-3xl" aria-hidden="true" />
+          <HeroGlobe label={t("platformValue")} />
         </div>
+      </div>
 
+      <div className="pointer-events-none absolute inset-x-0 bottom-5 hidden justify-center sm:flex" aria-hidden="true">
+        <span className="homepage-scroll-cue flex h-10 w-6 justify-center rounded-full border border-slate-600/70 pt-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" />
+        </span>
       </div>
     </section>
   );

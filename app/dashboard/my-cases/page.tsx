@@ -32,7 +32,18 @@ export default async function MyCasesPage() {
     "dashboardMyCases",
   );
 
-  const locale = await getLocale();
+  const [locale, tcat] = await Promise.all([
+    getLocale(),
+    getTranslations("common.categories"),
+  ]);
+
+
+  function translateCategory(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return tcat.has(normalized) ? tcat(normalized) : tcat.has(lower) ? tcat(lower) : tcat.has(underscored) ? tcat(underscored) : normalized;
+  }
 
   const cases = await prisma.tradeCase.findMany({
     where: {
@@ -246,7 +257,7 @@ export default async function MyCasesPage() {
 
                   <div className="mb-5 flex flex-wrap gap-2">
                     <span className="rounded-full border border-purple-800 bg-purple-600/20 px-3 py-1 text-xs text-purple-300">
-                      {tradeCase.category}
+                      {translateCategory(tradeCase.category)}
                     </span>
 
                     <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">

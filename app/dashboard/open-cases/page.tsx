@@ -14,7 +14,38 @@ type SortOption = "newest" | "oldest";
 function isSortOption(value?: string): value is SortOption {
   return value === "newest" || value === "oldest";
 }
+function getCategoryTranslationKey(
+  category: string,
+) {
+  switch (category) {
+    case "General":
+      return "general";
 
+    case "Customs Clearance":
+      return "customsClearance";
+
+    case "Shipping":
+      return "shipping";
+
+    case "Inspection":
+      return "inspection";
+
+    case "Insurance":
+      return "insurance";
+
+    case "Sourcing":
+      return "sourcing";
+
+    case "Documentation":
+      return "documentation";
+
+    case "Payment":
+      return "payment";
+
+    default:
+      return null;
+  }
+}
 function buildOpenCasesUrl({
   category,
   sort,
@@ -118,31 +149,26 @@ export default async function OpenCasesPage({
       createdAt:
         selectedSort === "oldest" ? "asc" : "desc",
     },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      category: true,
+      createdAt: true,
       proposals: {
-        include: {
-          company: {
-            select: {
-              id: true,
-              ownerId: true,
-            },
-          },
-          expert: {
-            select: {
-              id: true,
-              ownerId: true,
-            },
-          },
+        where: {
+          OR: [
+            { company: { ownerId: user.id } },
+            { expert: { ownerId: user.id } },
+          ],
         },
+        select: { id: true },
       },
-      documents: {
+      _count: {
         select: {
-          id: true,
-        },
-      },
-      messages: {
-        select: {
-          id: true,
+          proposals: true,
+          documents: true,
+          messages: true,
         },
       },
       savedCases: {
@@ -157,7 +183,6 @@ export default async function OpenCasesPage({
         select: {
           id: true,
           name: true,
-          email: true,
         },
       },
     },
@@ -185,7 +210,7 @@ export default async function OpenCasesPage({
     });
 
   const highCompetitionCases = openCases.filter(
-    (tradeCase) => tradeCase.proposals.length >= 3,
+    (tradeCase) => tradeCase._count.proposals >= 3,
   ).length;
 
   const savedMatchingCases = openCases.filter(
@@ -211,7 +236,13 @@ export default async function OpenCasesPage({
   const isRtl =
     locale.startsWith("fa") ||
     locale.startsWith("ar");
+function getCategoryLabel(category: string) {
+  const key = getCategoryTranslationKey(category);
 
+  return key
+    ? t(`categories.${key}`)
+    : category;
+}
   const hasMatchingCategories =
     isAdmin || categories.length > 0;
 
@@ -305,7 +336,7 @@ export default async function OpenCasesPage({
                     : "border border-slate-800 bg-slate-900 text-slate-300 hover:border-purple-500"
                 }`}
               >
-                {category}
+              {getCategoryLabel(category)}
               </Link>
             ))}
           </div>
@@ -414,13 +445,7 @@ export default async function OpenCasesPage({
           <div className="grid gap-6 lg:grid-cols-2">
             {openCases.map((tradeCase) => {
               const hasApplied =
-                tradeCase.proposals.some(
-                  (proposal) =>
-                    proposal.company?.ownerId ===
-                      user.id ||
-                    proposal.expert?.ownerId ===
-                      user.id,
-                );
+                tradeCase.proposals.length > 0;
 
               return (
                 <Link
@@ -430,7 +455,9 @@ export default async function OpenCasesPage({
                 >
                   <div className="mb-4 flex flex-wrap items-center gap-3">
                     <span className="rounded-full border border-purple-800 bg-purple-600/20 px-3 py-1 text-xs text-purple-300">
-                      {tradeCase.category}
+                    {getCategoryLabel(
+  tradeCase.category,
+)}
                     </span>
 
                     <StatusBadge
@@ -450,7 +477,7 @@ export default async function OpenCasesPage({
                       </span>
                     )}
 
-                    {tradeCase.proposals.length >= 3 && (
+                    {tradeCase._count.proposals >= 3 && (
                       <span className="rounded-full bg-yellow-600 px-3 py-1 text-xs font-semibold text-black">
                         {t("badges.highCompetition")}
                       </span>
@@ -464,8 +491,7 @@ export default async function OpenCasesPage({
                   <p className="mb-4 text-sm text-slate-500">
                     {t("requestedBy")}{" "}
                     <span className="text-slate-300">
-                      {tradeCase.customer.name ||
-                        tradeCase.customer.email}
+                      {tradeCase.customer.name}
                     </span>
                   </p>
 
@@ -480,7 +506,7 @@ export default async function OpenCasesPage({
                       </p>
 
                       <p className="mt-1 text-2xl font-bold text-blue-400">
-                        {tradeCase.proposals.length}
+                        {tradeCase._count.proposals}
                       </p>
                     </div>
 
@@ -490,7 +516,7 @@ export default async function OpenCasesPage({
                       </p>
 
                       <p className="mt-1 text-2xl font-bold text-cyan-400">
-                        {tradeCase.documents.length}
+                        {tradeCase._count.documents}
                       </p>
                     </div>
 
@@ -500,7 +526,7 @@ export default async function OpenCasesPage({
                       </p>
 
                       <p className="mt-1 text-2xl font-bold text-emerald-400">
-                        {tradeCase.messages.length}
+                        {tradeCase._count.messages}
                       </p>
                     </div>
                   </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import {
   getLocale,
@@ -7,6 +8,12 @@ import {
 
 import { prisma } from "../../lib/prisma";
 import { calculateTrustScore } from "../../lib/ranking";
+import { serializeJsonLd } from "../../lib/seo/jsonld";
+import {
+  createPublicPageMetadata,
+  getPaginationMetadataState,
+} from "../../lib/seo/metadata";
+import { createDirectoryPageJsonLd } from "../../lib/seo/structured-data";
 import ExpertsSearch from "../components/ExpertsSearch";
 
 const PAGE_SIZE = 10;
@@ -24,10 +31,21 @@ type ExpertsPageProps = {
   }>;
 };
 
+const getExpertsCount = unstable_cache(
+  () =>
+    prisma.expert.count({
+      where: { verificationStatus: "VERIFIED" },
+    }),
+  ["public-experts-count"],
+  {
+    revalidate: 300,
+    tags: ["public-experts"],
+  },
+);
+
 const getExpertsPageData = unstable_cache(
   async (requestedPage: number) => {
-    const totalExperts =
-      await prisma.expert.count();
+    const totalExperts = await getExpertsCount();
 
     const totalPages = Math.max(
       1,
@@ -41,6 +59,7 @@ const getExpertsPageData = unstable_cache(
 
     const experts =
       await prisma.expert.findMany({
+        where: { verificationStatus: "VERIFIED" },
         skip:
           (currentPage - 1) * PAGE_SIZE,
         take: PAGE_SIZE,
@@ -53,9 +72,7 @@ const getExpertsPageData = unstable_cache(
           country: true,
           specialty: true,
           status: true,
-          verificationStatus: true,
           experience: true,
-          email: true,
           imageUrl: true,
           planType: true,
           owner: {
@@ -84,6 +101,40 @@ const getExpertsPageData = unstable_cache(
   },
 );
 
+export async function generateMetadata({
+  searchParams,
+}: ExpertsPageProps): Promise<Metadata> {
+  const [params, t] = await Promise.all([
+    searchParams,
+    getTranslations("publicExperts"),
+  ]);
+  const rawPage = params?.page;
+  const totalExperts = await getExpertsCount();
+  const totalPages = Math.max(
+    1,
+    Math.ceil(totalExperts / PAGE_SIZE),
+  );
+  const pagination = getPaginationMetadataState({
+    pathname: "/experts",
+    rawPage,
+    totalPages,
+  });
+
+  return createPublicPageMetadata({
+    title: t("title"),
+    description: t("description"),
+    canonical: pagination.isValid
+      ? pagination.canonical
+      : undefined,
+    robots: pagination.isValid
+      ? undefined
+      : {
+          index: false,
+          follow: true,
+        },
+  });
+}
+
 export default async function ExpertsPage({
   searchParams,
 }: ExpertsPageProps) {
@@ -99,9 +150,10 @@ export default async function ExpertsPage({
 
   const locale = await getLocale();
 
-  const t = await getTranslations(
-    "publicExperts",
-  );
+  const [t, navigation] = await Promise.all([
+    getTranslations("publicExperts"),
+    getTranslations("navbar"),
+  ]);
 
   const numberFormatter =
     new Intl.NumberFormat(locale);
@@ -139,8 +191,7 @@ export default async function ExpertsPage({
         calculateTrustScore({
           averageRating,
           completedCases: 0,
-          verificationStatus:
-            expert.verificationStatus,
+          verificationStatus: "VERIFIED",
           planType: expert.planType,
         });
 
@@ -150,10 +201,8 @@ export default async function ExpertsPage({
         country: expert.country,
         specialty: expert.specialty,
         status: expert.status,
-        verificationStatus:
-          expert.verificationStatus,
+        verificationStatus: "VERIFIED",
         experience: expert.experience,
-        email: expert.email,
         imageUrl: expert.imageUrl,
         planType: expert.planType,
         averageRating,
@@ -181,12 +230,7 @@ export default async function ExpertsPage({
   const featuredExpert =
     sortedExpertsWithRatings[0] ?? null;
 
-  const verifiedExpertsCount =
-    sortedExpertsWithRatings.filter(
-      (expert) =>
-        expert.verificationStatus ===
-        "VERIFIED",
-    ).length;
+  const verifiedExpertsCount = totalExperts;
 
   const ratedExpertsCount =
     sortedExpertsWithRatings.filter(
@@ -194,8 +238,40 @@ export default async function ExpertsPage({
         expert.averageRating > 0,
     ).length;
 
+  const pagination = getPaginationMetadataState({
+    pathname: "/experts",
+    rawPage: params?.page,
+    totalPages,
+  });
+  const directoryJsonLd = pagination.isValid
+    ? createDirectoryPageJsonLd({
+        canonicalPath: pagination.canonical,
+        name: t("title"),
+        description: t("description"),
+        language: locale,
+        breadcrumbs: [
+          {
+            name: navigation("home"),
+            pathname: "/",
+          },
+          {
+            name: navigation("experts"),
+            pathname: pagination.canonical,
+          },
+        ],
+      })
+    : null;
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+      {directoryJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(directoryJsonLd),
+          }}
+        />
+      )}
       <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="mb-12">
           <div className="mb-10 grid items-stretch gap-12 lg:grid-cols-2">

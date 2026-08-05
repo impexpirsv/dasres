@@ -86,7 +86,13 @@ export default function CreateProjectTaskForm({
         },
       );
 
-      const data = await response.json();
+      let data: Record<string, unknown> & { message?: string } = {};
+
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
       if (!response.ok) {
         alert(data.message || t("createError"));

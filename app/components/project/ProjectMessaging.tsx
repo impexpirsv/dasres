@@ -172,7 +172,7 @@ export default function ProjectMessaging({
   }
 
   return (
-    <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <section className="workspace-panel">
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-white">
@@ -192,7 +192,7 @@ export default function ProjectMessaging({
       </div>
 
       {!activeConversation ? (
-        <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-10 text-center">
+        <div className="ui-empty rounded-xl border border-dashed border-slate-700 bg-slate-950 p-6 text-center sm:p-10">
           <div
             aria-hidden="true"
             className="text-4xl"
@@ -216,10 +216,10 @@ export default function ProjectMessaging({
           </div>
         </div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+        <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(14rem,17.5rem)_minmax(0,1fr)] lg:gap-6">
           <aside
             aria-label={t("conversationListLabel")}
-            className="max-h-[680px] space-y-2 overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-3"
+            className="workspace-horizontal-scroll flex gap-2 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-2 lg:block lg:max-h-[42.5rem] lg:space-y-2 lg:overflow-x-hidden lg:overflow-y-auto lg:p-3"
           >
             {sortedConversations.map(
               (conversation) => {
@@ -240,7 +240,7 @@ export default function ProjectMessaging({
                       )
                     }
                     aria-pressed={isActive}
-                    className={`w-full rounded-xl border p-4 text-start transition ${
+                    className={`min-h-11 w-[min(78vw,18rem)] shrink-0 rounded-xl border p-3 text-start transition lg:w-full lg:p-4 ${
                       isActive
                         ? "border-blue-500 bg-blue-500/10"
                         : "border-slate-800 bg-slate-900 hover:border-blue-500/60"
@@ -272,7 +272,7 @@ export default function ProjectMessaging({
           </aside>
 
           <div className="min-w-0 rounded-2xl border border-slate-800 bg-slate-950">
-            <div className="border-b border-slate-800 p-4">
+            <div className="border-b border-slate-800 p-3 sm:p-4">
               <h3 className="break-words font-bold text-white">
                 {activeConversation.title ||
                   t("defaultConversationTitle")}
@@ -288,11 +288,11 @@ export default function ProjectMessaging({
 
             <div
               aria-live="polite"
-              className="max-h-[520px] space-y-4 overflow-y-auto p-5"
+              className="max-h-[32rem] space-y-3 overflow-y-auto overscroll-contain p-3 sm:space-y-4 sm:p-5"
             >
               {activeConversation.messages.length ===
               0 ? (
-                <div className="rounded-xl border border-dashed border-slate-800 p-6 text-center text-sm text-slate-500">
+                <div className="ui-empty rounded-xl border border-dashed border-slate-700 p-6 text-center text-sm text-slate-400">
                   {t("noMessages")}
                 </div>
               ) : (
@@ -317,7 +317,7 @@ export default function ProjectMessaging({
                         }`}
                       >
                         <article
-                          className={`max-w-[90%] rounded-2xl p-4 sm:max-w-[75%] ${
+                          className={`max-w-[92%] rounded-2xl px-3 py-2.5 sm:max-w-[78%] sm:p-4 ${
                             isMine
                               ? "bg-blue-600 text-white"
                               : "bg-slate-800 text-slate-200"
@@ -361,7 +361,7 @@ export default function ProjectMessaging({
               )}
             </div>
 
-            <div className="border-t border-slate-800 p-4">
+            <div className="border-t border-slate-800 p-3 sm:p-4">
               <AddProjectMessageForm
                 key={activeConversation.id}
                 projectId={projectId}

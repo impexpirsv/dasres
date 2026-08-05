@@ -21,10 +21,9 @@ model Expert {
   verificationStatus VerificationStatus @default(PENDING)
   verifiedAt         DateTime?
   ownerId            Int?
-
-  proposals CaseProposal[]
-  owner     User?          @relation(fields: [ownerId], references: [id])
-  savedBy   SavedExpert[]
+  proposals          CaseProposal[]
+  owner              User?              @relation(fields: [ownerId], references: [id])
+  savedBy            SavedExpert[]
 
   @@index([ownerId])
   @@index([verificationStatus])
@@ -52,10 +51,9 @@ model Company {
   verificationStatus VerificationStatus @default(PENDING)
   verifiedAt         DateTime?
   ownerId            Int?
-
-  proposals CaseProposal[]
-  owner     User?          @relation(fields: [ownerId], references: [id])
-  savedBy   SavedCompany[]
+  proposals          CaseProposal[]
+  owner              User?              @relation(fields: [ownerId], references: [id])
+  savedBy            SavedCompany[]
 
   @@index([ownerId])
   @@index([verificationStatus])
@@ -95,7 +93,9 @@ model User {
   companies              Company[]
   experts                Expert[]
   notifications          Notification[]
+  projectMessages        ProjectMessage[]
   assignedProjectTasks   ProjectTask[]           @relation("ProjectTaskAssignee")
+  approvedAttachments    ProjectTaskAttachment[] @relation("AttachmentApprover")
   projectTaskAttachments ProjectTaskAttachment[]
   projectTaskComments    ProjectTaskComment[]
   reviewsReceived        Review[]                @relation("ReviewTarget")
@@ -104,12 +104,10 @@ model User {
   savedCompanies         SavedCompany[]
   savedExperts           SavedExpert[]
   sessions               Session[]
+  subscription           Subscription?
   tickets                Ticket[]
   ticketMessages         TicketMessage[]
   customerCases          TradeCase[]             @relation("CustomerCases")
-  approvedAttachments    ProjectTaskAttachment[] @relation("AttachmentApprover")
-  projectMessages        ProjectMessage[]
-  subscription           Subscription?
 
   @@index([role])
   @@index([planType])
@@ -119,35 +117,28 @@ model User {
 
 model Session {
   id        Int      @id @default(autoincrement())
-  token     String   @unique
+  tokenHash String   @unique
   userId    Int
   createdAt DateTime @default(now())
   expiresAt DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([expiresAt])
 }
 
 model Subscription {
-  id Int @id @default(autoincrement())
-
-  userId Int @unique
-
-  plan   PlanType
-  status SubscriptionStatus @default(ACTIVE)
-
-  startsAt  DateTime  @default(now())
-  expiresAt DateTime?
-
+  id               Int                @id @default(autoincrement())
+  userId           Int                @unique
+  plan             PlanType
+  status           SubscriptionStatus @default(ACTIVE)
+  startsAt         DateTime           @default(now())
+  expiresAt        DateTime?
   paymentProvider  String?
   paymentReference String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([status])
   @@index([plan])
@@ -155,36 +146,27 @@ model Subscription {
   @@index([status, expiresAt])
 }
 
-enum SubscriptionStatus {
-  ACTIVE
-  EXPIRED
-  CANCELLED
-  PENDING
-}
-
 model TradeCase {
-  id                 Int        @id @default(autoincrement())
+  id                 Int            @id @default(autoincrement())
   title              String
   description        String
-  status             CaseStatus @default(OPEN)
+  status             CaseStatus     @default(OPEN)
   customerId         Int
   assignedToId       Int?
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
   acceptedProposalId Int?
   assignedAt         DateTime?
-  category           String     @default("General")
-
-  activities CaseActivity[]
-  documents  CaseDocument[]
-  messages   CaseMessage[]
-  proposals  CaseProposal[]
-  steps      CaseStep[]
-  project    Project?
-  reviews    Review[]
-  savedCases SavedCase[]
-
-  customer User @relation("CustomerCases", fields: [customerId], references: [id], onDelete: Cascade)
+  category           String         @default("General")
+  activities         CaseActivity[]
+  documents          CaseDocument[]
+  messages           CaseMessage[]
+  proposals          CaseProposal[]
+  steps              CaseStep[]
+  project            Project?
+  reviews            Review[]
+  savedCases         SavedCase[]
+  customer           User           @relation("CustomerCases", fields: [customerId], references: [id], onDelete: Cascade)
 
   @@index([customerId])
   @@index([assignedToId])
@@ -199,22 +181,21 @@ model TradeCase {
 }
 
 model Project {
-  id          Int           @id @default(autoincrement())
-  tradeCaseId Int           @unique
-  title       String
-  description String?
-  createdBy   Int?
-  assignedTo  Int?
-  status      ProjectStatus @default(ACTIVE)
-  progress    Int           @default(0)
-  startedAt   DateTime      @default(now())
-  completedAt DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
+  id            Int                   @id @default(autoincrement())
+  tradeCaseId   Int                   @unique
+  title         String
+  description   String?
+  createdBy     Int?
+  assignedTo    Int?
+  status        ProjectStatus         @default(ACTIVE)
+  progress      Int                   @default(0)
+  startedAt     DateTime              @default(now())
+  completedAt   DateTime?
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
   tradeCase     TradeCase             @relation(fields: [tradeCaseId], references: [id], onDelete: Cascade)
-  tasks         ProjectTask[]
   conversations ProjectConversation[]
+  tasks         ProjectTask[]
 
   @@index([status])
   @@index([createdBy])
@@ -224,26 +205,25 @@ model Project {
 }
 
 model ProjectTask {
-  id             Int          @id @default(autoincrement())
+  id             Int                     @id @default(autoincrement())
   projectId      Int
   title          String
   description    String?
-  status         TaskStatus   @default(TODO)
-  priority       TaskPriority @default(MEDIUM)
+  status         TaskStatus              @default(TODO)
+  priority       TaskPriority            @default(MEDIUM)
   assignedToId   Int?
   dueDate        DateTime?
   completedAt    DateTime?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
   actualHours    Int?
   estimatedHours Int?
-  sortOrder      Int          @default(0)
+  sortOrder      Int                     @default(0)
   startDate      DateTime?
-  progress       Int          @default(0)
+  progress       Int                     @default(0)
   dependsOnId    Int?
-  loggedHours    Int          @default(0)
-  remainingHours Int          @default(0)
-
+  loggedHours    Int                     @default(0)
+  remainingHours Int                     @default(0)
   assignedTo     User?                   @relation("ProjectTaskAssignee", fields: [assignedToId], references: [id])
   dependsOn      ProjectTask?            @relation("TaskDependencies", fields: [dependsOnId], references: [id])
   dependents     ProjectTask[]           @relation("TaskDependencies")
@@ -252,6 +232,7 @@ model ProjectTask {
   checklistItems ProjectTaskChecklist[]
   comments       ProjectTaskComment[]
 
+  @@index([projectId, status, sortOrder])
   @@index([projectId])
   @@index([assignedToId])
   @@index([dependsOnId])
@@ -268,16 +249,15 @@ model ProjectTask {
 }
 
 model ProjectTaskChecklist {
-  id          Int       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   taskId      Int
   title       String
-  completed   Boolean   @default(false)
+  completed   Boolean     @default(false)
   completedAt DateTime?
-  sortOrder   Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  sortOrder   Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  task        ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@index([taskId])
   @@index([taskId, sortOrder])
@@ -288,20 +268,19 @@ model ProjectTaskAttachment {
   id              Int            @id @default(autoincrement())
   taskId          Int
   fileName        String
-  fileUrl         String
+  storageKey      String         @unique
   storageProvider String         @default("local")
   mimeType        String?
   fileSize        Int?
   uploadedById    Int?
   createdAt       DateTime       @default(now())
   approvalStatus  ApprovalStatus @default(PENDING)
-  approvedById    Int?
   approvedAt      DateTime?
+  approvedById    Int?
   rejectionReason String?
-
-  task       ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  uploadedBy User?       @relation(fields: [uploadedById], references: [id])
-  approvedBy User?       @relation("AttachmentApprover", fields: [approvedById], references: [id])
+  approvedBy      User?          @relation("AttachmentApprover", fields: [approvedById], references: [id])
+  task            ProjectTask    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedBy      User?          @relation(fields: [uploadedById], references: [id])
 
   @@index([taskId])
   @@index([uploadedById])
@@ -313,20 +292,19 @@ model ProjectTaskAttachment {
 }
 
 model ProjectTaskComment {
-  id        Int       @id @default(autoincrement())
+  id        Int                  @id @default(autoincrement())
   taskId    Int
   authorId  Int?
   content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
   parentId  Int?
   editedAt  DateTime?
-  isDeleted Boolean   @default(false)
-
-  author  User?                @relation(fields: [authorId], references: [id])
-  parent  ProjectTaskComment?  @relation("TaskCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  replies ProjectTaskComment[] @relation("TaskCommentReplies")
-  task    ProjectTask          @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  isDeleted Boolean              @default(false)
+  author    User?                @relation(fields: [authorId], references: [id])
+  parent    ProjectTaskComment?  @relation("TaskCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   ProjectTaskComment[] @relation("TaskCommentReplies")
+  task      ProjectTask          @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@index([taskId])
   @@index([authorId])
@@ -345,10 +323,9 @@ model CaseProposal {
   price     String?
   status    ProposalStatus @default(PENDING)
   createdAt DateTime       @default(now())
-
-  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  company   Company   @relation(fields: [companyId], references: [id])
-  expert    Expert?   @relation(fields: [expertId], references: [id])
+  tradeCase TradeCase      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  company   Company        @relation(fields: [companyId], references: [id])
+  expert    Expert?        @relation(fields: [expertId], references: [id])
 
   @@index([caseId])
   @@index([companyId])
@@ -367,23 +344,23 @@ model CaseStep {
   title       String
   completed   Boolean   @default(false)
   completedAt DateTime?
-
-  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  tradeCase   TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
 
   @@index([caseId])
   @@index([caseId, completed])
 }
 
 model CaseDocument {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   caseId     Int
   name       String
-  fileUrl    String
-  createdAt  DateTime @default(now())
+  storageKey String    @unique
+  mimeType   String?
+  fileSize   Int?
+  createdAt  DateTime  @default(now())
   uploaderId Int
-
-  tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  uploader  User      @relation(fields: [uploaderId], references: [id])
+  tradeCase  TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  uploader   User      @relation(fields: [uploaderId], references: [id])
 
   @@index([caseId])
   @@index([uploaderId])
@@ -392,12 +369,11 @@ model CaseDocument {
 }
 
 model CaseMessage {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   caseId    Int
   content   String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   senderId  Int
-
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
   sender    User      @relation(fields: [senderId], references: [id])
 
@@ -416,8 +392,7 @@ model Notification {
   isRead    Boolean  @default(false)
   link      String?
   createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([type])
@@ -428,18 +403,18 @@ model Notification {
 }
 
 model Review {
-  id             Int      @id @default(autoincrement())
-  caseId         Int?
+  id             Int       @id @default(autoincrement())
+  caseId         Int
   reviewerId     Int
   reviewedUserId Int
   rating         Int
   comment        String?
-  createdAt      DateTime @default(now())
+  createdAt      DateTime  @default(now())
+  tradeCase      TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  reviewedUser   User      @relation("ReviewTarget", fields: [reviewedUserId], references: [id])
+  reviewer       User      @relation("ReviewAuthor", fields: [reviewerId], references: [id])
 
-  tradeCase    TradeCase? @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  reviewedUser User       @relation("ReviewTarget", fields: [reviewedUserId], references: [id])
-  reviewer     User       @relation("ReviewAuthor", fields: [reviewerId], references: [id])
-
+  @@unique([caseId, reviewerId, reviewedUserId])
   @@index([caseId])
   @@index([reviewerId])
   @@index([reviewedUserId])
@@ -449,16 +424,15 @@ model Review {
 }
 
 model Ticket {
-  id        Int      @id @default(autoincrement())
+  id        Int             @id @default(autoincrement())
   userId    Int
   subject   String
-  status    String   @default("OPEN")
-  category  String   @default("GENERAL")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages TicketMessage[]
+  status    String          @default("OPEN")
+  category  String          @default("GENERAL")
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  TicketMessage[]
 
   @@index([userId])
   @@index([status])
@@ -475,9 +449,8 @@ model TicketMessage {
   senderId  Int
   message   String
   createdAt DateTime @default(now())
-
-  sender User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@index([ticketId])
   @@index([senderId])
@@ -486,13 +459,12 @@ model TicketMessage {
 }
 
 model CaseActivity {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   caseId    Int
   userId    Int?
   action    String
   details   String?
-  createdAt DateTime @default(now())
-
+  createdAt DateTime  @default(now())
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
   user      User?     @relation(fields: [userId], references: [id])
 
@@ -504,11 +476,10 @@ model CaseActivity {
 }
 
 model SavedCase {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   userId    Int
   caseId    Int
-  createdAt DateTime @default(now())
-
+  createdAt DateTime  @default(now())
   tradeCase TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -522,9 +493,8 @@ model SavedCompany {
   userId    Int
   companyId Int
   createdAt DateTime @default(now())
-
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, companyId])
   @@index([companyId])
@@ -536,9 +506,8 @@ model SavedExpert {
   userId    Int
   expertId  Int
   createdAt DateTime @default(now())
-
-  expert Expert @relation(fields: [expertId], references: [id], onDelete: Cascade)
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expert    Expert   @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, expertId])
   @@index([expertId])
@@ -546,13 +515,12 @@ model SavedExpert {
 }
 
 model ProjectConversation {
-  id        Int      @id @default(autoincrement())
+  id        Int              @id @default(autoincrement())
   projectId Int
   title     String
-  createdAt DateTime @default(now())
-
-  project  Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  messages ProjectMessage[]
+  createdAt DateTime         @default(now())
+  project   Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  messages  ProjectMessage[]
 
   @@index([projectId])
   @@index([createdAt])
@@ -560,15 +528,14 @@ model ProjectConversation {
 }
 
 model ProjectMessage {
-  id             Int      @id @default(autoincrement())
+  id             Int                 @id @default(autoincrement())
   conversationId Int
   senderId       Int
   message        String
-  isRead         Boolean  @default(false)
-  createdAt      DateTime @default(now())
-
-  conversation ProjectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  sender       User                @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  isRead         Boolean             @default(false)
+  createdAt      DateTime            @default(now())
+  conversation   ProjectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User                @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   @@index([conversationId])
   @@index([senderId])
@@ -577,6 +544,13 @@ model ProjectMessage {
   @@index([conversationId, createdAt])
   @@index([conversationId, isRead])
   @@index([senderId, createdAt])
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+  PENDING
 }
 
 enum VerificationStatus {

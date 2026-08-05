@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+} from "react";
 
 type ModalProps = {
   open: boolean;
@@ -9,53 +13,179 @@ type ModalProps = {
   onClose: () => void;
 };
 
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
 export default function Modal({
   open,
   title,
   children,
   onClose,
 }: ModalProps) {
-  useEffect(() => {
-    if (!open) return;
+  const titleId = useId();
 
-    function handleKeyDown(event: KeyboardEvent) {
+  const dialogRef =
+    useRef<HTMLDivElement>(null);
+
+  const previouslyFocusedElementRef =
+    useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    previouslyFocusedElementRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    const previousOverflow =
+      document.body.style.overflow;
+
+    document.body.style.overflow =
+      "hidden";
+
+    const focusableElements =
+      dialogRef.current?.querySelectorAll<HTMLElement>(
+        FOCUSABLE_SELECTOR,
+      );
+
+    const firstFocusableElement =
+      focusableElements?.[0];
+
+    window.requestAnimationFrame(() => {
+      if (firstFocusableElement) {
+        firstFocusableElement.focus();
+        return;
+      }
+
+      dialogRef.current?.focus();
+    });
+
+    function handleKeyDown(
+      event: KeyboardEvent,
+    ) {
       if (event.key === "Escape") {
+        event.preventDefault();
         onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const currentFocusableElements =
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          FOCUSABLE_SELECTOR,
+        );
+
+      if (
+        !currentFocusableElements ||
+        currentFocusableElements.length === 0
+      ) {
+        event.preventDefault();
+        dialogRef.current?.focus();
+        return;
+      }
+
+      const firstElement =
+        currentFocusableElements[0];
+
+      const lastElement =
+        currentFocusableElements[
+          currentFocusableElements.length - 1
+        ];
+
+      const activeElement =
+        document.activeElement;
+
+      if (
+        event.shiftKey &&
+        activeElement === firstElement
+      ) {
+        event.preventDefault();
+        lastElement.focus();
+        return;
+      }
+
+      if (
+        !event.shiftKey &&
+        activeElement === lastElement
+      ) {
+        event.preventDefault();
+        firstElement.focus();
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown);
+    document.addEventListener(
+      "keydown",
+      handleKeyDown,
+    );
 
     return () => {
-      window.removeEventListener(
+      document.body.style.overflow =
+        previousOverflow;
+
+      document.removeEventListener(
         "keydown",
         handleKeyDown,
       );
+
+      window.requestAnimationFrame(() => {
+        previouslyFocusedElementRef.current?.focus();
+      });
     };
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
-      onClick={onClose}
+      onMouseDown={(event) => {
+        if (
+          event.target ===
+          event.currentTarget
+        ) {
+          onClose();
+        }
+      }}
     >
       <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl scale-100 rounded-3xl border border-slate-800 bg-slate-950 p-6 shadow-2xl transition-all duration-200 ease-out animate-in fade-in zoom-in-95"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
+        className="ui-card max-h-[90vh] w-full max-w-2xl overflow-y-auto bg-slate-950 shadow-2xl"
       >
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <h2
+            id={titleId}
+            className="min-w-0 break-words text-2xl font-bold text-white"
+          >
             {title}
           </h2>
 
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl bg-slate-900 px-3 py-2 text-sm text-slate-300 transition hover:bg-slate-800"
+            aria-label="Close modal"
+            className="ui-button ui-button-ghost min-h-10 shrink-0 px-3 py-2 text-sm"
           >
-            ✕
+            <span aria-hidden="true">
+              ✕
+            </span>
           </button>
         </div>
 

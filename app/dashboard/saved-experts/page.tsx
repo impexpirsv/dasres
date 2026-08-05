@@ -11,6 +11,22 @@ export default async function SavedExpertsPage() {
     "dashboardSavedExperts",
   );
 
+  const tc = await getTranslations("common.countries");
+  const ts = await getTranslations("common.specialties");
+
+  function translateCountry(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    return tc.has(normalized) ? tc(normalized) : tc.has(lower) ? tc(lower) : normalized;
+  }
+
+  function translateSpecialty(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return ts.has(normalized) ? ts(normalized) : ts.has(lower) ? ts(lower) : ts.has(underscored) ? ts(underscored) : normalized;
+  }
+
   const savedExperts =
     await prisma.savedExpert.findMany({
       where: {
@@ -57,11 +73,11 @@ export default async function SavedExpertsPage() {
                 </h2>
 
                 <p className="text-slate-400">
-                  {saved.expert.specialty}
+                  {translateSpecialty(saved.expert.specialty)}
                 </p>
 
                 <p className="mt-2 text-slate-500">
-                  {saved.expert.country}
+                  {translateCountry(saved.expert.country)}
                 </p>
 
                 <div className="mt-6">

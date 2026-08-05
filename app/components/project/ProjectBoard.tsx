@@ -16,7 +16,6 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
@@ -25,17 +24,31 @@ import KanbanColumn from "./KanbanColumn";
 import KanbanTaskCard from "./KanbanTaskCard";
 
 const COLUMNS = [
-  { status: "TODO", translationKey: "todo" },
-  { status: "IN_PROGRESS", translationKey: "inProgress" },
-  { status: "REVIEW", translationKey: "review" },
-  { status: "COMPLETED", translationKey: "completed" },
+  {
+    status: "TODO",
+    translationKey: "todo",
+  },
+  {
+    status: "IN_PROGRESS",
+    translationKey: "inProgress",
+  },
+  {
+    status: "REVIEW",
+    translationKey: "review",
+  },
+  {
+    status: "COMPLETED",
+    translationKey: "completed",
+  },
 ] as const;
 
-type TaskStatus = (typeof COLUMNS)[number]["status"];
+type TaskStatus =
+  (typeof COLUMNS)[number]["status"];
 
-const COLUMN_STATUSES: TaskStatus[] = COLUMNS.map(
-  (column) => column.status,
-);
+const COLUMN_STATUSES: readonly TaskStatus[] =
+  COLUMNS.map(
+    (column) => column.status,
+  );
 
 type Task = {
   id: number;
@@ -48,16 +61,24 @@ type Task = {
     name: string | null;
     email: string;
   } | null;
-  attachments: { id: number }[];
-  comments: { id: number }[];
+  attachments: {
+    id: number;
+  }[];
+  comments: {
+    id: number;
+  }[];
   checklistItems: {
     id: number;
     completed: boolean;
   }[];
 };
 
-function isTaskStatus(value: string): value is TaskStatus {
-  return COLUMN_STATUSES.includes(value as TaskStatus);
+function isTaskStatus(
+  value: string,
+): value is TaskStatus {
+  return COLUMN_STATUSES.includes(
+    value as TaskStatus,
+  );
 }
 
 export default function ProjectBoard({
@@ -65,14 +86,21 @@ export default function ProjectBoard({
 }: {
   tasks: Task[];
 }) {
-  const t = useTranslations("projectBoard");
+  const t = useTranslations(
+    "projectBoard",
+  );
+
   const router = useRouter();
 
   const [boardTasks, setBoardTasks] =
     useState<Task[]>(tasks);
 
-  const [originalStatus, setOriginalStatus] =
-    useState<TaskStatus | null>(null);
+  const [
+    originalStatus,
+    setOriginalStatus,
+  ] = useState<TaskStatus | null>(
+    null,
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -92,34 +120,47 @@ export default function ProjectBoard({
 
   function getTargetStatus(
     overId: string | number,
-    currentTasks: Task[] = boardTasks,
+    currentTasks: Task[],
   ): TaskStatus | null {
-    const value = String(overId);
+    const normalizedOverId =
+      String(overId);
 
-    if (isTaskStatus(value)) {
-      return value;
+    if (
+      isTaskStatus(normalizedOverId)
+    ) {
+      return normalizedOverId;
     }
 
-    const overTask = currentTasks.find(
-      (task) => task.id === Number(overId),
-    );
+    const overTask =
+      currentTasks.find(
+        (task) =>
+          task.id ===
+          Number(overId),
+      );
 
-    return overTask &&
-      isTaskStatus(overTask.status)
-      ? overTask.status
-      : null;
+    if (
+      !overTask ||
+      !isTaskStatus(
+        overTask.status,
+      )
+    ) {
+      return null;
+    }
+
+    return overTask.status;
   }
 
   async function persistStatus(
     taskId: number,
     status: TaskStatus,
-  ) {
+  ): Promise<void> {
     const response = await fetch(
       `/api/project-tasks/${taskId}/status`,
       {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type":
+            "application/json",
         },
         body: JSON.stringify({
           status,
@@ -127,119 +168,119 @@ export default function ProjectBoard({
       },
     );
 
-    let data: { message?: string } = {};
+    let data: {
+      message?: string;
+    } = {};
 
     try {
-      data = await response.json();
+      data =
+        await response.json();
     } catch {
-      // The API may return an empty or non-JSON error response.
+      data = {};
     }
 
     if (!response.ok) {
       throw new Error(
-        data.message || t("updateError"),
+        data.message ||
+          t("updateError"),
       );
     }
   }
 
-  function handleDragStart(event: DragStartEvent) {
+  function handleDragStart(
+    event: DragStartEvent,
+  ): void {
+    const taskId = Number(
+      event.active.id,
+    );
+
     const task = boardTasks.find(
       (item) =>
-        item.id === Number(event.active.id),
+        item.id === taskId,
     );
 
     setOriginalStatus(
-      task && isTaskStatus(task.status)
+      task &&
+        isTaskStatus(
+          task.status,
+        )
         ? task.status
         : null,
     );
   }
 
-  function handleDragOver(event: DragOverEvent) {
-    const { active, over } = event;
+  function handleDragOver(
+    event: DragOverEvent,
+  ): void {
+    const { active, over } =
+      event;
 
     if (!over) {
       return;
     }
 
-    const activeTaskId = Number(active.id);
+    const activeTaskId =
+      Number(active.id);
 
-    if (!Number.isFinite(activeTaskId)) {
+    if (
+      !Number.isInteger(
+        activeTaskId,
+      ) ||
+      activeTaskId <= 0
+    ) {
       return;
     }
 
-    setBoardTasks((currentTasks) => {
-      const targetStatus = getTargetStatus(
-        over.id,
-        currentTasks,
-      );
+    setBoardTasks(
+      (currentTasks) => {
+        const targetStatus =
+          getTargetStatus(
+            over.id,
+            currentTasks,
+          );
 
-      if (!targetStatus) {
-        return currentTasks;
-      }
+        if (!targetStatus) {
+          return currentTasks;
+        }
 
-      const activeIndex =
-        currentTasks.findIndex(
+        const activeTask =
+          currentTasks.find(
+            (task) =>
+              task.id ===
+              activeTaskId,
+          );
+
+        if (!activeTask) {
+          return currentTasks;
+        }
+
+        if (
+          activeTask.status ===
+          targetStatus
+        ) {
+          return currentTasks;
+        }
+
+        return currentTasks.map(
           (task) =>
-            task.id === activeTaskId,
+            task.id ===
+            activeTaskId
+              ? {
+                  ...task,
+                  status:
+                    targetStatus,
+                }
+              : task,
         );
-
-      if (activeIndex === -1) {
-        return currentTasks;
-      }
-
-      const activeTask =
-        currentTasks[activeIndex];
-
-      const overTask = currentTasks.find(
-        (task) =>
-          task.id === Number(over.id),
-      );
-
-      const updatedTasks =
-        currentTasks.map((task) =>
-          task.id === activeTaskId
-            ? {
-                ...task,
-                status: targetStatus,
-              }
-            : task,
-        );
-
-      if (!overTask) {
-        return updatedTasks;
-      }
-
-      const overIndex =
-        updatedTasks.findIndex(
-          (task) =>
-            task.id === overTask.id,
-        );
-
-      if (overIndex === -1) {
-        return updatedTasks;
-      }
-
-      if (
-        activeTask.status !==
-          targetStatus ||
-        activeIndex !== overIndex
-      ) {
-        return arrayMove(
-          updatedTasks,
-          activeIndex,
-          overIndex,
-        );
-      }
-
-      return updatedTasks;
-    });
+      },
+    );
   }
 
   async function handleDragEnd(
     event: DragEndEvent,
-  ) {
-    const { active, over } = event;
+  ): Promise<void> {
+    const { active, over } =
+      event;
 
     if (!over) {
       setBoardTasks(tasks);
@@ -247,42 +288,61 @@ export default function ProjectBoard({
       return;
     }
 
-    const taskId = Number(active.id);
+    const taskId = Number(
+      active.id,
+    );
 
-    if (!Number.isFinite(taskId)) {
+    if (
+      !Number.isInteger(taskId) ||
+      taskId <= 0
+    ) {
       setBoardTasks(tasks);
       setOriginalStatus(null);
       return;
     }
 
-    const movedTask = boardTasks.find(
-      (task) => task.id === taskId,
-    );
+    const movedTask =
+      boardTasks.find(
+        (task) =>
+          task.id === taskId,
+      );
 
     const targetStatus =
       movedTask &&
-      isTaskStatus(movedTask.status)
+      isTaskStatus(
+        movedTask.status,
+      )
         ? movedTask.status
-        : getTargetStatus(over.id);
+        : getTargetStatus(
+            over.id,
+            boardTasks,
+          );
 
-    if (!targetStatus) {
+    if (
+      !originalStatus ||
+      !targetStatus
+    ) {
+      setBoardTasks(tasks);
+      setOriginalStatus(null);
+      return;
+    }
+
+    if (
+      originalStatus ===
+      targetStatus
+    ) {
       setBoardTasks(tasks);
       setOriginalStatus(null);
       return;
     }
 
     try {
-      if (
-        originalStatus &&
-        originalStatus !== targetStatus
-      ) {
-        await persistStatus(
-          taskId,
-          targetStatus,
-        );
+      await persistStatus(
+        taskId,
+        targetStatus,
+      );
 
-        router.refresh();
-      }
+      router.refresh();
     } catch (error) {
       setBoardTasks(tasks);
 
@@ -296,7 +356,7 @@ export default function ProjectBoard({
     }
   }
 
-  function handleDragCancel() {
+  function handleDragCancel(): void {
     setBoardTasks(tasks);
     setOriginalStatus(null);
   }
@@ -309,67 +369,85 @@ export default function ProjectBoard({
           pointerWithin(args);
 
         if (
-          pointerCollisions.length > 0
+          pointerCollisions.length >
+          0
         ) {
           return pointerCollisions;
         }
 
-        return rectIntersection(args);
+        return rectIntersection(
+          args,
+        );
       }}
-      onDragStart={handleDragStart}
+      onDragStart={
+        handleDragStart
+      }
       onDragOver={handleDragOver}
       onDragEnd={(event) => {
-        void handleDragEnd(event);
+        void handleDragEnd(
+          event,
+        );
       }}
-      onDragCancel={handleDragCancel}
+      onDragCancel={
+        handleDragCancel
+      }
     >
-      <div className="grid gap-6 xl:grid-cols-4">
-        {COLUMNS.map((column) => {
-          const columnTasks =
-            boardTasks.filter(
-              (task) =>
-                task.status ===
-                column.status,
-            );
+      <div className="workspace-horizontal-scroll -mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-3 sm:-mx-4 sm:px-4 xl:mx-0 xl:grid xl:grid-cols-4 xl:gap-4 xl:overflow-visible xl:px-0 xl:pb-0">
+        {COLUMNS.map(
+          (column) => {
+            const columnTasks =
+              boardTasks.filter(
+                (task) =>
+                  task.status ===
+                  column.status,
+              );
 
-          return (
-            <KanbanColumn
-              key={column.status}
-              id={column.status}
-              title={t(
-                `columns.${column.translationKey}`,
-              )}
-              count={
-                columnTasks.length
-              }
-            >
-              <SortableContext
-                items={columnTasks.map(
-                  (task) => task.id,
+            return (
+              <KanbanColumn
+                key={
+                  column.status
+                }
+                id={column.status}
+                title={t(
+                  `columns.${column.translationKey}`,
                 )}
-                strategy={
-                  verticalListSortingStrategy
+                count={
+                  columnTasks.length
                 }
               >
-                {columnTasks.length ===
-                0 ? (
-                  <p className="rounded-2xl border border-dashed border-slate-800 p-4 text-sm text-slate-500">
-                    {t("emptyColumn")}
-                  </p>
-                ) : (
-                  columnTasks.map(
-                    (task) => (
-                      <KanbanTaskCard
-                        key={task.id}
-                        task={task}
-                      />
-                    ),
-                  )
-                )}
-              </SortableContext>
-            </KanbanColumn>
-          );
-        })}
+                <SortableContext
+                  items={columnTasks.map(
+                    (task) =>
+                      task.id,
+                  )}
+                  strategy={
+                    verticalListSortingStrategy
+                  }
+                >
+                  {columnTasks.length ===
+                  0 ? (
+                    <p className="ui-empty rounded-xl border border-dashed border-slate-700 p-4 text-sm text-slate-400">
+                      {t(
+                        "emptyColumn",
+                      )}
+                    </p>
+                  ) : (
+                    columnTasks.map(
+                      (task) => (
+                        <KanbanTaskCard
+                          key={
+                            task.id
+                          }
+                          task={task}
+                        />
+                      ),
+                    )
+                  )}
+                </SortableContext>
+              </KanbanColumn>
+            );
+          },
+        )}
       </div>
     </DndContext>
   );

@@ -43,6 +43,65 @@ export function isLocale(value: string): value is Locale {
   return locales.includes(value as Locale);
 }
 
+export function resolveLocale(
+  requestLocale: string | undefined,
+  cookieLocale: string | undefined,
+): Locale {
+  if (requestLocale && isLocale(requestLocale)) {
+    return requestLocale;
+  }
+
+  if (cookieLocale && isLocale(cookieLocale)) {
+    return cookieLocale;
+  }
+
+  return defaultLocale;
+}
+
+export function getLocalizedHomepageLocale(
+  pathname: string,
+): Locale | null {
+  const candidate = pathname.match(/^\/([^/]+)\/?$/)?.[1];
+
+  return candidate && isLocale(candidate) ? candidate : null;
+}
+
+export function getLocalizedPublicPathLocale(pathname: string): Locale | null {
+  const segments = pathname.split("/");
+  const candidate = segments[1];
+
+  if (!candidate || !isLocale(candidate)) {
+    return null;
+  }
+
+  return segments.length === 2 ||
+    (segments.length === 3 && segments[2] === "") ||
+    segments[2] === "companies"
+    ? candidate
+    : null;
+}
+
 export function isRtl(locale: Locale) {
   return rtlLocales.includes(locale);
+}
+
+
+export const dateLocaleMap: Record<Locale, string> = {
+  fa: "fa-IR",
+  en: "en-US",
+  ar: "ar",
+  fr: "fr-FR",
+  es: "es-ES",
+  zh: "zh-CN",
+  ja: "ja-JP",
+  de: "de-DE",
+  ru: "ru-RU",
+  tr: "tr-TR",
+  pt: "pt-PT",
+  it: "it-IT",
+};
+
+
+export function getDateLocale(locale: Locale) {
+  return dateLocaleMap[locale] ?? "en-US";
 }

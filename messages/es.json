@@ -1,4 +1,498 @@
 {
+  "knowledgeHub": {
+    "common": {
+      "categoryNavigation": "Centro de conocimiento",
+      "openLink": "Centro de ayuda",
+      "relatedCategories": "Centro de conocimiento"
+    },
+    "help": {
+      "eyebrow": "Centro de ayuda",
+      "title": "Centro de ayuda",
+      "summary": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+      "browseTitle": "Centro de ayuda",
+      "browseDescription": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+      "entriesTitle": "Centro de ayuda",
+      "relatedTitle": "Centro de conocimiento",
+      "categories": {
+        "getting-started": {
+          "title": "Primeros pasos",
+          "summary": "Primeros pasos — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Primeros pasos",
+          "seoDescription": "Primeros pasos — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "accounts-and-access": {
+          "title": "Cuentas y acceso",
+          "summary": "Cuentas y acceso — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Cuentas y acceso",
+          "seoDescription": "Cuentas y acceso — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "cases-and-proposals": {
+          "title": "Casos y propuestas",
+          "summary": "Casos y propuestas — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Casos y propuestas",
+          "seoDescription": "Casos y propuestas — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "projects-and-tasks": {
+          "title": "Proyectos y tareas",
+          "summary": "Proyectos y tareas — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Proyectos y tareas",
+          "seoDescription": "Proyectos y tareas — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "companies-and-experts": {
+          "title": "Empresas y expertos",
+          "summary": "Empresas y expertos — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Empresas y expertos",
+          "seoDescription": "Empresas y expertos — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "tickets-and-support": {
+          "title": "Tickets y soporte",
+          "summary": "Tickets y soporte — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Tickets y soporte",
+          "seoDescription": "Tickets y soporte — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        }
+      },
+      "entries": {
+        "register": {
+          "title": "Primeros pasos 1",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "signIn": {
+          "title": "Cuentas y acceso 1",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "language": {
+          "title": "Casos y propuestas 1",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "session": {
+          "title": "Proyectos y tareas 1",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "dashboard": {
+          "title": "Empresas y expertos 1",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "permissions": {
+          "title": "Tickets y soporte 1",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "createCase": {
+          "title": "Primeros pasos 2",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "submitProposal": {
+          "title": "Cuentas y acceso 2",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "acceptProposal": {
+          "title": "Casos y propuestas 2",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "projects": {
+          "title": "Proyectos y tareas 2",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "tasks": {
+          "title": "Empresas y expertos 2",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "documentsMessages": {
+          "title": "Tickets y soporte 2",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "profiles": {
+          "title": "Primeros pasos 3",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "ownership": {
+          "title": "Cuentas y acceso 3",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "verification": {
+          "title": "Casos y propuestas 3",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "createTicket": {
+          "title": "Proyectos y tareas 3",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "reply": {
+          "title": "Empresas y expertos 3",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "closeReopen": {
+          "title": "Tickets y soporte 3",
+          "body": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        }
+      }
+    },
+    "resources": {
+      "eyebrow": "Centro de conocimiento",
+      "title": "Centro de conocimiento",
+      "summary": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+      "browseTitle": "Centro de conocimiento",
+      "emptyTitle": "Centro de conocimiento",
+      "emptyDescription": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+      "categories": {
+        "tutorials": {
+          "title": "Tutoriales",
+          "summary": "Tutoriales — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Tutoriales",
+          "seoDescription": "Tutoriales — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "purposeTitle": "Tutoriales",
+          "purpose": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "news": {
+          "title": "Noticias comerciales",
+          "summary": "Noticias comerciales — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Noticias comerciales",
+          "seoDescription": "Noticias comerciales — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "purposeTitle": "Noticias comerciales",
+          "purpose": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "customs": {
+          "title": "Artículos aduaneros",
+          "summary": "Artículos aduaneros — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Artículos aduaneros",
+          "seoDescription": "Artículos aduaneros — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "purposeTitle": "Artículos aduaneros",
+          "purpose": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "countries": {
+          "title": "Guías de países",
+          "summary": "Guías de países — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Guías de países",
+          "seoDescription": "Guías de países — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "purposeTitle": "Guías de países",
+          "purpose": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "glossary": {
+          "title": "Glosario",
+          "summary": "Glosario — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Glosario",
+          "seoDescription": "Glosario — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "purposeTitle": "Glosario",
+          "purpose": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        },
+        "case-studies": {
+          "title": "Casos de estudio",
+          "summary": "Casos de estudio — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "seoTitle": "Casos de estudio",
+          "seoDescription": "Casos de estudio — Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "purposeTitle": "Casos de estudio",
+          "purpose": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        }
+      },
+      "policy": {
+        "title": "Centro de conocimiento",
+        "points": {
+          "changing": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "dates": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "sources": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "education": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "stale": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites."
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "Preguntas frecuentes",
+      "title": "Preguntas frecuentes",
+      "summary": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+      "sectionTitle": "Preguntas frecuentes",
+      "items": {
+        "verification": {
+          "question": "Primeros pasos?",
+          "answer": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "category": "Primeros pasos"
+        },
+        "plans": {
+          "question": "Cuentas y acceso?",
+          "answer": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "category": "Cuentas y acceso"
+        },
+        "cases": {
+          "question": "Casos y propuestas?",
+          "answer": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "category": "Casos y propuestas"
+        },
+        "proposals": {
+          "question": "Proyectos y tareas?",
+          "answer": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "category": "Proyectos y tareas"
+        },
+        "tickets": {
+          "question": "Empresas y expertos?",
+          "answer": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "category": "Empresas y expertos"
+        },
+        "language": {
+          "question": "Tickets y soporte?",
+          "answer": "Esta guía refleja el funcionamiento actual de Dasres; se aplican autenticación, propiedad, rol, estado y límites.",
+          "category": "Tickets y soporte"
+        }
+      }
+    }
+  }
+  ,
+  "publicSite": {
+    "navigation": {
+      "primaryLabel": "Navegación principal",
+      "brandHomeLabel": "Inicio de Dasres",
+      "tagline": "Comercio global conectado",
+      "companies": "Empresas",
+      "experts": "Expertos",
+      "opportunities": "Oportunidades",
+      "pricing": "Planes",
+      "resources": "Recursos",
+      "about": "Acerca de",
+      "contact": "Contacto",
+      "help": "Ayuda",
+      "login": "Iniciar sesión",
+      "join": "Únete a Dasres",
+      "toggleMenu": "Alternar navegación"
+    },
+    "footer": {
+      "navigationLabel": "Navegación del pie",
+      "trustStatement": "Descubre empresas verificadas, expertos y oportunidades en un espacio conectado.",
+      "supportEntry": "Contacto",
+      "groups": {
+        "platform": "Plataforma",
+        "solutions": "Soluciones",
+        "resources": "Recursos",
+        "company": "Empresa",
+        "legal": "Legal"
+      },
+      "links": {
+        "companies": "Empresas",
+        "experts": "Expertos",
+        "opportunities": "Oportunidades",
+        "pricing": "Planes",
+        "dashboard": "Panel",
+        "help": "Ayuda",
+        "resourceHub": "Recursos",
+        "faq": "Preguntas frecuentes",
+        "about": "Acerca de",
+        "contact": "Contacto",
+        "privacy": "Privacidad",
+        "terms": "Términos",
+        "cookies": "Cookies"
+      },
+      "copyright": "© {year} Dasres. Todos los derechos reservados.",
+      "languageLabel": "Idioma"
+    },
+    "common": {
+      "home": "Inicio"
+    },
+    "pages": {
+      "about": {
+        "metadata": {
+          "title": "Acerca de Dasres",
+          "description": "Acerca de Dasres — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Acerca de Dasres",
+        "description": "Acerca de Dasres — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "sectionTitle": "Acerca de Dasres",
+        "sectionDescription": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "cta": {
+          "title": "Acerca de Dasres",
+          "description": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+          "label": "Empresas"
+        }
+      },
+      "contact": {
+        "metadata": {
+          "title": "Contactar con Dasres",
+          "description": "Contactar con Dasres — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Contactar con Dasres",
+        "description": "Contactar con Dasres — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "sectionTitle": "Contactar con Dasres",
+        "sectionDescription": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "cta": {
+          "title": "Contactar con Dasres",
+          "description": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+          "label": "Panel"
+        }
+      },
+      "help": {
+        "metadata": {
+          "title": "Centro de ayuda",
+          "description": "Centro de ayuda — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Centro de ayuda",
+        "description": "Centro de ayuda — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "sectionTitle": "Centro de ayuda",
+        "sectionDescription": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "cta": {
+          "title": "Centro de ayuda",
+          "description": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+          "label": "Preguntas frecuentes"
+        }
+      },
+      "faq": {
+        "metadata": {
+          "title": "Preguntas frecuentes",
+          "description": "Preguntas frecuentes — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Preguntas frecuentes",
+        "description": "Preguntas frecuentes — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "sectionTitle": "Preguntas frecuentes",
+        "sectionDescription": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "cta": {
+          "title": "Preguntas frecuentes",
+          "description": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+          "label": "Contacto"
+        }
+      },
+      "resources": {
+        "metadata": {
+          "title": "Recursos comerciales",
+          "description": "Recursos comerciales — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Recursos comerciales",
+        "description": "Recursos comerciales — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "sectionTitle": "Recursos comerciales",
+        "sectionDescription": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "cards": {
+          "tutorials": {
+            "title": "Tutoriales",
+            "description": "Tutoriales — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          },
+          "news": {
+            "title": "Noticias comerciales",
+            "description": "Noticias comerciales — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          },
+          "customs": {
+            "title": "Artículos aduaneros",
+            "description": "Artículos aduaneros — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          },
+          "countries": {
+            "title": "Guías de países",
+            "description": "Guías de países — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          },
+          "glossary": {
+            "title": "Glosario",
+            "description": "Glosario — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          },
+          "cases": {
+            "title": "Casos de estudio",
+            "description": "Casos de estudio — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          }
+        }
+      },
+      "pricing": {
+        "metadata": {
+          "title": "Planes y límites",
+          "description": "Planes y límites — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Planes",
+        "title": "Planes y límites",
+        "description": "Planes y límites — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "sectionTitle": "Planes y límites",
+        "sectionDescription": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+      "activeCases": "Casos comerciales activos",
+      "proposals": "Propuestas",
+      "unlimited": "Ilimitado",
+        "availabilityNotice": "Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "plans": {
+          "free": {
+            "name": "Gratis",
+            "description": "Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          },
+          "gold": {
+            "name": "Oro",
+            "description": "Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          },
+          "diamond": {
+            "name": "Diamante",
+            "description": "Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          },
+          "enterprise": {
+            "name": "Empresa",
+            "description": "Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+          }
+        }
+      },
+      "privacy": {
+        "metadata": {
+          "title": "Borrador de privacidad",
+          "description": "Borrador de privacidad — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Legal",
+        "title": "Borrador de privacidad",
+        "description": "Borrador de privacidad — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "reviewNotice": "Borrador para revisión legal; describe el funcionamiento actual y no es asesoramiento legal definitivo.",
+        "sections": {
+          "scope": {
+            "title": "Borrador de privacidad",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          },
+          "data": {
+            "title": "Privacidad",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          },
+          "choices": {
+            "title": "Términos",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          }
+        }
+      },
+      "terms": {
+        "metadata": {
+          "title": "Borrador de términos del servicio",
+          "description": "Borrador de términos del servicio — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Legal",
+        "title": "Borrador de términos del servicio",
+        "description": "Borrador de términos del servicio — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "reviewNotice": "Borrador para revisión legal; describe el funcionamiento actual y no es asesoramiento legal definitivo.",
+        "sections": {
+          "scope": {
+            "title": "Borrador de términos del servicio",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          },
+          "data": {
+            "title": "Privacidad",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          },
+          "choices": {
+            "title": "Términos",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          }
+        }
+      },
+      "cookies": {
+        "metadata": {
+          "title": "Borrador de política de cookies",
+          "description": "Borrador de política de cookies — Información práctica y actual sobre Dasres y su espacio de comercio internacional."
+        },
+        "eyebrow": "Legal",
+        "title": "Borrador de política de cookies",
+        "description": "Borrador de política de cookies — Información práctica y actual sobre Dasres y su espacio de comercio internacional.",
+        "reviewNotice": "Borrador para revisión legal; describe el funcionamiento actual y no es asesoramiento legal definitivo.",
+        "sections": {
+          "scope": {
+            "title": "Borrador de política de cookies",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          },
+          "data": {
+            "title": "Privacidad",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          },
+          "choices": {
+            "title": "Términos",
+            "description": "El borrador cubre cuentas, perfiles públicos, oportunidades, colaboración, autenticación, permisos, soporte e idioma. Retención, comercio, jurisdicción y disputas requieren aprobación legal."
+          }
+        }
+      }
+    }
+  }
+  ,
   "common": {
     "years": "{count} años",
     "hours": "horas",

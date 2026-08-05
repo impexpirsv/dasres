@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -27,6 +27,10 @@ export default function AssignTaskSelect({
   const [value, setValue] = useState(initialValue);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setValue(assignedToId ? String(assignedToId) : "");
+  }, [assignedToId, taskId]);
+
   async function updateAssignee(nextValue: string) {
     const previousValue = value;
 
@@ -47,7 +51,13 @@ export default function AssignTaskSelect({
         },
       );
 
-      const data = await response.json();
+      let data: { message?: string } = {};
+
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
       if (!response.ok) {
         setValue(previousValue);

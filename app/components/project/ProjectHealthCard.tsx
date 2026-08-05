@@ -58,7 +58,7 @@ export default async function ProjectHealthCard({
       : Math.round((logged / estimated) * 100);
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <div className="workspace-panel">
       <h3 className="text-lg font-bold text-white">
         {t("title")}
       </h3>

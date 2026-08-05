@@ -42,6 +42,12 @@ function getStatusTranslationKey(status: string) {
     case "TODO":
       return "todo";
 
+    case "PENDING":
+      return "pending";
+
+    case "OPEN":
+      return "open";
+
     case "IN_PROGRESS":
       return "inProgress";
 
@@ -50,6 +56,21 @@ function getStatusTranslationKey(status: string) {
 
     case "COMPLETED":
       return "completed";
+
+    case "APPROVED":
+      return "approved";
+
+    case "REJECTED":
+      return "rejected";
+
+    case "CLOSED":
+      return "closed";
+
+    case "ACTIVE":
+      return "active";
+
+    case "EXPIRED":
+      return "expired";
 
     case "CANCELLED":
       return "cancelled";
@@ -127,7 +148,7 @@ export default async function ProjectOverviewHeader({
   ] as const;
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <div className="workspace-panel">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <div className="flex flex-wrap items-center gap-3">

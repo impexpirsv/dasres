@@ -45,7 +45,7 @@ export default function ProjectTaskList({
 
   if (tasks.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-6 text-center text-slate-500">
+      <div className="ui-empty rounded-xl border border-dashed border-slate-700 bg-slate-950 p-6 text-center text-slate-400">
         {t("empty")}
       </div>
     );
@@ -99,7 +99,7 @@ export default function ProjectTaskList({
               </div>
 
               <span
-                className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-semibold ${priorityClass}`}
+                className={`ui-badge shrink-0 px-2 py-0.5 text-[11px] ${priorityClass}`}
               >
                 {t(`priorities.${priorityKey}`)}
               </span>

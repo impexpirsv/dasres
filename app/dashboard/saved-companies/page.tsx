@@ -11,6 +11,22 @@ export default async function SavedCompaniesPage() {
     "dashboardSavedCompanies",
   );
 
+  const tc = await getTranslations("common.countries");
+  const tcat = await getTranslations("common.categories");
+
+  function translateCountry(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    return tc.has(normalized) ? tc(normalized) : tc.has(lower) ? tc(lower) : normalized;
+  }
+
+  function translateCategory(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return tcat.has(normalized) ? tcat(normalized) : tcat.has(lower) ? tcat(lower) : tcat.has(underscored) ? tcat(underscored) : normalized;
+  }
+
   const savedCompanies =
     await prisma.savedCompany.findMany({
       where: {
@@ -57,11 +73,11 @@ export default async function SavedCompaniesPage() {
                 </h2>
 
                 <p className="text-slate-400">
-                  {saved.company.category}
+                  {translateCategory(saved.company.category)}
                 </p>
 
                 <p className="mt-2 text-slate-500">
-                  {saved.company.country}
+                  {translateCountry(saved.company.country)}
                 </p>
 
                 <div className="mt-6">

@@ -9,23 +9,70 @@ type CreatedChecklistItem = {
   completed: boolean;
 };
 
+type CreateChecklistResponse = {
+  message?: string;
+  checklistItem?: unknown;
+};
+
+function isCreatedChecklistItem(
+  value: unknown,
+): value is CreatedChecklistItem {
+  if (
+    typeof value !== "object" ||
+    value === null ||
+    Array.isArray(value)
+  ) {
+    return false;
+  }
+
+  const item = value as Record<
+    string,
+    unknown
+  >;
+
+  return (
+    typeof item.id === "number" &&
+    Number.isInteger(item.id) &&
+    item.id > 0 &&
+    typeof item.title === "string" &&
+    item.title.trim().length > 0 &&
+    typeof item.completed === "boolean"
+  );
+}
+
 export default function CreateChecklistItemForm({
   taskId,
   onCreated,
 }: {
   taskId: number;
-  onCreated: (item: CreatedChecklistItem) => void;
+  onCreated: (
+    item: CreatedChecklistItem,
+  ) => void;
 }) {
-  const t = useTranslations("createChecklistItemForm");
+  const t = useTranslations(
+    "createChecklistItemForm",
+  );
 
-  const [title, setTitle] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [title, setTitle] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
 
   async function createItem() {
-    const trimmedTitle = title.trim();
+    const trimmedTitle =
+      title.trim();
 
-    if (!trimmedTitle) {
-      alert(t("titleRequired"));
+    if (
+      !trimmedTitle ||
+      loading
+    ) {
+      if (!trimmedTitle) {
+        alert(
+          t("titleRequired"),
+        );
+      }
+
       return;
     }
 
@@ -37,27 +84,55 @@ export default function CreateChecklistItemForm({
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type":
+              "application/json",
           },
           body: JSON.stringify({
-            title: trimmedTitle,
+            title:
+              trimmedTitle,
           }),
         },
       );
 
-      const data = await response.json();
+      let data:
+        CreateChecklistResponse =
+        {};
+
+      try {
+        data =
+          (await response.json()) as
+            CreateChecklistResponse;
+      } catch {
+        data = {};
+      }
 
       if (!response.ok) {
-        alert(data.message || t("createError"));
+        alert(
+          typeof data.message ===
+            "string"
+            ? data.message
+            : t("createError"),
+        );
+
         return;
       }
 
-      if (!data.checklistItem) {
-        alert(t("invalidResponse"));
+      if (
+        !isCreatedChecklistItem(
+          data.checklistItem,
+        )
+      ) {
+        alert(
+          t("invalidResponse"),
+        );
+
         return;
       }
 
-      onCreated(data.checklistItem);
+      onCreated(
+        data.checklistItem,
+      );
+
       setTitle("");
     } catch {
       alert(t("networkError"));
@@ -79,28 +154,44 @@ export default function CreateChecklistItemForm({
         id={`checklist-item-title-${taskId}`}
         type="text"
         value={title}
-        onChange={(event) => setTitle(event.target.value)}
+        onChange={(event) =>
+          setTitle(
+            event.target.value,
+          )
+        }
         onKeyDown={(event) => {
           if (
-            event.key === "Enter" &&
-            !event.nativeEvent.isComposing
+            event.key ===
+              "Enter" &&
+            !event.nativeEvent
+              .isComposing
           ) {
             event.preventDefault();
+
             void createItem();
           }
         }}
-        placeholder={t("placeholder")}
+        placeholder={t(
+          "placeholder",
+        )}
         disabled={loading}
         className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
 
       <button
         type="button"
-        onClick={() => void createItem()}
-        disabled={loading || !title.trim()}
+        onClick={() =>
+          void createItem()
+        }
+        disabled={
+          loading ||
+          !title.trim()
+        }
         className="shrink-0 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {loading ? t("adding") : t("add")}
+        {loading
+          ? t("adding")
+          : t("add")}
       </button>
     </div>
   );

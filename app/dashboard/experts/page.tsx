@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import ExpertsSearch from "../../components/ExpertsSearch";
 import { calculateTrustScore } from "../../../lib/ranking";
+import { requireUser } from "../../../lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,16 +14,25 @@ export default async function DashboardExpertsPage({
 }: {
   searchParams?: Promise<{ page?: string }>;
 }) {
+  const user = await requireUser();
+  const expertScope = user.role === "admin" ? {} : { ownerId: user.id };
+
   const t = await getTranslations(
     "dashboardExperts",
   );
 
   const params = await searchParams;
+
+  const parsedPage = Number(params?.page);
+
   const requestedPage =
-    Number(params?.page) || 1;
+    Number.isInteger(parsedPage) &&
+    parsedPage > 0
+      ? parsedPage
+      : 1;
 
   const totalExperts =
-    await prisma.expert.count();
+    await prisma.expert.count({ where: expertScope });
 
   const totalPages = Math.max(
     1,
@@ -30,34 +40,26 @@ export default async function DashboardExpertsPage({
   );
 
   const currentPage = Math.min(
-    Math.max(requestedPage, 1),
+    requestedPage,
     totalPages,
   );
 
   const [
-    verifiedExpertsCount,
-    pendingExpertsCount,
-    rejectedExpertsCount,
+    verificationStats,
     premiumExpertsCount,
     experts,
   ] = await Promise.all([
-    prisma.expert.count({
-      where: {
-        verificationStatus: "VERIFIED",
+    prisma.expert.groupBy({
+      by: ["verificationStatus"],
+      where: expertScope,
+      _count: {
+        _all: true,
       },
     }),
+
     prisma.expert.count({
       where: {
-        verificationStatus: "PENDING",
-      },
-    }),
-    prisma.expert.count({
-      where: {
-        verificationStatus: "REJECTED",
-      },
-    }),
-    prisma.expert.count({
-      where: {
+        ...expertScope,
         planType: {
           in: [
             "GOLD",
@@ -67,7 +69,9 @@ export default async function DashboardExpertsPage({
         },
       },
     }),
+
     prisma.expert.findMany({
+      where: expertScope,
       skip: (currentPage - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       orderBy: {
@@ -89,57 +93,101 @@ export default async function DashboardExpertsPage({
     }),
   ]);
 
-  const expertsWithRatings =
-    await Promise.all(
-      experts.map(async (expert) => {
-        const reviews = expert.ownerId
-          ? await prisma.review.findMany({
-              where: {
-                reviewedUserId:
-                  expert.ownerId,
-              },
-              select: {
-                rating: true,
-              },
-            })
-          : [];
+  const verificationCountMap = new Map(
+    verificationStats.map((item) => [
+      item.verificationStatus,
+      item._count._all,
+    ]),
+  );
 
-        const averageRating =
-          reviews.length > 0
-            ? reviews.reduce(
-                (sum, review) =>
-                  sum + review.rating,
-                0,
-              ) / reviews.length
-            : 0;
+  const verifiedExpertsCount =
+    verificationCountMap.get("VERIFIED") ?? 0;
 
-        const trustScore =
-          calculateTrustScore({
-            averageRating,
-            completedCases: 0,
-            verificationStatus:
-              expert.verificationStatus,
-            planType: expert.planType,
-          });
+  const pendingExpertsCount =
+    verificationCountMap.get("PENDING") ?? 0;
 
-        return {
-          id: expert.id,
-          name: expert.name,
-          country: expert.country,
-          specialty: expert.specialty,
-          status: expert.status,
-          experience: expert.experience,
-          email: expert.email,
-          imageUrl: expert.imageUrl,
+  const rejectedExpertsCount =
+    verificationCountMap.get("REJECTED") ?? 0;
+
+  const ownerIds = Array.from(
+    new Set(
+      experts
+        .map((expert) => expert.ownerId)
+        .filter(
+          (ownerId): ownerId is number =>
+            ownerId !== null,
+        ),
+    ),
+  );
+
+  const reviewStats =
+    ownerIds.length > 0
+      ? await prisma.review.groupBy({
+          by: ["reviewedUserId"],
+          where: {
+            reviewedUserId: {
+              in: ownerIds,
+            },
+          },
+          _avg: {
+            rating: true,
+          },
+          _count: {
+            _all: true,
+          },
+        })
+      : [];
+
+  const reviewStatsMap = new Map(
+    reviewStats.map((item) => [
+      item.reviewedUserId,
+      {
+        averageRating:
+          item._avg.rating ?? 0,
+        reviewCount: item._count._all,
+      },
+    ]),
+  );
+
+  const expertsWithRatings = experts.map(
+    (expert) => {
+      const ratingStats = expert.ownerId
+        ? reviewStatsMap.get(expert.ownerId)
+        : undefined;
+
+      const averageRating =
+        ratingStats?.averageRating ?? 0;
+
+      const reviewCount =
+        ratingStats?.reviewCount ?? 0;
+
+      const trustScore =
+        calculateTrustScore({
+          averageRating,
+          completedCases: 0,
           verificationStatus:
             expert.verificationStatus,
           planType: expert.planType,
-          averageRating,
-          reviewCount: reviews.length,
-          trustScore,
-        };
-      }),
-    );
+        });
+
+      return {
+        id: expert.id,
+        name: expert.name,
+        country: expert.country,
+        specialty: expert.specialty,
+        status: expert.status,
+        experience: expert.experience,
+        email: expert.email,
+        imageUrl: expert.imageUrl,
+        verificationStatus:
+          expert.verificationStatus,
+        planType: expert.planType,
+        averageRating,
+        reviewCount,
+        trustScore,
+      };
+    },
+  );
 
   const stats = [
     {

@@ -13,6 +13,54 @@ type DashboardAnalyticsProps = {
   savedTotal: number;
 };
 
+function normalizeCount(value: number): number {
+  return Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0;
+}
+
+function clampPercent(value: number): number {
+  if (!Number.isFinite(value)) return 0;
+  return Math.min(100, Math.max(0, Math.round(value)));
+}
+
+function ProgressItem({
+  label,
+  value,
+  percent,
+  color,
+  barColor,
+}: {
+  label: string;
+  value: number;
+  percent: number;
+  color: string;
+  barColor: string;
+}) {
+  const normalizedPercent = clampPercent(percent);
+
+  return (
+    <div>
+      <div className="mb-2 flex justify-between text-sm">
+        <span className="text-slate-300">{label}</span>
+        <span className={color}>{value}</span>
+      </div>
+
+      <div
+        className="h-2 overflow-hidden rounded-full bg-slate-800"
+        role="progressbar"
+        aria-label={label}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={normalizedPercent}
+      >
+        <div
+          className={`h-full rounded-full ${barColor}`}
+          style={{ width: `${normalizedPercent}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default async function DashboardAnalytics({
   openCasesCount,
   inProgressCasesCount,
@@ -27,167 +75,102 @@ export default async function DashboardAnalytics({
 }: DashboardAnalyticsProps) {
   const t = await getTranslations("dashboardAnalytics");
 
+  const openCases = normalizeCount(openCasesCount);
+  const inProgressCases = normalizeCount(inProgressCasesCount);
+  const completedCases = normalizeCount(completedCasesCount);
+  const totalCases = openCases + inProgressCases + completedCases;
+
+  const getCasePercent = (count: number) =>
+    totalCases === 0 ? 0 : (count / totalCases) * 100;
+
+  const normalizedSuccessRate = clampPercent(proposalSuccessRate);
+
   return (
     <section className="mb-12">
-      <div className="flex items-center justify-between gap-4 mb-6">
-        <h2 className="text-2xl font-bold">
-          {t("title")}
-        </h2>
-
-        <p className="text-slate-400 text-sm">
-          {t("description")}
-        </p>
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <h2 className="text-3xl font-black text-white">{t("title")}</h2>
+        <p className="text-sm text-slate-400">{t("description")}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-5">
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-          <p className="text-slate-500 text-sm">
-            {t("casePipeline.title")}
+      <div className="grid gap-5 lg:grid-cols-3">
+        <div className="rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6">
+          <p className="text-sm text-slate-500">{t("casePipeline.title")}</p>
+
+          <div className="mt-5 space-y-5">
+            <ProgressItem
+              label={t("casePipeline.open")}
+              value={openCases}
+              percent={getCasePercent(openCases)}
+              color="text-emerald-400"
+              barColor="bg-emerald-500"
+            />
+            <ProgressItem
+              label={t("casePipeline.inProgress")}
+              value={inProgressCases}
+              percent={getCasePercent(inProgressCases)}
+              color="text-orange-400"
+              barColor="bg-orange-500"
+            />
+            <ProgressItem
+              label={t("casePipeline.completed")}
+              value={completedCases}
+              percent={getCasePercent(completedCases)}
+              color="text-blue-400"
+              barColor="bg-blue-500"
+            />
+          </div>
+        </div>
+
+        <div className="rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6">
+          <p className="text-sm text-slate-500">{t("proposalPerformance.title")}</p>
+          <p className="mt-5 text-5xl font-black text-cyan-400">
+            {normalizedSuccessRate}%
+          </p>
+          <p className="mt-3 text-slate-400">
+            {t("proposalPerformance.description")}
           </p>
 
-          <div className="mt-5 space-y-4">
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span>{t("casePipeline.open")}</span>
-
-                <span className="text-emerald-400">
-                  {openCasesCount}
-                </span>
-              </div>
-
-              <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-emerald-500 rounded-full"
-                  style={{
-                    width: `${Math.min(openCasesCount * 10, 100)}%`,
-                  }}
-                />
-              </div>
+          <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+              <p className="text-xs text-slate-500">
+                {t("proposalPerformance.accepted")}
+              </p>
+              <p className="mt-2 text-3xl font-black text-emerald-400">
+                {normalizeCount(acceptedProposalsCount)}
+              </p>
             </div>
 
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span>{t("casePipeline.inProgress")}</span>
-
-                <span className="text-orange-400">
-                  {inProgressCasesCount}
-                </span>
-              </div>
-
-              <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-orange-500 rounded-full"
-                  style={{
-                    width: `${Math.min(inProgressCasesCount * 10, 100)}%`,
-                  }}
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span>{t("casePipeline.completed")}</span>
-
-                <span className="text-blue-400">
-                  {completedCasesCount}
-                </span>
-              </div>
-
-              <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-blue-500 rounded-full"
-                  style={{
-                    width: `${Math.min(completedCasesCount * 10, 100)}%`,
-                  }}
-                />
-              </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+              <p className="text-xs text-slate-500">
+                {t("proposalPerformance.rejected")}
+              </p>
+              <p className="mt-2 text-3xl font-black text-red-400">
+                {normalizeCount(rejectedProposalsCount)}
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-          <p className="text-slate-500 text-sm">
-            {t("proposalPerformance.title")}
-          </p>
+        <div className="rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6">
+          <p className="text-sm text-slate-500">{t("platformAttention.title")}</p>
 
-          <div className="mt-5">
-            <p className="text-5xl font-bold text-cyan-400">
-              {proposalSuccessRate}%
-            </p>
-
-            <p className="text-slate-400 mt-3">
-              {t("proposalPerformance.description")}
-            </p>
-
-            <div className="grid grid-cols-2 gap-3 mt-6">
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-                <p className="text-slate-500 text-xs">
-                  {t("proposalPerformance.accepted")}
-                </p>
-
-                <p className="text-2xl font-bold text-emerald-400">
-                  {acceptedProposalsCount}
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            {[
+              [t("platformAttention.notifications"), normalizeCount(unreadNotificationsCount), "text-blue-400"],
+              [t("platformAttention.tickets"), normalizeCount(openTicketsCount), "text-purple-400"],
+              [t("platformAttention.reviews"), normalizeCount(totalReviewsCount), "text-yellow-400"],
+              [t("platformAttention.saved"), normalizeCount(savedTotal), "text-emerald-400"],
+            ].map(([label, value, className]) => (
+              <div
+                key={String(label)}
+                className="rounded-2xl border border-slate-800 bg-slate-950 p-4"
+              >
+                <p className="text-xs text-slate-500">{label}</p>
+                <p className={`mt-2 text-3xl font-black ${className}`}>
+                  {value}
                 </p>
               </div>
-
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-                <p className="text-slate-500 text-xs">
-                  {t("proposalPerformance.rejected")}
-                </p>
-
-                <p className="text-2xl font-bold text-red-400">
-                  {rejectedProposalsCount}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-          <p className="text-slate-500 text-sm">
-            {t("platformAttention.title")}
-          </p>
-
-          <div className="grid grid-cols-2 gap-3 mt-5">
-            <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-              <p className="text-slate-500 text-xs">
-                {t("platformAttention.notifications")}
-              </p>
-
-              <p className="text-3xl font-bold text-blue-400">
-                {unreadNotificationsCount}
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-              <p className="text-slate-500 text-xs">
-                {t("platformAttention.tickets")}
-              </p>
-
-              <p className="text-3xl font-bold text-purple-400">
-                {openTicketsCount}
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-              <p className="text-slate-500 text-xs">
-                {t("platformAttention.reviews")}
-              </p>
-
-              <p className="text-3xl font-bold text-yellow-400">
-                {totalReviewsCount}
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4">
-              <p className="text-slate-500 text-xs">
-                {t("platformAttention.saved")}
-              </p>
-
-              <p className="text-3xl font-bold text-emerald-400">
-                {savedTotal}
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </div>

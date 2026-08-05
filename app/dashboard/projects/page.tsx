@@ -69,26 +69,35 @@ export default async function ProjectsPage() {
     },
   });
 
-  function getProjectStatusLabel(
-    status: string,
-  ) {
-    switch (status) {
-      case "OPEN":
-        return t("statuses.open");
+ function getProjectStatusLabel(
+  status: string,
+) {
+  switch (status) {
+    case "OPEN":
+      return t("statuses.open");
 
-      case "IN_PROGRESS":
-        return t("statuses.inProgress");
+    case "IN_PROGRESS":
+      return t("statuses.inProgress");
 
-      case "COMPLETED":
-        return t("statuses.completed");
+    case "COMPLETED":
+      return t("statuses.completed");
 
-      case "CANCELLED":
-        return t("statuses.cancelled");
+    case "CANCELLED":
+      return t("statuses.cancelled");
 
-      default:
-        return status;
-    }
+    case "ACTIVE":
+      return t("statuses.active");
+
+    case "PENDING":
+      return t("statuses.pending");
+
+    case "REVIEW":
+      return t("statuses.review");
+
+    default:
+      return status;
   }
+}
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-20">

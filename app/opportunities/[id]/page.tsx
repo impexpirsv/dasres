@@ -2,11 +2,22 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
-import { getTranslations } from "next-intl/server";
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
 
 import { prisma } from "../../../lib/prisma";
 import { getCurrentUser } from "../../../lib/auth";
 import { formatCountry } from "../../../lib/format";
+import { serializeJsonLd } from "../../../lib/seo/jsonld";
+import {
+  getDefaultSocialImage,
+  getEntitySocialImage,
+  getOpenGraphLocale,
+} from "../../../lib/seo/social";
+import { createOpportunityPageJsonLd } from "../../../lib/seo/structured-data";
+import { getAbsoluteUrl } from "../../../lib/seo/urls";
 
 import Navbar from "../../components/Navbar";
 import DeleteOpportunityButton from "../../components/DeleteOpportunityButton";
@@ -135,9 +146,11 @@ export async function generateMetadata({
 
   const opportunityId = Number(id);
 
-  const t = await getTranslations(
-    "publicOpportunityProfile.metadata",
-  );
+  const [t, rootMetadata, locale] = await Promise.all([
+    getTranslations("publicOpportunityProfile.metadata"),
+    getTranslations("rootMetadata"),
+    getLocale(),
+  ]);
 
   if (
     !Number.isInteger(opportunityId) ||
@@ -148,6 +161,13 @@ export async function generateMetadata({
       description: t(
         "notFoundDescription",
       ),
+      alternates: {
+        canonical: null,
+      },
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 
@@ -162,13 +182,20 @@ export async function generateMetadata({
       description: t(
         "notFoundDescription",
       ),
+      alternates: {
+        canonical: null,
+      },
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 
   const opportunityDescription =
     opportunity.description || "";
 
-  const title = `${opportunity.title} | Dasres`;
+  const title = opportunity.title;
 
   const description =
     opportunityDescription.length > 160
@@ -178,35 +205,34 @@ export async function generateMetadata({
         )}...`
       : opportunityDescription ||
         t("notFoundDescription");
+  const canonicalPath = `/opportunities/${opportunity.id}`;
+  const canonicalUrl = getAbsoluteUrl(canonicalPath);
+  const socialImage =
+    getEntitySocialImage(
+      opportunity.imageUrl,
+      opportunity.title,
+    ) ??
+    getDefaultSocialImage(rootMetadata("openGraph.imageAlt"));
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalPath,
+    },
     openGraph: {
       title,
       description,
+      url: canonicalUrl,
       type: "website",
-      images: opportunity.imageUrl
-        ? [
-            {
-              url: opportunity.imageUrl,
-              alt: opportunity.title,
-            },
-          ]
-        : [
-            {
-              url: "/og-image.png",
-              alt: opportunity.title,
-            },
-          ],
+      locale: getOpenGraphLocale(locale),
+      images: [socialImage],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: opportunity.imageUrl
-        ? [opportunity.imageUrl]
-        : ["/og-image.png"],
+      images: [socialImage.url],
     },
   };
 }
@@ -218,9 +244,11 @@ export default async function OpportunityProfilePage({
 
   const opportunityId = Number(id);
 
-  const t = await getTranslations(
-    "publicOpportunityProfile",
-  );
+  const [t, navigation, locale] = await Promise.all([
+    getTranslations("publicOpportunityProfile"),
+    getTranslations("navbar"),
+    getLocale(),
+  ]);
 
   if (
     !Number.isInteger(opportunityId) ||
@@ -305,47 +333,45 @@ export default async function OpportunityProfilePage({
     }
   }
 
-  const opportunitySchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: opportunity.title,
-    description:
-      opportunityDescription,
-    image:
-      opportunity.imageUrl ||
-      "/og-image.png",
-    author: {
-      "@type": "Organization",
-      name: "Dasres",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Dasres",
-      logo: {
-        "@type": "ImageObject",
-        url: "/og-image.png",
+  const opportunitySchema =
+    createOpportunityPageJsonLd({
+      page: {
+        canonicalPath: `/opportunities/${opportunity.id}`,
+        name: opportunity.title,
+        description: opportunityDescription,
+        language: locale,
+        breadcrumbs: [
+          {
+            name: navigation("home"),
+            pathname: "/",
+          },
+          {
+            name: navigation("opportunities"),
+            pathname: "/opportunities",
+          },
+          {
+            name: opportunity.title,
+            pathname: `/opportunities/${opportunity.id}`,
+          },
+        ],
       },
-    },
-    about: {
-      "@type": "Thing",
-      name: getStatusLabel(
-        opportunity.status,
-      ),
-    },
-    contentLocation: {
-      "@type": "Country",
-      name: opportunity.country,
-    },
-  };
+      opportunity: {
+        name: opportunity.title,
+        description: opportunityDescription,
+        country: opportunity.country,
+        status: opportunity.status,
+        imageUrl: opportunity.imageUrl,
+      },
+    });
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <Navbar />
+      <Navbar isAuthenticated={user !== null} />
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: serializeJsonLd(
             opportunitySchema,
           ),
         }}

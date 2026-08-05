@@ -1,5 +1,8 @@
 import { prisma } from "../../lib/prisma";
-import { getTranslations } from "next-intl/server";
+import {
+  getLocale,
+  getTranslations,
+} from "next-intl/server";
 import { unstable_cache } from "next/cache";
 
 const getLiveStats = unstable_cache(
@@ -11,9 +14,21 @@ const getLiveStats = unstable_cache(
       tradeCasesCount,
       completedCasesCount,
     ] = await Promise.all([
-      prisma.company.count(),
-      prisma.expert.count(),
-      prisma.opportunity.count(),
+      prisma.company.count({
+        where: {
+          verificationStatus: "VERIFIED",
+        },
+      }),
+      prisma.expert.count({
+        where: {
+          verificationStatus: "VERIFIED",
+        },
+      }),
+      prisma.opportunity.count({
+        where: {
+          status: "OPEN",
+        },
+      }),
       prisma.tradeCase.count(),
       prisma.tradeCase.count({
         where: {
@@ -33,11 +48,19 @@ const getLiveStats = unstable_cache(
   ["live-stats"],
   {
     revalidate: 300,
+    tags: ["live-stats"],
   },
 );
 
+
 export default async function LiveStats() {
   const t = await getTranslations("liveStats");
+
+  const locale = await getLocale();
+
+  const numberFormatter =
+    new Intl.NumberFormat(locale);
+
 
   const {
     companiesCount,
@@ -46,6 +69,7 @@ export default async function LiveStats() {
     tradeCasesCount,
     completedCasesCount,
   } = await getLiveStats();
+
 
   const successRate =
     tradeCasesCount > 0
@@ -56,36 +80,46 @@ export default async function LiveStats() {
         )
       : 0;
 
+
   const stats = [
     {
+      id: "companies",
       label: t("verifiedCompanies"),
       value: companiesCount,
-      suffix: "+",
+      suffix: "",
       color: "text-blue-400",
       glow: "hover:border-blue-500/60",
     },
+
     {
+      id: "experts",
       label: t("trustedExperts"),
       value: expertsCount,
-      suffix: "+",
+      suffix: "",
       color: "text-cyan-400",
       glow: "hover:border-cyan-500/60",
     },
+
     {
+      id: "opportunities",
       label: t("tradeOpportunities"),
       value: opportunitiesCount,
-      suffix: "+",
+      suffix: "",
       color: "text-purple-400",
       glow: "hover:border-purple-500/60",
     },
+
     {
+      id: "cases",
       label: t("tradeCases"),
       value: tradeCasesCount,
-      suffix: "+",
+      suffix: "",
       color: "text-emerald-400",
       glow: "hover:border-emerald-500/60",
     },
+
     {
+      id: "success",
       label: t("caseSuccessRate"),
       value: successRate,
       suffix: "%",
@@ -94,43 +128,67 @@ export default async function LiveStats() {
     },
   ];
 
-  return (
-    <section className="border-y border-slate-800 bg-slate-950 py-20">
-      <div className="mx-auto max-w-7xl px-6">
 
-        <div className="mb-12 text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-blue-400">
+  return (
+    <section id="homepage-stats" className="relative border-b border-slate-800 bg-slate-950 py-[var(--ui-section-space)]">
+
+      <div className="ui-container">
+
+
+        <div className="mb-14 text-center">
+
+          <p
+            className="
+              mb-3
+              text-sm
+              font-bold
+              uppercase
+              tracking-[0.2em]
+              text-blue-400
+            "
+          >
             {t("eyebrow")}
           </p>
 
-          <h2 className="text-3xl font-black text-white md:text-4xl">
+
+          <h2
+            className="
+              text-4xl
+              font-black
+              md:text-5xl
+            "
+          >
             {t("title")}
           </h2>
+
         </div>
 
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+
+        <div
+          className="
+            grid
+            gap-5
+            sm:grid-cols-2
+            lg:grid-cols-5
+          "
+        >
 
           {stats.map((stat) => (
+
             <div
-              key={stat.label}
+              key={stat.id}
               className={`
                 group
-                rounded-3xl
-                border
-                border-slate-800
+                ui-card
+                ui-card-interactive
                 bg-slate-900/70
-                p-7
                 text-center
-                shadow-lg
-                shadow-black/20
-                transition
-                duration-300
-                hover:-translate-y-1
                 hover:bg-slate-900
                 ${stat.glow}
               `}
             >
+
               <p
                 dir="ltr"
                 className={`
@@ -138,22 +196,41 @@ export default async function LiveStats() {
                   font-black
                   tracking-tight
                   transition
-                  group-hover:scale-105
+                  duration-300
+                  group-hover:scale-110
                   ${stat.color}
                 `}
               >
-                {stat.value}
+
+                {numberFormatter.format(
+                  stat.value,
+                )}
+
                 {stat.suffix}
+
               </p>
 
-              <p className="mt-3 text-sm text-slate-400">
+
+              <p
+                className="
+                  mt-4
+                  text-sm
+                  text-slate-400
+                "
+              >
                 {stat.label}
               </p>
+
+
             </div>
+
           ))}
 
         </div>
+
+
       </div>
+
     </section>
   );
 }

@@ -26,7 +26,7 @@ export default async function TicketsPage() {
   const user = await requireUser();
   const locale = await getLocale();
   const t = await getTranslations("tickets.list");
-
+const tc = await getTranslations("common.categories");
   const tickets = await prisma.ticket.findMany({
     where:
       user.role === "admin"
@@ -37,14 +37,22 @@ export default async function TicketsPage() {
     orderBy: {
       id: "desc",
     },
-    include: {
-      user: true,
+    select: {
+      id: true,
+      subject: true,
+      status: true,
+      category: true,
+      createdAt: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
     },
   });
 
-  const openCount = tickets.filter(
-    (ticket) => ticket.status === "OPEN",
-  ).length;
+  const openCount = tickets.filter((ticket) => ticket.status === "OPEN").length;
 
   const inProgressCount = tickets.filter(
     (ticket) => ticket.status === "IN_PROGRESS",
@@ -81,13 +89,9 @@ export default async function TicketsPage() {
     <div className="mx-auto max-w-7xl px-6 py-20">
       <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="text-5xl font-bold">
-            {t("title")}
-          </h1>
+          <h1 className="text-5xl font-bold">{t("title")}</h1>
 
-          <p className="mt-3 text-slate-400">
-            {t("description")}
-          </p>
+          <p className="mt-3 text-slate-400">{t("description")}</p>
         </div>
 
         <Link
@@ -100,9 +104,7 @@ export default async function TicketsPage() {
 
       <div className="mb-10 grid gap-6 md:grid-cols-4">
         <div className="rounded-2xl border border-emerald-500 bg-slate-900 p-6">
-          <p className="text-sm text-slate-400">
-            {t("statuses.open")}
-          </p>
+          <p className="text-sm text-slate-400">{t("statuses.open")}</p>
 
           <p className="mt-2 text-4xl font-bold text-emerald-400">
             {openCount}
@@ -110,9 +112,7 @@ export default async function TicketsPage() {
         </div>
 
         <div className="rounded-2xl border border-blue-500 bg-slate-900 p-6">
-          <p className="text-sm text-slate-400">
-            {t("statuses.inProgress")}
-          </p>
+          <p className="text-sm text-slate-400">{t("statuses.inProgress")}</p>
 
           <p className="mt-2 text-4xl font-bold text-blue-400">
             {inProgressCount}
@@ -120,9 +120,7 @@ export default async function TicketsPage() {
         </div>
 
         <div className="rounded-2xl border border-yellow-500 bg-slate-900 p-6">
-          <p className="text-sm text-slate-400">
-            {t("statuses.reopened")}
-          </p>
+          <p className="text-sm text-slate-400">{t("statuses.reopened")}</p>
 
           <p className="mt-2 text-4xl font-bold text-yellow-400">
             {reopenedCount}
@@ -130,9 +128,7 @@ export default async function TicketsPage() {
         </div>
 
         <div className="rounded-2xl border border-slate-700 bg-slate-900 p-6">
-          <p className="text-sm text-slate-400">
-            {t("statuses.closed")}
-          </p>
+          <p className="text-sm text-slate-400">{t("statuses.closed")}</p>
 
           <p className="mt-2 text-4xl font-bold text-slate-300">
             {closedCount}
@@ -148,9 +144,7 @@ export default async function TicketsPage() {
         <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900">
           <div className="border-b border-slate-800 p-6">
             <h2 className="text-2xl font-bold">
-              {user.role === "admin"
-                ? t("allTickets")
-                : t("myTickets")}
+              {user.role === "admin" ? t("allTickets") : t("myTickets")}
             </h2>
 
             <p className="mt-2 text-slate-400">
@@ -170,9 +164,7 @@ export default async function TicketsPage() {
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <h3 className="text-lg font-bold">
-                        {ticket.subject}
-                      </h3>
+                      <h3 className="text-lg font-bold">{ticket.subject}</h3>
 
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-semibold ${getTicketBadge(
@@ -184,29 +176,25 @@ export default async function TicketsPage() {
                     </div>
 
                     <p className="mt-2 text-slate-400">
-                      {ticket.category}
+                    {tc(
+  `ticket_${ticket.category.toLowerCase()}`,
+)}
                     </p>
 
                     {user.role === "admin" && (
                       <p className="mt-2 text-sm text-slate-500">
                         {t("createdBy", {
-                          name:
-                            ticket.user.name ||
-                            ticket.user.email,
+                          name: ticket.user.name || ticket.user.email,
                         })}
                       </p>
                     )}
                   </div>
 
                   <div className="text-start md:text-end">
-                    <p className="text-xs text-slate-500">
-                      {t("created")}
-                    </p>
+                    <p className="text-xs text-slate-500">{t("created")}</p>
 
                     <p className="mt-1 text-sm text-slate-300">
-                      {ticket.createdAt.toLocaleString(
-                        locale,
-                      )}
+                      {ticket.createdAt.toLocaleString(locale)}
                     </p>
                   </div>
                 </div>

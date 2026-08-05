@@ -22,6 +22,12 @@ export async function getDashboardLatestItems(
         id: "desc",
       },
       take: 5,
+      select: {
+        id: true,
+        name: true,
+        country: true,
+        specialty: true,
+      },
     }),
 
     prisma.company.findMany({
@@ -34,6 +40,12 @@ export async function getDashboardLatestItems(
         id: "desc",
       },
       take: 5,
+      select: {
+        id: true,
+        name: true,
+        country: true,
+        category: true,
+      },
     }),
 
     prisma.opportunity.findMany({
@@ -41,6 +53,12 @@ export async function getDashboardLatestItems(
         id: "desc",
       },
       take: 5,
+      select: {
+        id: true,
+        title: true,
+        country: true,
+        status: true,
+      },
     }),
 
     isAdmin
@@ -49,6 +67,12 @@ export async function getDashboardLatestItems(
             id: "desc",
           },
           take: 5,
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+          },
         })
       : Promise.resolve([]),
   ]);

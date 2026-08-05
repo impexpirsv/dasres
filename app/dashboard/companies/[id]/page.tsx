@@ -1,9 +1,11 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
+import { getCompanyViewAccess } from "../../../../lib/companies/get-company";
 import { calculateTrustScore } from "../../../../lib/ranking";
+import { serializeJsonLd } from "../../../../lib/seo/jsonld";
 import DeleteCompanyButton from "../../../components/DeleteCompanyButton";
 import CompanyVerificationButtons from "../../../components/CompanyVerificationButtons";
 import SaveCompanyButton from "../../../components/SaveCompanyButton";
@@ -16,80 +18,54 @@ function normalizeStatus(status: string) {
   return status.trim().toLowerCase().replaceAll("-", "_").replaceAll(" ", "_");
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-
-  const t = await getTranslations("companyProfile.metadata");
-
-  const company = await prisma.company.findUnique({
-    where: {
-      id: Number(id),
-    },
-  });
-
-  if (!company) {
-    return {
-      title: t("notFoundTitle"),
-      description: t("notFoundDescription"),
-    };
-  }
-
-  const title = `${company.name} | ${company.category}`;
-
-  const description = t("description", {
-    name: company.name,
-    category: company.category,
-    country: company.country,
-  });
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      images: company.logoUrl
-        ? [
-            {
-              url: company.logoUrl,
-              alt: company.name,
-            },
-          ]
-        : ["/og-image.png"],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: company.logoUrl ? [company.logoUrl] : ["/og-image.png"],
-    },
-  };
-}
-
 export default async function CompanyProfilePage({ params }: Props) {
   const { id } = await params;
 
   const user = await requireUser();
 
-  const t = await getTranslations("companyProfile");
-
-  const locale = await getLocale();
+  const [t, tc, tcat, locale] = await Promise.all([
+    getTranslations("companyProfile"),
+    getTranslations("common.countries"),
+    getTranslations("common.categories"),
+    getLocale(),
+  ]);
 
   const isAdmin = user.role === "admin";
 
-  const company = await prisma.company.findUnique({
-    where: {
-      id: Number(id),
-    },
+  function translateCountry(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    return tc.has(normalized) ? tc(normalized) : tc.has(lower) ? tc(lower) : normalized;
+  }
+
+  function translateCategory(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return tcat.has(normalized)
+      ? tcat(normalized)
+      : tcat.has(lower)
+        ? tcat(lower)
+        : tcat.has(underscored)
+          ? tcat(underscored)
+          : normalized;
+  }
+
+  const companyId = Number(id);
+  const companyAccess = Number.isInteger(companyId) && companyId > 0
+    ? await getCompanyViewAccess({ companyId, viewer: user })
+    : null;
+
+  if (!companyAccess) {
+    notFound();
+  }
+
+  const company = await prisma.company.findFirst({
+    where: companyAccess.scope,
   });
 
   if (!company) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
-        <h1 className="text-4xl font-bold">{t("notFound")}</h1>
-      </div>
-    );
+    notFound();
   }
 
   const companyReviews = company.ownerId
@@ -237,7 +213,7 @@ export default async function CompanyProfilePage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(companySchema),
+          __html: serializeJsonLd(companySchema),
         }}
       />
 
@@ -280,7 +256,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                 </span>
 
                 <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
-                  {company.country}
+                  {translateCountry(company.country)}
                 </span>
 
                 {company.verificationStatus === "VERIFIED" && (
@@ -324,7 +300,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                 )}
               </div>
 
-              <p className="mb-8 text-2xl text-blue-400">{company.category}</p>
+              <p className="mb-8 text-2xl text-blue-400">{translateCategory(company.category)}</p>
 
               <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
@@ -383,7 +359,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                   </p>
 
                   <p className="text-2xl font-bold text-blue-400">
-                    {company.country}
+                    {translateCountry(company.country)}
                   </p>
                 </div>
               </div>
@@ -503,7 +479,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                     {t("fields.country")}
                   </p>
 
-                  <p className="text-slate-200">{company.country}</p>
+                  <p className="text-slate-200">{translateCountry(company.country)}</p>
                 </div>
 
                 <div>
@@ -511,7 +487,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                     {t("fields.category")}
                   </p>
 
-                  <p className="text-slate-200">{company.category}</p>
+                  <p className="text-slate-200">{translateCategory(company.category)}</p>
                 </div>
 
                 <div>

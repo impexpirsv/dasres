@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import CompaniesSearch from "../../components/CompaniesSearch";
 import { calculateTrustScore } from "../../../lib/ranking";
+import { requireUser } from "../../../lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,16 +14,25 @@ export default async function DashboardCompaniesPage({
 }: {
   searchParams?: Promise<{ page?: string }>;
 }) {
+  const user = await requireUser();
+  const companyScope = user.role === "admin" ? {} : { ownerId: user.id };
+
   const t = await getTranslations(
     "dashboardCompanies",
   );
 
   const params = await searchParams;
+
+  const parsedPage = Number(params?.page);
+
   const requestedPage =
-    Number(params?.page) || 1;
+    Number.isInteger(parsedPage) &&
+    parsedPage > 0
+      ? parsedPage
+      : 1;
 
   const totalCompanies =
-    await prisma.company.count();
+    await prisma.company.count({ where: companyScope });
 
   const totalPages = Math.max(
     1,
@@ -30,34 +40,26 @@ export default async function DashboardCompaniesPage({
   );
 
   const currentPage = Math.min(
-    Math.max(requestedPage, 1),
+    requestedPage,
     totalPages,
   );
 
   const [
-    verifiedCompaniesCount,
-    pendingCompaniesCount,
-    rejectedCompaniesCount,
+    verificationStats,
     premiumCompaniesCount,
     companies,
   ] = await Promise.all([
-    prisma.company.count({
-      where: {
-        verificationStatus: "VERIFIED",
+    prisma.company.groupBy({
+      by: ["verificationStatus"],
+      where: companyScope,
+      _count: {
+        _all: true,
       },
     }),
+
     prisma.company.count({
       where: {
-        verificationStatus: "PENDING",
-      },
-    }),
-    prisma.company.count({
-      where: {
-        verificationStatus: "REJECTED",
-      },
-    }),
-    prisma.company.count({
-      where: {
+        ...companyScope,
         planType: {
           in: [
             "GOLD",
@@ -67,7 +69,9 @@ export default async function DashboardCompaniesPage({
         },
       },
     }),
+
     prisma.company.findMany({
+      where: companyScope,
       skip: (currentPage - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       orderBy: {
@@ -90,95 +94,138 @@ export default async function DashboardCompaniesPage({
     }),
   ]);
 
-  const companiesWithRatings =
-    await Promise.all(
-      companies.map(async (company) => {
-        const reviews = company.ownerId
-          ? await prisma.review.findMany({
-              where: {
-                reviewedUserId:
-                  company.ownerId,
-              },
-              select: {
-                rating: true,
-              },
-            })
-          : [];
+  const verificationCountMap = new Map(
+    verificationStats.map((item) => [
+      item.verificationStatus,
+      item._count._all,
+    ]),
+  );
 
-        const averageRating =
-          reviews.length > 0
-            ? reviews.reduce(
-                (sum, review) =>
-                  sum + review.rating,
-                0,
-              ) / reviews.length
-            : 0;
+  const verifiedCompaniesCount =
+    verificationCountMap.get("VERIFIED") ?? 0;
 
-        const trustScore =
-          calculateTrustScore({
-            averageRating,
-            completedCases: 0,
-            verificationStatus:
-              company.verificationStatus,
-            planType: company.planType,
-          });
+  const pendingCompaniesCount =
+    verificationCountMap.get("PENDING") ?? 0;
 
-        return {
-          id: company.id,
-          name: company.name,
-          country: company.country,
-          category: company.category,
-          status: company.status,
-          description:
-            company.description,
-          email: company.email,
-          website: company.website,
-          logoUrl: company.logoUrl,
+  const rejectedCompaniesCount =
+    verificationCountMap.get("REJECTED") ?? 0;
+
+  const ownerIds = Array.from(
+    new Set(
+      companies
+        .map((company) => company.ownerId)
+        .filter(
+          (ownerId): ownerId is number =>
+            ownerId !== null,
+        ),
+    ),
+  );
+
+  const reviewStats =
+    ownerIds.length > 0
+      ? await prisma.review.groupBy({
+          by: ["reviewedUserId"],
+          where: {
+            reviewedUserId: {
+              in: ownerIds,
+            },
+          },
+          _avg: {
+            rating: true,
+          },
+          _count: {
+            _all: true,
+          },
+        })
+      : [];
+
+  const reviewStatsMap = new Map(
+    reviewStats.map((item) => [
+      item.reviewedUserId,
+      {
+        averageRating:
+          item._avg.rating ?? 0,
+        reviewCount: item._count._all,
+      },
+    ]),
+  );
+
+  const companiesWithRatings = companies.map(
+    (company) => {
+      const ratingStats = company.ownerId
+        ? reviewStatsMap.get(company.ownerId)
+        : undefined;
+
+      const averageRating =
+        ratingStats?.averageRating ?? 0;
+
+      const reviewCount =
+        ratingStats?.reviewCount ?? 0;
+
+      const trustScore =
+        calculateTrustScore({
+          averageRating,
+          completedCases: 0,
           verificationStatus:
             company.verificationStatus,
           planType: company.planType,
-          averageRating,
-          reviewCount: reviews.length,
-          trustScore,
-        };
-      }),
-    );
+        });
+
+      return {
+        id: company.id,
+        name: company.name,
+        country: company.country,
+        category: company.category,
+        status: company.status,
+        description: company.description,
+        email: company.email,
+        website: company.website,
+        logoUrl: company.logoUrl,
+        verificationStatus:
+          company.verificationStatus,
+        planType: company.planType,
+        averageRating,
+        reviewCount,
+        trustScore,
+      };
+    },
+  );
 
   const stats = [
     {
       key: "total",
       label: t("stats.total"),
       value: totalCompanies,
-      className:
-        "border-blue-500 text-blue-400",
+      borderClass: "border-blue-500",
+      textClass: "text-blue-400",
     },
     {
       key: "verified",
       label: t("stats.verified"),
       value: verifiedCompaniesCount,
-      className:
-        "border-emerald-500 text-emerald-400",
+      borderClass: "border-emerald-500",
+      textClass: "text-emerald-400",
     },
     {
       key: "pending",
       label: t("stats.pending"),
       value: pendingCompaniesCount,
-      className:
-        "border-yellow-500 text-yellow-400",
+      borderClass: "border-yellow-500",
+      textClass: "text-yellow-400",
     },
     {
       key: "rejected",
       label: t("stats.rejected"),
       value: rejectedCompaniesCount,
-      className:
-        "border-red-500 text-red-400",
+      borderClass: "border-red-500",
+      textClass: "text-red-400",
     },
     {
       key: "premium",
       label: t("stats.premium"),
       value: premiumCompaniesCount,
-      className:
-        "border-purple-500 text-purple-400",
+      borderClass: "border-purple-500",
+      textClass: "text-purple-400",
     },
   ];
 
@@ -207,18 +254,14 @@ export default async function DashboardCompaniesPage({
         {stats.map((stat) => (
           <div
             key={stat.key}
-            className={`rounded-2xl border bg-slate-900 p-6 ${stat.className}`}
+            className={`rounded-2xl border bg-slate-900 p-6 ${stat.borderClass}`}
           >
             <p className="text-sm text-slate-400">
               {stat.label}
             </p>
 
             <p
-              className={`mt-2 text-4xl font-bold ${stat.className
-                .split(" ")
-                .find((value) =>
-                  value.startsWith("text-"),
-                )}`}
+              className={`mt-2 text-4xl font-bold ${stat.textClass}`}
             >
               {stat.value}
             </p>

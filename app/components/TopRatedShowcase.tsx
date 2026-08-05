@@ -4,23 +4,11 @@ import {
 } from "next-intl/server";
 import { prisma } from "../../lib/prisma";
 import { calculateTrustScore } from "../../lib/ranking";
+import {
+  getEntityReviewRatingStats,
+  getReviewRatingStats,
+} from "../../lib/ranking/review-aggregates";
 import { unstable_cache } from "next/cache";
-
-function getAverageRating(
-  reviews: { rating: number }[],
-) {
-  if (reviews.length === 0) {
-    return 0;
-  }
-
-  return (
-    reviews.reduce(
-      (sum, review) =>
-        sum + review.rating,
-      0,
-    ) / reviews.length
-  );
-}
 
 const getTopRatedData = unstable_cache(
   async () => {
@@ -32,16 +20,14 @@ const getTopRatedData = unstable_cache(
         where: {
           verificationStatus: "VERIFIED",
         },
-        include: {
-          owner: {
-            include: {
-              reviewsReceived: {
-                select: {
-                  rating: true,
-                },
-              },
-            },
-          },
+        select: {
+          id: true,
+          name: true,
+          category: true,
+          country: true,
+          verificationStatus: true,
+          planType: true,
+          ownerId: true,
         },
       }),
 
@@ -49,23 +35,48 @@ const getTopRatedData = unstable_cache(
         where: {
           verificationStatus: "VERIFIED",
         },
-        include: {
-          owner: {
-            include: {
-              reviewsReceived: {
-                select: {
-                  rating: true,
-                },
-              },
-            },
-          },
+        select: {
+          id: true,
+          name: true,
+          specialty: true,
+          country: true,
+          verificationStatus: true,
+          planType: true,
+          ownerId: true,
         },
       }),
     ]);
 
+    const reviewStats =
+      await getReviewRatingStats([
+        ...companies.map(
+          (company) =>
+            company.ownerId,
+        ),
+        ...experts.map(
+          (expert) => expert.ownerId,
+        ),
+      ]);
+
     return {
-      companies,
-      experts,
+      companies: companies.map(
+        (company) => ({
+          ...company,
+          ...getEntityReviewRatingStats(
+            reviewStats,
+            company.ownerId,
+          ),
+        }),
+      ),
+      experts: experts.map(
+        (expert) => ({
+          ...expert,
+          ...getEntityReviewRatingStats(
+            reviewStats,
+            expert.ownerId,
+          ),
+        }),
+      ),
     };
   },
   ["top-rated-showcase"],
@@ -75,10 +86,93 @@ const getTopRatedData = unstable_cache(
 );
 
 export default async function TopRatedShowcase() {
-  const t =
-    await getTranslations(
-      "topRatedShowcase",
-    );
+const t =
+  await getTranslations(
+    "topRatedShowcase",
+  );
+
+const tc = await getTranslations(
+  "common.countries",
+);
+
+const ts = await getTranslations(
+  "common.specialties",
+);
+
+const tcat = await getTranslations(
+  "common.categories",
+);
+
+
+function translateCountry(
+  country: string,
+) {
+  const value = country.trim();
+
+  if (tc.has(value)) {
+    return tc(value);
+  }
+
+  const lower = value.toLowerCase();
+
+  if (tc.has(lower)) {
+    return tc(lower);
+  }
+
+  return country;
+}
+
+
+function translateSpecialty(
+  specialty: string,
+) {
+  const value = specialty.trim();
+
+  if (ts.has(value)) {
+    return ts(value);
+  }
+
+  const lower = value.toLowerCase();
+
+  if (ts.has(lower)) {
+    return ts(lower);
+  }
+
+  const normalized =
+    lower.replaceAll(" ", "_");
+
+  if (ts.has(normalized)) {
+    return ts(normalized);
+  }
+
+  return specialty;
+}
+
+
+function translateCategory(
+  category: string,
+) {
+  const value = category.trim();
+
+  if (tcat.has(value)) {
+    return tcat(value);
+  }
+
+  const lower = value.toLowerCase();
+
+  if (tcat.has(lower)) {
+    return tcat(lower);
+  }
+
+  const normalized =
+    lower.replaceAll(" ", "_");
+
+  if (tcat.has(normalized)) {
+    return tcat(normalized);
+  }
+
+  return category;
+}
 
   const {
     companies,
@@ -88,12 +182,8 @@ export default async function TopRatedShowcase() {
   const topCompany =
     companies
       .map((company) => {
-        const reviews =
-          company.owner?.reviewsReceived ||
-          [];
-
         const averageRating =
-          getAverageRating(reviews);
+          company.averageRating;
 
         const trustScore =
           calculateTrustScore({
@@ -109,7 +199,7 @@ export default async function TopRatedShowcase() {
           ...company,
           averageRating,
           reviewCount:
-            reviews.length,
+            company.reviewCount,
           trustScore,
         };
       })
@@ -126,12 +216,8 @@ export default async function TopRatedShowcase() {
   const topExpert =
     experts
       .map((expert) => {
-        const reviews =
-          expert.owner?.reviewsReceived ||
-          [];
-
         const averageRating =
-          getAverageRating(reviews);
+          expert.averageRating;
 
         const trustScore =
           calculateTrustScore({
@@ -147,7 +233,7 @@ export default async function TopRatedShowcase() {
           ...expert,
           averageRating,
           reviewCount:
-            reviews.length,
+            expert.reviewCount,
           trustScore,
         };
       })
@@ -262,11 +348,15 @@ export default async function TopRatedShowcase() {
                   </h3>
 
                   <p className="mt-2 text-slate-400">
-                    {topCompany.category}
+                  {translateCategory(
+  topCompany.category,
+)}
                   </p>
 
                   <p className="mt-1 text-sm text-slate-500">
-                    {topCompany.country}
+                   {translateCountry(
+  topCompany.country,
+)}
                   </p>
 
                 </div>
@@ -355,11 +445,15 @@ export default async function TopRatedShowcase() {
                   </h3>
 
                   <p className="mt-2 text-slate-400">
-                    {topExpert.specialty}
+                   {translateSpecialty(
+  topExpert.specialty,
+)}
                   </p>
 
                   <p className="mt-1 text-sm text-slate-500">
-                    {topExpert.country}
+                  {translateCountry(
+  topExpert.country,
+)}
                   </p>
 
                 </div>

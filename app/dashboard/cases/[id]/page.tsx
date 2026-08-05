@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
+import { getAuthorizedCaseViewScope } from "../../../../lib/cases";
 import StatusBadge, { type Status } from "../../../components/StatusBadge";
 import CompleteCaseStepButton from "../../../components/CompleteCaseStepButton";
 import AddCaseMessageForm from "../../../components/AddCaseMessageForm";
@@ -16,13 +17,34 @@ import TradeWorkflowTimeline from "../../../components/trade/TradeWorkflowTimeli
 
 type ActivityTranslation = (key: string) => string;
 
+type TranslationAccessor = ActivityTranslation & {
+  has: (key: string) => boolean;
+};
+
+function toCamelCase(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/_([a-z0-9])/g, (_match, character: string) =>
+      character.toUpperCase(),
+    );
+}
+
+function humanizeKey(value: string): string {
+  return value
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replaceAll("_", " ")
+    .trim()
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
 type Props = {
   params: Promise<{
     id: string;
   }>;
 };
 
-function getActivityDisplay(action: string, t: ActivityTranslation) {
+function getActivityDisplay(action: string, t: TranslationAccessor) {
   switch (action) {
     case "PROPOSAL_SUBMITTED":
       return {
@@ -73,23 +95,26 @@ function getActivityDisplay(action: string, t: ActivityTranslation) {
         border: "border-yellow-500",
       };
 
-    default:
+    default: {
+      const translationKey = `activity.actions.${toCamelCase(action)}`;
+
       return {
-        title: action
-          .replaceAll("_", " ")
-          .toLowerCase()
-          .replace(/\b\w/g, (character) => character.toUpperCase()),
+        title: t.has(translationKey)
+          ? t(translationKey)
+          : humanizeKey(action),
         icon: "•",
         border: "border-slate-600",
       };
+    }
   }
 }
 
 export default async function CaseDetailPage({ params }: Props) {
   const user = await requireUser();
 
-  const [t, locale] = await Promise.all([
+  const [t, tc, locale] = await Promise.all([
     getTranslations("caseDetailPage"),
+    getTranslations("common.categories"),
     getLocale(),
   ]);
 
@@ -100,10 +125,18 @@ export default async function CaseDetailPage({ params }: Props) {
     notFound();
   }
 
-  const tradeCase = await prisma.tradeCase.findUnique({
-    where: {
-      id: caseId,
-    },
+  const authorizedCaseScope = await getAuthorizedCaseViewScope({
+    caseId,
+    userId: user.id,
+    userRole: user.role,
+  });
+
+  if (!authorizedCaseScope) {
+    notFound();
+  }
+
+  const tradeCase = await prisma.tradeCase.findFirst({
+    where: authorizedCaseScope,
     select: {
       id: true,
       customerId: true,
@@ -139,7 +172,6 @@ export default async function CaseDetailPage({ params }: Props) {
         select: {
           id: true,
           name: true,
-          fileUrl: true,
           createdAt: true,
           uploader: {
             select: {
@@ -378,6 +410,36 @@ export default async function CaseDetailPage({ params }: Props) {
 
   const isRtl = locale.startsWith("fa") || locale.startsWith("ar");
 
+  function translateCategory(category: string): string {
+    const value = category.trim();
+    const lower = value.toLowerCase();
+    const normalized = lower.replaceAll(" ", "_");
+
+    if (tc.has(value)) {
+      return tc(value);
+    }
+
+    if (tc.has(lower)) {
+      return tc(lower);
+    }
+
+    if (tc.has(normalized)) {
+      return tc(normalized);
+    }
+
+    return category;
+  }
+
+  function translateStepTitle(title: string): string {
+    const translationKey = `workflow.steps.${title}`;
+
+    return t.has(translationKey)
+      ? t(translationKey)
+      : humanizeKey(title);
+  }
+
+  const categoryLabel = translateCategory(tradeCase.category);
+
   const customerName =
     tradeCase.customer.name || tradeCase.customer.email || t("unknownUser");
 
@@ -408,7 +470,7 @@ export default async function CaseDetailPage({ params }: Props) {
                 <StatusBadge status={tradeCase.status as Status} />
 
                 <span className="rounded-full border border-purple-500/40 bg-purple-600/20 px-4 py-2 text-sm font-semibold text-purple-300">
-                  <span aria-hidden="true">🧭</span> {tradeCase.category}
+                  <span aria-hidden="true">🧭</span> {categoryLabel}
                 </span>
               </div>
 
@@ -580,7 +642,7 @@ export default async function CaseDetailPage({ params }: Props) {
                         <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                           <div className="min-w-0">
                             <p className="break-words font-semibold">
-                              {step.title}
+                              {translateStepTitle(step.title)}
                             </p>
 
                             <p
@@ -909,7 +971,7 @@ export default async function CaseDetailPage({ params }: Props) {
                               </div>
 
                               <a
-                                href={document.fileUrl}
+                                href={`/api/cases/documents/${document.id}/download`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-fit shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
@@ -946,7 +1008,7 @@ export default async function CaseDetailPage({ params }: Props) {
                   <p className="text-sm text-slate-500">{t("category")}</p>
 
                   <p className="break-words text-slate-200">
-                    {tradeCase.category}
+                    {categoryLabel}
                   </p>
                 </div>
 

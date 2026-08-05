@@ -14,68 +14,123 @@ export default async function DashboardAttention({
   openCasesCount,
   myProposalsCount,
 }: Props) {
-  const t = await getTranslations("dashboardAttention");
+  const t = await getTranslations(
+    "dashboardAttention",
+  );
+
 
   const items = [
     {
       href: "/dashboard/notifications",
       label: t("unreadNotifications"),
       count: unreadNotificationsCount,
-      hoverClass: "hover:border-blue-500",
-      countClass: "text-blue-400",
+      color:
+        "text-blue-400 hover:border-blue-500/70 hover:shadow-blue-500/10",
     },
     {
       href: "/dashboard/tickets",
       label: t("openTickets"),
       count: openTicketsCount,
-      hoverClass: "hover:border-purple-500",
-      countClass: "text-purple-400",
+      color:
+        "text-purple-400 hover:border-purple-500/70 hover:shadow-purple-500/10",
     },
     {
       href: "/dashboard/open-cases",
       label: t("openCases"),
       count: openCasesCount,
-      hoverClass: "hover:border-emerald-500",
-      countClass: "text-emerald-400",
+      color:
+        "text-emerald-400 hover:border-emerald-500/70 hover:shadow-emerald-500/10",
     },
     {
       href: "/dashboard/my-proposals",
       label: t("myProposals"),
       count: myProposalsCount,
-      hoverClass: "hover:border-yellow-500",
-      countClass: "text-yellow-400",
+      color:
+        "text-yellow-400 hover:border-yellow-500/70 hover:shadow-yellow-500/10",
     },
   ];
 
+
   return (
     <section className="mb-12">
-      <div className="flex items-center justify-between gap-4 mb-6">
-        <h2 className="text-2xl font-bold">
-          {t("title")}
-        </h2>
 
-        <p className="text-slate-400 text-sm">
-          {t("description")}
-        </p>
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+
+        <div>
+
+          <h2 className="text-3xl font-black text-white">
+            {t("title")}
+          </h2>
+
+
+          <p className="mt-2 text-sm text-slate-400">
+            {t("description")}
+          </p>
+
+        </div>
+
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+
         {items.map((item) => (
+
           <Link
             key={item.href}
             href={item.href}
-            className={`rounded-3xl border border-slate-800 bg-slate-900 p-6 transition-all ${item.hoverClass}`}
+            className={`
+              group
+
+              rounded-[2rem]
+
+              border
+              border-slate-800
+
+              bg-gradient-to-br
+              from-slate-900
+              to-slate-950
+
+              p-6
+
+              transition-all
+              duration-300
+
+              hover:-translate-y-1
+              hover:shadow-2xl
+
+              ${item.color}
+            `}
           >
-            <p className="text-slate-500 text-sm">
+
+            <p className="text-sm text-slate-500">
               {item.label}
             </p>
 
-            <p className={`text-4xl font-bold mt-3 ${item.countClass}`}>
+
+            <p
+              className={`
+                mt-4
+                text-5xl
+                font-black
+                transition
+                group-hover:scale-105
+                ${item.color.split(" ")[0]}
+              `}
+            >
               {item.count}
             </p>
+
+
+            <div className="mt-5 h-1 w-12 rounded-full bg-slate-700 transition group-hover:w-20" />
+
           </Link>
+
         ))}
+
       </div>
+
     </section>
   );
 }

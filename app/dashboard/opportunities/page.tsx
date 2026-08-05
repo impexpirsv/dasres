@@ -37,6 +37,15 @@ export default async function DashboardOpportunitiesPage({
       ),
       getLocale(),
     ]);
+const tc = await getTranslations(
+  "common.countries",
+);
+
+  function translateCountry(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    return tc.has(normalized) ? tc(normalized) : tc.has(lower) ? tc(lower) : normalized;
+  }
 
   const numberFormatter =
     new Intl.NumberFormat(locale);
@@ -62,25 +71,23 @@ export default async function DashboardOpportunitiesPage({
       },
     }),
 
-    prisma.opportunity.findMany({
-      select: {
-        country: true,
-      },
+    prisma.opportunity.groupBy({
+      by: ["country"],
     }),
 
     prisma.opportunity.findFirst({
       orderBy: {
         id: "desc",
       },
+      select: {
+        title: true,
+        country: true,
+      },
     }),
   ]);
 
-  const uniqueCountries = new Set(
-    countries.map(
-      (opportunity) =>
-        opportunity.country,
-    ),
-  ).size;
+  const uniqueCountries =
+    countries.length;
 
   const totalPages = Math.ceil(
     totalOpportunities / PAGE_SIZE,
@@ -102,6 +109,14 @@ export default async function DashboardOpportunitiesPage({
       take: PAGE_SIZE,
       orderBy: {
         id: "desc",
+      },
+      select: {
+        id: true,
+        title: true,
+        country: true,
+        status: true,
+        description: true,
+        imageUrl: true,
       },
     });
 
@@ -186,9 +201,9 @@ export default async function DashboardOpportunitiesPage({
             {latestOpportunity.title}
           </h2>
 
-          <p className="mt-2 text-slate-400">
-            {latestOpportunity.country}
-          </p>
+         <p className="mt-2 text-slate-400">
+  {translateCountry(latestOpportunity.country)}
+</p>
         </div>
       )}
 

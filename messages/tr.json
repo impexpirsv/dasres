@@ -1,4 +1,498 @@
 {
+  "knowledgeHub": {
+    "common": {
+      "categoryNavigation": "Bilgi Merkezi",
+      "openLink": "Yardım Merkezi",
+      "relatedCategories": "Bilgi Merkezi"
+    },
+    "help": {
+      "eyebrow": "Yardım Merkezi",
+      "title": "Yardım Merkezi",
+      "summary": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+      "browseTitle": "Yardım Merkezi",
+      "browseDescription": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+      "entriesTitle": "Yardım Merkezi",
+      "relatedTitle": "Bilgi Merkezi",
+      "categories": {
+        "getting-started": {
+          "title": "Başlangıç",
+          "summary": "Başlangıç — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Başlangıç",
+          "seoDescription": "Başlangıç — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "accounts-and-access": {
+          "title": "Hesaplar ve erişim",
+          "summary": "Hesaplar ve erişim — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Hesaplar ve erişim",
+          "seoDescription": "Hesaplar ve erişim — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "cases-and-proposals": {
+          "title": "Vakalar ve teklifler",
+          "summary": "Vakalar ve teklifler — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Vakalar ve teklifler",
+          "seoDescription": "Vakalar ve teklifler — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "projects-and-tasks": {
+          "title": "Projeler ve görevler",
+          "summary": "Projeler ve görevler — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Projeler ve görevler",
+          "seoDescription": "Projeler ve görevler — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "companies-and-experts": {
+          "title": "Şirketler ve uzmanlar",
+          "summary": "Şirketler ve uzmanlar — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Şirketler ve uzmanlar",
+          "seoDescription": "Şirketler ve uzmanlar — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "tickets-and-support": {
+          "title": "Destek talepleri",
+          "summary": "Destek talepleri — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Destek talepleri",
+          "seoDescription": "Destek talepleri — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        }
+      },
+      "entries": {
+        "register": {
+          "title": "Başlangıç 1",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "signIn": {
+          "title": "Hesaplar ve erişim 1",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "language": {
+          "title": "Vakalar ve teklifler 1",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "session": {
+          "title": "Projeler ve görevler 1",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "dashboard": {
+          "title": "Şirketler ve uzmanlar 1",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "permissions": {
+          "title": "Destek talepleri 1",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "createCase": {
+          "title": "Başlangıç 2",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "submitProposal": {
+          "title": "Hesaplar ve erişim 2",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "acceptProposal": {
+          "title": "Vakalar ve teklifler 2",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "projects": {
+          "title": "Projeler ve görevler 2",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "tasks": {
+          "title": "Şirketler ve uzmanlar 2",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "documentsMessages": {
+          "title": "Destek talepleri 2",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "profiles": {
+          "title": "Başlangıç 3",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "ownership": {
+          "title": "Hesaplar ve erişim 3",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "verification": {
+          "title": "Vakalar ve teklifler 3",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "createTicket": {
+          "title": "Projeler ve görevler 3",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "reply": {
+          "title": "Şirketler ve uzmanlar 3",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "closeReopen": {
+          "title": "Destek talepleri 3",
+          "body": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        }
+      }
+    },
+    "resources": {
+      "eyebrow": "Bilgi Merkezi",
+      "title": "Bilgi Merkezi",
+      "summary": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+      "browseTitle": "Bilgi Merkezi",
+      "emptyTitle": "Bilgi Merkezi",
+      "emptyDescription": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+      "categories": {
+        "tutorials": {
+          "title": "Eğitimler",
+          "summary": "Eğitimler — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Eğitimler",
+          "seoDescription": "Eğitimler — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "purposeTitle": "Eğitimler",
+          "purpose": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "news": {
+          "title": "Ticaret Haberleri",
+          "summary": "Ticaret Haberleri — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Ticaret Haberleri",
+          "seoDescription": "Ticaret Haberleri — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "purposeTitle": "Ticaret Haberleri",
+          "purpose": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "customs": {
+          "title": "Gümrük Yazıları",
+          "summary": "Gümrük Yazıları — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Gümrük Yazıları",
+          "seoDescription": "Gümrük Yazıları — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "purposeTitle": "Gümrük Yazıları",
+          "purpose": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "countries": {
+          "title": "Ülke Rehberleri",
+          "summary": "Ülke Rehberleri — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Ülke Rehberleri",
+          "seoDescription": "Ülke Rehberleri — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "purposeTitle": "Ülke Rehberleri",
+          "purpose": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "glossary": {
+          "title": "Sözlük",
+          "summary": "Sözlük — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Sözlük",
+          "seoDescription": "Sözlük — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "purposeTitle": "Sözlük",
+          "purpose": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        },
+        "case-studies": {
+          "title": "Vaka Çalışmaları",
+          "summary": "Vaka Çalışmaları — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "seoTitle": "Vaka Çalışmaları",
+          "seoDescription": "Vaka Çalışmaları — Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "purposeTitle": "Vaka Çalışmaları",
+          "purpose": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        }
+      },
+      "policy": {
+        "title": "Bilgi Merkezi",
+        "points": {
+          "changing": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "dates": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "sources": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "education": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "stale": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir."
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "Sık Sorulan Sorular",
+      "title": "Sık Sorulan Sorular",
+      "summary": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+      "sectionTitle": "Sık Sorulan Sorular",
+      "items": {
+        "verification": {
+          "question": "Başlangıç?",
+          "answer": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "category": "Başlangıç"
+        },
+        "plans": {
+          "question": "Hesaplar ve erişim?",
+          "answer": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "category": "Hesaplar ve erişim"
+        },
+        "cases": {
+          "question": "Vakalar ve teklifler?",
+          "answer": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "category": "Vakalar ve teklifler"
+        },
+        "proposals": {
+          "question": "Projeler ve görevler?",
+          "answer": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "category": "Projeler ve görevler"
+        },
+        "tickets": {
+          "question": "Şirketler ve uzmanlar?",
+          "answer": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "category": "Şirketler ve uzmanlar"
+        },
+        "language": {
+          "question": "Destek talepleri?",
+          "answer": "Bu rehber mevcut Dasres davranışını yansıtır; kimlik, sahiplik, rol, durum ve plan sınırları geçerlidir.",
+          "category": "Destek talepleri"
+        }
+      }
+    }
+  }
+  ,
+  "publicSite": {
+    "navigation": {
+      "primaryLabel": "Ana gezinme",
+      "brandHomeLabel": "Dasres ana sayfa",
+      "tagline": "Bağlantılı küresel ticaret",
+      "companies": "Şirketler",
+      "experts": "Uzmanlar",
+      "opportunities": "Fırsatlar",
+      "pricing": "Planlar",
+      "resources": "Kaynaklar",
+      "about": "Hakkımızda",
+      "contact": "İletişim",
+      "help": "Yardım",
+      "login": "Giriş",
+      "join": "Dasres’e katıl",
+      "toggleMenu": "Gezinmeyi aç"
+    },
+    "footer": {
+      "navigationLabel": "Alt gezinme",
+      "trustStatement": "Doğrulanmış şirketleri, uzmanları ve uluslararası ticaret fırsatlarını tek alanda keşfedin.",
+      "supportEntry": "İletişim",
+      "groups": {
+        "platform": "Platform",
+        "solutions": "Çözümler",
+        "resources": "Kaynaklar",
+        "company": "Şirket",
+        "legal": "Yasal"
+      },
+      "links": {
+        "companies": "Şirketler",
+        "experts": "Uzmanlar",
+        "opportunities": "Fırsatlar",
+        "pricing": "Planlar",
+        "dashboard": "Panel",
+        "help": "Yardım",
+        "resourceHub": "Kaynaklar",
+        "faq": "SSS",
+        "about": "Hakkımızda",
+        "contact": "İletişim",
+        "privacy": "Gizlilik",
+        "terms": "Koşullar",
+        "cookies": "Çerezler"
+      },
+      "copyright": "© {year} Dasres. Tüm hakları saklıdır.",
+      "languageLabel": "Dil"
+    },
+    "common": {
+      "home": "Ana sayfa"
+    },
+    "pages": {
+      "about": {
+        "metadata": {
+          "title": "Dasres Hakkında",
+          "description": "Dasres Hakkında — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Kaynaklar",
+        "title": "Dasres Hakkında",
+        "description": "Dasres Hakkında — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "sectionTitle": "Dasres Hakkında",
+        "sectionDescription": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "cta": {
+          "title": "Dasres Hakkında",
+          "description": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+          "label": "Şirketler"
+        }
+      },
+      "contact": {
+        "metadata": {
+          "title": "Dasres ile İletişim",
+          "description": "Dasres ile İletişim — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Kaynaklar",
+        "title": "Dasres ile İletişim",
+        "description": "Dasres ile İletişim — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "sectionTitle": "Dasres ile İletişim",
+        "sectionDescription": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "cta": {
+          "title": "Dasres ile İletişim",
+          "description": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+          "label": "Panel"
+        }
+      },
+      "help": {
+        "metadata": {
+          "title": "Yardım Merkezi",
+          "description": "Yardım Merkezi — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Kaynaklar",
+        "title": "Yardım Merkezi",
+        "description": "Yardım Merkezi — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "sectionTitle": "Yardım Merkezi",
+        "sectionDescription": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "cta": {
+          "title": "Yardım Merkezi",
+          "description": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+          "label": "SSS"
+        }
+      },
+      "faq": {
+        "metadata": {
+          "title": "Sık Sorulan Sorular",
+          "description": "Sık Sorulan Sorular — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Kaynaklar",
+        "title": "Sık Sorulan Sorular",
+        "description": "Sık Sorulan Sorular — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "sectionTitle": "Sık Sorulan Sorular",
+        "sectionDescription": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "cta": {
+          "title": "Sık Sorulan Sorular",
+          "description": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+          "label": "İletişim"
+        }
+      },
+      "resources": {
+        "metadata": {
+          "title": "Ticaret Kaynakları",
+          "description": "Ticaret Kaynakları — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Kaynaklar",
+        "title": "Ticaret Kaynakları",
+        "description": "Ticaret Kaynakları — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "sectionTitle": "Ticaret Kaynakları",
+        "sectionDescription": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "cards": {
+          "tutorials": {
+            "title": "Eğitimler",
+            "description": "Eğitimler — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          },
+          "news": {
+            "title": "Ticaret Haberleri",
+            "description": "Ticaret Haberleri — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          },
+          "customs": {
+            "title": "Gümrük Yazıları",
+            "description": "Gümrük Yazıları — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          },
+          "countries": {
+            "title": "Ülke Rehberleri",
+            "description": "Ülke Rehberleri — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          },
+          "glossary": {
+            "title": "Sözlük",
+            "description": "Sözlük — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          },
+          "cases": {
+            "title": "Vaka Çalışmaları",
+            "description": "Vaka Çalışmaları — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          }
+        }
+      },
+      "pricing": {
+        "metadata": {
+          "title": "Planlar ve Sınırlar",
+          "description": "Planlar ve Sınırlar — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Planlar",
+        "title": "Planlar ve Sınırlar",
+        "description": "Planlar ve Sınırlar — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "sectionTitle": "Planlar ve Sınırlar",
+        "sectionDescription": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+      "activeCases": "Aktif ticaret vakaları",
+      "proposals": "Teklifler",
+      "unlimited": "Sınırsız",
+        "availabilityNotice": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "plans": {
+          "free": {
+            "name": "Ücretsiz",
+            "description": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          },
+          "gold": {
+            "name": "Altın",
+            "description": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          },
+          "diamond": {
+            "name": "Elmas",
+            "description": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          },
+          "enterprise": {
+            "name": "Kurumsal",
+            "description": "Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+          }
+        }
+      },
+      "privacy": {
+        "metadata": {
+          "title": "Gizlilik Politikası Taslağı",
+          "description": "Gizlilik Politikası Taslağı — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Yasal",
+        "title": "Gizlilik Politikası Taslağı",
+        "description": "Gizlilik Politikası Taslağı — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "reviewNotice": "Hukuki inceleme taslağıdır; mevcut işleyişi açıklar ve nihai hukuki görüş değildir.",
+        "sections": {
+          "scope": {
+            "title": "Gizlilik Politikası Taslağı",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          },
+          "data": {
+            "title": "Gizlilik",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          },
+          "choices": {
+            "title": "Koşullar",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          }
+        }
+      },
+      "terms": {
+        "metadata": {
+          "title": "Hizmet Koşulları Taslağı",
+          "description": "Hizmet Koşulları Taslağı — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Yasal",
+        "title": "Hizmet Koşulları Taslağı",
+        "description": "Hizmet Koşulları Taslağı — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "reviewNotice": "Hukuki inceleme taslağıdır; mevcut işleyişi açıklar ve nihai hukuki görüş değildir.",
+        "sections": {
+          "scope": {
+            "title": "Hizmet Koşulları Taslağı",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          },
+          "data": {
+            "title": "Gizlilik",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          },
+          "choices": {
+            "title": "Koşullar",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          }
+        }
+      },
+      "cookies": {
+        "metadata": {
+          "title": "Çerez Politikası Taslağı",
+          "description": "Çerez Politikası Taslağı — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi."
+        },
+        "eyebrow": "Yasal",
+        "title": "Çerez Politikası Taslağı",
+        "description": "Çerez Politikası Taslağı — Dasres ve uluslararası ticaret çalışma alanı hakkında güncel, pratik bilgi.",
+        "reviewNotice": "Hukuki inceleme taslağıdır; mevcut işleyişi açıklar ve nihai hukuki görüş değildir.",
+        "sections": {
+          "scope": {
+            "title": "Çerez Politikası Taslağı",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          },
+          "data": {
+            "title": "Gizlilik",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          },
+          "choices": {
+            "title": "Koşullar",
+            "description": "Taslak hesapları, açık profilleri, fırsatları, iş birliğini, kimlik doğrulamayı, izinleri, desteği ve dili kapsar. Saklama, ticari, yargı ve uyuşmazlık şartları hukuki onay gerektirir."
+          }
+        }
+      }
+    }
+  }
+  ,
   "common": {
     "years": "{count} yıl",
     "hours": "saat",
@@ -2100,7 +2594,7 @@
     "searchPlaceholder": "Şirketleri, uzmanları, fırsatları, vakaları arayın...",
     "searchButton": "Aramak",
     "initialState": "Dasres genelinde arama yapmak için bir anahtar kelime girin.",
-    "resultsSummary": "{count, plural, =0 {} =1 { için sonuç bulunamadı} other { için1 sonuç bulundu}} için # sonuç bulundu",
+    "resultsSummary": "{count, plural, =0 {Sonuç bulunamadı} =1 {1 sonuç bulundu} other {# sonuç bulundu}}",
     "sections": {
       "companies": {
         "title": "Şirketler",

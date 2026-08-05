@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import {
   getLocale,
@@ -7,6 +8,22 @@ import {
 
 import { prisma } from "../../lib/prisma";
 import { calculateTrustScore } from "../../lib/ranking";
+import { serializeJsonLd } from "../../lib/seo/jsonld";
+import {
+  defaultLocale,
+  isLocale,
+  type Locale,
+} from "../../lib/locale";
+import {
+  getAlternateOpenGraphLocales,
+  openGraphLocaleMap,
+} from "../../lib/seo/localized-homepage";
+import { getLocalizedCompaniesAlternates } from "../../lib/seo/localized-companies";
+import {
+  createPublicPageMetadata,
+  getPaginationMetadataState,
+} from "../../lib/seo/metadata";
+import { createDirectoryPageJsonLd } from "../../lib/seo/structured-data";
 import CompaniesSearch from "../components/CompaniesSearch";
 
 const PAGE_SIZE = 10;
@@ -22,12 +39,25 @@ type CompaniesPageProps = {
   searchParams?: Promise<{
     page?: string;
   }>;
+  routeLocale?: Locale;
+  localized?: boolean;
 };
+
+const getCompaniesCount = unstable_cache(
+  () =>
+    prisma.company.count({
+      where: { verificationStatus: "VERIFIED" },
+    }),
+  ["public-companies-count"],
+  {
+    revalidate: 300,
+    tags: ["public-companies"],
+  },
+);
 
 const getCompaniesPageData = unstable_cache(
   async (requestedPage: number) => {
-    const totalCompanies =
-      await prisma.company.count();
+    const totalCompanies = await getCompaniesCount();
 
     const totalPages = Math.max(
       1,
@@ -41,6 +71,7 @@ const getCompaniesPageData = unstable_cache(
 
     const companies =
       await prisma.company.findMany({
+        where: { verificationStatus: "VERIFIED" },
         skip:
           (currentPage - 1) * PAGE_SIZE,
         take: PAGE_SIZE,
@@ -53,9 +84,7 @@ const getCompaniesPageData = unstable_cache(
           country: true,
           category: true,
           status: true,
-          verificationStatus: true,
           description: true,
-          email: true,
           website: true,
           logoUrl: true,
           planType: true,
@@ -85,8 +114,68 @@ const getCompaniesPageData = unstable_cache(
   },
 );
 
+export async function createCompaniesMetadata({
+  searchParams,
+  routeLocale,
+  localized = false,
+}: CompaniesPageProps): Promise<Metadata> {
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const [params, t] = await Promise.all([
+    searchParams,
+    getTranslations({ locale, namespace: "publicCompanies" }),
+  ]);
+  const rawPage = params?.page;
+  const totalCompanies = await getCompaniesCount();
+  const totalPages = Math.max(
+    1,
+    Math.ceil(totalCompanies / PAGE_SIZE),
+  );
+  const pagination = getPaginationMetadataState({
+    pathname: localized ? `/${locale}/companies` : "/companies",
+    rawPage,
+    totalPages,
+  });
+
+  const metadata = createPublicPageMetadata({
+    title: t("title"),
+    description: t("description"),
+    canonical: pagination.isValid
+      ? pagination.canonical
+      : undefined,
+    robots: pagination.isValid
+      ? undefined
+      : {
+          index: false,
+          follow: true,
+        },
+  });
+
+  if (!localized || !pagination.isValid) {
+    return metadata;
+  }
+
+  return {
+    ...metadata,
+    alternates: {
+      canonical: pagination.canonical,
+      languages: getLocalizedCompaniesAlternates({ page: pagination.page }),
+    },
+    openGraph: {
+      ...metadata.openGraph,
+      url: pagination.canonical,
+      locale: openGraphLocaleMap[locale],
+      alternateLocale: getAlternateOpenGraphLocales(locale),
+    },
+  };
+}
+
+export const generateMetadata = createCompaniesMetadata;
+
 export default async function CompaniesPage({
   searchParams,
+  routeLocale,
+  localized = false,
 }: CompaniesPageProps) {
   const params = await searchParams;
 
@@ -98,11 +187,14 @@ export default async function CompaniesPage({
       ? parsedPage
       : 1;
 
-  const locale = await getLocale();
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const companiesPath = localized ? `/${locale}/companies` : "/companies";
 
-  const t = await getTranslations(
-    "publicCompanies",
-  );
+  const [t, navigation] = await Promise.all([
+    getTranslations({ locale, namespace: "publicCompanies" }),
+    getTranslations({ locale, namespace: "navbar" }),
+  ]);
 
   const numberFormatter =
     new Intl.NumberFormat(locale);
@@ -135,8 +227,7 @@ export default async function CompaniesPage({
         calculateTrustScore({
           averageRating,
           completedCases: 0,
-          verificationStatus:
-            company.verificationStatus,
+          verificationStatus: "VERIFIED",
           planType: company.planType,
         });
 
@@ -146,10 +237,8 @@ export default async function CompaniesPage({
         country: company.country,
         category: company.category,
         status: company.status,
-        verificationStatus:
-          company.verificationStatus,
+        verificationStatus: "VERIFIED",
         description: company.description,
-        email: company.email,
         website: company.website,
         logoUrl: company.logoUrl,
         planType: company.planType,
@@ -174,12 +263,7 @@ export default async function CompaniesPage({
       second.id - first.id,
   );
 
-  const verifiedCompaniesCount =
-    sortedCompaniesWithRatings.filter(
-      (company) =>
-        company.verificationStatus ===
-        "VERIFIED",
-    ).length;
+  const verifiedCompaniesCount = totalCompanies;
 
   const ratedCompaniesCount =
     sortedCompaniesWithRatings.filter(
@@ -187,10 +271,42 @@ export default async function CompaniesPage({
         company.averageRating > 0,
     ).length;
 
+  const pagination = getPaginationMetadataState({
+    pathname: companiesPath,
+    rawPage: params?.page,
+    totalPages,
+  });
+  const directoryJsonLd = pagination.isValid
+    ? createDirectoryPageJsonLd({
+        canonicalPath: pagination.canonical,
+        name: t("title"),
+        description: t("description"),
+        language: locale,
+        breadcrumbs: [
+          {
+            name: navigation("home"),
+            pathname: localized ? `/${locale}` : "/",
+          },
+          {
+            name: navigation("companies"),
+            pathname: pagination.canonical,
+          },
+        ],
+      })
+    : null;
+
  // فقط بخش return را تغییر بده، بقیه فایل دست نزن
 
 return (
   <div className="min-h-screen bg-slate-950 text-white">
+    {directoryJsonLd && (
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(directoryJsonLd),
+        }}
+      />
+    )}
     <div className="mx-auto max-w-7xl px-6 py-20">
 
       <div className="relative mb-14 overflow-hidden rounded-[2.5rem] border border-slate-800 bg-slate-900/70 p-8 md:p-12">
@@ -258,6 +374,7 @@ return (
 
       <CompaniesSearch
         companies={sortedCompaniesWithRatings}
+        profileBasePath={companiesPath}
       />
 
 
@@ -265,7 +382,7 @@ return (
 
         {currentPage > 1 && (
           <Link
-            href={`/companies?page=${currentPage - 1}`}
+            href={`${companiesPath}?page=${currentPage - 1}`}
             className="rounded-xl border border-slate-700 bg-slate-900 px-5 py-3 font-semibold text-slate-300 transition hover:border-blue-500 hover:text-white"
           >
             {t("pagination.previous")}
@@ -287,7 +404,7 @@ return (
 
         {currentPage < totalPages && (
           <Link
-            href={`/companies?page=${currentPage + 1}`}
+            href={`${companiesPath}?page=${currentPage + 1}`}
             className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-5 py-3 font-semibold text-white transition hover:scale-[1.02]"
           >
             {t("pagination.next")}

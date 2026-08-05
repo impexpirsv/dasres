@@ -31,8 +31,8 @@ export default function StatCard({
   color = "white",
 }: StatCardProps) {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-xl">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+    <div className="ui-card ui-card-interactive">
+      <p className="text-sm font-semibold text-slate-400">
         {title}
       </p>
 
@@ -47,7 +47,7 @@ export default function StatCard({
       </p>
 
       {subtitle && (
-        <p className="mt-2 text-xs uppercase tracking-wide text-slate-500">
+        <p className="mt-2 text-sm leading-5 text-slate-400">
           {subtitle}
         </p>
       )}

@@ -1,4 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import {
+  Prisma,
+  PrismaClient,
+} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -15,6 +18,14 @@ type TradeCaseRecord = {
   acceptedProposalId: number | null;
 };
 
+type ReviewRecord = {
+  id: number;
+  caseId: number | null;
+  reviewerId: number;
+  reviewedUserId: number;
+  rating: number;
+};
+
 type AuditResult = {
   name: string;
   count: number;
@@ -26,7 +37,7 @@ function createCompositeKey(
   ...values: Array<
     string | number | null
   >
-) {
+): string {
   return values.join(":");
 }
 
@@ -53,11 +64,28 @@ function findDuplicateKeys(
     }));
 }
 
+async function readReviewsSafely(): Promise<
+  ReviewRecord[]
+> {
+  return prisma.$queryRaw<
+    ReviewRecord[]
+  >(Prisma.sql`
+    SELECT
+      "id",
+      "caseId",
+      "reviewerId",
+      "reviewedUserId",
+      "rating"
+    FROM "Review"
+    ORDER BY "id" ASC
+  `);
+}
+
 async function runAudit() {
   const [
     invalidTaskProgress,
     negativeTaskHours,
-    invalidReviewRatings,
+    reviews,
     proposals,
     tradeCases,
   ] = await Promise.all([
@@ -118,29 +146,7 @@ async function runAudit() {
       },
     }),
 
-    prisma.review.findMany({
-      where: {
-        OR: [
-          {
-            rating: {
-              lt: 1,
-            },
-          },
-          {
-            rating: {
-              gt: 5,
-            },
-          },
-        ],
-      },
-      select: {
-        id: true,
-        caseId: true,
-        reviewerId: true,
-        reviewedUserId: true,
-        rating: true,
-      },
-    }),
+    readReviewsSafely(),
 
     prisma.caseProposal.findMany({
       select: {
@@ -166,31 +172,72 @@ async function runAudit() {
   const tradeCaseRecords: TradeCaseRecord[] =
     tradeCases;
 
- const proposalsWithoutCompany =
-  proposalRecords.filter(
-    (proposal) =>
-      proposal.companyId === null,
-  );
+  const invalidReviewRatings =
+    reviews.filter(
+      (review) =>
+        review.rating < 1 ||
+        review.rating > 5,
+    );
+
+  const reviewsWithoutCase =
+    reviews.filter(
+      (review) =>
+        review.caseId === null,
+    );
+
+  const selfReviews =
+    reviews.filter(
+      (review) =>
+        review.reviewerId ===
+        review.reviewedUserId,
+    );
+
+  const duplicateCaseReviews =
+    findDuplicateKeys(
+      reviews
+        .filter(
+          (
+            review,
+          ): review is ReviewRecord & {
+            caseId: number;
+          } =>
+            review.caseId !== null,
+        )
+        .map((review) =>
+          createCompositeKey(
+            review.caseId,
+            review.reviewerId,
+            review.reviewedUserId,
+          ),
+        ),
+    );
+
+  const proposalsWithoutCompany =
+    proposalRecords.filter(
+      (proposal) =>
+        proposal.companyId === null,
+    );
 
   const duplicateActiveCompanyProposals =
-  findDuplicateKeys(
-    proposalRecords
-      .filter(
-        (
-          proposal,
-        ): proposal is ProposalRecord & {
-          companyId: number;
-        } =>
-          proposal.companyId !== null &&
-          proposal.status !== "REJECTED",
-      )
-      .map((proposal) =>
-        createCompositeKey(
-          proposal.caseId,
-          proposal.companyId,
+    findDuplicateKeys(
+      proposalRecords
+        .filter(
+          (
+            proposal,
+          ): proposal is ProposalRecord & {
+            companyId: number;
+          } =>
+            proposal.companyId !== null &&
+            proposal.status !==
+              "REJECTED",
+        )
+        .map((proposal) =>
+          createCompositeKey(
+            proposal.caseId,
+            proposal.companyId,
+          ),
         ),
-      ),
-  );
+    );
 
   const casesWithMultipleAcceptedProposals =
     findDuplicateKeys(
@@ -258,7 +305,8 @@ async function runAudit() {
 
   const results: AuditResult[] = [
     {
-      name: "Project tasks with progress outside 0–100",
+      name:
+        "Project tasks with progress outside 0–100",
       count:
         invalidTaskProgress.length,
       severity: "critical",
@@ -266,7 +314,8 @@ async function runAudit() {
         invalidTaskProgress,
     },
     {
-      name: "Project tasks with negative hour values",
+      name:
+        "Project tasks with negative hour values",
       count:
         negativeTaskHours.length,
       severity: "critical",
@@ -274,32 +323,62 @@ async function runAudit() {
         negativeTaskHours,
     },
     {
-      name: "Reviews with rating outside 1–5",
+      name:
+        "Reviews with rating outside 1–5",
       count:
         invalidReviewRatings.length,
       severity: "critical",
       details:
         invalidReviewRatings,
     },
-   {
-  name: "Proposals without a company",
-  count:
-    proposalsWithoutCompany.length,
-  severity: "critical",
-  details:
-    proposalsWithoutCompany,
-},
-  
-   {
-  name: "Duplicate active company proposals for the same case",
-  count:
-    duplicateActiveCompanyProposals.length,
-  severity: "critical",
-  details:
-    duplicateActiveCompanyProposals,
-},
     {
-      name: "Cases with multiple accepted proposals",
+      name:
+        "Reviews without a case",
+      count:
+        reviewsWithoutCase.length,
+      severity: "critical",
+      details:
+        reviewsWithoutCase,
+    },
+    {
+      name:
+        "Reviews where reviewer and target are the same user",
+      count:
+        selfReviews.length,
+      severity: "critical",
+      details:
+        selfReviews,
+    },
+    {
+      name:
+        "Duplicate reviews for the same case, reviewer, and target",
+      count:
+        duplicateCaseReviews.length,
+      severity: "critical",
+      details:
+        duplicateCaseReviews,
+    },
+    {
+      name:
+        "Proposals without a company",
+      count:
+        proposalsWithoutCompany.length,
+      severity: "critical",
+      details:
+        proposalsWithoutCompany,
+    },
+    {
+      name:
+        "Duplicate active company proposals for the same case",
+      count:
+        duplicateActiveCompanyProposals.length,
+      severity: "critical",
+      details:
+        duplicateActiveCompanyProposals,
+    },
+    {
+      name:
+        "Cases with multiple accepted proposals",
       count:
         casesWithMultipleAcceptedProposals.length,
       severity: "critical",
@@ -307,7 +386,8 @@ async function runAudit() {
         casesWithMultipleAcceptedProposals,
     },
     {
-      name: "Invalid acceptedProposalId references",
+      name:
+        "Invalid acceptedProposalId references",
       count:
         invalidAcceptedProposalReferences.length,
       severity: "critical",
@@ -337,9 +417,12 @@ async function runAudit() {
       result.count > 0 &&
       result.details
     ) {
-      console.dir(result.details, {
-        depth: null,
-      });
+      console.dir(
+        result.details,
+        {
+          depth: null,
+        },
+      );
     }
   }
 

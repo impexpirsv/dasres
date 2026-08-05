@@ -201,7 +201,7 @@ export default async function UsersPage() {
             </p>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="workspace-horizontal-scroll overflow-x-auto rounded-xl border border-slate-800">
             <table className="w-full min-w-[900px]">
               <thead>
                 <tr className="border-b border-slate-800 bg-slate-950/60">

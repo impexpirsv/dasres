@@ -29,13 +29,13 @@ export default function KanbanColumn({
         count,
       })}
       data-column-id={id}
-      className={`min-h-[500px] rounded-3xl border p-5 transition ${
+      className={`w-[min(82vw,20rem)] shrink-0 snap-start rounded-[var(--ui-radius-card)] border p-3 transition sm:p-4 xl:min-h-[32rem] xl:w-auto ${
         isOver
           ? "border-blue-500 bg-blue-950/30"
           : "border-slate-800 bg-slate-900"
       }`}
     >
-      <div className="mb-5 flex items-center justify-between gap-3">
+      <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
         <h2 className="min-w-0 break-words font-bold text-white">
           {title}
         </h2>
@@ -44,13 +44,13 @@ export default function KanbanColumn({
           aria-label={t("taskCount", {
             count,
           })}
-          className="shrink-0 rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300"
+          className="ui-badge shrink-0 border-slate-700 bg-slate-800 text-slate-200"
         >
           {count}
         </span>
       </div>
 
-      <div className="min-h-40 space-y-4">
+      <div className="min-h-32 space-y-3">
         {children}
       </div>
     </section>

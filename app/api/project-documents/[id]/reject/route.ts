@@ -1,118 +1,98 @@
-import { Prisma } from "@prisma/client";
-import { prisma } from "../../../../../lib/prisma";
+import { apiHandler } from "../../../../../lib/api";
 import { requireAdmin } from "../../../../../lib/auth";
+import { AppError } from "../../../../../lib/errors";
+import {
+  parseRejectProjectDocumentInput,
+  rejectProjectDocument,
+} from "../../../../../lib/project-documents";
 import { parseId } from "../../../../../lib/validation";
 
+async function readOptionalJsonBody(
+  request: Request,
+): Promise<unknown> {
+  let rawBody: string;
+
+  try {
+    rawBody = await request.text();
+  } catch {
+    throw new AppError(
+      "INVALID_REQUEST_BODY",
+      400,
+    );
+  }
+
+  if (!rawBody.trim()) {
+    return {};
+  }
+
+  const contentType = request.headers.get(
+    "content-type",
+  );
+
+  if (
+    !contentType ||
+    !contentType
+      .toLowerCase()
+      .includes("application/json")
+  ) {
+    throw new AppError(
+      "UNSUPPORTED_MEDIA_TYPE",
+      415,
+    );
+  }
+
+  try {
+    return JSON.parse(rawBody) as unknown;
+  } catch {
+    throw new AppError(
+      "INVALID_JSON_BODY",
+      400,
+    );
+  }
+}
+
 export async function PATCH(
-  _request: Request,
+  request: Request,
   {
     params,
   }: {
-    params: Promise<{ id: string }>;
+    params: Promise<{
+      id: string;
+    }>;
   },
 ) {
-  try {
+  return apiHandler(async () => {
     const user = await requireAdmin();
-
     const { id } = await params;
     const documentId = parseId(
       id,
       "document id",
     );
-
-    const existingDocument =
-      await prisma.projectTaskAttachment.findUnique({
-        where: {
-          id: documentId,
-        },
-        select: {
-          id: true,
-          approvalStatus: true,
-        },
-      });
-
-    if (!existingDocument) {
-      return Response.json(
-        {
-          code: "PROJECT_DOCUMENT_NOT_FOUND",
-        },
-        {
-          status: 404,
-        },
+    const body =
+      await readOptionalJsonBody(request);
+    const input =
+      parseRejectProjectDocumentInput(
+        body,
       );
-    }
 
-    if (
-      existingDocument.approvalStatus ===
-      "REJECTED"
-    ) {
+    const result =
+      await rejectProjectDocument({
+        documentId,
+        authenticatedUserId: user.id,
+        input,
+      });
+
+    if (result.alreadyInRequestedState) {
       return Response.json({
-        code: "PROJECT_DOCUMENT_ALREADY_REJECTED",
+        code:
+          "PROJECT_DOCUMENT_ALREADY_REJECTED",
+        document: result.document,
       });
     }
-
-    const document =
-      await prisma.projectTaskAttachment.update({
-        where: {
-          id: documentId,
-        },
-        data: {
-          approvalStatus: "REJECTED",
-          approvedById: user.id,
-          approvedAt: new Date(),
-          rejectionReason: "Rejected by admin",
-        },
-        select: {
-          id: true,
-          fileName: true,
-          fileUrl: true,
-          approvalStatus: true,
-          approvedById: true,
-          approvedAt: true,
-          rejectionReason: true,
-          uploadedById: true,
-          taskId: true,
-        },
-      });
 
     return Response.json({
       code: "PROJECT_DOCUMENT_REJECTED",
-      document,
+      document: result.document,
     });
-  } catch (error) {
-    if (error instanceof Response) {
-      return error;
-    }
-
-    if (
-      error instanceof
-        Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2025"
-    ) {
-      return Response.json(
-        {
-          code: "PROJECT_DOCUMENT_NOT_FOUND",
-        },
-        {
-          status: 404,
-        },
-      );
-    }
-
-    console.error(
-      "PROJECT_DOCUMENT_REJECT_ERROR",
-      {
-        error,
-      },
-    );
-
-    return Response.json(
-      {
-        code: "PROJECT_DOCUMENT_REJECT_FAILED",
-      },
-      {
-        status: 500,
-      },
-    );
-  }
+  });
 }

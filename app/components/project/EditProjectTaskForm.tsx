@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -147,6 +147,31 @@ export default function EditProjectTaskForm({
     setDependsOnId(initialDependsOnId);
   }
 
+
+  useEffect(() => {
+    setTitle(currentTitle);
+    setDescription(initialDescription);
+    setPriority(initialPriority);
+    setStartDate(initialStartDate);
+    setDueDate(initialDueDate);
+    setAssignedToId(initialAssignedToId);
+    setEstimatedHours(initialEstimatedHours);
+    setLoggedHours(initialLoggedHours);
+    setDependsOnId(initialDependsOnId);
+    setEditing(false);
+  }, [
+    taskId,
+    currentTitle,
+    initialDescription,
+    initialPriority,
+    initialStartDate,
+    initialDueDate,
+    initialAssignedToId,
+    initialEstimatedHours,
+    initialLoggedHours,
+    initialDependsOnId,
+  ]);
+
   function cancelEditing() {
     resetForm();
     setEditing(false);
@@ -187,6 +212,16 @@ export default function EditProjectTaskForm({
       return;
     }
 
+    if (
+      startDate &&
+      dueDate &&
+      new Date(dueDate).getTime() <
+        new Date(startDate).getTime()
+    ) {
+      alert(t.has("invalidDateRange") ? t("invalidDateRange") : t("updateError"));
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -215,7 +250,13 @@ export default function EditProjectTaskForm({
         },
       );
 
-      const data = await response.json();
+      let data: { message?: string } = {};
+
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
       if (!response.ok) {
         alert(data.message || t("updateError"));

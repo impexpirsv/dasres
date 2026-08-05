@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
+import { getCaseSearchVisibilityScope } from "../../../lib/cases";
 
 export const dynamic = "force-dynamic";
 
@@ -18,91 +19,86 @@ export default async function DashboardSearchPage({
 }: {
   searchParams?: Promise<{ q?: string }>;
 }) {
-  await requireUser();
+  const user = await requireUser();
 
   const t = await getTranslations(
     "dashboardSearch",
   );
 
+  const [tc, tcat, ts] = await Promise.all([
+    getTranslations("common.countries"),
+    getTranslations("common.categories"),
+    getTranslations("common.specialties"),
+  ]);
+
+  function translateCountry(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    return tc.has(normalized) ? tc(normalized) : tc.has(lower) ? tc(lower) : normalized;
+  }
+
+  function translateCategory(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return tcat.has(normalized) ? tcat(normalized) : tcat.has(lower) ? tcat(lower) : tcat.has(underscored) ? tcat(underscored) : normalized;
+  }
+
+  function translateSpecialty(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return ts.has(normalized) ? ts(normalized) : ts.has(lower) ? ts(lower) : ts.has(underscored) ? ts(underscored) : normalized;
+  }
+
   const params = await searchParams;
   const q = String(params?.q || "").trim();
 
-  const companies = q
-    ? await prisma.company.findMany({
+  const [companies, experts, opportunities, cases] = q
+    ? await Promise.all([
+      prisma.company.findMany({
         where: {
+          verificationStatus: "VERIFIED",
           OR: [
-            {
-              name: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
-            {
-              country: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
-            {
-              category: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
-            {
-              description: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
+            { name: { contains: q, mode: "insensitive" } },
+            { country: { contains: q, mode: "insensitive" } },
+            { category: { contains: q, mode: "insensitive" } },
+            { description: { contains: q, mode: "insensitive" } },
           ],
+        },
+        select: {
+          id: true,
+          name: true,
+          country: true,
+          category: true,
         },
         take: 5,
         orderBy: {
           id: "desc",
         },
-      })
-    : [];
-
-  const experts = q
-    ? await prisma.expert.findMany({
+      }),
+      prisma.expert.findMany({
         where: {
+          verificationStatus: "VERIFIED",
           OR: [
-            {
-              name: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
-            {
-              country: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
-            {
-              specialty: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
-            {
-              experience: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
+            { name: { contains: q, mode: "insensitive" } },
+            { country: { contains: q, mode: "insensitive" } },
+            { specialty: { contains: q, mode: "insensitive" } },
+            { experience: { contains: q, mode: "insensitive" } },
           ],
+        },
+        select: {
+          id: true,
+          name: true,
+          country: true,
+          specialty: true,
         },
         take: 5,
         orderBy: {
           id: "desc",
         },
-      })
-    : [];
-
-  const opportunities = q
-    ? await prisma.opportunity.findMany({
+      }),
+      prisma.opportunity.findMany({
         where: {
           OR: [
             {
@@ -135,39 +131,51 @@ export default async function DashboardSearchPage({
         orderBy: {
           id: "desc",
         },
-      })
-    : [];
-
-  const cases = q
-    ? await prisma.tradeCase.findMany({
+      }),
+      prisma.tradeCase.findMany({
         where: {
-          OR: [
+          AND: [
+            getCaseSearchVisibilityScope({
+              userId: user.id,
+              userRole: user.role,
+            }),
             {
-              title: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
-            {
-              description: {
-                contains: q,
-                mode: "insensitive",
-              },
-            },
-            {
-              category: {
-                contains: q,
-                mode: "insensitive",
-              },
+              OR: [
+                {
+                  title: {
+                    contains: q,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  description: {
+                    contains: q,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  category: {
+                    contains: q,
+                    mode: "insensitive",
+                  },
+                },
+              ],
             },
           ],
+        },
+        select: {
+          id: true,
+          title: true,
+          category: true,
+          status: true,
         },
         take: 5,
         orderBy: {
           id: "desc",
         },
-      })
-    : [];
+      }),
+    ])
+    : [[], [], [], []];
 
   const totalResults =
     companies.length +
@@ -328,11 +336,11 @@ export default async function DashboardSearchPage({
                     </p>
 
                     <p className="mt-1 text-blue-400">
-                      {company.category}
+                      {translateCategory(company.category)}
                     </p>
 
                     <p className="mt-1 text-slate-400">
-                      {company.country}
+                      {translateCountry(company.country)}
                     </p>
                   </Link>
                 ))}
@@ -362,11 +370,11 @@ export default async function DashboardSearchPage({
                     </p>
 
                     <p className="mt-1 text-cyan-400">
-                      {expert.specialty}
+                      {translateSpecialty(expert.specialty)}
                     </p>
 
                     <p className="mt-1 text-slate-400">
-                      {expert.country}
+                      {translateCountry(expert.country)}
                     </p>
                   </Link>
                 ))}
@@ -401,7 +409,7 @@ export default async function DashboardSearchPage({
                       </p>
 
                       <p className="mt-1 text-purple-400">
-                        {opportunity.country}
+                        {translateCountry(opportunity.country)}
                       </p>
 
                       <p className="mt-1 text-slate-400">
@@ -430,7 +438,11 @@ export default async function DashboardSearchPage({
                 {cases.map((tradeCase) => (
                   <Link
                     key={tradeCase.id}
-                    href={`/dashboard/cases/${tradeCase.id}`}
+                    href={
+                      tradeCase.status === "OPEN" && user.role !== "admin"
+                        ? "/dashboard/open-cases"
+                        : `/dashboard/cases/${tradeCase.id}`
+                    }
                     className="rounded-2xl border border-slate-800 bg-slate-950 p-5 transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500"
                   >
                     <p className="text-lg font-bold">
@@ -438,7 +450,7 @@ export default async function DashboardSearchPage({
                     </p>
 
                     <p className="mt-1 text-emerald-400">
-                      {tradeCase.category}
+                      {translateCategory(tradeCase.category)}
                     </p>
 
                     <p className="mt-1 text-slate-400">

@@ -1,22 +1,23 @@
+import Skeleton from "./components/ui/Skeleton";
+
 export default function HomeLoading() {
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-28">
-        <div className="animate-pulse grid lg:grid-cols-2 gap-16 items-center">
+    <main className="min-h-screen bg-slate-950 text-white" aria-busy="true">
+      <div className="ui-container ui-section">
+        <span className="sr-only">Loading</span>
+        <div className="grid animate-pulse items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <div className="h-10 w-72 rounded-full bg-slate-800 mb-8" />
-            <div className="h-20 w-full rounded-2xl bg-slate-800 mb-5" />
-            <div className="h-20 w-4/5 rounded-2xl bg-slate-800 mb-8" />
-            <div className="h-6 w-full rounded-xl bg-slate-800 mb-3" />
-            <div className="h-6 w-3/4 rounded-xl bg-slate-800 mb-10" />
-
-            <div className="flex gap-4">
-              <div className="h-14 w-40 rounded-xl bg-slate-800" />
-              <div className="h-14 w-40 rounded-xl bg-slate-800" />
+            <Skeleton className="mb-8 h-10 w-72 max-w-full rounded-full" />
+            <Skeleton className="mb-5 h-20 w-full rounded-2xl" />
+            <Skeleton className="mb-8 h-20 w-4/5 rounded-2xl" />
+            <Skeleton className="mb-3 h-6 w-full" />
+            <Skeleton className="mb-10 h-6 w-3/4" />
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Skeleton className="h-14 w-full sm:w-40" />
+              <Skeleton className="h-14 w-full sm:w-40" />
             </div>
           </div>
-
-          <div className="h-[520px] rounded-[2rem] bg-slate-900 border border-slate-800" />
+          <Skeleton className="h-[420px] rounded-[var(--ui-radius-panel)] sm:h-[520px]" />
         </div>
       </div>
     </main>

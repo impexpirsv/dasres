@@ -33,7 +33,7 @@ export default async function CasesPage() {
     getTranslations("casesPage"),
     getLocale(),
   ]);
-
+const tc = await getTranslations("common.categories");
   const cases = await prisma.tradeCase.findMany({
     where:
       user.role === "admin"
@@ -41,16 +41,67 @@ export default async function CasesPage() {
         : {
             customerId: user.id,
           },
-    include: {
-      proposals: true,
-      documents: true,
-      messages: true,
-      steps: true,
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      status: true,
+      category: true,
+      acceptedProposalId: true,
+      createdAt: true,
+      updatedAt: true,
+      steps: {
+        select: {
+          completed: true,
+        },
+      },
+      _count: {
+        select: {
+          proposals: true,
+          documents: true,
+          messages: true,
+        },
+      },
     },
     orderBy: {
       id: "desc",
     },
   });
+
+  const acceptedProposalIds = cases
+    .map(
+      (tradeCase) =>
+        tradeCase.acceptedProposalId,
+    )
+    .filter(
+      (proposalId): proposalId is number =>
+        proposalId !== null,
+    );
+
+  const acceptedProposals =
+    acceptedProposalIds.length > 0
+      ? await prisma.caseProposal.findMany({
+          where: {
+            id: {
+              in: acceptedProposalIds,
+            },
+          },
+          select: {
+            id: true,
+            caseId: true,
+          },
+        })
+      : [];
+
+  const acceptedProposalById =
+    new Map(
+      acceptedProposals.map(
+        (proposal) => [
+          proposal.id,
+          proposal,
+        ],
+      ),
+    );
 
   const openCases = cases.filter(
     (tradeCase) =>
@@ -187,11 +238,17 @@ export default async function CasesPage() {
                 tradeCase.steps.length;
 
               const acceptedProposal =
-                tradeCase.proposals.find(
-                  (proposal) =>
-                    proposal.id ===
-                    tradeCase.acceptedProposalId,
-                );
+                tradeCase.acceptedProposalId
+                  ? acceptedProposalById.get(
+                      tradeCase.acceptedProposalId,
+                    )
+                  : undefined;
+
+              const validAcceptedProposal =
+                acceptedProposal?.caseId ===
+                tradeCase.id
+                  ? acceptedProposal
+                  : undefined;
 
               const status: Status =
                 isSupportedStatus(
@@ -231,30 +288,30 @@ export default async function CasesPage() {
 
                   <div className="mb-5 flex flex-wrap gap-2">
                     <span className="rounded-full border border-purple-800 bg-purple-600/20 px-3 py-1 text-xs text-purple-300">
-                      {tradeCase.category}
+                    {tc(tradeCase.category)}
                     </span>
 
                     <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
                       {t("counts.proposals", {
                         count:
-                          tradeCase.proposals
-                            .length,
+                          tradeCase._count
+                            .proposals,
                       })}
                     </span>
 
                     <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
                       {t("counts.documents", {
                         count:
-                          tradeCase.documents
-                            .length,
+                          tradeCase._count
+                            .documents,
                       })}
                     </span>
 
                     <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
                       {t("counts.messages", {
                         count:
-                          tradeCase.messages
-                            .length,
+                          tradeCase._count
+                            .messages,
                       })}
                     </span>
                   </div>
@@ -280,11 +337,11 @@ export default async function CasesPage() {
                       </p>
 
                       <p className="font-medium text-slate-200">
-                        {acceptedProposal
+                        {validAcceptedProposal
                           ? t(
                               "proposalNumber",
                               {
-                                id: acceptedProposal.id,
+                                id: validAcceptedProposal.id,
                               },
                             )
                           : t("notSelected")}

@@ -33,18 +33,40 @@ export default function AddCaseProposalForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function submitProposal(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function submitProposal(
+    event: React.FormEvent<HTMLFormElement>,
+  ) {
+    event.preventDefault();
+
+    if (loading) {
+      return;
+    }
 
     setError("");
 
-    if (!message.trim()) {
+    const normalizedMessage = message.trim();
+    const normalizedPrice = price.trim();
+    const parsedCompanyId = Number(companyId);
+    const parsedExpertId = expertId ? Number(expertId) : null;
+
+    if (!normalizedMessage) {
       setError(t("errors.messageRequired"));
       return;
     }
 
-    if (!companyId) {
+    if (
+      !Number.isInteger(parsedCompanyId) ||
+      parsedCompanyId <= 0
+    ) {
       setError(t("errors.companyRequired"));
+      return;
+    }
+
+    if (
+      parsedExpertId !== null &&
+      (!Number.isInteger(parsedExpertId) || parsedExpertId <= 0)
+    ) {
+      setError(t("errors.submitFailed"));
       return;
     }
 
@@ -59,18 +81,20 @@ export default function AddCaseProposalForm({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            message: message.trim(),
-            price: price.trim(),
-            companyId,
-            expertId,
+            message: normalizedMessage,
+            price: normalizedPrice || null,
+            companyId: parsedCompanyId,
+            expertId: parsedExpertId,
           }),
         },
       );
 
-      const data = await response.json();
+      const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        setError(data.message || t("errors.submitFailed"));
+        setError(
+          data?.message || t("errors.submitFailed"),
+        );
         return;
       }
 
@@ -93,19 +117,28 @@ export default function AddCaseProposalForm({
       className="mb-6 space-y-3"
     >
       {error && (
-        <div className="rounded-xl border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-300">
+        <div
+          role="alert"
+          aria-live="polite"
+          className="rounded-xl border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-300"
+        >
           {error}
         </div>
       )}
 
       <select
         value={companyId}
-        onChange={(e) => setCompanyId(e.target.value)}
+        onChange={(event) =>
+          setCompanyId(event.target.value)
+        }
         disabled={loading}
         aria-label={t("companyLabel")}
+        required
         className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        <option value="">{t("selectCompany")}</option>
+        <option value="">
+          {t("selectCompany")}
+        </option>
 
         {companies.map((company) => (
           <option
@@ -119,12 +152,16 @@ export default function AddCaseProposalForm({
 
       <select
         value={expertId}
-        onChange={(e) => setExpertId(e.target.value)}
+        onChange={(event) =>
+          setExpertId(event.target.value)
+        }
         disabled={loading}
         aria-label={t("expertLabel")}
         className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        <option value="">{t("noExpert")}</option>
+        <option value="">
+          {t("noExpert")}
+        </option>
 
         {experts.map((expert) => (
           <option
@@ -138,9 +175,12 @@ export default function AddCaseProposalForm({
 
       <textarea
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(event) =>
+          setMessage(event.target.value)
+        }
         rows={4}
         disabled={loading}
+        required
         placeholder={t("messagePlaceholder")}
         aria-label={t("messageLabel")}
         className="w-full resize-y rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
@@ -148,8 +188,11 @@ export default function AddCaseProposalForm({
 
       <input
         value={price}
-        onChange={(e) => setPrice(e.target.value)}
+        onChange={(event) =>
+          setPrice(event.target.value)
+        }
         type="text"
+        inputMode="decimal"
         disabled={loading}
         placeholder={t("pricePlaceholder")}
         aria-label={t("priceLabel")}

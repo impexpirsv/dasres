@@ -1,66 +1,54 @@
 import { prisma } from "../prisma";
-
-function calculateAverageRating(
-  reviews: {
-    rating: number;
-  }[],
-) {
-  if (reviews.length === 0) {
-    return 0;
-  }
-
-  const ratingTotal = reviews.reduce(
-    (sum, review) =>
-      sum + review.rating,
-    0,
-  );
-
-  return ratingTotal / reviews.length;
-}
+import {
+  getEntityReviewRatingStats,
+  getReviewRatingStats,
+} from "../ranking/review-aggregates";
 
 export async function getDashboardTopRated() {
   const [experts, companies] =
     await Promise.all([
       prisma.expert.findMany({
-        include: {
-          owner: {
-            include: {
-              reviewsReceived: {
-                select: {
-                  rating: true,
-                },
-              },
-            },
-          },
+        select: {
+          id: true,
+          name: true,
+          country: true,
+          specialty: true,
+          ownerId: true,
         },
       }),
 
       prisma.company.findMany({
-        include: {
-          owner: {
-            include: {
-              reviewsReceived: {
-                select: {
-                  rating: true,
-                },
-              },
-            },
-          },
+        select: {
+          id: true,
+          name: true,
+          country: true,
+          category: true,
+          ownerId: true,
         },
       }),
     ]);
 
+  const reviewStats =
+    await getReviewRatingStats([
+      ...experts.map(
+        (expert) => expert.ownerId,
+      ),
+      ...companies.map(
+        (company) => company.ownerId,
+      ),
+    ]);
+
   const topRatedExperts = experts
     .map((expert) => {
-      const reviews =
-        expert.owner?.reviewsReceived ??
-        [];
+      const ratingStats =
+        getEntityReviewRatingStats(
+          reviewStats,
+          expert.ownerId,
+        );
 
       return {
         ...expert,
-        averageRating:
-          calculateAverageRating(reviews),
-        reviewCount: reviews.length,
+        ...ratingStats,
       };
     })
     .filter(
@@ -78,15 +66,15 @@ export async function getDashboardTopRated() {
 
   const topRatedCompanies = companies
     .map((company) => {
-      const reviews =
-        company.owner?.reviewsReceived ??
-        [];
+      const ratingStats =
+        getEntityReviewRatingStats(
+          reviewStats,
+          company.ownerId,
+        );
 
       return {
         ...company,
-        averageRating:
-          calculateAverageRating(reviews),
-        reviewCount: reviews.length,
+        ...ratingStats,
       };
     })
     .filter(

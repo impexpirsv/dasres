@@ -17,7 +17,7 @@ export default async function ProjectHeader({
   const t = await getTranslations("projectHeader");
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <div className="workspace-panel">
       <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="mb-4">

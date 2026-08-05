@@ -125,37 +125,32 @@ async function createCase(
           },
         });
 
-      await tx.caseStep.createMany({
-        data: [
-          {
-            caseId: tradeCase.id,
-            title:
-              "Request Submitted",
-            completed: true,
-            completedAt:
-              new Date(),
-          },
-          {
-            caseId: tradeCase.id,
-            title:
-              "Provider Matching",
-          },
-          {
-            caseId: tradeCase.id,
-            title:
-              "Documents Review",
-          },
-          {
-            caseId: tradeCase.id,
-            title:
-              "Service In Progress",
-          },
-          {
-            caseId: tradeCase.id,
-            title: "Completed",
-          },
-        ],
-      });
+    await tx.caseStep.createMany({
+  data: [
+    {
+      caseId: tradeCase.id,
+      title: "requestSubmitted",
+      completed: true,
+      completedAt: new Date(),
+    },
+    {
+      caseId: tradeCase.id,
+      title: "providerMatching",
+    },
+    {
+      caseId: tradeCase.id,
+      title: "documentsReview",
+    },
+    {
+      caseId: tradeCase.id,
+      title: "serviceInProgress",
+    },
+    {
+      caseId: tradeCase.id,
+      title: "completed",
+    },
+  ],
+});
     },
   );
 

@@ -16,7 +16,6 @@ interface Company {
   status: string;
   verificationStatus: string;
   description: string;
-  email: string;
   website: string;
   logoUrl?: string | null;
   planType: string;
@@ -119,7 +118,13 @@ export default function CompaniesSearch({
   const t = useTranslations(
     "companies.search",
   );
+const tc = useTranslations(
+  "common.countries",
+);
 
+const tcat = useTranslations(
+  "common.categories",
+);
   const locale = useLocale();
 
   const numberFormatter =
@@ -142,7 +147,26 @@ export default function CompaniesSearch({
 
   const [verifiedOnly, setVerifiedOnly] =
     useState(false);
+function translateCountry(value: string) {
+  return tc.has(value)
+    ? tc(value)
+    : tc.has(value.toLowerCase())
+    ? tc(value.toLowerCase())
+    : value;
+}
 
+
+function translateCategory(value: string) {
+  return tcat.has(value)
+    ? tcat(value)
+    : tcat.has(
+        value.toLowerCase().replaceAll(" ", "_"),
+      )
+    ? tcat(
+        value.toLowerCase().replaceAll(" ", "_"),
+      )
+    : value;
+}
   const countries = Array.from(
     new Set(
       companies
@@ -219,7 +243,7 @@ export default function CompaniesSearch({
             }
             placeholder={t("searchPlaceholder")}
             aria-label={t("searchLabel")}
-            className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-blue-500"
+            className="ui-field"
           />
 
 
@@ -229,7 +253,7 @@ export default function CompaniesSearch({
               setCountry(e.target.value)
             }
             aria-label={t("countryLabel")}
-            className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-blue-500"
+            className="ui-field"
           >
             <option value="">
               {t("allCountries")}
@@ -254,7 +278,7 @@ export default function CompaniesSearch({
               setRatingFilter(e.target.value)
             }
             aria-label={t("ratingFilterLabel")}
-            className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-blue-500"
+            className="ui-field"
           >
             <option value="">
               {t("allRatings")}
@@ -276,12 +300,12 @@ export default function CompaniesSearch({
             <input
               type="checkbox"
               checked={verifiedOnly}
+              className="ui-checkbox me-3 shrink-0"
               onChange={(e) =>
                 setVerifiedOnly(
                   e.target.checked,
                 )
               }
-              className="me-3 h-4 w-4"
             />
 
             {t("verifiedOnly")}
@@ -374,14 +398,14 @@ export default function CompaniesSearch({
                     </h3>
 
 
-                    <p className="mt-1 text-blue-400">
-                      {company.category}
-                    </p>
+                  <p className="mt-1 text-blue-400">
+  {translateCategory(company.category)}
+</p>
 
 
                     <p className="mt-1 text-sm text-slate-500">
-                      {company.country}
-                    </p>
+  {translateCountry(company.country)}
+</p>
 
                   </div>
 
@@ -504,9 +528,9 @@ export default function CompaniesSearch({
                       {company.name}
                     </h2>
 
-                    <p className="text-sm text-slate-500">
-                      {company.country}
-                    </p>
+                   <p className="text-sm text-slate-500">
+  {translateCountry(company.country)}
+</p>
                   </div>
 
                 </div>
@@ -521,9 +545,9 @@ export default function CompaniesSearch({
               </div>
 
 
-              <p className="text-blue-400">
-                {company.category}
-              </p>
+            <p className="text-blue-400">
+  {translateCategory(company.category)}
+</p>
 
 
               <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500">

@@ -28,10 +28,10 @@ type Task = {
 };
 
 const priorityClasses: Record<string, string> = {
-  URGENT: "bg-red-600 text-white",
-  HIGH: "bg-orange-600 text-white",
-  MEDIUM: "bg-yellow-600 text-white",
-  LOW: "bg-slate-700 text-white",
+  URGENT: "border-red-400/30 bg-red-500/15 text-red-200",
+  HIGH: "border-orange-400/30 bg-orange-500/15 text-orange-200",
+  MEDIUM: "border-amber-400/30 bg-amber-500/15 text-amber-100",
+  LOW: "border-slate-600 bg-slate-800 text-slate-200",
 };
 
 export default function KanbanTaskCard({
@@ -77,12 +77,18 @@ export default function KanbanTaskCard({
     dueDate !== null &&
     !Number.isNaN(dueDate.getTime());
 
-  const now = new Date();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-const isOverdue =
-  hasValidDueDate &&
-  task.status !== "COMPLETED" &&
-  dueDate.getTime() < now.getTime();
+  if (dueDate) {
+    dueDate.setHours(0, 0, 0, 0);
+  }
+
+  const isOverdue =
+    hasValidDueDate &&
+    task.status !== "COMPLETED" &&
+    dueDate !== null &&
+    dueDate.getTime() < today.getTime();
 
   const formattedDueDate =
     hasValidDueDate && dueDate
@@ -114,19 +120,19 @@ const isOverdue =
       aria-label={t("dragLabel", {
         title: task.title,
       })}
-      className={`cursor-grab touch-none rounded-2xl border border-slate-800 bg-slate-950 p-4 shadow-sm transition-[border-color,box-shadow,opacity] duration-200 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/20 active:cursor-grabbing ${
+      className={`cursor-grab touch-pan-y rounded-xl border border-slate-800 bg-slate-950 p-3 shadow-sm transition-[border-color,box-shadow,opacity] duration-200 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-900/20 active:cursor-grabbing sm:p-4 ${
         isDragging
           ? "border-blue-500 shadow-xl shadow-blue-900/30"
           : ""
       }`}
     >
-      <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="mb-3 flex items-start justify-between gap-2">
         <h3 className="min-w-0 break-words font-semibold leading-6 text-white">
           {task.title}
         </h3>
 
         <span
-          className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-semibold ${priorityClass}`}
+          className={`ui-badge shrink-0 px-2 py-0.5 text-[11px] ${priorityClass}`}
         >
           {t(`priorities.${priorityKey}`)}
         </span>
@@ -171,7 +177,7 @@ const isOverdue =
         </div>
       </div>
 
-      <div className="mt-5 border-t border-slate-800 pt-4 text-slate-300">
+      <div className="mt-4 border-t border-slate-800 pt-3 text-slate-300">
         <div className="grid grid-cols-3 gap-3 text-center text-xs">
           <div>
             <p className="font-bold text-white">

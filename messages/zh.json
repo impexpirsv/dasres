@@ -1,4 +1,498 @@
 {
+  "knowledgeHub": {
+    "common": {
+      "categoryNavigation": "知识中心",
+      "openLink": "帮助中心",
+      "relatedCategories": "知识中心"
+    },
+    "help": {
+      "eyebrow": "帮助中心",
+      "title": "帮助中心",
+      "summary": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+      "browseTitle": "帮助中心",
+      "browseDescription": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+      "entriesTitle": "帮助中心",
+      "relatedTitle": "知识中心",
+      "categories": {
+        "getting-started": {
+          "title": "入门",
+          "summary": "入门 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "入门",
+          "seoDescription": "入门 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "accounts-and-access": {
+          "title": "账户与访问",
+          "summary": "账户与访问 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "账户与访问",
+          "seoDescription": "账户与访问 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "cases-and-proposals": {
+          "title": "案例与提案",
+          "summary": "案例与提案 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "案例与提案",
+          "seoDescription": "案例与提案 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "projects-and-tasks": {
+          "title": "项目与任务",
+          "summary": "项目与任务 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "项目与任务",
+          "seoDescription": "项目与任务 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "companies-and-experts": {
+          "title": "企业与专家",
+          "summary": "企业与专家 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "企业与专家",
+          "seoDescription": "企业与专家 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "tickets-and-support": {
+          "title": "工单与支持",
+          "summary": "工单与支持 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "工单与支持",
+          "seoDescription": "工单与支持 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        }
+      },
+      "entries": {
+        "register": {
+          "title": "入门 1",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "signIn": {
+          "title": "账户与访问 1",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "language": {
+          "title": "案例与提案 1",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "session": {
+          "title": "项目与任务 1",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "dashboard": {
+          "title": "企业与专家 1",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "permissions": {
+          "title": "工单与支持 1",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "createCase": {
+          "title": "入门 2",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "submitProposal": {
+          "title": "账户与访问 2",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "acceptProposal": {
+          "title": "案例与提案 2",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "projects": {
+          "title": "项目与任务 2",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "tasks": {
+          "title": "企业与专家 2",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "documentsMessages": {
+          "title": "工单与支持 2",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "profiles": {
+          "title": "入门 3",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "ownership": {
+          "title": "账户与访问 3",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "verification": {
+          "title": "案例与提案 3",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "createTicket": {
+          "title": "项目与任务 3",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "reply": {
+          "title": "企业与专家 3",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "closeReopen": {
+          "title": "工单与支持 3",
+          "body": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        }
+      }
+    },
+    "resources": {
+      "eyebrow": "知识中心",
+      "title": "知识中心",
+      "summary": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+      "browseTitle": "知识中心",
+      "emptyTitle": "知识中心",
+      "emptyDescription": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+      "categories": {
+        "tutorials": {
+          "title": "教程",
+          "summary": "教程 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "教程",
+          "seoDescription": "教程 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "purposeTitle": "教程",
+          "purpose": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "news": {
+          "title": "贸易新闻",
+          "summary": "贸易新闻 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "贸易新闻",
+          "seoDescription": "贸易新闻 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "purposeTitle": "贸易新闻",
+          "purpose": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "customs": {
+          "title": "海关文章",
+          "summary": "海关文章 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "海关文章",
+          "seoDescription": "海关文章 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "purposeTitle": "海关文章",
+          "purpose": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "countries": {
+          "title": "国家指南",
+          "summary": "国家指南 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "国家指南",
+          "seoDescription": "国家指南 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "purposeTitle": "国家指南",
+          "purpose": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "glossary": {
+          "title": "术语表",
+          "summary": "术语表 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "术语表",
+          "seoDescription": "术语表 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "purposeTitle": "术语表",
+          "purpose": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        },
+        "case-studies": {
+          "title": "案例研究",
+          "summary": "案例研究 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "seoTitle": "案例研究",
+          "seoDescription": "案例研究 — 本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "purposeTitle": "案例研究",
+          "purpose": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        }
+      },
+      "policy": {
+        "title": "知识中心",
+        "points": {
+          "changing": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "dates": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "sources": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "education": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "stale": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。"
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "常见问题",
+      "title": "常见问题",
+      "summary": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+      "sectionTitle": "常见问题",
+      "items": {
+        "verification": {
+          "question": "入门?",
+          "answer": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "category": "入门"
+        },
+        "plans": {
+          "question": "账户与访问?",
+          "answer": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "category": "账户与访问"
+        },
+        "cases": {
+          "question": "案例与提案?",
+          "answer": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "category": "案例与提案"
+        },
+        "proposals": {
+          "question": "项目与任务?",
+          "answer": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "category": "项目与任务"
+        },
+        "tickets": {
+          "question": "企业与专家?",
+          "answer": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "category": "企业与专家"
+        },
+        "language": {
+          "question": "工单与支持?",
+          "answer": "本指南反映 Dasres 当前功能；身份验证、所有权、角色、状态和方案限制仍然适用。",
+          "category": "工单与支持"
+        }
+      }
+    }
+  }
+  ,
+  "publicSite": {
+    "navigation": {
+      "primaryLabel": "主导航",
+      "brandHomeLabel": "Dasres 首页",
+      "tagline": "连接全球贸易",
+      "companies": "企业",
+      "experts": "专家",
+      "opportunities": "商机",
+      "pricing": "方案",
+      "resources": "资源",
+      "about": "关于我们",
+      "contact": "联系",
+      "help": "帮助",
+      "login": "登录",
+      "join": "加入 Dasres",
+      "toggleMenu": "切换导航"
+    },
+    "footer": {
+      "navigationLabel": "页脚导航",
+      "trustStatement": "在互联工作空间中发现经验证企业、专业人士和国际贸易机会。",
+      "supportEntry": "联系",
+      "groups": {
+        "platform": "平台",
+        "solutions": "解决方案",
+        "resources": "资源",
+        "company": "公司",
+        "legal": "法律"
+      },
+      "links": {
+        "companies": "企业",
+        "experts": "专家",
+        "opportunities": "商机",
+        "pricing": "方案",
+        "dashboard": "控制面板",
+        "help": "帮助",
+        "resourceHub": "资源",
+        "faq": "常见问题",
+        "about": "关于我们",
+        "contact": "联系",
+        "privacy": "隐私",
+        "terms": "条款",
+        "cookies": "Cookie"
+      },
+      "copyright": "© {year} Dasres。保留所有权利。",
+      "languageLabel": "语言"
+    },
+    "common": {
+      "home": "首页"
+    },
+    "pages": {
+      "about": {
+        "metadata": {
+          "title": "关于 Dasres",
+          "description": "关于 Dasres — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "资源",
+        "title": "关于 Dasres",
+        "description": "关于 Dasres — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "sectionTitle": "关于 Dasres",
+        "sectionDescription": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "cta": {
+          "title": "关于 Dasres",
+          "description": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+          "label": "企业"
+        }
+      },
+      "contact": {
+        "metadata": {
+          "title": "联系 Dasres",
+          "description": "联系 Dasres — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "资源",
+        "title": "联系 Dasres",
+        "description": "联系 Dasres — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "sectionTitle": "联系 Dasres",
+        "sectionDescription": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "cta": {
+          "title": "联系 Dasres",
+          "description": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+          "label": "控制面板"
+        }
+      },
+      "help": {
+        "metadata": {
+          "title": "帮助中心",
+          "description": "帮助中心 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "资源",
+        "title": "帮助中心",
+        "description": "帮助中心 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "sectionTitle": "帮助中心",
+        "sectionDescription": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "cta": {
+          "title": "帮助中心",
+          "description": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+          "label": "常见问题"
+        }
+      },
+      "faq": {
+        "metadata": {
+          "title": "常见问题",
+          "description": "常见问题 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "资源",
+        "title": "常见问题",
+        "description": "常见问题 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "sectionTitle": "常见问题",
+        "sectionDescription": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "cta": {
+          "title": "常见问题",
+          "description": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+          "label": "联系"
+        }
+      },
+      "resources": {
+        "metadata": {
+          "title": "贸易资源",
+          "description": "贸易资源 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "资源",
+        "title": "贸易资源",
+        "description": "贸易资源 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "sectionTitle": "贸易资源",
+        "sectionDescription": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "cards": {
+          "tutorials": {
+            "title": "教程",
+            "description": "教程 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          },
+          "news": {
+            "title": "贸易新闻",
+            "description": "贸易新闻 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          },
+          "customs": {
+            "title": "海关文章",
+            "description": "海关文章 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          },
+          "countries": {
+            "title": "国家指南",
+            "description": "国家指南 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          },
+          "glossary": {
+            "title": "术语表",
+            "description": "术语表 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          },
+          "cases": {
+            "title": "案例研究",
+            "description": "案例研究 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          }
+        }
+      },
+      "pricing": {
+        "metadata": {
+          "title": "方案与限额",
+          "description": "方案与限额 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "方案",
+        "title": "方案与限额",
+        "description": "方案与限额 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "sectionTitle": "方案与限额",
+        "sectionDescription": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+      "activeCases": "活跃贸易案例",
+      "proposals": "提案",
+      "unlimited": "无限",
+        "availabilityNotice": "关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "plans": {
+          "free": {
+            "name": "免费",
+            "description": "关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          },
+          "gold": {
+            "name": "黄金",
+            "description": "关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          },
+          "diamond": {
+            "name": "钻石",
+            "description": "关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          },
+          "enterprise": {
+            "name": "企业",
+            "description": "关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+          }
+        }
+      },
+      "privacy": {
+        "metadata": {
+          "title": "隐私政策草案",
+          "description": "隐私政策草案 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "法律",
+        "title": "隐私政策草案",
+        "description": "隐私政策草案 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "reviewNotice": "供法律审查的草案；说明当前平台行为，并非最终法律意见。",
+        "sections": {
+          "scope": {
+            "title": "隐私政策草案",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          },
+          "data": {
+            "title": "隐私",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          },
+          "choices": {
+            "title": "条款",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          }
+        }
+      },
+      "terms": {
+        "metadata": {
+          "title": "服务条款草案",
+          "description": "服务条款草案 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "法律",
+        "title": "服务条款草案",
+        "description": "服务条款草案 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "reviewNotice": "供法律审查的草案；说明当前平台行为，并非最终法律意见。",
+        "sections": {
+          "scope": {
+            "title": "服务条款草案",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          },
+          "data": {
+            "title": "隐私",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          },
+          "choices": {
+            "title": "条款",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          }
+        }
+      },
+      "cookies": {
+        "metadata": {
+          "title": "Cookie 政策草案",
+          "description": "Cookie 政策草案 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。"
+        },
+        "eyebrow": "法律",
+        "title": "Cookie 政策草案",
+        "description": "Cookie 政策草案 — 关于 Dasres 及其国际贸易工作空间的实用最新信息。",
+        "reviewNotice": "供法律审查的草案；说明当前平台行为，并非最终法律意见。",
+        "sections": {
+          "scope": {
+            "title": "Cookie 政策草案",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          },
+          "data": {
+            "title": "隐私",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          },
+          "choices": {
+            "title": "条款",
+            "description": "本草案涵盖账户、公开资料、商机、协作、身份验证、权限、支持和语言偏好。保留、商业、司法管辖和争议条款仍需法律批准。"
+          }
+        }
+      }
+    }
+  }
+  ,
   "common": {
     "years": "{count}年",
     "hours": "小时",

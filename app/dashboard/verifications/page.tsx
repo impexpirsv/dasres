@@ -36,7 +36,33 @@ export default async function VerificationsPage() {
     "dashboardVerifications",
   );
 
-  const locale = await getLocale();
+  const [locale, tc, tcat, ts] = await Promise.all([
+    getLocale(),
+    getTranslations("common.countries"),
+    getTranslations("common.categories"),
+    getTranslations("common.specialties"),
+  ]);
+
+
+  function translateCountry(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    return tc.has(normalized) ? tc(normalized) : tc.has(lower) ? tc(lower) : normalized;
+  }
+
+  function translateCategory(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return tcat.has(normalized) ? tcat(normalized) : tcat.has(lower) ? tcat(lower) : tcat.has(underscored) ? tcat(underscored) : normalized;
+  }
+
+  function translateSpecialty(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return ts.has(normalized) ? ts(normalized) : ts.has(lower) ? ts(lower) : ts.has(underscored) ? ts(underscored) : normalized;
+  }
 
   const [
     pendingCompanies,
@@ -214,8 +240,8 @@ export default async function VerificationsPage() {
                       </div>
 
                       <p className="mt-1 text-sm text-slate-400">
-                        {company.country} •{" "}
-                        {company.category}
+                        {translateCountry(company.country)} •{" "}
+                        {translateCategory(company.category)}
                       </p>
 
                       <p className="mt-1 text-xs text-slate-500">
@@ -280,8 +306,8 @@ export default async function VerificationsPage() {
                     </div>
 
                     <p className="mt-1 text-sm text-slate-400">
-                      {expert.country} •{" "}
-                      {expert.specialty}
+                      {translateCountry(expert.country)} •{" "}
+                      {translateSpecialty(expert.specialty)}
                     </p>
 
                     <p className="mt-1 text-xs text-slate-500">

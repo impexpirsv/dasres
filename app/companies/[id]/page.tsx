@@ -1,11 +1,23 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { getLocale, getTranslations } from "next-intl/server";
-
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
+import { defaultLocale, isLocale, type Locale } from "../../../lib/locale";
 import { calculateTrustScore } from "../../../lib/ranking";
+import { serializeJsonLd } from "../../../lib/seo/jsonld";
+import {
+  getDefaultSocialImage,
+  getEntitySocialImage,
+  getOpenGraphLocale,
+} from "../../../lib/seo/social";
+import { createCompanyPageJsonLd } from "../../../lib/seo/structured-data";
+import { getAbsoluteUrl } from "../../../lib/seo/urls";
+import { getLocalizedCompaniesAlternates } from "../../../lib/seo/localized-companies";
+import { getCompany, getCompanyViewAccess } from "../../../lib/companies/get-company";
+import { AppError } from "../../../lib/errors";
 import Image from "next/image";
 import DeleteCompanyButton from "../../components/DeleteCompanyButton";
 import CompanyVerificationButtons from "../../components/CompanyVerificationButtons";
@@ -15,26 +27,48 @@ type Props = {
   params: Promise<{
     id: string;
   }>;
+  routeLocale?: Locale;
+  localized?: boolean;
 };
 
 function normalizeStatus(status: string) {
   return status.trim().toLowerCase().replaceAll("-", "_").replaceAll(" ", "_");
 }
+function getCategoryKey(category: string) {
+  switch (category) {
+    case "Customs Clearance":
+      return "customsClearance";
 
+    case "Shipping":
+      return "shipping";
+
+    case "Inspection":
+      return "inspection";
+
+    case "Insurance":
+      return "insurance";
+
+    case "Sourcing":
+      return "sourcing";
+
+    case "Documentation":
+      return "documentation";
+
+    case "Payment":
+      return "payment";
+
+    default:
+      return "general";
+  }
+}
 const getCompanyMetadata = unstable_cache(
   async (id: number) => {
-    return prisma.company.findUnique({
-      where: {
-        id,
-      },
-      select: {
-        id: true,
-        name: true,
-        category: true,
-        country: true,
-        logoUrl: true,
-      },
-    });
+    try {
+      return await getCompany({ companyId: id, viewer: null });
+    } catch (error) {
+      if (error instanceof AppError && error.status === 404) return null;
+      throw error;
+    }
   },
   ["public-company-metadata"],
   {
@@ -74,17 +108,33 @@ const getRelatedExperts = unstable_cache(
   },
 );
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function createCompanyMetadata({ params, routeLocale, localized = false }: Props): Promise<Metadata> {
   const { id } = await params;
 
   const companyId = Number(id);
 
-  const t = await getTranslations("publicCompanyProfile.metadata");
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const [t, rootMetadata] = await Promise.all([
+    getTranslations({ locale, namespace: "publicCompanyProfile.metadata" }),
+    getTranslations({ locale, namespace: "rootMetadata" }),
+  ]);
 
   if (!Number.isInteger(companyId) || companyId <= 0) {
+    if (localized) {
+      notFound();
+    }
+
     return {
       title: t("notFoundTitle"),
       description: t("notFoundDescription"),
+      alternates: {
+        canonical: null,
+      },
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 
@@ -94,6 +144,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: t("notFoundTitle"),
       description: t("notFoundDescription"),
+      alternates: {
+        canonical: null,
+      },
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 
@@ -104,48 +161,67 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     category: company.category,
     country: company.country,
   });
+  const canonicalPath = localized ? `/${locale}/companies/${company.id}` : `/companies/${company.id}`;
+  const canonicalUrl = getAbsoluteUrl(canonicalPath);
+  const socialImage =
+    getEntitySocialImage(company.logoUrl, company.name) ??
+    getDefaultSocialImage(rootMetadata("openGraph.imageAlt"));
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalPath,
+      ...(localized ? { languages: getLocalizedCompaniesAlternates({ companyId: company.id }) } : {}),
+    },
     openGraph: {
       title,
       description,
+      url: canonicalUrl,
       type: "website",
-      images: company.logoUrl
-        ? [
-            {
-              url: company.logoUrl,
-              alt: company.name,
-            },
-          ]
-        : [
-            {
-              url: "/og-image.png",
-              alt: company.name,
-            },
-          ],
+      locale: getOpenGraphLocale(locale),
+      images: [socialImage],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: company.logoUrl ? [company.logoUrl] : ["/og-image.png"],
+      images: [socialImage.url],
     },
   };
 }
 
-export default async function CompanyProfilePage({ params }: Props) {
+export const generateMetadata = createCompanyMetadata;
+
+export default async function CompanyProfilePage({ params, routeLocale, localized = false }: Props) {
   const { id } = await params;
 
   const companyId = Number(id);
 
-  const user = await requireUser();
+  const user = localized ? null : await requireUser();
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const companiesPath = localized ? `/${locale}/companies` : "/companies";
 
-  const t = await getTranslations("publicCompanyProfile");
+  const [t, navigation] = await Promise.all([
+    getTranslations({ locale, namespace: "publicCompanyProfile" }),
+    getTranslations({ locale, namespace: "navbar" }),
+  ]);
+function getCategoryLabel(category: string) {
+  return t(
+    `categories.${getCategoryKey(category)}`,
+  );
+}
 
-  const locale = await getLocale();
+function getCountryLabel(country: string) {
+  switch (country.toLowerCase()) {
+    case "iran":
+      return t("countries.iran");
 
+    default:
+      return country;
+  }
+}
   const numberFormatter = new Intl.NumberFormat(locale);
 
   const ratingFormatter = new Intl.NumberFormat(locale, {
@@ -153,7 +229,7 @@ export default async function CompanyProfilePage({ params }: Props) {
     maximumFractionDigits: 1,
   });
 
-  const isAdmin = user.role === "admin";
+  const isAdmin = user?.role === "admin";
 
   if (!Number.isInteger(companyId) || companyId <= 0) {
     return (
@@ -163,11 +239,30 @@ export default async function CompanyProfilePage({ params }: Props) {
     );
   }
 
-  const company = await prisma.company.findUnique({
-    where: {
-      id: companyId,
-    },
-    include: {
+  const companyAccess = await getCompanyViewAccess({
+    companyId,
+    viewer: user,
+  });
+
+  if (!companyAccess) {
+    notFound();
+  }
+
+  const company = await prisma.company.findFirst({
+    where: companyAccess.scope,
+    select: {
+      id: true,
+      name: true,
+      country: true,
+      category: true,
+      status: true,
+      description: true,
+      email: true,
+      website: true,
+      logoUrl: true,
+      verificationStatus: true,
+      planType: true,
+      ownerId: true,
       owner: {
         select: {
           reviewsReceived: {
@@ -187,11 +282,7 @@ export default async function CompanyProfilePage({ params }: Props) {
   });
 
   if (!company) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
-        <h1 className="text-4xl font-bold">{t("notFound")}</h1>
-      </div>
-    );
+    notFound();
   }
 
   const companyReviews = company.owner?.reviewsReceived ?? [];
@@ -202,7 +293,7 @@ export default async function CompanyProfilePage({ params }: Props) {
         companyReviews.length
       : null;
 
-  const canManageCompany = isAdmin || company.ownerId === user.id;
+  const canManageCompany = Boolean(user && (isAdmin || company.ownerId === user.id));
 
   const [completedCases, existingSave, relatedExperts] = await Promise.all([
     company.ownerId
@@ -221,7 +312,7 @@ export default async function CompanyProfilePage({ params }: Props) {
         })
       : Promise.resolve(0),
 
-    prisma.savedCompany.findUnique({
+    user ? prisma.savedCompany.findUnique({
       where: {
         userId_companyId: {
           userId: user.id,
@@ -231,7 +322,7 @@ export default async function CompanyProfilePage({ params }: Props) {
       select: {
         id: true,
       },
-    }),
+    }) : Promise.resolve(null),
 
     getRelatedExperts(company.country),
   ]);
@@ -314,45 +405,55 @@ export default async function CompanyProfilePage({ params }: Props) {
           ? "border-purple-500 shadow-lg shadow-purple-500/10"
           : "border-slate-800";
 
-  const companySchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: company.name,
-    description: company.description,
-    url: company.website || undefined,
-    email: company.email || undefined,
-    logo: company.logoUrl || "/og-image.png",
-    address: {
-      "@type": "PostalAddress",
-      addressCountry: company.country,
-    },
-    industry: company.category,
-    additionalProperty: [
-      {
-        "@type": "PropertyValue",
-        name: t("schema.status"),
-        value: getStatusLabel(company.status),
-      },
-      {
-        "@type": "PropertyValue",
-        name: t("schema.category"),
-        value: company.category,
-      },
-    ],
-  };
+  const companySchema =
+    company.verificationStatus === "VERIFIED"
+      ? createCompanyPageJsonLd({
+          page: {
+            canonicalPath: `${companiesPath}/${company.id}`,
+            name: company.name,
+            description: company.description,
+            language: locale,
+            breadcrumbs: [
+              {
+                name: navigation("home"),
+                pathname: localized ? `/${locale}` : "/",
+              },
+              {
+                name: navigation("companies"),
+                pathname: companiesPath,
+              },
+              {
+                name: company.name,
+                pathname: `${companiesPath}/${company.id}`,
+              },
+            ],
+          },
+          company: {
+            name: company.name,
+            description: company.description,
+            country: company.country,
+            category: company.category,
+            email: company.email,
+            website: company.website,
+            logoUrl: company.logoUrl,
+          },
+        })
+      : null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(companySchema),
-        }}
-      />
+      {companySchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(companySchema),
+          }}
+        />
+      )}
 
       <div className="mx-auto max-w-6xl px-6 py-20">
         <Link
-          href="/companies"
+          href={companiesPath}
           className="mb-8 inline-block text-blue-400 hover:underline"
         >
           {t("backToCompanies")}
@@ -381,7 +482,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                 </span>
 
                 <span className="rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-300">
-                  {company.country}
+                {getCountryLabel(company.country)}
                 </span>
 
                 {company.verificationStatus === "VERIFIED" && (
@@ -425,7 +526,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                 )}
               </div>
 
-              <p className="mb-8 text-2xl text-blue-400">{company.category}</p>
+              <p className="mb-8 text-2xl text-blue-400">{getCategoryLabel(company.category)}</p>
 
               <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
@@ -485,7 +586,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                   </p>
 
                   <p className="text-2xl font-bold text-blue-400">
-                    {company.country}
+                     {getCountryLabel(company.country)}
                   </p>
                 </div>
               </div>
@@ -557,7 +658,13 @@ export default async function CompanyProfilePage({ params }: Props) {
                         </p>
 
                         <p className="mt-3 text-xs text-slate-500">
-                          {review.createdAt.toLocaleDateString(locale)}
+                          {review.createdAt.toLocaleDateString(
+                            locale === "fa"
+                              ? "fa-IR"
+                              : locale === "ar"
+                                ? "ar"
+                                : "en-US",
+                          )}
                         </p>
                       </div>
                     ))}
@@ -615,7 +722,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                     {t("fields.country")}
                   </p>
 
-                  <p className="text-slate-200">{company.country}</p>
+                  <p className="text-slate-200"> {getCountryLabel(company.country)}</p>
                 </div>
 
                 <div>
@@ -623,7 +730,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                     {t("fields.category")}
                   </p>
 
-                  <p className="text-slate-200">{company.category}</p>
+                  <p className="text-slate-200"> {getCategoryLabel(company.category)}</p>
                 </div>
 
                 <div>
@@ -642,10 +749,12 @@ export default async function CompanyProfilePage({ params }: Props) {
                 </div>
               </div>
 
-              <SaveCompanyButton
-                companyId={company.id}
-                initialSaved={Boolean(existingSave)}
-              />
+              {user && (
+                <SaveCompanyButton
+                  companyId={company.id}
+                  initialSaved={Boolean(existingSave)}
+                />
+              )}
 
               <a
                 href={`mailto:${company.email}`}

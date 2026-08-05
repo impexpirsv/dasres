@@ -51,7 +51,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-6 py-12">
-      <div className="w-full max-w-md bg-slate-900 p-8 rounded-2xl border border-slate-800">
+      <div className="ui-card w-full max-w-md p-6 sm:p-8">
         <h1 className="text-3xl font-bold text-white mb-2">
           {t("title")}
         </h1>
@@ -78,7 +78,7 @@ export default function RegisterPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full p-3 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
+              className="ui-field"
             />
           </div>
 
@@ -99,7 +99,7 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full p-3 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
+              className="ui-field"
             />
           </div>
 
@@ -121,7 +121,7 @@ export default function RegisterPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full p-3 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
+              className="ui-field"
             />
 
             <p className="text-xs text-slate-500 mt-2">
@@ -132,7 +132,8 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white py-3 rounded-lg font-semibold transition-colors"
+            aria-busy={isSubmitting}
+            className="ui-button ui-button-primary w-full"
           >
             {isSubmitting ? t("submitting") : t("submit")}
           </button>

@@ -73,7 +73,7 @@ export default function ProjectTabs({
     pathname === `/dashboard/projects/${projectId}`;
 
   return (
-    <div className="flex flex-wrap gap-2 pt-4">
+    <nav aria-label={t("overview")} className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-2 pt-4">
       {tabs.map((tab) => {
         const active =
           isProjectPage && currentTab === tab.tab;
@@ -82,16 +82,17 @@ export default function ProjectTabs({
           <Link
             key={tab.tab}
             href={tab.href}
-            className={`rounded-xl px-5 py-3 text-sm font-semibold transition ${
+            aria-current={active ? "page" : undefined}
+            className={`ui-button shrink-0 px-4 text-sm ${
               active
-                ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                : "bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"
+                ? "ui-button-primary"
+                : "ui-button-ghost bg-slate-900"
             }`}
           >
             {tab.title}
           </Link>
         );
       })}
-    </div>
+    </nav>
   );
 }

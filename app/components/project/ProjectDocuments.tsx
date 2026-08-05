@@ -25,7 +25,6 @@ type ApprovalStatus =
 type Attachment = {
   id: number;
   fileName: string;
-  fileUrl: string;
   mimeType: string | null;
   fileSize: number | null;
   createdAt: Date | string;
@@ -257,7 +256,7 @@ export default function ProjectDocuments({
   }
 
   return (
-    <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <section className="workspace-panel">
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-white">
@@ -306,7 +305,7 @@ export default function ProjectDocuments({
       </div>
 
       {sortedDocuments.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-10 text-center">
+        <div className="ui-empty rounded-xl border border-dashed border-slate-700 bg-slate-950 p-6 text-center sm:p-10">
           <div
             aria-hidden="true"
             className="text-4xl"
@@ -343,7 +342,7 @@ export default function ProjectDocuments({
             return (
               <article
                 key={document.id}
-                className="rounded-2xl border border-slate-800 bg-slate-950 p-4 transition hover:border-cyan-500/50"
+                className="rounded-xl border border-slate-800 bg-slate-950 p-3 transition hover:border-cyan-500/50 sm:p-4"
               >
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div className="min-w-0">
@@ -375,7 +374,7 @@ export default function ProjectDocuments({
 
                   <div className="flex flex-wrap items-center gap-3">
                     <span
-                      className={`rounded-full border px-3 py-1 text-xs font-bold ${status.className}`}
+                      className={`ui-badge ${status.className}`}
                     >
                       {status.label}
                     </span>
@@ -406,10 +405,10 @@ export default function ProjectDocuments({
                     </time>
 
                     <a
-                      href={document.fileUrl}
+                      href={`/api/project-task-attachments/${document.id}/download`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                      className="ui-button ui-button-primary min-h-11 px-4 py-2 text-sm"
                     >
                       {t("open")}
                     </a>
@@ -443,11 +442,11 @@ export default function ProjectDocuments({
                         {t("rejectionReason")}
                       </p>
 
-                      <p className="mt-1 whitespace-pre-wrap break-words text-sm text-red-200/80">
-                        {
-                          document.rejectionReason
-                        }
-                      </p>
+                     <p className="mt-1 whitespace-pre-wrap break-words text-sm text-red-200/80">
+  {document.rejectionReason === "REJECTED_BY_ADMIN"
+    ? t("rejectedByAdmin")
+    : document.rejectionReason}
+</p>
                     </div>
                   )}
               </article>

@@ -1,61 +1,46 @@
-import { prisma } from "../../../../../../lib/prisma";
+import { apiHandler } from "../../../../../../lib/api";
 import { requireAdmin } from "../../../../../../lib/auth";
+import { verifyExpert } from "../../../../../../lib/experts";
+import { parseId } from "../../../../../../lib/validation";
 
 export async function PATCH(
   _request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  try {
-    await requireAdmin();
+  {
+    params,
+  }: {
+    params: Promise<{
+      id: string;
+    }>;
+  },
+): Promise<Response> {
+  return apiHandler(async () => {
+    const admin =
+      await requireAdmin();
 
     const { id } = await params;
-    const expertId = Number(id);
+    const expertId = parseId(
+      id,
+      "expert id",
+    );
 
-    if (!Number.isInteger(expertId) || expertId <= 0) {
-      return Response.json(
-        {
-          code: "INVALID_EXPERT_ID",
-        },
-        { status: 400 },
-      );
+    const result =
+      await verifyExpert({
+        expertId,
+        authenticatedAdminId:
+          admin.id,
+      });
+
+    if (result.alreadyVerified) {
+      return Response.json({
+        code:
+          "EXPERT_ALREADY_VERIFIED",
+        expert: result.expert,
+      });
     }
-
-    const expert = await prisma.expert.findUnique({
-      where: {
-        id: expertId,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (!expert) {
-      return Response.json(
-        {
-          code: "EXPERT_NOT_FOUND",
-        },
-        { status: 404 },
-      );
-    }
-
-    await prisma.expert.update({
-      where: {
-        id: expertId,
-      },
-      data: {
-        verificationStatus: "VERIFIED",
-      },
-    });
 
     return Response.json({
       code: "EXPERT_VERIFIED",
+      expert: result.expert,
     });
-  } catch {
-    return Response.json(
-      {
-        code: "EXPERT_VERIFICATION_FAILED",
-      },
-      { status: 500 },
-    );
-  }
+  });
 }

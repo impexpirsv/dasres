@@ -1,13 +1,15 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import {
   getLocale,
   getTranslations,
 } from "next-intl/server";
 import { prisma } from "../../../../lib/prisma";
 import { requireUser } from "../../../../lib/auth";
+import { getExpertViewAccess } from "../../../../lib/experts/get-expert";
 import { calculateTrustScore } from "../../../../lib/ranking";
 import { formatCountry } from "../../../../lib/format";
+import { serializeJsonLd } from "../../../../lib/seo/jsonld";
 import DeleteExpertButton from "../../../components/DeleteExpertButton";
 import SaveExpertButton from "../../../components/SaveExpertButton";
 import Image from "next/image";
@@ -51,79 +53,6 @@ function getStatusClass(status: string) {
   }
 }
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
-  const { id } = await params;
-  const expertId = Number(id);
-
-  const t = await getTranslations(
-    "dashboardExpertProfile.metadata",
-  );
-
-  if (!Number.isInteger(expertId) || expertId <= 0) {
-    return {
-      title: t("notFoundTitle"),
-      description: t("notFoundDescription"),
-    };
-  }
-
-  const expert = await prisma.expert.findUnique({
-    where: {
-      id: expertId,
-    },
-  });
-
-  if (!expert) {
-    return {
-      title: t("notFoundTitle"),
-      description: t("notFoundDescription"),
-    };
-  }
-
-  const title = t("title", {
-    name: expert.name,
-    specialty: expert.specialty,
-  });
-
-  const description = t("description", {
-    name: expert.name,
-    specialty: expert.specialty,
-    country: formatCountry(expert.country),
-  });
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "profile",
-      images: expert.imageUrl
-        ? [
-            {
-              url: expert.imageUrl,
-              alt: expert.name,
-            },
-          ]
-        : [
-            {
-              url: "/og-image.png",
-              alt: expert.name,
-            },
-          ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: expert.imageUrl
-        ? [expert.imageUrl]
-        : ["/og-image.png"],
-    },
-  };
-}
-
 export default async function ExpertProfilePage({
   params,
 }: Props) {
@@ -132,11 +61,11 @@ export default async function ExpertProfilePage({
 
   const user = await requireUser();
 
-  const locale = await getLocale();
-
-  const t = await getTranslations(
-    "dashboardExpertProfile",
-  );
+  const [locale, t, ts] = await Promise.all([
+    getLocale(),
+    getTranslations("dashboardExpertProfile"),
+    getTranslations("common.specialties"),
+  ]);
 
   const numberFormatter = new Intl.NumberFormat(
     locale,
@@ -160,23 +89,34 @@ export default async function ExpertProfilePage({
     );
   }
 
-  const expert = await prisma.expert.findUnique({
-    where: {
-      id: expertId,
-    },
+  const expertAccess = await getExpertViewAccess({ expertId, viewer: user });
+
+  if (!expertAccess) {
+    notFound();
+  }
+
+  const expert = await prisma.expert.findFirst({
+    where: expertAccess.scope,
   });
 
   if (!expert) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-center text-white">
-        <h1 className="text-4xl font-bold">
-          {t("notFound")}
-        </h1>
-      </div>
-    );
+    notFound();
   }
 
   const isAdmin = user.role === "admin";
+
+  function translateSpecialty(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return ts.has(normalized)
+      ? ts(normalized)
+      : ts.has(lower)
+        ? ts(lower)
+        : ts.has(underscored)
+          ? ts(underscored)
+          : normalized;
+  }
 
   const canManageExpert =
     isAdmin || expert.ownerId === user.id;
@@ -322,7 +262,7 @@ export default async function ExpertProfilePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(expertSchema),
+          __html: serializeJsonLd(expertSchema),
         }}
       />
 
@@ -390,7 +330,7 @@ export default async function ExpertProfilePage({
                 </div>
 
                 <p className="mb-8 text-2xl text-blue-400">
-                  {expert.specialty}
+                  {translateSpecialty(expert.specialty)}
                 </p>
 
                 <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -442,7 +382,7 @@ export default async function ExpertProfilePage({
                     </p>
 
                     <p className="text-xl font-bold text-blue-400">
-                      {expert.specialty}
+                      {translateSpecialty(expert.specialty)}
                     </p>
                   </div>
 
@@ -566,7 +506,7 @@ export default async function ExpertProfilePage({
                     </p>
 
                     <p className="text-slate-200">
-                      {expert.specialty}
+                      {translateSpecialty(expert.specialty)}
                     </p>
                   </div>
 

@@ -1,4 +1,498 @@
 {
+  "knowledgeHub": {
+    "common": {
+      "categoryNavigation": "Content categories",
+      "openLink": "Open relevant page",
+      "relatedCategories": "Related categories"
+    },
+    "help": {
+      "eyebrow": "Help Center",
+      "title": "Help Center",
+      "summary": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+      "browseTitle": "Help Center",
+      "browseDescription": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+      "entriesTitle": "Help Center",
+      "relatedTitle": "Related categories",
+      "categories": {
+        "getting-started": {
+          "title": "Getting started",
+          "summary": "Getting started — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Getting started",
+          "seoDescription": "Getting started — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "accounts-and-access": {
+          "title": "Accounts and access",
+          "summary": "Accounts and access — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Accounts and access",
+          "seoDescription": "Accounts and access — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "cases-and-proposals": {
+          "title": "Cases and proposals",
+          "summary": "Cases and proposals — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Cases and proposals",
+          "seoDescription": "Cases and proposals — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "projects-and-tasks": {
+          "title": "Projects and tasks",
+          "summary": "Projects and tasks — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Projects and tasks",
+          "seoDescription": "Projects and tasks — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "companies-and-experts": {
+          "title": "Companies and experts",
+          "summary": "Companies and experts — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Companies and experts",
+          "seoDescription": "Companies and experts — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "tickets-and-support": {
+          "title": "Tickets and support",
+          "summary": "Tickets and support — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Tickets and support",
+          "seoDescription": "Tickets and support — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        }
+      },
+      "entries": {
+        "register": {
+          "title": "Create an account",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "signIn": {
+          "title": "Sign in",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "language": {
+          "title": "Change language",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "session": {
+          "title": "Session access",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "dashboard": {
+          "title": "Open the dashboard",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "permissions": {
+          "title": "Permissions",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "createCase": {
+          "title": "Create a case",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "submitProposal": {
+          "title": "Submit a proposal",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "acceptProposal": {
+          "title": "Accept a proposal",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "projects": {
+          "title": "Projects",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "tasks": {
+          "title": "Project tasks",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "documentsMessages": {
+          "title": "Documents and messages",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "profiles": {
+          "title": "Public profiles",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "ownership": {
+          "title": "Profile ownership",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "verification": {
+          "title": "Verification review",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "createTicket": {
+          "title": "Create a ticket",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "reply": {
+          "title": "Reply to a ticket",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "closeReopen": {
+          "title": "Close or reopen a ticket",
+          "body": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        }
+      }
+    },
+    "resources": {
+      "eyebrow": "Knowledge Hub",
+      "title": "Knowledge Hub",
+      "summary": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+      "browseTitle": "Knowledge Hub",
+      "emptyTitle": "Knowledge Hub",
+      "emptyDescription": "No reviewed entries are published in this category yet. Content will appear only after source, factual, and editorial review.",
+      "categories": {
+        "tutorials": {
+          "title": "Tutorials",
+          "summary": "Tutorials — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Tutorials",
+          "seoDescription": "Tutorials — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "purposeTitle": "Tutorials",
+          "purpose": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "news": {
+          "title": "Trade News",
+          "summary": "Trade News — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Trade News",
+          "seoDescription": "Trade News — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "purposeTitle": "Trade News",
+          "purpose": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "customs": {
+          "title": "Customs Articles",
+          "summary": "Customs Articles — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Customs Articles",
+          "seoDescription": "Customs Articles — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "purposeTitle": "Customs Articles",
+          "purpose": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "countries": {
+          "title": "Country Guides",
+          "summary": "Country Guides — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Country Guides",
+          "seoDescription": "Country Guides — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "purposeTitle": "Country Guides",
+          "purpose": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "glossary": {
+          "title": "Glossary",
+          "summary": "Glossary — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Glossary",
+          "seoDescription": "Glossary — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "purposeTitle": "Glossary",
+          "purpose": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        },
+        "case-studies": {
+          "title": "Case Studies",
+          "summary": "Case Studies — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "seoTitle": "Case Studies",
+          "seoDescription": "Case Studies — Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "purposeTitle": "Case Studies",
+          "purpose": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply."
+        }
+      },
+      "policy": {
+        "title": "Knowledge Hub",
+        "points": {
+          "changing": "Trade, customs, tariff, legal, and country information can change.",
+          "dates": "Every publication must show its publication date and review date.",
+          "sources": "Primary or authoritative sources should be identified and linked.",
+          "education": "Content is educational and does not replace professional or legal advice.",
+          "stale": "Stale content must be reviewed, updated, archived, superseded, or removed."
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "Frequently Asked Questions",
+      "title": "Frequently Asked Questions",
+      "summary": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+      "sectionTitle": "Frequently Asked Questions",
+      "items": {
+        "verification": {
+          "question": "Getting started?",
+          "answer": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "category": "Getting started"
+        },
+        "plans": {
+          "question": "Accounts and access?",
+          "answer": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "category": "Accounts and access"
+        },
+        "cases": {
+          "question": "Cases and proposals?",
+          "answer": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "category": "Cases and proposals"
+        },
+        "proposals": {
+          "question": "Projects and tasks?",
+          "answer": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "category": "Projects and tasks"
+        },
+        "tickets": {
+          "question": "Companies and experts?",
+          "answer": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "category": "Companies and experts"
+        },
+        "language": {
+          "question": "Tickets and support?",
+          "answer": "Guidance reflects current Dasres behavior. Follow the linked route when available; authentication, ownership, role, status, and plan limits still apply.",
+          "category": "Tickets and support"
+        }
+      }
+    }
+  }
+  ,
+  "publicSite": {
+    "navigation": {
+      "primaryLabel": "Primary navigation",
+      "brandHomeLabel": "Dasres home",
+      "tagline": "Global trade, connected",
+      "companies": "Companies",
+      "experts": "Experts",
+      "opportunities": "Opportunities",
+      "pricing": "Pricing",
+      "resources": "Resources",
+      "about": "About",
+      "contact": "Contact",
+      "help": "Help",
+      "login": "Log in",
+      "join": "Join Dasres",
+      "toggleMenu": "Toggle navigation"
+    },
+    "footer": {
+      "navigationLabel": "Footer navigation",
+      "trustStatement": "Discover verified companies, professional experts, and international trade opportunities in one connected workspace.",
+      "supportEntry": "Contact",
+      "groups": {
+        "platform": "Platform",
+        "solutions": "Solutions",
+        "resources": "Resources",
+        "company": "Company",
+        "legal": "Legal"
+      },
+      "links": {
+        "companies": "Companies",
+        "experts": "Experts",
+        "opportunities": "Opportunities",
+        "pricing": "Pricing",
+        "dashboard": "Dashboard",
+        "help": "Help",
+        "resourceHub": "Resources",
+        "faq": "FAQ",
+        "about": "About",
+        "contact": "Contact",
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "cookies": "Cookies"
+      },
+      "copyright": "© {year} Dasres. All rights reserved.",
+      "languageLabel": "Language"
+    },
+    "common": {
+      "home": "Home"
+    },
+    "pages": {
+      "about": {
+        "metadata": {
+          "title": "About Dasres",
+          "description": "About Dasres — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Resources",
+        "title": "About Dasres",
+        "description": "About Dasres — Current, practical information about Dasres and its international trade workspace.",
+        "sectionTitle": "About Dasres",
+        "sectionDescription": "Current, practical information about Dasres and its international trade workspace.",
+        "cta": {
+          "title": "About Dasres",
+          "description": "Current, practical information about Dasres and its international trade workspace.",
+          "label": "Companies"
+        }
+      },
+      "contact": {
+        "metadata": {
+          "title": "Contact Dasres",
+          "description": "Contact Dasres — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Resources",
+        "title": "Contact Dasres",
+        "description": "Contact Dasres — Current, practical information about Dasres and its international trade workspace.",
+        "sectionTitle": "Contact Dasres",
+        "sectionDescription": "Current, practical information about Dasres and its international trade workspace.",
+        "cta": {
+          "title": "Contact Dasres",
+          "description": "Current, practical information about Dasres and its international trade workspace.",
+          "label": "Dashboard"
+        }
+      },
+      "help": {
+        "metadata": {
+          "title": "Help Center",
+          "description": "Help Center — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Resources",
+        "title": "Help Center",
+        "description": "Help Center — Current, practical information about Dasres and its international trade workspace.",
+        "sectionTitle": "Help Center",
+        "sectionDescription": "Current, practical information about Dasres and its international trade workspace.",
+        "cta": {
+          "title": "Help Center",
+          "description": "Current, practical information about Dasres and its international trade workspace.",
+          "label": "FAQ"
+        }
+      },
+      "faq": {
+        "metadata": {
+          "title": "Frequently Asked Questions",
+          "description": "Frequently Asked Questions — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Resources",
+        "title": "Frequently Asked Questions",
+        "description": "Frequently Asked Questions — Current, practical information about Dasres and its international trade workspace.",
+        "sectionTitle": "Frequently Asked Questions",
+        "sectionDescription": "Current, practical information about Dasres and its international trade workspace.",
+        "cta": {
+          "title": "Frequently Asked Questions",
+          "description": "Current, practical information about Dasres and its international trade workspace.",
+          "label": "Contact"
+        }
+      },
+      "resources": {
+        "metadata": {
+          "title": "Trade Resources",
+          "description": "Trade Resources — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Resources",
+        "title": "Trade Resources",
+        "description": "Trade Resources — Current, practical information about Dasres and its international trade workspace.",
+        "sectionTitle": "Trade Resources",
+        "sectionDescription": "Current, practical information about Dasres and its international trade workspace.",
+        "cards": {
+          "tutorials": {
+            "title": "Tutorials",
+            "description": "Tutorials — Current, practical information about Dasres and its international trade workspace."
+          },
+          "news": {
+            "title": "Trade News",
+            "description": "Trade News — Current, practical information about Dasres and its international trade workspace."
+          },
+          "customs": {
+            "title": "Customs Articles",
+            "description": "Customs Articles — Current, practical information about Dasres and its international trade workspace."
+          },
+          "countries": {
+            "title": "Country Guides",
+            "description": "Country Guides — Current, practical information about Dasres and its international trade workspace."
+          },
+          "glossary": {
+            "title": "Glossary",
+            "description": "Glossary — Current, practical information about Dasres and its international trade workspace."
+          },
+          "cases": {
+            "title": "Case Studies",
+            "description": "Case Studies — Current, practical information about Dasres and its international trade workspace."
+          }
+        }
+      },
+      "pricing": {
+        "metadata": {
+          "title": "Plans and Limits",
+          "description": "Plans and Limits — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Pricing",
+        "title": "Plans and Limits",
+        "description": "Plans and Limits — Current, practical information about Dasres and its international trade workspace.",
+        "sectionTitle": "Plans and Limits",
+        "sectionDescription": "Current, practical information about Dasres and its international trade workspace.",
+      "activeCases": "Active trade cases",
+      "proposals": "Proposals",
+      "unlimited": "Unlimited",
+        "availabilityNotice": "Current, practical information about Dasres and its international trade workspace.",
+        "plans": {
+          "free": {
+            "name": "Free",
+            "description": "Current, practical information about Dasres and its international trade workspace."
+          },
+          "gold": {
+            "name": "Gold",
+            "description": "Current, practical information about Dasres and its international trade workspace."
+          },
+          "diamond": {
+            "name": "Diamond",
+            "description": "Current, practical information about Dasres and its international trade workspace."
+          },
+          "enterprise": {
+            "name": "Enterprise",
+            "description": "Current, practical information about Dasres and its international trade workspace."
+          }
+        }
+      },
+      "privacy": {
+        "metadata": {
+          "title": "Privacy Policy Draft",
+          "description": "Privacy Policy Draft — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Legal",
+        "title": "Privacy Policy Draft",
+        "description": "Privacy Policy Draft — Current, practical information about Dasres and its international trade workspace.",
+        "reviewNotice": "Draft for legal review. It describes current platform behavior and is not final legal advice.",
+        "sections": {
+          "scope": {
+            "title": "Privacy Policy Draft",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          },
+          "data": {
+            "title": "Privacy",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          },
+          "choices": {
+            "title": "Terms",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          }
+        }
+      },
+      "terms": {
+        "metadata": {
+          "title": "Terms of Service Draft",
+          "description": "Terms of Service Draft — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Legal",
+        "title": "Terms of Service Draft",
+        "description": "Terms of Service Draft — Current, practical information about Dasres and its international trade workspace.",
+        "reviewNotice": "Draft for legal review. It describes current platform behavior and is not final legal advice.",
+        "sections": {
+          "scope": {
+            "title": "Terms of Service Draft",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          },
+          "data": {
+            "title": "Privacy",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          },
+          "choices": {
+            "title": "Terms",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          }
+        }
+      },
+      "cookies": {
+        "metadata": {
+          "title": "Cookie Policy Draft",
+          "description": "Cookie Policy Draft — Current, practical information about Dasres and its international trade workspace."
+        },
+        "eyebrow": "Legal",
+        "title": "Cookie Policy Draft",
+        "description": "Cookie Policy Draft — Current, practical information about Dasres and its international trade workspace.",
+        "reviewNotice": "Draft for legal review. It describes current platform behavior and is not final legal advice.",
+        "sections": {
+          "scope": {
+            "title": "Cookie Policy Draft",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          },
+          "data": {
+            "title": "Privacy",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          },
+          "choices": {
+            "title": "Terms",
+            "description": "This draft covers accounts, public profiles, opportunities, collaboration, authentication, permissions, support, and language preferences. Final retention, commercial, jurisdictional, and dispute terms require legal approval."
+          }
+        }
+      }
+    }
+  }
+  ,
   "common": {
     "appName": "Dasres",
     "dashboard": "Dashboard",

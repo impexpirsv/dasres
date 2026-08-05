@@ -31,7 +31,6 @@ type Task = {
   attachments: {
     id: number;
     fileName: string;
-    fileUrl: string;
     uploadedBy: UserOption | null;
   }[];
   comments: Parameters<
@@ -95,7 +94,7 @@ export default function ProjectTaskDetails({
 
   if (!task) {
     return (
-      <div className="rounded-3xl border border-slate-800 bg-slate-950 p-8 text-center text-slate-500">
+      <div className="ui-card ui-empty p-8 text-center text-slate-400">
         {t("emptyState")}
       </div>
     );
@@ -147,8 +146,8 @@ const now = new Date();
   );
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6">
-      <div className="mb-6 flex items-start justify-between gap-4">
+    <div className="workspace-panel bg-slate-950">
+      <div className="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:justify-between sm:gap-4">
         <div className="min-w-0">
           <h2 className="break-words text-2xl font-bold text-white">
             {task.title}
@@ -162,7 +161,7 @@ const now = new Date();
         </div>
 
         <span
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${priorityClass}`}
+          className={`ui-badge shrink-0 ${priorityClass}`}
         >
           {t(
             `priorities.${priorityKey}`,
@@ -323,7 +322,7 @@ const now = new Date();
                     </span>
 
                     <span
-                      className={`shrink-0 rounded-full px-2 py-1 text-xs font-semibold ${statusClass}`}
+                      className={`ui-badge shrink-0 ${statusClass}`}
                     >
                       {t(
                         `statuses.${statusKey}`,
@@ -406,11 +405,11 @@ const now = new Date();
                   <a
                     key={attachment.id}
                     href={
-                      attachment.fileUrl
+                      `/api/project-task-attachments/${attachment.id}/download`
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-blue-400 transition hover:border-blue-500"
+                    className="flex min-h-11 flex-col items-start justify-between gap-1 rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-blue-300 transition hover:border-blue-500 hover:text-blue-200 sm:flex-row sm:items-center sm:gap-3"
                   >
                     <div className="break-all font-semibold">
                       {
@@ -418,7 +417,7 @@ const now = new Date();
                       }
                     </div>
 
-                    <div className="mt-1 text-xs text-slate-500">
+                    <div className="break-words text-xs text-slate-500 sm:text-end">
                       {t("uploadedBy", {
                         name: uploader,
                       })}

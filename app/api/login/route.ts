@@ -1,85 +1,260 @@
 import bcrypt from "bcryptjs";
-import { randomUUID } from "crypto";
 import { cookies } from "next/headers";
+import { Prisma } from "@prisma/client";
 import { apiHandler } from "../../../lib/api";
+import {
+  LEGACY_USER_COOKIE_NAME,
+  SESSION_COOKIE_NAME,
+} from "../../../lib/auth/constants";
+import {
+  generateSessionToken,
+  hashSessionToken,
+} from "../../../lib/auth/session-token";
 import { AppError } from "../../../lib/errors";
 import { prisma } from "../../../lib/prisma";
+
+const MAX_TRANSACTION_RETRIES = 3;
+const MAX_TOKEN_GENERATION_ATTEMPTS = 3;
+const BASE_RETRY_DELAY_MS = 50;
+
+const MAX_REQUEST_BODY_SIZE = 16 * 1024;
 
 const MAX_EMAIL_LENGTH = 254;
 const MAX_PASSWORD_LENGTH = 200;
 
-function isValidEmail(value: string) {
+const SESSION_DURATION_SECONDS =
+  60 * 60 * 24 * 7;
+
+type LoginInput = {
+  email: string;
+  password: string;
+};
+
+type AuthenticatedUser = {
+  id: number;
+  name: string | null;
+  email: string;
+  role: string;
+};
+
+function sleep(
+  milliseconds: number,
+): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
+function isValidEmail(
+  value: string,
+): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
     value,
   );
 }
 
-export async function POST(request: Request) {
-  return apiHandler(async () => {
-    let body: unknown;
+function isRetryableTransactionError(
+  error: unknown,
+): boolean {
+  return (
+    error instanceof
+      Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2034"
+  );
+}
 
+function isUniqueConstraintError(
+  error: unknown,
+): boolean {
+  return (
+    error instanceof
+      Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2002"
+  );
+}
+
+async function runSerializableTransaction<T>(
+  operation: (
+    transaction:
+      Prisma.TransactionClient,
+  ) => Promise<T>,
+): Promise<T> {
+  for (
+    let attempt = 1;
+    attempt <=
+    MAX_TRANSACTION_RETRIES;
+    attempt += 1
+  ) {
     try {
-      body = await request.json();
-    } catch {
-      throw new AppError(
-        "INVALID_JSON_BODY",
-        400,
+      return await prisma.$transaction(
+        operation,
+        {
+          isolationLevel:
+            Prisma
+              .TransactionIsolationLevel
+              .Serializable,
+        },
       );
+    } catch (error) {
+      const retryable =
+        isRetryableTransactionError(
+          error,
+        );
+
+      if (
+        !retryable ||
+        attempt ===
+          MAX_TRANSACTION_RETRIES
+      ) {
+        if (retryable) {
+          throw new AppError(
+            "LOGIN_SESSION_CONFLICT",
+            409,
+          );
+        }
+
+        throw error;
+      }
+
+      const retryDelay =
+        BASE_RETRY_DELAY_MS *
+        2 ** (attempt - 1);
+
+      await sleep(retryDelay);
     }
+  }
 
-    if (
-      !body ||
-      typeof body !== "object" ||
-      Array.isArray(body)
-    ) {
-      throw new AppError(
-        "INVALID_REQUEST_BODY",
-        400,
-      );
-    }
+  throw new AppError(
+    "LOGIN_SESSION_CONFLICT",
+    409,
+  );
+}
 
-    const payload = body as Record<
-      string,
-      unknown
-    >;
+function validateContentLength(
+  request: Request,
+): void {
+  const contentLengthHeader =
+    request.headers.get(
+      "content-length",
+    );
 
-    const email =
-      typeof payload.email === "string"
-        ? payload.email.trim().toLowerCase()
-        : "";
+  if (!contentLengthHeader) {
+    return;
+  }
 
-    const password =
-      typeof payload.password === "string"
-        ? payload.password
-        : "";
+  const contentLength = Number(
+    contentLengthHeader,
+  );
 
-    if (!email || !password) {
-      throw new AppError(
-        "LOGIN_CREDENTIALS_REQUIRED",
-        400,
-      );
-    }
+  if (
+    !Number.isFinite(contentLength) ||
+    contentLength < 0
+  ) {
+    throw new AppError(
+      "INVALID_CONTENT_LENGTH",
+      400,
+    );
+  }
 
-    if (
-      email.length > MAX_EMAIL_LENGTH ||
-      !isValidEmail(email)
-    ) {
-      throw new AppError(
-        "INVALID_EMAIL_FORMAT",
-        400,
-      );
-    }
+  if (
+    contentLength >
+    MAX_REQUEST_BODY_SIZE
+  ) {
+    throw new AppError(
+      "REQUEST_BODY_TOO_LARGE",
+      413,
+    );
+  }
+}
 
-    if (
-      password.length > MAX_PASSWORD_LENGTH
-    ) {
-      throw new AppError(
-        "INVALID_LOGIN_CREDENTIALS",
-        401,
-      );
-    }
+async function parseJsonBody(
+  request: Request,
+): Promise<Record<string, unknown>> {
+  validateContentLength(request);
 
-    const user = await prisma.user.findUnique({
+  let body: unknown;
+
+  try {
+    body = await request.json();
+  } catch {
+    throw new AppError(
+      "INVALID_JSON_BODY",
+      400,
+    );
+  }
+
+  if (
+    !body ||
+    typeof body !== "object" ||
+    Array.isArray(body)
+  ) {
+    throw new AppError(
+      "INVALID_REQUEST_BODY",
+      400,
+    );
+  }
+
+  return body as Record<
+    string,
+    unknown
+  >;
+}
+
+function validateLoginInput(
+  payload: Record<string, unknown>,
+): LoginInput {
+  const email =
+    typeof payload.email === "string"
+      ? payload.email
+          .trim()
+          .toLowerCase()
+      : "";
+
+  const password =
+    typeof payload.password === "string"
+      ? payload.password
+      : "";
+
+  if (!email || !password) {
+    throw new AppError(
+      "LOGIN_CREDENTIALS_REQUIRED",
+      400,
+    );
+  }
+
+  if (
+    email.length >
+      MAX_EMAIL_LENGTH ||
+    !isValidEmail(email)
+  ) {
+    throw new AppError(
+      "INVALID_EMAIL_FORMAT",
+      400,
+    );
+  }
+
+  if (
+    password.length >
+    MAX_PASSWORD_LENGTH
+  ) {
+    throw new AppError(
+      "INVALID_LOGIN_CREDENTIALS",
+      401,
+    );
+  }
+
+  return {
+    email,
+    password,
+  };
+}
+
+async function authenticateUser({
+  email,
+  password,
+}: LoginInput): Promise<AuthenticatedUser> {
+  const user =
+    await prisma.user.findUnique({
       where: {
         email,
       },
@@ -92,72 +267,255 @@ export async function POST(request: Request) {
       },
     });
 
-    if (!user) {
-      throw new AppError(
-        "INVALID_LOGIN_CREDENTIALS",
-        401,
-      );
-    }
+  if (!user) {
+    throw new AppError(
+      "INVALID_LOGIN_CREDENTIALS",
+      401,
+    );
+  }
 
-    const isValidPassword =
+  let isValidPassword = false;
+
+  try {
+    isValidPassword =
       await bcrypt.compare(
         password,
         user.password,
       );
+  } catch (error) {
+    console.error(
+      "LOGIN_PASSWORD_COMPARE_ERROR",
+      {
+        userId: user.id,
+        error,
+      },
+    );
 
-    if (!isValidPassword) {
+    throw new AppError(
+      "LOGIN_FAILED",
+      500,
+    );
+  }
+
+  if (!isValidPassword) {
+    throw new AppError(
+      "INVALID_LOGIN_CREDENTIALS",
+      401,
+    );
+  }
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
+}
+
+async function createSession({
+  userId,
+}: {
+  userId: number;
+}): Promise<{
+  token: string;
+  expiresAt: Date;
+}> {
+  for (
+    let attempt = 1;
+    attempt <=
+    MAX_TOKEN_GENERATION_ATTEMPTS;
+    attempt += 1
+  ) {
+    const token = generateSessionToken();
+    const tokenHash = hashSessionToken(token);
+
+    if (!tokenHash) {
       throw new AppError(
-        "INVALID_LOGIN_CREDENTIALS",
-        401,
+        "SESSION_TOKEN_GENERATION_FAILED",
+        500,
       );
     }
 
-    const token = randomUUID();
-    const sessionDurationSeconds =
-      60 * 60 * 24 * 7;
-
     const expiresAt = new Date(
       Date.now() +
-        sessionDurationSeconds * 1000,
+        SESSION_DURATION_SECONDS *
+          1000,
     );
 
-    await prisma.session.create({
-      data: {
-        token,
-        userId: user.id,
-        expiresAt,
-      },
-      select: {
-        id: true,
-      },
-    });
+    try {
+      return await runSerializableTransaction(
+        async (transaction) => {
+          const userExists =
+            await transaction.user.findUnique({
+              where: {
+                id: userId,
+              },
+              select: {
+                id: true,
+              },
+            });
 
-    const cookieStore = await cookies();
+          if (!userExists) {
+            throw new AppError(
+              "USER_NOT_FOUND",
+              404,
+            );
+          }
 
-    cookieStore.set(
-      "dasres_session_token",
-      token,
-      {
-        httpOnly: true,
-        secure:
-          process.env.NODE_ENV ===
-          "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: sessionDurationSeconds,
-      },
+          await transaction.session.deleteMany({
+            where: {
+              userId,
+            },
+          });
+
+          await transaction.session.create({
+            data: {
+              tokenHash,
+              userId,
+              expiresAt,
+            },
+            select: {
+              id: true,
+            },
+          });
+
+          return {
+            token,
+            expiresAt,
+          };
+        },
+      );
+    } catch (error) {
+      if (
+        isUniqueConstraintError(
+          error,
+        ) &&
+        attempt <
+          MAX_TOKEN_GENERATION_ATTEMPTS
+      ) {
+        continue;
+      }
+
+      if (
+        isUniqueConstraintError(
+          error,
+        )
+      ) {
+        throw new AppError(
+          "SESSION_TOKEN_GENERATION_FAILED",
+          500,
+        );
+      }
+
+      throw error;
+    }
+  }
+
+  throw new AppError(
+    "SESSION_TOKEN_GENERATION_FAILED",
+    500,
+  );
+}
+
+async function setSessionCookie({
+  token,
+}: {
+  token: string;
+}): Promise<void> {
+  const cookieStore =
+    await cookies();
+
+  cookieStore.set(
+    SESSION_COOKIE_NAME,
+    token,
+    {
+      httpOnly: true,
+      secure:
+        process.env.NODE_ENV ===
+        "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge:
+        SESSION_DURATION_SECONDS,
+    },
+  );
+
+  cookieStore.delete(
+    LEGACY_USER_COOKIE_NAME,
+  );
+}
+
+function mapLoginError(
+  error: unknown,
+): never {
+  if (
+    error instanceof
+    Prisma.PrismaClientValidationError
+  ) {
+    throw new AppError(
+      "INVALID_LOGIN_DATA",
+      400,
     );
+  }
 
-    cookieStore.delete("dasres_user_id");
+  if (
+    error instanceof
+    Prisma.PrismaClientKnownRequestError
+  ) {
+    if (error.code === "P2003") {
+      throw new AppError(
+        "LOGIN_SESSION_USER_INVALID",
+        409,
+      );
+    }
 
-    return Response.json({
-      code: "LOGIN_SUCCESSFUL",
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
+    if (error.code === "P2025") {
+      throw new AppError(
+        "USER_NOT_FOUND",
+        404,
+      );
+    }
+  }
+
+  throw error;
+}
+
+export async function POST(
+  request: Request,
+) {
+  return apiHandler(async () => {
+    try {
+      const payload =
+        await parseJsonBody(
+          request,
+        );
+
+      const input =
+        validateLoginInput(
+          payload,
+        );
+
+      const user =
+        await authenticateUser(
+          input,
+        );
+
+      const session =
+        await createSession({
+          userId: user.id,
+        });
+
+      await setSessionCookie({
+        token: session.token,
+      });
+
+      return Response.json({
+        code:
+          "LOGIN_SUCCESSFUL",
+        user,
+      });
+    } catch (error) {
+      mapLoginError(error);
+    }
   });
 }

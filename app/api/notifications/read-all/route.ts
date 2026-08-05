@@ -1,40 +1,16 @@
-import { prisma } from "../../../../lib/prisma";
+import { apiHandler } from "../../../../lib/api";
 import { requireUser } from "../../../../lib/auth";
+import { markAllNotificationsAsRead } from "../../../../lib/notifications/mark-all-notifications-as-read";
 
-export async function POST() {
-  try {
+export async function POST(): Promise<Response> {
+  return apiHandler(async () => {
     const user = await requireUser();
 
     const result =
-      await prisma.notification.updateMany({
-        where: {
-          userId: user.id,
-          isRead: false,
-        },
-        data: {
-          isRead: true,
-        },
+      await markAllNotificationsAsRead({
+        userId: user.id,
       });
 
-    return Response.json({
-      code: "NOTIFICATIONS_MARKED_AS_READ",
-      updatedCount: result.count,
-    });
-  } catch (error) {
-    console.error(
-      "NOTIFICATIONS_READ_ALL_ERROR",
-      {
-        error,
-      },
-    );
-
-    return Response.json(
-      {
-        code: "NOTIFICATIONS_READ_ALL_FAILED",
-      },
-      {
-        status: 500,
-      },
-    );
-  }
+    return Response.json(result);
+  });
 }

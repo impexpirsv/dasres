@@ -1,4 +1,498 @@
 {
+  "knowledgeHub": {
+    "common": {
+      "categoryNavigation": "Central de Conhecimento",
+      "openLink": "Central de Ajuda",
+      "relatedCategories": "Central de Conhecimento"
+    },
+    "help": {
+      "eyebrow": "Central de Ajuda",
+      "title": "Central de Ajuda",
+      "summary": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+      "browseTitle": "Central de Ajuda",
+      "browseDescription": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+      "entriesTitle": "Central de Ajuda",
+      "relatedTitle": "Central de Conhecimento",
+      "categories": {
+        "getting-started": {
+          "title": "Primeiros passos",
+          "summary": "Primeiros passos — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Primeiros passos",
+          "seoDescription": "Primeiros passos — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "accounts-and-access": {
+          "title": "Contas e acesso",
+          "summary": "Contas e acesso — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Contas e acesso",
+          "seoDescription": "Contas e acesso — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "cases-and-proposals": {
+          "title": "Casos e propostas",
+          "summary": "Casos e propostas — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Casos e propostas",
+          "seoDescription": "Casos e propostas — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "projects-and-tasks": {
+          "title": "Projetos e tarefas",
+          "summary": "Projetos e tarefas — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Projetos e tarefas",
+          "seoDescription": "Projetos e tarefas — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "companies-and-experts": {
+          "title": "Empresas e especialistas",
+          "summary": "Empresas e especialistas — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Empresas e especialistas",
+          "seoDescription": "Empresas e especialistas — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "tickets-and-support": {
+          "title": "Tickets e suporte",
+          "summary": "Tickets e suporte — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Tickets e suporte",
+          "seoDescription": "Tickets e suporte — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        }
+      },
+      "entries": {
+        "register": {
+          "title": "Primeiros passos 1",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "signIn": {
+          "title": "Contas e acesso 1",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "language": {
+          "title": "Casos e propostas 1",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "session": {
+          "title": "Projetos e tarefas 1",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "dashboard": {
+          "title": "Empresas e especialistas 1",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "permissions": {
+          "title": "Tickets e suporte 1",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "createCase": {
+          "title": "Primeiros passos 2",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "submitProposal": {
+          "title": "Contas e acesso 2",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "acceptProposal": {
+          "title": "Casos e propostas 2",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "projects": {
+          "title": "Projetos e tarefas 2",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "tasks": {
+          "title": "Empresas e especialistas 2",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "documentsMessages": {
+          "title": "Tickets e suporte 2",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "profiles": {
+          "title": "Primeiros passos 3",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "ownership": {
+          "title": "Contas e acesso 3",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "verification": {
+          "title": "Casos e propostas 3",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "createTicket": {
+          "title": "Projetos e tarefas 3",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "reply": {
+          "title": "Empresas e especialistas 3",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "closeReopen": {
+          "title": "Tickets e suporte 3",
+          "body": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        }
+      }
+    },
+    "resources": {
+      "eyebrow": "Central de Conhecimento",
+      "title": "Central de Conhecimento",
+      "summary": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+      "browseTitle": "Central de Conhecimento",
+      "emptyTitle": "Central de Conhecimento",
+      "emptyDescription": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+      "categories": {
+        "tutorials": {
+          "title": "Tutoriais",
+          "summary": "Tutoriais — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Tutoriais",
+          "seoDescription": "Tutoriais — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "purposeTitle": "Tutoriais",
+          "purpose": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "news": {
+          "title": "Notícias comerciais",
+          "summary": "Notícias comerciais — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Notícias comerciais",
+          "seoDescription": "Notícias comerciais — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "purposeTitle": "Notícias comerciais",
+          "purpose": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "customs": {
+          "title": "Artigos aduaneiros",
+          "summary": "Artigos aduaneiros — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Artigos aduaneiros",
+          "seoDescription": "Artigos aduaneiros — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "purposeTitle": "Artigos aduaneiros",
+          "purpose": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "countries": {
+          "title": "Guias de países",
+          "summary": "Guias de países — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Guias de países",
+          "seoDescription": "Guias de países — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "purposeTitle": "Guias de países",
+          "purpose": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "glossary": {
+          "title": "Glossário",
+          "summary": "Glossário — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Glossário",
+          "seoDescription": "Glossário — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "purposeTitle": "Glossário",
+          "purpose": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        },
+        "case-studies": {
+          "title": "Estudos de caso",
+          "summary": "Estudos de caso — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "seoTitle": "Estudos de caso",
+          "seoDescription": "Estudos de caso — A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "purposeTitle": "Estudos de caso",
+          "purpose": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        }
+      },
+      "policy": {
+        "title": "Central de Conhecimento",
+        "points": {
+          "changing": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "dates": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "sources": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "education": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "stale": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis."
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "Perguntas frequentes",
+      "title": "Perguntas frequentes",
+      "summary": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+      "sectionTitle": "Perguntas frequentes",
+      "items": {
+        "verification": {
+          "question": "Primeiros passos?",
+          "answer": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "category": "Primeiros passos"
+        },
+        "plans": {
+          "question": "Contas e acesso?",
+          "answer": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "category": "Contas e acesso"
+        },
+        "cases": {
+          "question": "Casos e propostas?",
+          "answer": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "category": "Casos e propostas"
+        },
+        "proposals": {
+          "question": "Projetos e tarefas?",
+          "answer": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "category": "Projetos e tarefas"
+        },
+        "tickets": {
+          "question": "Empresas e especialistas?",
+          "answer": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "category": "Empresas e especialistas"
+        },
+        "language": {
+          "question": "Tickets e suporte?",
+          "answer": "A orientação reflete o comportamento atual da Dasres; autenticação, propriedade, função, estado e limites continuam aplicáveis.",
+          "category": "Tickets e suporte"
+        }
+      }
+    }
+  }
+  ,
+  "publicSite": {
+    "navigation": {
+      "primaryLabel": "Navegação principal",
+      "brandHomeLabel": "Início Dasres",
+      "tagline": "Comércio global conectado",
+      "companies": "Empresas",
+      "experts": "Especialistas",
+      "opportunities": "Oportunidades",
+      "pricing": "Planos",
+      "resources": "Recursos",
+      "about": "Sobre",
+      "contact": "Contato",
+      "help": "Ajuda",
+      "login": "Entrar",
+      "join": "Junte-se à Dasres",
+      "toggleMenu": "Alternar navegação"
+    },
+    "footer": {
+      "navigationLabel": "Navegação do rodapé",
+      "trustStatement": "Encontre empresas verificadas, especialistas e oportunidades comerciais em um espaço conectado.",
+      "supportEntry": "Contato",
+      "groups": {
+        "platform": "Plataforma",
+        "solutions": "Soluções",
+        "resources": "Recursos",
+        "company": "Empresa",
+        "legal": "Legal"
+      },
+      "links": {
+        "companies": "Empresas",
+        "experts": "Especialistas",
+        "opportunities": "Oportunidades",
+        "pricing": "Planos",
+        "dashboard": "Painel",
+        "help": "Ajuda",
+        "resourceHub": "Recursos",
+        "faq": "Perguntas frequentes",
+        "about": "Sobre",
+        "contact": "Contato",
+        "privacy": "Privacidade",
+        "terms": "Termos",
+        "cookies": "Cookies"
+      },
+      "copyright": "© {year} Dasres. Todos os direitos reservados.",
+      "languageLabel": "Idioma"
+    },
+    "common": {
+      "home": "Início"
+    },
+    "pages": {
+      "about": {
+        "metadata": {
+          "title": "Sobre a Dasres",
+          "description": "Sobre a Dasres — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Sobre a Dasres",
+        "description": "Sobre a Dasres — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "sectionTitle": "Sobre a Dasres",
+        "sectionDescription": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "cta": {
+          "title": "Sobre a Dasres",
+          "description": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+          "label": "Empresas"
+        }
+      },
+      "contact": {
+        "metadata": {
+          "title": "Contatar a Dasres",
+          "description": "Contatar a Dasres — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Contatar a Dasres",
+        "description": "Contatar a Dasres — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "sectionTitle": "Contatar a Dasres",
+        "sectionDescription": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "cta": {
+          "title": "Contatar a Dasres",
+          "description": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+          "label": "Painel"
+        }
+      },
+      "help": {
+        "metadata": {
+          "title": "Central de Ajuda",
+          "description": "Central de Ajuda — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Central de Ajuda",
+        "description": "Central de Ajuda — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "sectionTitle": "Central de Ajuda",
+        "sectionDescription": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "cta": {
+          "title": "Central de Ajuda",
+          "description": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+          "label": "Perguntas frequentes"
+        }
+      },
+      "faq": {
+        "metadata": {
+          "title": "Perguntas Frequentes",
+          "description": "Perguntas Frequentes — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Perguntas Frequentes",
+        "description": "Perguntas Frequentes — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "sectionTitle": "Perguntas Frequentes",
+        "sectionDescription": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "cta": {
+          "title": "Perguntas Frequentes",
+          "description": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+          "label": "Contato"
+        }
+      },
+      "resources": {
+        "metadata": {
+          "title": "Recursos Comerciais",
+          "description": "Recursos Comerciais — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Recursos",
+        "title": "Recursos Comerciais",
+        "description": "Recursos Comerciais — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "sectionTitle": "Recursos Comerciais",
+        "sectionDescription": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "cards": {
+          "tutorials": {
+            "title": "Tutoriais",
+            "description": "Tutoriais — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          },
+          "news": {
+            "title": "Notícias Comerciais",
+            "description": "Notícias Comerciais — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          },
+          "customs": {
+            "title": "Artigos Aduaneiros",
+            "description": "Artigos Aduaneiros — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          },
+          "countries": {
+            "title": "Guias de Países",
+            "description": "Guias de Países — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          },
+          "glossary": {
+            "title": "Glossário",
+            "description": "Glossário — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          },
+          "cases": {
+            "title": "Estudos de Caso",
+            "description": "Estudos de Caso — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          }
+        }
+      },
+      "pricing": {
+        "metadata": {
+          "title": "Planos e Limites",
+          "description": "Planos e Limites — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Planos",
+        "title": "Planos e Limites",
+        "description": "Planos e Limites — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "sectionTitle": "Planos e Limites",
+        "sectionDescription": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+      "activeCases": "Casos comerciais ativos",
+      "proposals": "Propostas",
+      "unlimited": "Ilimitado",
+        "availabilityNotice": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "plans": {
+          "free": {
+            "name": "Gratuito",
+            "description": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          },
+          "gold": {
+            "name": "Ouro",
+            "description": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          },
+          "diamond": {
+            "name": "Diamante",
+            "description": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          },
+          "enterprise": {
+            "name": "Empresarial",
+            "description": "Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+          }
+        }
+      },
+      "privacy": {
+        "metadata": {
+          "title": "Rascunho de Privacidade",
+          "description": "Rascunho de Privacidade — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Legal",
+        "title": "Rascunho de Privacidade",
+        "description": "Rascunho de Privacidade — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "reviewNotice": "Rascunho para revisão jurídica; descreve o funcionamento atual e não é aconselhamento jurídico final.",
+        "sections": {
+          "scope": {
+            "title": "Rascunho de Privacidade",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          },
+          "data": {
+            "title": "Privacidade",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          },
+          "choices": {
+            "title": "Termos",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          }
+        }
+      },
+      "terms": {
+        "metadata": {
+          "title": "Rascunho dos Termos de Serviço",
+          "description": "Rascunho dos Termos de Serviço — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Legal",
+        "title": "Rascunho dos Termos de Serviço",
+        "description": "Rascunho dos Termos de Serviço — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "reviewNotice": "Rascunho para revisão jurídica; descreve o funcionamento atual e não é aconselhamento jurídico final.",
+        "sections": {
+          "scope": {
+            "title": "Rascunho dos Termos de Serviço",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          },
+          "data": {
+            "title": "Privacidade",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          },
+          "choices": {
+            "title": "Termos",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          }
+        }
+      },
+      "cookies": {
+        "metadata": {
+          "title": "Rascunho da Política de Cookies",
+          "description": "Rascunho da Política de Cookies — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional."
+        },
+        "eyebrow": "Legal",
+        "title": "Rascunho da Política de Cookies",
+        "description": "Rascunho da Política de Cookies — Informações práticas e atuais sobre a Dasres e seu espaço de comércio internacional.",
+        "reviewNotice": "Rascunho para revisão jurídica; descreve o funcionamento atual e não é aconselhamento jurídico final.",
+        "sections": {
+          "scope": {
+            "title": "Rascunho da Política de Cookies",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          },
+          "data": {
+            "title": "Privacidade",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          },
+          "choices": {
+            "title": "Termos",
+            "description": "O rascunho abrange contas, perfis públicos, oportunidades, colaboração, autenticação, permissões, suporte e idioma. Retenção, comércio, jurisdição e disputas exigem aprovação jurídica."
+          }
+        }
+      }
+    }
+  }
+  ,
   "common": {
     "years": "{count} anos",
     "hours": "horas",

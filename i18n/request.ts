@@ -1,20 +1,17 @@
 import { cookies } from "next/headers";
 import { getRequestConfig } from "next-intl/server";
 import {
-  defaultLocale,
-  isLocale,
+  resolveLocale,
 } from "../lib/locale";
 
 const LOCALE_COOKIE = "NEXT_LOCALE";
 
-export default getRequestConfig(async () => {
+export default getRequestConfig(async ({ requestLocale }) => {
+  const routeLocale = await requestLocale;
   const cookieStore = await cookies();
   const savedLocale = cookieStore.get(LOCALE_COOKIE)?.value;
 
-  const locale =
-    savedLocale && isLocale(savedLocale)
-      ? savedLocale
-      : defaultLocale;
+  const locale = resolveLocale(routeLocale, savedLocale);
 
   return {
     locale,

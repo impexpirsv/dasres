@@ -1,6 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import CreateProjectTaskForm from "./CreateProjectTaskForm";
@@ -39,16 +43,40 @@ type Task = {
   attachments: {
     id: number;
     fileName: string;
-    fileUrl: string;
     uploadedBy: UserOption | null;
   }[];
-  comments: Parameters<typeof ProjectTaskComments>[0]["comments"];
+  comments: Parameters<
+    typeof ProjectTaskComments
+  >[0]["comments"];
   checklistItems: {
     id: number;
     title: string;
     completed: boolean;
   }[];
 };
+
+function resolveSelectedTaskId(
+  taskParam: string | null,
+  tasks: Task[],
+): number | null {
+  if (taskParam !== null) {
+    const parsedTaskId =
+      Number(taskParam);
+
+    if (
+      Number.isInteger(parsedTaskId) &&
+      parsedTaskId > 0 &&
+      tasks.some(
+        (task) =>
+          task.id === parsedTaskId,
+      )
+    ) {
+      return parsedTaskId;
+    }
+  }
+
+  return tasks[0]?.id ?? null;
+}
 
 export default function ProjectTasksSection({
   projectId,
@@ -61,43 +89,70 @@ export default function ProjectTasksSection({
   assignableUsers: UserOption[];
   isAdmin: boolean;
 }) {
-  const t = useTranslations("projectTasksSection");
-  const searchParams = useSearchParams();
-  const taskFromUrl = Number(searchParams.get("task"));
-
-  const initialTaskId =
-    searchParams.get("task") !== null &&
-    !Number.isNaN(taskFromUrl) &&
-    tasks.some((task) => task.id === taskFromUrl)
-      ? taskFromUrl
-      : (tasks[0]?.id ?? null);
-
-  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(
-    initialTaskId,
+  const t = useTranslations(
+    "projectTasksSection",
   );
 
-  const [search, setSearch] = useState("");
+  const searchParams =
+    useSearchParams();
 
- 
+  const taskParam =
+    searchParams.get("task");
+
+  const [selectedTaskId, setSelectedTaskId] =
+    useState<number | null>(() =>
+      resolveSelectedTaskId(
+        taskParam,
+        tasks,
+      ),
+    );
+
+  const [search, setSearch] =
+    useState("");
+
+  useEffect(() => {
+    setSelectedTaskId(
+      resolveSelectedTaskId(
+        taskParam,
+        tasks,
+      ),
+    );
+  }, [taskParam, tasks]);
+
   const filteredTasks = useMemo(() => {
-    const value = search.trim().toLocaleLowerCase();
+    const value =
+      search.trim().toLocaleLowerCase();
 
     if (!value) {
       return tasks;
     }
 
     return tasks.filter((task) =>
-      task.title.toLocaleLowerCase().includes(value),
+      task.title
+        .toLocaleLowerCase()
+        .includes(value),
     );
   }, [search, tasks]);
 
   const visibleSelectedTask =
-    filteredTasks.find((task) => task.id === selectedTaskId) ??
+    filteredTasks.find(
+      (task) =>
+        task.id === selectedTaskId,
+    ) ??
     filteredTasks[0] ??
     null;
 
+  const availableTasks = useMemo(
+    () =>
+      tasks.map((task) => ({
+        id: task.id,
+        title: task.title,
+      })),
+    [tasks],
+  );
+
   return (
-    <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <section className="workspace-panel">
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-2xl font-bold">
@@ -106,8 +161,10 @@ export default function ProjectTasksSection({
               (
               {search.trim()
                 ? t("filteredCount", {
-                    filtered: filteredTasks.length,
-                    total: tasks.length,
+                    filtered:
+                      filteredTasks.length,
+                    total:
+                      tasks.length,
                   })
                 : tasks.length}
               )
@@ -119,41 +176,61 @@ export default function ProjectTasksSection({
           </p>
         </div>
 
-        <CreateProjectTaskForm projectId={projectId} />
+        <CreateProjectTaskForm
+          projectId={projectId}
+        />
       </div>
 
       <input
         type="search"
-        placeholder={t("searchPlaceholder")}
+        placeholder={t(
+          "searchPlaceholder",
+        )}
         aria-label={t("searchLabel")}
         value={search}
-        onChange={(event) => setSearch(event.target.value)}
+        onChange={(event) =>
+          setSearch(
+            event.target.value,
+          )
+        }
         className="mb-4 w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none"
       />
 
-      <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
+      <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(17rem,22.5rem)_minmax(0,1fr)] xl:gap-6">
         <div className="max-h-[75vh] overflow-y-auto pe-1">
           <ProjectTaskList
             tasks={filteredTasks}
-            selectedTaskId={visibleSelectedTask?.id ?? null}
-            onSelect={setSelectedTaskId}
+            selectedTaskId={
+              visibleSelectedTask?.id ??
+              null
+            }
+            onSelect={
+              setSelectedTaskId
+            }
           />
         </div>
 
         <div className="min-w-0">
           {visibleSelectedTask ? (
             <ProjectTaskDetails
-              task={visibleSelectedTask}
-              assignableUsers={assignableUsers}
-              availableTasks={tasks.map((task) => ({
-                id: task.id,
-                title: task.title,
-              }))}
+              task={
+                visibleSelectedTask
+              }
+              assignableUsers={
+                assignableUsers
+              }
+              availableTasks={
+                availableTasks
+              }
               isAdmin={isAdmin}
             />
           ) : (
             <div className="rounded-2xl border border-slate-800 bg-slate-950 p-8 text-center text-slate-400">
-              {search.trim() ? t("noSearchResults") : t("emptyState")}
+              {search.trim()
+                ? t(
+                    "noSearchResults",
+                  )
+                : t("emptyState")}
             </div>
           )}
         </div>

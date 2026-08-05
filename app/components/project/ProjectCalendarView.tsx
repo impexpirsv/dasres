@@ -23,7 +23,13 @@ type Task = {
   status: string;
 };
 
-function getStatusColor(status: string) {
+type CalendarEventType =
+  | "START_DATE"
+  | "DUE_DATE";
+
+function getStatusColor(
+  status: string,
+): string {
   switch (status) {
     case "TODO":
       return "#64748b";
@@ -51,30 +57,40 @@ function toDateOnly(
 
   if (
     typeof value === "string" &&
-    /^\d{4}-\d{2}-\d{2}$/.test(value)
+    /^\d{4}-\d{2}-\d{2}$/.test(
+      value,
+    )
   ) {
     return value;
   }
 
   const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) {
+  if (
+    Number.isNaN(
+      date.getTime(),
+    )
+  ) {
     return undefined;
   }
 
-  const year = date.getFullYear();
+  const year =
+    date.getFullYear();
+
   const month = String(
     date.getMonth() + 1,
   ).padStart(2, "0");
-  const day = String(date.getDate()).padStart(
-    2,
-    "0",
-  );
+
+  const day = String(
+    date.getDate(),
+  ).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
 }
 
-function getCalendarLocale(locale: string) {
+function getCalendarLocale(
+  locale: string,
+): "fa" | "ar" | "en" {
   if (locale.startsWith("fa")) {
     return "fa";
   }
@@ -91,7 +107,10 @@ export default function ProjectCalendarView({
 }: {
   tasks: Task[];
 }) {
-  const t = useTranslations("projectCalendarView");
+  const t = useTranslations(
+    "projectCalendarView",
+  );
+
   const locale = useLocale();
   const router = useRouter();
 
@@ -101,14 +120,26 @@ export default function ProjectCalendarView({
   const events = useMemo(
     () =>
       tasks
-        .filter(
-          (task) =>
-            task.startDate || task.dueDate,
-        )
         .map((task) => {
-          const eventDate = toDateOnly(
-            task.dueDate ?? task.startDate,
-          );
+          const eventType: CalendarEventType =
+            task.dueDate
+              ? "DUE_DATE"
+              : "START_DATE";
+
+          const eventDate =
+            toDateOnly(
+              task.dueDate ??
+                task.startDate,
+            );
+
+          if (!eventDate) {
+            return null;
+          }
+
+          const statusColor =
+            getStatusColor(
+              task.status,
+            );
 
           return {
             id: String(task.id),
@@ -116,53 +147,96 @@ export default function ProjectCalendarView({
             start: eventDate,
             allDay: true,
             backgroundColor:
-              getStatusColor(task.status),
+              statusColor,
             borderColor:
-              getStatusColor(task.status),
+              statusColor,
             extendedProps: {
-              task,
+              eventType,
             },
           };
         })
-        .filter((event) => event.start),
+        .filter(
+          (
+            event,
+          ): event is NonNullable<
+            typeof event
+          > => event !== null,
+        ),
     [tasks],
   );
 
-  async function updateTaskDate(
-    taskId: string,
-    date: Date | null,
-  ) {
+  async function updateTaskDate({
+    taskId,
+    date,
+    eventType,
+  }: {
+    taskId: string;
+    date: Date | null;
+    eventType: CalendarEventType;
+  }): Promise<void> {
     const task = tasks.find(
-      (item) => String(item.id) === taskId,
+      (item) =>
+        String(item.id) ===
+        taskId,
     );
 
     if (!task || !date) {
-      throw new Error(t("invalidTaskDate"));
+      throw new Error(
+        t("invalidTaskDate"),
+      );
     }
 
-    const dateOnly = toDateOnly(date);
+    const dateOnly =
+      toDateOnly(date);
 
     if (!dateOnly) {
-      throw new Error(t("invalidTaskDate"));
+      throw new Error(
+        t("invalidTaskDate"),
+      );
     }
+
+    const currentStartDate =
+      toDateOnly(
+        task.startDate,
+      );
+
+    const currentDueDate =
+      toDateOnly(
+        task.dueDate,
+      );
+
+    const nextStartDate =
+      eventType === "START_DATE"
+        ? dateOnly
+        : currentStartDate;
+
+    const nextDueDate =
+      eventType === "DUE_DATE"
+        ? dateOnly
+        : currentDueDate;
 
     const response = await fetch(
       `/api/project-tasks/${task.id}`,
       {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type":
+            "application/json",
         },
         body: JSON.stringify({
           title: task.title,
           description:
-            task.description?.trim() || null,
+            task.description?.trim() ||
+            null,
           priority:
-            task.priority || "MEDIUM",
+            task.priority ||
+            "MEDIUM",
           startDate:
-            toDateOnly(task.startDate) ??
-            dateOnly,
-          dueDate: dateOnly,
+            nextStartDate ??
+            null,
+          dueDate:
+            nextDueDate ??
+            null,
         }),
       },
     );
@@ -172,14 +246,16 @@ export default function ProjectCalendarView({
     } = {};
 
     try {
-      data = await response.json();
+      data =
+        await response.json();
     } catch {
-      // API may return an empty or non-JSON response.
+      data = {};
     }
 
     if (!response.ok) {
       throw new Error(
-        data.message || t("updateError"),
+        data.message ||
+          t("updateError"),
       );
     }
 
@@ -187,7 +263,7 @@ export default function ProjectCalendarView({
   }
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 sm:p-6">
+    <div className="workspace-panel">
       <div className="mb-5">
         <h2 className="text-xl font-bold text-white">
           {t("title")}
@@ -204,35 +280,55 @@ export default function ProjectCalendarView({
             ? "ltr"
             : "rtl"
         }
-        className="overflow-x-auto"
+        className="workspace-horizontal-scroll -mx-3 overflow-x-auto px-3 pb-2 sm:-mx-4 sm:px-4"
       >
-        <div className="min-w-[700px]">
+        <div className="min-w-[44rem]">
           <FullCalendar
             plugins={[
               dayGridPlugin,
               timeGridPlugin,
               interactionPlugin,
             ]}
-            locales={[faLocale, arLocale]}
-            locale={calendarLocale}
+            locales={[
+              faLocale,
+              arLocale,
+            ]}
+            locale={
+              calendarLocale
+            }
             initialView="dayGridMonth"
             height="auto"
             events={events}
             editable
             selectable
-            displayEventTime={false}
+            displayEventTime={
+              false
+            }
             timeZone="local"
             eventStartEditable
-            eventDurationEditable={false}
+            eventDurationEditable={
+              false
+            }
             headerToolbar={{
-              start: "prev,next today",
+              start:
+                "prev,next today",
               center: "title",
-              end: "dayGridMonth,timeGridWeek",
+              end:
+                "dayGridMonth,timeGridWeek",
             }}
             buttonText={{
-              today: t("buttons.today"),
-              month: t("buttons.month"),
-              week: t("buttons.week"),
+              today:
+                t(
+                  "buttons.today",
+                ),
+              month:
+                t(
+                  "buttons.month",
+                ),
+              week:
+                t(
+                  "buttons.week",
+                ),
             }}
             eventClick={(info) => {
               const searchParams =
@@ -240,7 +336,11 @@ export default function ProjectCalendarView({
                   window.location.search,
                 );
 
-              searchParams.set("tab", "tasks");
+              searchParams.set(
+                "tab",
+                "tasks",
+              );
+
               searchParams.set(
                 "task",
                 info.event.id,
@@ -250,19 +350,38 @@ export default function ProjectCalendarView({
                 `?${searchParams.toString()}`,
               );
             }}
-            eventDrop={async (info) => {
+            eventDrop={async (
+              info,
+            ) => {
               try {
-                await updateTaskDate(
-                  info.event.id,
-                  info.event.start,
-                );
+                const rawEventType =
+                  info.event
+                    .extendedProps
+                    .eventType;
+
+                const eventType: CalendarEventType =
+                  rawEventType ===
+                  "START_DATE"
+                    ? "START_DATE"
+                    : "DUE_DATE";
+
+                await updateTaskDate({
+                  taskId:
+                    info.event.id,
+                  date:
+                    info.event.start,
+                  eventType,
+                });
               } catch (error) {
                 info.revert();
 
                 alert(
-                  error instanceof Error
+                  error instanceof
+                  Error
                     ? error.message
-                    : t("updateError"),
+                    : t(
+                        "updateError",
+                      ),
                 );
               }
             }}

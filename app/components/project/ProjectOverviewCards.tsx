@@ -21,7 +21,7 @@ export default async function ProjectOverviewCards({
   tasks: ProjectTask[];
 }) {
   const t = await getTranslations("projectOverviewCards");
-
+const tcat = await getTranslations("common.categories");
   const totalTasks = tasks.length;
 
   const completedTasks = tasks.filter(
@@ -51,7 +51,7 @@ export default async function ProjectOverviewCards({
           </p>
 
           <p className="mt-3 break-words text-2xl font-bold leading-tight text-white">
-            {category}
+             {tcat(category)}
           </p>
         </div>
 

@@ -3,14 +3,24 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "../../../lib/prisma";
 import { requireUser } from "../../../lib/auth";
 import { calculateTrustScore } from "../../../lib/ranking";
+import {
+  getEntityReviewRatingStats,
+  getReviewRatingStats,
+} from "../../../lib/ranking/review-aggregates";
 
 export default async function TopCompaniesPage() {
   await requireUser();
 
-  const [t, locale, companies] = await Promise.all([
+ const [t, tc, tcat, locale, companies] =
+  await Promise.all([
     getTranslations("dashboardTopCompanies"),
+    getTranslations("common.countries"),
+    getTranslations("common.categories"),
     getLocale(),
     prisma.company.findMany({
+      where: {
+        verificationStatus: "VERIFIED",
+      },
       select: {
         id: true,
         name: true,
@@ -18,18 +28,31 @@ export default async function TopCompaniesPage() {
         country: true,
         verificationStatus: true,
         planType: true,
-        owner: {
-          select: {
-            reviewsReceived: {
-              select: {
-                rating: true,
-              },
-            },
-          },
-        },
+        ownerId: true,
       },
     }),
   ]);
+
+  const reviewStats =
+    await getReviewRatingStats(
+      companies.map(
+        (company) => company.ownerId,
+      ),
+    );
+
+
+  function translateCountry(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    return tc.has(normalized) ? tc(normalized) : tc.has(lower) ? tc(lower) : normalized;
+  }
+
+  function translateCategory(value: string) {
+    const normalized = value.trim();
+    const lower = normalized.toLowerCase();
+    const underscored = lower.replaceAll(" ", "_");
+    return tcat.has(normalized) ? tcat(normalized) : tcat.has(lower) ? tcat(lower) : tcat.has(underscored) ? tcat(underscored) : normalized;
+  }
 
   const numberFormatter = new Intl.NumberFormat(locale);
 
@@ -40,16 +63,13 @@ export default async function TopCompaniesPage() {
 
   const rankedCompanies = companies
     .map((company) => {
-      const reviews = company.owner?.reviewsReceived ?? [];
-      const reviewCount = reviews.length;
-
-      const averageRating =
-        reviewCount > 0
-          ? reviews.reduce(
-              (sum, review) => sum + review.rating,
-              0,
-            ) / reviewCount
-          : 0;
+      const {
+        averageRating,
+        reviewCount,
+      } = getEntityReviewRatingStats(
+        reviewStats,
+        company.ownerId,
+      );
 
       const trustScore = calculateTrustScore({
         averageRating,
@@ -142,11 +162,11 @@ export default async function TopCompaniesPage() {
                       </div>
 
                       <p className="text-blue-400">
-                        {company.category}
+                       {translateCategory(company.category)}
                       </p>
 
                       <p className="mt-1 text-sm text-slate-500">
-                        {company.country}
+                        {translateCountry(company.country)}
                       </p>
                     </div>
                   </div>

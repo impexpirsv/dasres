@@ -1,46 +1,43 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { prisma } from "./prisma";
+import {
+  CAPABILITIES,
+  hasCapability,
+  type Capability,
+} from "./auth/capabilities";
+import { getAuthenticatedUser } from "./auth/session-service";
+import type { AuthenticatedUser } from "./auth/types";
 
-export async function getCurrentUser() {
-  const cookieStore = await cookies();
+export {
+  CAPABILITIES,
+  getRoleCapabilities,
+  hasAnyCapability,
+  hasCapability,
+  hasEveryCapability,
+  normalizeAuthRole,
+  type Capability,
+} from "./auth/capabilities";
+export {
+  assertAdmin,
+  assertAnyCapability,
+  assertCapability,
+  assertEveryCapability,
+  canAccessAdmin,
+} from "./auth/policies";
+export {
+  getAuthenticatedUser,
+  getCurrentSession,
+} from "./auth/session-service";
+export type {
+  AuthenticatedSession,
+  AuthenticatedUser,
+} from "./auth/types";
 
-  const sessionToken = cookieStore.get(
-    "dasres_session_token"
-  )?.value;
-
-  if (!sessionToken) {
-    return null;
-  }
-
-  const session = await prisma.session.findUnique({
-    where: {
-      token: sessionToken,
-    },
-    include: {
-      user: true,
-    },
-  });
-
-  if (!session) {
-    return null;
-  }
-
-  if (session.expiresAt < new Date()) {
-    await prisma.session.deleteMany({
-      where: {
-        token: sessionToken,
-      },
-    });
-
-    return null;
-  }
-
-  return session.user;
+export async function getCurrentUser(): Promise<AuthenticatedUser | null> {
+  return getAuthenticatedUser();
 }
 
-export async function requireUser() {
-  const user = await getCurrentUser();
+export async function requireUser(): Promise<AuthenticatedUser> {
+  const user = await getAuthenticatedUser();
 
   if (!user) {
     redirect("/login");
@@ -49,16 +46,20 @@ export async function requireUser() {
   return user;
 }
 
-export async function requireAdmin() {
-  const user = await getCurrentUser();
+export async function requireCapability(
+  capability: Capability,
+): Promise<AuthenticatedUser> {
+  const user = await requireUser();
 
-  if (!user) {
-    redirect("/login");
-  }
-
-  if (user.role !== "admin") {
+  if (!hasCapability(user.role, capability)) {
     redirect("/dashboard");
   }
 
   return user;
+}
+
+export async function requireAdmin(): Promise<AuthenticatedUser> {
+  return requireCapability(
+    CAPABILITIES.ADMIN_ACCESS,
+  );
 }

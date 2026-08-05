@@ -9,112 +9,196 @@ const MAX_PASSWORD_LENGTH = 128;
 const MAX_NAME_LENGTH = 150;
 const MAX_EMAIL_LENGTH = 254;
 
+const MAX_REQUEST_BODY_SIZE =
+  16 * 1024;
+
+const PASSWORD_HASH_ROUNDS = 12;
+
 const EMAIL_PATTERN =
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export async function POST(
+type RegisterInput = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+function validateContentLength(
   request: Request,
-) {
-  return apiHandler(async () => {
-    let body: unknown;
-
-    try {
-      body = await request.json();
-    } catch {
-      throw new AppError(
-        "INVALID_JSON_BODY",
-        400,
-      );
-    }
-
-    if (
-      !body ||
-      typeof body !== "object" ||
-      Array.isArray(body)
-    ) {
-      throw new AppError(
-        "INVALID_REQUEST_BODY",
-        400,
-      );
-    }
-
-    const payload = body as Record<
-      string,
-      unknown
-    >;
-
-    const name = String(
-      payload.name ?? "",
-    ).trim();
-
-    const email = String(
-      payload.email ?? "",
-    )
-      .trim()
-      .toLowerCase();
-
-    const password = String(
-      payload.password ?? "",
+): void {
+  const contentLengthHeader =
+    request.headers.get(
+      "content-length",
     );
 
-    if (!name) {
-      throw new AppError(
-        "REGISTER_NAME_REQUIRED",
-        400,
-      );
-    }
+  if (!contentLengthHeader) {
+    return;
+  }
 
-    if (name.length > MAX_NAME_LENGTH) {
-      throw new AppError(
-        "REGISTER_NAME_TOO_LONG",
-        400,
-      );
-    }
+  const contentLength = Number(
+    contentLengthHeader,
+  );
 
-    if (!email) {
-      throw new AppError(
-        "REGISTER_EMAIL_REQUIRED",
-        400,
-      );
-    }
+  if (
+    !Number.isInteger(contentLength) ||
+    contentLength < 0
+  ) {
+    throw new AppError(
+      "INVALID_CONTENT_LENGTH",
+      400,
+    );
+  }
 
-    if (
-      email.length > MAX_EMAIL_LENGTH ||
-      !EMAIL_PATTERN.test(email)
-    ) {
-      throw new AppError(
-        "REGISTER_EMAIL_INVALID",
-        400,
-      );
-    }
+  if (
+    contentLength >
+    MAX_REQUEST_BODY_SIZE
+  ) {
+    throw new AppError(
+      "REQUEST_BODY_TOO_LARGE",
+      413,
+    );
+  }
+}
 
-    if (!password) {
-      throw new AppError(
-        "REGISTER_PASSWORD_REQUIRED",
-        400,
-      );
-    }
+async function parseJsonBody(
+  request: Request,
+): Promise<Record<string, unknown>> {
+  validateContentLength(request);
 
-    if (
-      password.length <
-      MIN_PASSWORD_LENGTH
-    ) {
-      throw new AppError(
-        "REGISTER_PASSWORD_TOO_SHORT",
-        400,
-      );
-    }
+  let body: unknown;
 
-    if (
-      password.length >
-      MAX_PASSWORD_LENGTH
-    ) {
-      throw new AppError(
-        "REGISTER_PASSWORD_TOO_LONG",
-        400,
-      );
-    }
+  try {
+    body = await request.json();
+  } catch {
+    throw new AppError(
+      "INVALID_JSON_BODY",
+      400,
+    );
+  }
 
+  if (
+    !body ||
+    typeof body !== "object" ||
+    Array.isArray(body)
+  ) {
+    throw new AppError(
+      "INVALID_REQUEST_BODY",
+      400,
+    );
+  }
+
+  return body as Record<
+    string,
+    unknown
+  >;
+}
+
+function getStringField(
+  payload: Record<string, unknown>,
+  fieldName: string,
+): string {
+  const value = payload[fieldName];
+
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value;
+}
+
+function validateRegisterInput(
+  payload: Record<string, unknown>,
+): RegisterInput {
+  const name = getStringField(
+    payload,
+    "name",
+  ).trim();
+
+  const email = getStringField(
+    payload,
+    "email",
+  )
+    .trim()
+    .toLowerCase();
+
+  const password = getStringField(
+    payload,
+    "password",
+  );
+
+  if (!name) {
+    throw new AppError(
+      "REGISTER_NAME_REQUIRED",
+      400,
+    );
+  }
+
+  if (
+    name.length >
+    MAX_NAME_LENGTH
+  ) {
+    throw new AppError(
+      "REGISTER_NAME_TOO_LONG",
+      400,
+    );
+  }
+
+  if (!email) {
+    throw new AppError(
+      "REGISTER_EMAIL_REQUIRED",
+      400,
+    );
+  }
+
+  if (
+    email.length >
+      MAX_EMAIL_LENGTH ||
+    !EMAIL_PATTERN.test(email)
+  ) {
+    throw new AppError(
+      "REGISTER_EMAIL_INVALID",
+      400,
+    );
+  }
+
+  if (!password) {
+    throw new AppError(
+      "REGISTER_PASSWORD_REQUIRED",
+      400,
+    );
+  }
+
+  if (
+    password.length <
+    MIN_PASSWORD_LENGTH
+  ) {
+    throw new AppError(
+      "REGISTER_PASSWORD_TOO_SHORT",
+      400,
+    );
+  }
+
+  if (
+    password.length >
+    MAX_PASSWORD_LENGTH
+  ) {
+    throw new AppError(
+      "REGISTER_PASSWORD_TOO_LONG",
+      400,
+    );
+  }
+
+  return {
+    name,
+    email,
+    password,
+  };
+}
+
+async function ensureEmailAvailable(
+  email: string,
+): Promise<void> {
+  try {
     const existingUser =
       await prisma.user.findUnique({
         where: {
@@ -131,57 +215,149 @@ export async function POST(
         409,
       );
     }
-
-    const hashedPassword =
-      await bcrypt.hash(password, 12);
-
-    try {
-      const user =
-        await prisma.user.create({
-          data: {
-            name,
-            email,
-            password: hashedPassword,
-            role: "user",
-          },
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            role: true,
-          },
-        });
-
-      return Response.json(
-        {
-          code: "USER_REGISTERED",
-          user,
-        },
-        {
-          status: 201,
-        },
+  } catch (error) {
+    if (
+      error instanceof
+      Prisma.PrismaClientValidationError
+    ) {
+      throw new AppError(
+        "REGISTER_EMAIL_INVALID",
+        400,
       );
-    } catch (error) {
-      if (
-        error instanceof
-          Prisma.PrismaClientKnownRequestError &&
-        error.code === "P2002"
-      ) {
+    }
+
+    throw error;
+  }
+}
+
+async function hashPassword(
+  password: string,
+): Promise<string> {
+  try {
+    return await bcrypt.hash(
+      password,
+      PASSWORD_HASH_ROUNDS,
+    );
+  } catch (error) {
+    console.error(
+      "REGISTER_PASSWORD_HASH_ERROR",
+      {
+        error,
+      },
+    );
+
+    throw new AppError(
+      "REGISTER_PASSWORD_HASH_FAILED",
+      500,
+    );
+  }
+}
+
+async function createUser({
+  name,
+  email,
+  hashedPassword,
+}: {
+  name: string;
+  email: string;
+  hashedPassword: string;
+}) {
+  try {
+    return await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: "user",
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+  } catch (error) {
+    if (
+      error instanceof
+      Prisma.PrismaClientKnownRequestError
+    ) {
+      if (error.code === "P2002") {
         throw new AppError(
           "REGISTER_EMAIL_ALREADY_EXISTS",
           409,
         );
       }
 
-      console.error(
-        "USER_REGISTRATION_ERROR",
-        {
-          email,
-          error,
-        },
+      if (error.code === "P2003") {
+        throw new AppError(
+          "REGISTER_RELATION_CONFLICT",
+          409,
+        );
+      }
+    }
+
+    if (
+      error instanceof
+      Prisma.PrismaClientValidationError
+    ) {
+      throw new AppError(
+        "INVALID_REGISTER_DATA",
+        400,
+      );
+    }
+
+    console.error(
+      "USER_REGISTRATION_ERROR",
+      {
+        email,
+        error,
+      },
+    );
+
+    throw error;
+  }
+}
+
+export async function POST(
+  request: Request,
+) {
+  return apiHandler(async () => {
+    const payload =
+      await parseJsonBody(
+        request,
       );
 
-      throw error;
-    }
+    const input =
+      validateRegisterInput(
+        payload,
+      );
+
+    await ensureEmailAvailable(
+      input.email,
+    );
+
+    const hashedPassword =
+      await hashPassword(
+        input.password,
+      );
+
+    const user =
+      await createUser({
+        name: input.name,
+        email: input.email,
+        hashedPassword,
+      });
+
+    return Response.json(
+      {
+        code:
+          "USER_REGISTERED",
+        user,
+      },
+      {
+        status: 201,
+      },
+    );
   });
 }

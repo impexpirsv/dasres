@@ -10,14 +10,14 @@ export default async function ProjectTimeSummary({
   remaining: number;
 }) {
   const t = await getTranslations("projectTimeSummary");
-
+const common = await getTranslations("common");
   const percent =
     estimated === 0
       ? 0
       : Math.min(100, Math.round((logged / estimated) * 100));
 
   return (
-    <section className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-6">
+    <section className="workspace-panel mt-8">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-white">
@@ -50,7 +50,7 @@ export default async function ProjectTimeSummary({
           </p>
 
           <p className="mt-2 text-3xl font-bold text-white">
-            {estimated}h
+          {estimated} {common("hours")}
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export default async function ProjectTimeSummary({
           </p>
 
           <p className="mt-2 text-3xl font-bold text-green-400">
-            {logged}h
+          {logged} {common("hours")}
           </p>
         </div>
 
@@ -70,7 +70,7 @@ export default async function ProjectTimeSummary({
           </p>
 
           <p className="mt-2 text-3xl font-bold text-yellow-400">
-            {remaining}h
+             {remaining} {common("hours")}
           </p>
         </div>
 
@@ -84,7 +84,9 @@ export default async function ProjectTimeSummary({
               <div className="mb-1 flex justify-between text-xs text-slate-500">
                 <span>{t("logged")}</span>
 
-                <span>{logged}h</span>
+               <span>
+  {logged} {common("hours")}
+</span>
               </div>
 
               <div className="h-3 overflow-hidden rounded-full bg-slate-800">
@@ -105,7 +107,7 @@ export default async function ProjectTimeSummary({
               <div className="mb-1 flex justify-between text-xs text-slate-500">
                 <span>{t("remaining")}</span>
 
-                <span>{remaining}h</span>
+                <span>{remaining} {common("hours")}</span>
               </div>
 
               <div className="h-3 overflow-hidden rounded-full bg-slate-800">

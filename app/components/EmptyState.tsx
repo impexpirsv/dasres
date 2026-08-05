@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import { buttonClassName } from "./ui/styles";
 
 type EmptyStateProps = {
   icon?: ReactNode;
@@ -17,8 +18,8 @@ export default function EmptyState({
   buttonHref,
 }: EmptyStateProps) {
   return (
-    <div className="rounded-3xl border border-dashed border-slate-800 bg-slate-900 px-8 py-16 text-center">
-      <div className="mb-5 text-5xl">{icon}</div>
+    <div className="ui-card ui-empty px-5 py-12 sm:px-8 sm:py-16">
+      <div className="mb-5 text-5xl" aria-hidden="true">{icon}</div>
 
       <h2 className="mb-4 text-3xl font-bold tracking-tight text-white">
         {title}
@@ -31,7 +32,7 @@ export default function EmptyState({
       {buttonText && buttonHref && (
         <Link
           href={buttonHref}
-          className="mt-8 inline-flex rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
+          className={buttonClassName("primary", "mt-8")}
         >
           {buttonText}
         </Link>
