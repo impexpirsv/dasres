@@ -1,10 +1,18 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
+import type { Locale } from "../../lib/locale";
 import { createStaticPublicPageMetadata, getStaticPublicPageIdentity } from "../../lib/seo/static-public-page";
 import { PublicPageHero, PublicPageShell, PublicSection } from "../components/public/PublicPage";
 import PublicPageJsonLd from "../components/public/PublicPageJsonLd";
 
-export const generateMetadata = () => createStaticPublicPageMetadata("pricing", "/pricing");
+type Props = { routeLocale?: Locale; localized?: boolean };
+
+export function createPricingMetadata({ routeLocale, localized = false }: Props = {}) {
+  const canonical = localized && routeLocale ? `/${routeLocale}/pricing` as const : "/pricing";
+  return createStaticPublicPageMetadata("pricing", canonical, { locale: routeLocale, localized });
+}
+
+export const generateMetadata = createPricingMetadata;
 
 const plans = [
   { key: "free", cases: "3", proposals: "5" },
@@ -13,17 +21,19 @@ const plans = [
   { key: "enterprise", cases: null, proposals: null },
 ] as const;
 
-export default async function PricingPage() {
+export default async function PricingPage({ routeLocale, localized = false }: Props = {}) {
+  const locale = routeLocale ?? await getLocale();
+  const canonical = localized && routeLocale ? `/${routeLocale}/pricing` as const : "/pricing";
   const [t, common, identity] = await Promise.all([
-    getTranslations("publicSite.pages.pricing"),
-    getTranslations("publicSite.common"),
-    getStaticPublicPageIdentity("pricing", "/pricing"),
+    getTranslations({ locale, namespace: "publicSite.pages.pricing" }),
+    getTranslations({ locale, namespace: "publicSite.common" }),
+    getStaticPublicPageIdentity("pricing", canonical, { locale: routeLocale, localized }),
   ]);
 
   return (
     <PublicPageShell>
       <PublicPageJsonLd page={identity} />
-      <PublicPageHero eyebrow={t("eyebrow")} title={t("title")} description={t("description")} breadcrumbs={[{ href: "/", label: common("home") }, { label: t("title") }]} />
+      <PublicPageHero eyebrow={t("eyebrow")} title={t("title")} description={t("description")} breadcrumbs={[{ href: localized && routeLocale ? `/${routeLocale}` : "/", label: common("home") }, { label: t("title") }]} />
       <PublicSection title={t("sectionTitle")} description={t("sectionDescription")}>
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {plans.map((plan) => (

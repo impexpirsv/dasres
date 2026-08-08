@@ -17,6 +17,21 @@ const publicLinks = [
   ["/about", "about"],
 ] as const;
 
+const localizedPublicPaths = new Set<string>([
+  "/companies",
+  "/experts",
+  "/opportunities",
+  "/about",
+  "/contact",
+  "/pricing",
+  "/faq",
+  "/privacy",
+  "/terms",
+  "/cookies",
+  "/help",
+  "/resources",
+]);
+
 export default function Navbar({
   isAuthenticated,
 }: {
@@ -28,8 +43,8 @@ export default function Navbar({
   const homepageLocale = getLocalizedPublicPathLocale(pathname);
   const homepageHref = homepageLocale ? `/${homepageLocale}` : "/";
   const resolvePublicHref = (href: string) =>
-    homepageLocale && href === "/companies"
-      ? `/${homepageLocale}/companies`
+    homepageLocale && localizedPublicPaths.has(href)
+      ? `/${homepageLocale}${href}`
       : href;
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -124,8 +139,8 @@ export default function Navbar({
           <div className="mx-auto flex max-w-7xl flex-col gap-2">
             <div className="mb-2 lg:hidden"><LanguageSwitcher ariaLabel={footerT("languageLabel")} onLocaleChange={closeMenu} /></div>
             {publicLinks.map(([href, key]) => { const resolvedHref = resolvePublicHref(href); return <Link key={href} href={resolvedHref} onClick={closeMenu} className={linkClass(resolvedHref)}>{t(key)}</Link>; })}
-            <Link href="/contact" onClick={closeMenu} className={linkClass("/contact")}>{t("contact")}</Link>
-            <Link href="/help" onClick={closeMenu} className={linkClass("/help")}>{t("help")}</Link>
+            <Link href={resolvePublicHref("/contact")} onClick={closeMenu} className={linkClass(resolvePublicHref("/contact"))}>{t("contact")}</Link>
+            <Link href={resolvePublicHref("/help")} onClick={closeMenu} className={linkClass(resolvePublicHref("/help"))}>{t("help")}</Link>
             <div className="mt-3 flex flex-wrap gap-3 border-t border-slate-800 pt-4 lg:hidden">
               {isAuthenticated ? (
                 <Link href="/dashboard" onClick={closeMenu} className="ui-button ui-button-primary">{footerT("links.dashboard")}</Link>

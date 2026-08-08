@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { contentRepository } from "../../lib/content";
+import { contentRepository, helpCategories } from "../../lib/content";
 import { locales } from "../../lib/locale";
 import { prisma } from "../../lib/prisma";
 import {
@@ -12,11 +12,32 @@ import {
   getLocalizedCompaniesPath,
 } from "../../lib/seo/localized-companies";
 import {
+  getLocalizedExpertsAlternates,
+  getLocalizedExpertsPath,
+} from "../../lib/seo/localized-experts";
+import {
+  getLocalizedOpportunitiesAlternates,
+  getLocalizedOpportunitiesPath,
+} from "../../lib/seo/localized-opportunities";
+import {
+  getLocalizedHelpAlternates,
+  getLocalizedHelpPath,
+} from "../../lib/seo/localized-help";
+import {
+  getLocalizedArticleAlternates,
+  getLocalizedResourcesAlternates,
+  getLocalizedResourcesPath,
+} from "../../lib/seo/localized-resources";
+import { getLocalizedStaticPublicPageAlternates } from "../../lib/seo/localized-static-pages";
+import {
+  getLocalizedStaticPublicPagePath,
+  indexableLocalizedStaticPublicPages,
+} from "../../lib/seo/localized-static-pages-routing";
+import {
   createSitemapDescriptors,
   ENTITY_CLUSTERS_PER_SHARD,
   getShardOffset,
   parseSitemapId,
-  SIMPLE_URLS_PER_SHARD,
   STATIC_PUBLIC_PATHS,
 } from "../../lib/seo/sitemap-shards";
 import { getAbsoluteUrl } from "../../lib/seo/urls";
@@ -32,6 +53,16 @@ async function getPublishedContentRecords() {
           ? 1
           : 0,
     );
+}
+
+function getContentClusters(records: Awaited<ReturnType<typeof getPublishedContentRecords>>) {
+  const clusters = new Map<string, typeof records>();
+  for (const record of records) {
+    const category = record.canonical.split("/")[2];
+    const key = `${category}/${record.slug}`;
+    clusters.set(key, [...(clusters.get(key) ?? []), record]);
+  }
+  return [...clusters.entries()].sort(([left], [right]) => left.localeCompare(right));
 }
 
 export async function generateSitemaps() {
@@ -51,17 +82,12 @@ export async function generateSitemaps() {
     companies,
     experts,
     opportunities,
-    content: contentRecords.length,
+      content: getContentClusters(contentRecords).length,
   });
 }
 
 function createStaticSitemap(): MetadataRoute.Sitemap {
   return [
-    {
-      url: getAbsoluteUrl("/"),
-      changeFrequency: "daily",
-      priority: 1,
-    },
     ...locales.map((locale) => ({
       url: getAbsoluteUrl(getLocalizedHomepagePath(locale)),
       changeFrequency: "daily" as const,
@@ -70,11 +96,6 @@ function createStaticSitemap(): MetadataRoute.Sitemap {
         languages: getHomepageLanguageAlternates(),
       },
     })),
-    {
-      url: getAbsoluteUrl("/companies"),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
     ...locales.map((locale) => ({
       url: getAbsoluteUrl(getLocalizedCompaniesPath(locale)),
       changeFrequency: "daily" as const,
@@ -83,21 +104,50 @@ function createStaticSitemap(): MetadataRoute.Sitemap {
         languages: getLocalizedCompaniesAlternates(),
       },
     })),
-    {
-      url: getAbsoluteUrl("/experts"),
-      changeFrequency: "daily",
+    ...locales.map((locale) => ({
+      url: getAbsoluteUrl(getLocalizedExpertsPath(locale)),
+      changeFrequency: "daily" as const,
       priority: 0.9,
-    },
-    {
-      url: getAbsoluteUrl("/opportunities"),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    ...STATIC_PUBLIC_PATHS.map((pathname) => ({
-      url: getAbsoluteUrl(pathname),
-      changeFrequency: "monthly" as const,
-      priority: pathname === "/resources" ? 0.7 : 0.6,
+      alternates: {
+        languages: getLocalizedExpertsAlternates(),
+      },
     })),
+    ...locales.map((locale) => ({
+      url: getAbsoluteUrl(getLocalizedOpportunitiesPath(locale)),
+      changeFrequency: "daily" as const,
+      priority: 0.9,
+      alternates: {
+        languages: getLocalizedOpportunitiesAlternates(),
+      },
+    })),
+    ...indexableLocalizedStaticPublicPages.flatMap((page) =>
+      locales.map((locale) => ({
+        url: getAbsoluteUrl(getLocalizedStaticPublicPagePath(locale, page)),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+        alternates: {
+          languages: getLocalizedStaticPublicPageAlternates(page),
+        },
+      })),
+    ),
+    ...[undefined, ...helpCategories].flatMap((category) =>
+      locales.map((locale) => ({
+        url: getAbsoluteUrl(getLocalizedHelpPath(locale, category)),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+        alternates: {
+          languages: getLocalizedHelpAlternates(category),
+        },
+      })),
+    ),
+    ...[undefined, ...STATIC_PUBLIC_PATHS.filter((pathname) => pathname.startsWith("/resources/")).map((pathname) => pathname.split("/")[2])].flatMap((category) =>
+      locales.map((locale) => ({
+        url: getAbsoluteUrl(getLocalizedResourcesPath(locale, category)),
+        changeFrequency: "monthly" as const,
+        priority: category === undefined ? 0.7 : 0.6,
+        alternates: { languages: getLocalizedResourcesAlternates(category) },
+      })),
+    ),
   ];
 }
 
@@ -119,14 +169,7 @@ async function createCompaniesSitemap(
   return companies.flatMap((company) => {
     const lastModified = company.verifiedAt ?? company.createdAt;
 
-    return [
-      {
-        url: getAbsoluteUrl(`/companies/${company.id}`),
-        lastModified,
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-      },
-      ...locales.map((locale) => ({
+    return locales.map((locale) => ({
         url: getAbsoluteUrl(getLocalizedCompaniesPath(locale, company.id)),
         lastModified,
         changeFrequency: "weekly" as const,
@@ -136,8 +179,7 @@ async function createCompaniesSitemap(
             companyId: company.id,
           }),
         },
-      })),
-    ];
+      }));
   });
 }
 
@@ -156,12 +198,19 @@ async function createExpertsSitemap(
     },
   });
 
-  return experts.map((expert) => ({
-    url: getAbsoluteUrl(`/experts/${expert.id}`),
-    lastModified: expert.verifiedAt ?? expert.createdAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
+  return experts.flatMap((expert) => {
+    const lastModified = expert.verifiedAt ?? expert.createdAt;
+
+    return locales.map((locale) => ({
+        url: getAbsoluteUrl(getLocalizedExpertsPath(locale, expert.id)),
+        lastModified,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+        alternates: {
+          languages: getLocalizedExpertsAlternates({ expertId: expert.id }),
+        },
+      }));
+  });
 }
 
 async function createOpportunitiesSitemap(
@@ -169,32 +218,43 @@ async function createOpportunitiesSitemap(
 ): Promise<MetadataRoute.Sitemap> {
   const opportunities = await prisma.opportunity.findMany({
     orderBy: { id: "asc" },
-    skip: getShardOffset(page, SIMPLE_URLS_PER_SHARD),
-    take: SIMPLE_URLS_PER_SHARD,
+    skip: getShardOffset(page, ENTITY_CLUSTERS_PER_SHARD),
+    take: ENTITY_CLUSTERS_PER_SHARD,
     select: { id: true },
   });
 
-  return opportunities.map((opportunity) => ({
-    url: getAbsoluteUrl(`/opportunities/${opportunity.id}`),
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
+  return opportunities.flatMap((opportunity) => locales.map((locale) => ({
+      url: getAbsoluteUrl(
+        getLocalizedOpportunitiesPath(locale, opportunity.id),
+      ),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+      alternates: {
+        languages: getLocalizedOpportunitiesAlternates({
+          opportunityId: opportunity.id,
+        }),
+      },
+    })));
 }
 
 async function createContentSitemap(
   page: number,
 ): Promise<MetadataRoute.Sitemap> {
   const records = await getPublishedContentRecords();
-  const offset = getShardOffset(page, SIMPLE_URLS_PER_SHARD);
+  const clusters = getContentClusters(records);
+  const offset = getShardOffset(page, ENTITY_CLUSTERS_PER_SHARD);
 
-  return records
-    .slice(offset, offset + SIMPLE_URLS_PER_SHARD)
-    .map((record) => ({
-      url: getAbsoluteUrl(record.canonical),
-      lastModified: new Date(record.updatedDate),
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    }));
+  return clusters.slice(offset, offset + ENTITY_CLUSTERS_PER_SHARD).flatMap(([key, translations]) => {
+    const [category, slug] = key.split("/");
+    const availableLocales = translations.map((record) => record.locale);
+    return translations.map((record) => ({
+        url: getAbsoluteUrl(getLocalizedResourcesPath(record.locale, category, slug)),
+        lastModified: new Date(record.updatedDate),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+        alternates: { languages: getLocalizedArticleAlternates(category, slug, availableLocales) },
+      }));
+  });
 }
 
 export default async function sitemap({

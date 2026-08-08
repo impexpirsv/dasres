@@ -60,8 +60,10 @@ function StatusBadge({
 
 export default function OpportunitiesSearch({
   opportunities,
+  profileBasePath = "/opportunities",
 }: {
   opportunities: Opportunity[];
+  profileBasePath?: string;
 }) {
   const t = useTranslations(
     "opportunities.search",
@@ -265,7 +267,7 @@ export default function OpportunitiesSearch({
               .map((opportunity) => (
                 <Link
                   key={opportunity.id}
-                  href={`/opportunities/${opportunity.id}`}
+                  href={`${profileBasePath}/${opportunity.id}`}
                   className="rounded-3xl border border-blue-500 bg-gradient-to-br from-slate-900 to-slate-950 p-6 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-blue-400 hover:shadow-2xl hover:shadow-blue-500/20"
                 >
                   <div className="flex items-start gap-5">
@@ -342,7 +344,7 @@ export default function OpportunitiesSearch({
             (opportunity) => (
               <Link
                 key={opportunity.id}
-                href={`/opportunities/${opportunity.id}`}
+                href={`${profileBasePath}/${opportunity.id}`}
                 className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/20"
               >
                 {opportunity.imageUrl ? (

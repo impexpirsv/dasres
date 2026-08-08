@@ -18,7 +18,7 @@ assert.deepEqual(
   Object.keys(languages).sort(),
   [...locales, "x-default"].sort(),
 );
-assert.match(languages["x-default"], /\/$/);
+assert.equal(languages["x-default"], languages.fa);
 
 for (const locale of locales) {
   const pathname = getLocalizedHomepagePath(locale);

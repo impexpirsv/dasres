@@ -1,5 +1,6 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
+import type { Locale } from "../../../lib/locale";
 import { getStaticPublicPageIdentity } from "../../../lib/seo/static-public-page";
 import PublicPageJsonLd from "./PublicPageJsonLd";
 import {
@@ -15,15 +16,23 @@ export default async function StandardPublicPage({
   page,
   canonicalPath,
   cta,
+  routeLocale,
+  localized = false,
 }: {
   page: StandardPage;
   canonicalPath: `/${string}`;
   cta?: { href: string };
+  routeLocale?: Locale;
+  localized?: boolean;
 }) {
+  const locale = routeLocale ?? await getLocale();
   const [t, common, identity] = await Promise.all([
-    getTranslations(`publicSite.pages.${page}`),
-    getTranslations("publicSite.common"),
-    getStaticPublicPageIdentity(page, canonicalPath),
+    getTranslations({ locale, namespace: `publicSite.pages.${page}` }),
+    getTranslations({ locale, namespace: "publicSite.common" }),
+    getStaticPublicPageIdentity(page, canonicalPath, {
+      locale: routeLocale,
+      localized,
+    }),
   ]);
 
   return (
@@ -33,7 +42,13 @@ export default async function StandardPublicPage({
         eyebrow={t("eyebrow")}
         title={t("title")}
         description={t("description")}
-        breadcrumbs={[{ href: "/", label: common("home") }, { label: t("title") }]}
+        breadcrumbs={[
+          {
+            href: localized && routeLocale ? `/${routeLocale}` : "/",
+            label: common("home"),
+          },
+          { label: t("title") },
+        ]}
       />
       <PublicSection title={t("sectionTitle")} description={t("sectionDescription")} />
       {cta && (

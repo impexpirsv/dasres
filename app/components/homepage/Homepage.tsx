@@ -50,15 +50,15 @@ export default async function Homepage({
         }}
       />
       <Navbar isAuthenticated={user !== null} />
-      <Hero />
+      <Hero locale={locale} localized={localized} />
       <TrustStrip />
       <LiveStats />
       <Services />
-      <TopRatedShowcase />
-      <ResourcePreview />
-      <Experts />
+      <TopRatedShowcase locale={locale} localized={localized} />
+      <ResourcePreview locale={locale} localized={localized} />
+      <Experts locale={locale} localized={localized} />
       <Companies localized={localized} locale={locale} />
-      <Opportunities />
+      <Opportunities locale={locale} localized={localized} />
       <Footer year={year} />
     </main>
   );

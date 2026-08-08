@@ -23,7 +23,7 @@ export function getLocalizedHomepagePath(locale: Locale): `/${Locale}` {
 
 export function getHomepageLanguageAlternates(): Record<string, string> {
   const languages: Record<string, string> = {
-    "x-default": getAbsoluteUrl("/"),
+    "x-default": getAbsoluteUrl(getLocalizedHomepagePath("fa")),
   };
 
   for (const locale of locales) {

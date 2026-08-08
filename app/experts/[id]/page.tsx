@@ -17,6 +17,9 @@ import { createExpertPageJsonLd } from "../../../lib/seo/structured-data";
 import { getAbsoluteUrl } from "../../../lib/seo/urls";
 import { getExpert, getExpertViewAccess } from "../../../lib/experts/get-expert";
 import { AppError } from "../../../lib/errors";
+import { defaultLocale, isLocale, type Locale } from "../../../lib/locale";
+import { getAlternateOpenGraphLocales, openGraphLocaleMap } from "../../../lib/seo/localized-homepage";
+import { getLocalizedExpertsAlternates } from "../../../lib/seo/localized-experts";
 
 import DeleteExpertButton from "../../components/DeleteExpertButton";
 
@@ -24,6 +27,8 @@ type Props = {
   params: Promise<{
     id: string;
   }>;
+  routeLocale?: Locale;
+  localized?: boolean;
 };
 
 function getPremiumBorder(planType: string) {
@@ -120,14 +125,19 @@ const getRelatedCompanies = unstable_cache(
   },
 );
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function createExpertMetadata({
+  params,
+  routeLocale,
+  localized = false,
+}: Props): Promise<Metadata> {
   const { id } = await params;
   const expertId = Number(id);
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
 
-  const [t, rootMetadata, locale] = await Promise.all([
-    getTranslations("publicExpertProfile.metadata"),
-    getTranslations("rootMetadata"),
-    getLocale(),
+  const [t, rootMetadata] = await Promise.all([
+    getTranslations({ locale, namespace: "publicExpertProfile.metadata" }),
+    getTranslations({ locale, namespace: "rootMetadata" }),
   ]);
 
   if (!Number.isInteger(expertId) || expertId <= 0) {
@@ -167,7 +177,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     specialty: expert.specialty,
     country: expert.country,
   });
-  const canonicalPath = `/experts/${expert.id}`;
+  const canonicalPath = localized
+    ? `/${locale}/experts/${expert.id}`
+    : `/experts/${expert.id}`;
   const canonicalUrl = getAbsoluteUrl(canonicalPath);
   const socialImage =
     getEntitySocialImage(expert.imageUrl, expert.name) ??
@@ -178,6 +190,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical: canonicalPath,
+      ...(localized
+        ? { languages: getLocalizedExpertsAlternates({ expertId: expert.id }) }
+        : {}),
     },
     openGraph: {
       title,
@@ -185,6 +200,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonicalUrl,
       type: "profile",
       locale: getOpenGraphLocale(locale),
+      ...(localized
+        ? {
+            locale: openGraphLocaleMap[locale],
+            alternateLocale: getAlternateOpenGraphLocales(locale),
+          }
+        : {}),
       images: [socialImage],
     },
     twitter: {
@@ -196,14 +217,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ExpertProfilePage({ params }: Props) {
+export const generateMetadata = createExpertMetadata;
+
+export default async function ExpertProfilePage({
+  params,
+  routeLocale,
+  localized = false,
+}: Props) {
   const { id } = await params;
   const expertId = Number(id);
 
-  const [t, navigation, locale] = await Promise.all([
-    getTranslations("publicExpertProfile"),
-    getTranslations("navbar"),
-    getLocale(),
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const expertsPath = localized ? `/${locale}/experts` : "/experts";
+
+  const [t, navigation] = await Promise.all([
+    getTranslations({ locale, namespace: "publicExpertProfile" }),
+    getTranslations({ locale, namespace: "navbar" }),
   ]);
 
   const numberFormatter = new Intl.NumberFormat(locale);
@@ -214,6 +244,8 @@ export default async function ExpertProfilePage({ params }: Props) {
   });
 
   if (!Number.isInteger(expertId) || expertId <= 0) {
+    if (localized) notFound();
+
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
         <h1 className="text-4xl font-bold">{t("notFound")}</h1>
@@ -221,7 +253,7 @@ export default async function ExpertProfilePage({ params }: Props) {
     );
   }
 
-  const user = await requireUser();
+  const user = localized ? null : await requireUser();
   const expertAccess = await getExpertViewAccess({ expertId, viewer: user });
 
   if (!expertAccess) {
@@ -259,9 +291,9 @@ export default async function ExpertProfilePage({ params }: Props) {
     notFound();
   }
 
-  const isAdmin = user.role === "admin";
+  const isAdmin = user?.role === "admin";
 
-  const canManageExpert = isAdmin || expert.ownerId === user.id;
+  const canManageExpert = Boolean(user && (isAdmin || expert.ownerId === user.id));
 
   const reviews = expert.owner?.reviewsReceived ?? [];
 
@@ -374,7 +406,7 @@ export default async function ExpertProfilePage({ params }: Props) {
     expert.verificationStatus === "VERIFIED"
       ? createExpertPageJsonLd({
           page: {
-            canonicalPath: `/experts/${expert.id}`,
+            canonicalPath: `${expertsPath}/${expert.id}`,
             name: expert.name,
             description: t("metadata.description", {
               name: expert.name,
@@ -385,15 +417,15 @@ export default async function ExpertProfilePage({ params }: Props) {
             breadcrumbs: [
               {
                 name: navigation("home"),
-                pathname: "/",
+                pathname: localized ? `/${locale}` : "/",
               },
               {
                 name: navigation("experts"),
-                pathname: "/experts",
+                pathname: expertsPath,
               },
               {
                 name: expert.name,
-                pathname: `/experts/${expert.id}`,
+                pathname: `${expertsPath}/${expert.id}`,
               },
             ],
           },
@@ -421,7 +453,7 @@ export default async function ExpertProfilePage({ params }: Props) {
       <div className="min-h-screen bg-slate-950 text-white">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <Link
-            href="/experts"
+            href={expertsPath}
             className="mb-8 inline-block text-blue-400 hover:underline"
           >
             {t("backToExperts")}
@@ -674,7 +706,9 @@ export default async function ExpertProfilePage({ params }: Props) {
                     {relatedCompanies.map((company) => (
                       <Link
                         key={company.id}
-                        href={`/companies/${company.id}`}
+                        href={localized
+                          ? `/${locale}/companies/${company.id}`
+                          : `/companies/${company.id}`}
                         className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 transition hover:border-blue-500"
                       >
                         <p className="font-semibold">{company.name}</p>

@@ -1,6 +1,6 @@
 export const SITEMAP_PROTOCOL_URL_LIMIT = 50_000;
 export const SITEMAP_TARGET_URL_LIMIT = 40_000;
-export const LOCALIZED_ENTITY_URLS_PER_CLUSTER = 13;
+export const LOCALIZED_ENTITY_URLS_PER_CLUSTER = 12;
 export const ENTITY_CLUSTERS_PER_SHARD = Math.floor(
   SITEMAP_TARGET_URL_LIMIT / LOCALIZED_ENTITY_URLS_PER_CLUSTER,
 );
@@ -95,12 +95,12 @@ export function createSitemapDescriptors({
     ...createFamilyDescriptors(
       "opportunities",
       opportunities,
-      SIMPLE_URLS_PER_SHARD,
+      ENTITY_CLUSTERS_PER_SHARD,
     ),
     ...createFamilyDescriptors(
       "content",
       content,
-      SIMPLE_URLS_PER_SHARD,
+      ENTITY_CLUSTERS_PER_SHARD,
     ),
   ];
 }

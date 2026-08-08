@@ -76,7 +76,18 @@ export function getLocalizedPublicPathLocale(pathname: string): Locale | null {
 
   return segments.length === 2 ||
     (segments.length === 3 && segments[2] === "") ||
-    segments[2] === "companies"
+    segments[2] === "companies" ||
+    segments[2] === "experts" ||
+    segments[2] === "opportunities" ||
+    segments[2] === "about" ||
+    segments[2] === "contact" ||
+    segments[2] === "pricing" ||
+    segments[2] === "faq" ||
+    segments[2] === "privacy" ||
+    segments[2] === "terms" ||
+    segments[2] === "cookies" ||
+    segments[2] === "help" ||
+    segments[2] === "resources"
     ? candidate
     : null;
 }

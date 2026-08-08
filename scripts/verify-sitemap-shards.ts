@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 
 import { locales } from "../lib/locale";
+import { helpCategories } from "../lib/content/catalog";
+import { indexableLocalizedStaticPublicPages } from "../lib/seo/localized-static-pages-routing";
 import {
   createSitemapDescriptors,
   ENTITY_CLUSTERS_PER_SHARD,
@@ -11,16 +13,15 @@ import {
   SIMPLE_URLS_PER_SHARD,
   SITEMAP_PROTOCOL_URL_LIMIT,
   SITEMAP_TARGET_URL_LIMIT,
-  STATIC_PUBLIC_PATHS,
 } from "../lib/seo/sitemap-shards";
 
 const maximumLocalizedEntityEntries =
   ENTITY_CLUSTERS_PER_SHARD * LOCALIZED_ENTITY_URLS_PER_CLUSTER;
 
 assert.equal(locales.length, 12);
-assert.equal(LOCALIZED_ENTITY_URLS_PER_CLUSTER, 1 + locales.length);
-assert.equal(ENTITY_CLUSTERS_PER_SHARD, 3_076);
-assert.equal(maximumLocalizedEntityEntries, 39_988);
+assert.equal(LOCALIZED_ENTITY_URLS_PER_CLUSTER, locales.length);
+assert.equal(ENTITY_CLUSTERS_PER_SHARD, 3_333);
+assert.equal(maximumLocalizedEntityEntries, 39_996);
 assert.ok(maximumLocalizedEntityEntries <= SITEMAP_TARGET_URL_LIMIT);
 assert.ok(SITEMAP_TARGET_URL_LIMIT < SITEMAP_PROTOCOL_URL_LIMIT);
 assert.ok(
@@ -46,12 +47,12 @@ assert.equal(
   ),
   2,
 );
-assert.equal(getShardOffset(2, ENTITY_CLUSTERS_PER_SHARD), 6_152);
+assert.equal(getShardOffset(2, ENTITY_CLUSTERS_PER_SHARD), 6_666);
 
 const descriptors = createSitemapDescriptors({
   companies: ENTITY_CLUSTERS_PER_SHARD + 1,
   experts: 0,
-  opportunities: SIMPLE_URLS_PER_SHARD + 1,
+  opportunities: ENTITY_CLUSTERS_PER_SHARD + 1,
   content: 0,
 });
 
@@ -72,7 +73,7 @@ const contentDescriptors = createSitemapDescriptors({
   companies: 0,
   experts: 0,
   opportunities: 0,
-  content: SIMPLE_URLS_PER_SHARD + 1,
+  content: ENTITY_CLUSTERS_PER_SHARD + 1,
 });
 assert.deepEqual(
   contentDescriptors.map(({ id }) => id),
@@ -86,7 +87,9 @@ assert.equal(parseSitemapId("companies-01"), null);
 assert.equal(parseSitemapId("unknown-0"), null);
 
 const maximumStaticEntries =
-  1 + locales.length + 1 + locales.length + 2 + STATIC_PUBLIC_PATHS.length;
+  locales.length * 4 +
+  indexableLocalizedStaticPublicPages.length * locales.length +
+  (1 + helpCategories.length) * locales.length;
 assert.ok(maximumStaticEntries <= SITEMAP_TARGET_URL_LIMIT);
 
 console.log(

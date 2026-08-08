@@ -26,6 +26,6 @@ for (const locale of locales) {
 }
 
 assert.equal(getLocalizedPublicPathLocale("/nl/companies"), null);
-assert.equal(getLocalizedPublicPathLocale("/en/experts"), null);
+assert.equal(getLocalizedPublicPathLocale("/en/experts"), "en");
 
 console.log("Localized Companies routing and metadata assertions passed.");

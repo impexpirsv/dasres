@@ -43,15 +43,15 @@ export function collectContentValidationIssues(input: readonly unknown[], now = 
   });
 
   const ids = new Set<string>();
-  const slugs = new Set<string>();
+  const paths = new Set<string>();
   const knownIds = new Set(records.map((record) => record.id));
 
   for (const record of records) {
     if (ids.has(record.id)) issues.push(issue("DUPLICATE_ID", `Duplicate content id '${record.id}'.`, record.id));
     ids.add(record.id);
-    const localeSlug = `${record.locale}:${record.slug}`;
-    if (slugs.has(localeSlug)) issues.push(issue("DUPLICATE_SLUG", `Duplicate slug '${record.slug}' for locale '${record.locale}'.`, record.id));
-    slugs.add(localeSlug);
+    const localePath = `${record.locale}:${record.category}:${record.slug}`;
+    if (paths.has(localePath)) issues.push(issue("DUPLICATE_PATH", `Duplicate category and slug '${record.category}/${record.slug}' for locale '${record.locale}'.`, record.id));
+    paths.add(localePath);
 
     const publishDate = record.publishDate ? new Date(record.publishDate) : null;
     const updatedDate = new Date(record.updatedDate);

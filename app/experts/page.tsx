@@ -8,6 +8,9 @@ import {
 
 import { prisma } from "../../lib/prisma";
 import { calculateTrustScore } from "../../lib/ranking";
+import { defaultLocale, isLocale, type Locale } from "../../lib/locale";
+import { getAlternateOpenGraphLocales, openGraphLocaleMap } from "../../lib/seo/localized-homepage";
+import { getLocalizedExpertsAlternates } from "../../lib/seo/localized-experts";
 import { serializeJsonLd } from "../../lib/seo/jsonld";
 import {
   createPublicPageMetadata,
@@ -29,6 +32,8 @@ type ExpertsPageProps = {
   searchParams?: Promise<{
     page?: string;
   }>;
+  routeLocale?: Locale;
+  localized?: boolean;
 };
 
 const getExpertsCount = unstable_cache(
@@ -101,12 +106,16 @@ const getExpertsPageData = unstable_cache(
   },
 );
 
-export async function generateMetadata({
+export async function createExpertsMetadata({
   searchParams,
+  routeLocale,
+  localized = false,
 }: ExpertsPageProps): Promise<Metadata> {
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
   const [params, t] = await Promise.all([
     searchParams,
-    getTranslations("publicExperts"),
+    getTranslations({ locale, namespace: "publicExperts" }),
   ]);
   const rawPage = params?.page;
   const totalExperts = await getExpertsCount();
@@ -115,12 +124,12 @@ export async function generateMetadata({
     Math.ceil(totalExperts / PAGE_SIZE),
   );
   const pagination = getPaginationMetadataState({
-    pathname: "/experts",
+    pathname: localized ? `/${locale}/experts` : "/experts",
     rawPage,
     totalPages,
   });
 
-  return createPublicPageMetadata({
+  const metadata = createPublicPageMetadata({
     title: t("title"),
     description: t("description"),
     canonical: pagination.isValid
@@ -133,10 +142,30 @@ export async function generateMetadata({
           follow: true,
         },
   });
+
+  if (!localized || !pagination.isValid) return metadata;
+
+  return {
+    ...metadata,
+    alternates: {
+      canonical: pagination.canonical,
+      languages: getLocalizedExpertsAlternates({ page: pagination.page }),
+    },
+    openGraph: {
+      ...metadata.openGraph,
+      url: pagination.canonical,
+      locale: openGraphLocaleMap[locale],
+      alternateLocale: getAlternateOpenGraphLocales(locale),
+    },
+  };
 }
+
+export const generateMetadata = createExpertsMetadata;
 
 export default async function ExpertsPage({
   searchParams,
+  routeLocale,
+  localized = false,
 }: ExpertsPageProps) {
   const params = await searchParams;
 
@@ -148,11 +177,13 @@ export default async function ExpertsPage({
       ? parsedPage
       : 1;
 
-  const locale = await getLocale();
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const expertsPath = localized ? `/${locale}/experts` : "/experts";
 
   const [t, navigation] = await Promise.all([
-    getTranslations("publicExperts"),
-    getTranslations("navbar"),
+    getTranslations({ locale, namespace: "publicExperts" }),
+    getTranslations({ locale, namespace: "navbar" }),
   ]);
 
   const numberFormatter =
@@ -239,7 +270,7 @@ export default async function ExpertsPage({
     ).length;
 
   const pagination = getPaginationMetadataState({
-    pathname: "/experts",
+    pathname: expertsPath,
     rawPage: params?.page,
     totalPages,
   });
@@ -252,7 +283,7 @@ export default async function ExpertsPage({
         breadcrumbs: [
           {
             name: navigation("home"),
-            pathname: "/",
+            pathname: localized ? `/${locale}` : "/",
           },
           {
             name: navigation("experts"),
@@ -346,7 +377,7 @@ export default async function ExpertsPage({
                   </div>
 
                   <Link
-                    href={`/experts/${featuredExpert.id}`}
+                    href={`${expertsPath}/${featuredExpert.id}`}
                     className="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-3 font-semibold transition hover:bg-blue-700"
                   >
                     {t("featured.viewProfile")}
@@ -401,12 +432,13 @@ export default async function ExpertsPage({
 
         <ExpertsSearch
           experts={sortedExpertsWithRatings}
+          profileBasePath={expertsPath}
         />
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
           {currentPage > 1 && (
             <Link
-              href={`/experts?page=${
+              href={`${expertsPath}?page=${
                 currentPage - 1
               }`}
               className="rounded-lg bg-slate-800 px-4 py-2 transition hover:bg-slate-700"
@@ -430,7 +462,7 @@ export default async function ExpertsPage({
 
           {currentPage < totalPages && (
             <Link
-              href={`/experts?page=${
+              href={`${expertsPath}?page=${
                 currentPage + 1
               }`}
               className="rounded-lg bg-slate-800 px-4 py-2 transition hover:bg-slate-700"

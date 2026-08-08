@@ -7,6 +7,12 @@ import {
 } from "next-intl/server";
 
 import { prisma } from "../../lib/prisma";
+import { defaultLocale, isLocale, type Locale } from "../../lib/locale";
+import {
+  getAlternateOpenGraphLocales,
+  openGraphLocaleMap,
+} from "../../lib/seo/localized-homepage";
+import { getLocalizedOpportunitiesAlternates } from "../../lib/seo/localized-opportunities";
 import { serializeJsonLd } from "../../lib/seo/jsonld";
 import {
   createPublicPageMetadata,
@@ -21,6 +27,8 @@ type OpportunitiesPageProps = {
   searchParams?: Promise<{
     page?: string;
   }>;
+  routeLocale?: Locale;
+  localized?: boolean;
 };
 
 const getOpportunitiesCount = unstable_cache(
@@ -102,12 +110,16 @@ const getOpportunitiesPageData = unstable_cache(
   },
 );
 
-export async function generateMetadata({
+export async function createOpportunitiesMetadata({
   searchParams,
+  routeLocale,
+  localized = false,
 }: OpportunitiesPageProps): Promise<Metadata> {
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
   const [params, t] = await Promise.all([
     searchParams,
-    getTranslations("publicOpportunities"),
+    getTranslations({ locale, namespace: "publicOpportunities" }),
   ]);
   const rawPage = params?.page;
   const totalOpportunities =
@@ -117,12 +129,12 @@ export async function generateMetadata({
     Math.ceil(totalOpportunities / PAGE_SIZE),
   );
   const pagination = getPaginationMetadataState({
-    pathname: "/opportunities",
+    pathname: localized ? `/${locale}/opportunities` : "/opportunities",
     rawPage,
     totalPages,
   });
 
-  return createPublicPageMetadata({
+  const metadata = createPublicPageMetadata({
     title: t("title"),
     description: t("description"),
     canonical: pagination.isValid
@@ -135,10 +147,30 @@ export async function generateMetadata({
           follow: true,
         },
   });
+
+  if (!localized || !pagination.isValid) return metadata;
+
+  return {
+    ...metadata,
+    alternates: {
+      canonical: pagination.canonical,
+      languages: getLocalizedOpportunitiesAlternates({ page: pagination.page }),
+    },
+    openGraph: {
+      ...metadata.openGraph,
+      url: pagination.canonical,
+      locale: openGraphLocaleMap[locale],
+      alternateLocale: getAlternateOpenGraphLocales(locale),
+    },
+  };
 }
+
+export const generateMetadata = createOpportunitiesMetadata;
 
 export default async function OpportunitiesPage({
   searchParams,
+  routeLocale,
+  localized = false,
 }: OpportunitiesPageProps) {
   const params = await searchParams;
 
@@ -150,11 +182,15 @@ export default async function OpportunitiesPage({
       ? parsedPage
       : 1;
 
-  const locale = await getLocale();
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const opportunitiesPath = localized
+    ? `/${locale}/opportunities`
+    : "/opportunities";
 
   const [t, navigation] = await Promise.all([
-    getTranslations("publicOpportunities"),
-    getTranslations("navbar"),
+    getTranslations({ locale, namespace: "publicOpportunities" }),
+    getTranslations({ locale, namespace: "navbar" }),
   ]);
 
   const numberFormatter =
@@ -171,7 +207,7 @@ export default async function OpportunitiesPage({
     requestedPage,
   );
   const pagination = getPaginationMetadataState({
-    pathname: "/opportunities",
+    pathname: opportunitiesPath,
     rawPage: params?.page,
     totalPages,
   });
@@ -184,7 +220,7 @@ export default async function OpportunitiesPage({
         breadcrumbs: [
           {
             name: navigation("home"),
-            pathname: "/",
+            pathname: localized ? `/${locale}` : "/",
           },
           {
             name: navigation("opportunities"),
@@ -259,12 +295,13 @@ export default async function OpportunitiesPage({
 
         <OpportunitiesSearch
           opportunities={opportunities}
+          profileBasePath={opportunitiesPath}
         />
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
           {currentPage > 1 && (
             <Link
-              href={`/opportunities?page=${
+              href={`${opportunitiesPath}?page=${
                 currentPage - 1
               }`}
               className="rounded-lg bg-slate-800 px-4 py-2 transition hover:bg-slate-700"
@@ -288,7 +325,7 @@ export default async function OpportunitiesPage({
 
           {currentPage < totalPages && (
             <Link
-              href={`/opportunities?page=${
+              href={`${opportunitiesPath}?page=${
                 currentPage + 1
               }`}
               className="rounded-lg bg-slate-800 px-4 py-2 transition hover:bg-slate-700"

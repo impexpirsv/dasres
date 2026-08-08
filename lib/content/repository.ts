@@ -5,6 +5,7 @@ import type { ContentQuery, ContentRecord, ContentSearchQuery, ContentType } fro
 export interface ContentRepository {
   getAll(query?: ContentQuery): Promise<readonly ContentRecord[]>;
   getBySlug(slug: string, query?: ContentQuery): Promise<ContentRecord | null>;
+  getByPath(category: ContentType, slug: string, query?: ContentQuery): Promise<ContentRecord | null>;
   getByCategory(category: ContentType, query?: ContentQuery): Promise<readonly ContentRecord[]>;
   getRelated(recordId: string, query?: ContentQuery & { limit?: number }): Promise<readonly ContentRecord[]>;
   getLatest(query?: ContentQuery & { limit?: number }): Promise<readonly ContentRecord[]>;
@@ -32,6 +33,10 @@ export class FileSystemContentRepository implements ContentRepository {
 
   async getBySlug(slug: string, query: ContentQuery = { status: "published" }): Promise<ContentRecord | null> {
     return this.#records.find((record) => record.slug === slug && matches(record, query)) ?? null;
+  }
+
+  async getByPath(category: ContentType, slug: string, query: ContentQuery = { status: "published" }): Promise<ContentRecord | null> {
+    return this.#records.find((record) => record.category === category && record.slug === slug && matches(record, query)) ?? null;
   }
 
   async getByCategory(category: ContentType, query: ContentQuery = { status: "published" }): Promise<readonly ContentRecord[]> {

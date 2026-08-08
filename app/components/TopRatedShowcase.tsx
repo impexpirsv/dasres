@@ -9,6 +9,7 @@ import {
   getReviewRatingStats,
 } from "../../lib/ranking/review-aggregates";
 import { unstable_cache } from "next/cache";
+import type { Locale } from "../../lib/locale";
 
 const getTopRatedData = unstable_cache(
   async () => {
@@ -85,7 +86,7 @@ const getTopRatedData = unstable_cache(
   },
 );
 
-export default async function TopRatedShowcase() {
+export default async function TopRatedShowcase({ locale, localized }: { locale: Locale; localized: boolean }) {
 const t =
   await getTranslations(
     "topRatedShowcase",
@@ -416,7 +417,7 @@ function translateCategory(
 
 
                 <Link
-                  href={`/companies/${topCompany.id}`}
+                  href={`${localized ? `/${locale}` : ""}/companies/${topCompany.id}`}
                   className="flex w-full justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-5 py-3 font-bold text-white transition hover:scale-[1.02]"
                 >
                   {t("viewCompany")}
@@ -513,7 +514,7 @@ function translateCategory(
 
 
                 <Link
-                  href={`/experts/${topExpert.id}`}
+                  href={`${localized ? `/${locale}` : ""}/experts/${topExpert.id}`}
                   className="flex w-full justify-center rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-5 py-3 font-bold text-white transition hover:scale-[1.02]"
                 >
                   {t("viewExpert")}

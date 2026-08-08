@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import {
@@ -18,6 +19,12 @@ import {
 } from "../../../lib/seo/social";
 import { createOpportunityPageJsonLd } from "../../../lib/seo/structured-data";
 import { getAbsoluteUrl } from "../../../lib/seo/urls";
+import { defaultLocale, isLocale, type Locale } from "../../../lib/locale";
+import {
+  getAlternateOpenGraphLocales,
+  openGraphLocaleMap,
+} from "../../../lib/seo/localized-homepage";
+import { getLocalizedOpportunitiesAlternates } from "../../../lib/seo/localized-opportunities";
 
 import Navbar from "../../components/Navbar";
 import DeleteOpportunityButton from "../../components/DeleteOpportunityButton";
@@ -26,6 +33,8 @@ type Props = {
   params: Promise<{
     id: string;
   }>;
+  routeLocale?: Locale;
+  localized?: boolean;
 };
 
 function normalizeStatus(status: string) {
@@ -139,17 +148,20 @@ const getRelatedExperts =
     },
   );
 
-export async function generateMetadata({
+export async function createOpportunityMetadata({
   params,
+  routeLocale,
+  localized = false,
 }: Props): Promise<Metadata> {
   const { id } = await params;
 
   const opportunityId = Number(id);
 
-  const [t, rootMetadata, locale] = await Promise.all([
-    getTranslations("publicOpportunityProfile.metadata"),
-    getTranslations("rootMetadata"),
-    getLocale(),
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const [t, rootMetadata] = await Promise.all([
+    getTranslations({ locale, namespace: "publicOpportunityProfile.metadata" }),
+    getTranslations({ locale, namespace: "rootMetadata" }),
   ]);
 
   if (
@@ -205,7 +217,9 @@ export async function generateMetadata({
         )}...`
       : opportunityDescription ||
         t("notFoundDescription");
-  const canonicalPath = `/opportunities/${opportunity.id}`;
+  const canonicalPath = localized
+    ? `/${locale}/opportunities/${opportunity.id}`
+    : `/opportunities/${opportunity.id}`;
   const canonicalUrl = getAbsoluteUrl(canonicalPath);
   const socialImage =
     getEntitySocialImage(
@@ -219,6 +233,13 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: canonicalPath,
+      ...(localized
+        ? {
+            languages: getLocalizedOpportunitiesAlternates({
+              opportunityId: opportunity.id,
+            }),
+          }
+        : {}),
     },
     openGraph: {
       title,
@@ -226,6 +247,12 @@ export async function generateMetadata({
       url: canonicalUrl,
       type: "website",
       locale: getOpenGraphLocale(locale),
+      ...(localized
+        ? {
+            locale: openGraphLocaleMap[locale],
+            alternateLocale: getAlternateOpenGraphLocales(locale),
+          }
+        : {}),
       images: [socialImage],
     },
     twitter: {
@@ -237,23 +264,34 @@ export async function generateMetadata({
   };
 }
 
+export const generateMetadata = createOpportunityMetadata;
+
 export default async function OpportunityProfilePage({
   params,
+  routeLocale,
+  localized = false,
 }: Props) {
   const { id } = await params;
 
   const opportunityId = Number(id);
 
-  const [t, navigation, locale] = await Promise.all([
-    getTranslations("publicOpportunityProfile"),
-    getTranslations("navbar"),
-    getLocale(),
+  const requestedLocale = routeLocale ?? await getLocale();
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const opportunitiesPath = localized
+    ? `/${locale}/opportunities`
+    : "/opportunities";
+
+  const [t, navigation] = await Promise.all([
+    getTranslations({ locale, namespace: "publicOpportunityProfile" }),
+    getTranslations({ locale, namespace: "navbar" }),
   ]);
 
   if (
     !Number.isInteger(opportunityId) ||
     opportunityId <= 0
   ) {
+    if (localized) notFound();
+
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
         <h1 className="text-4xl font-bold">
@@ -265,7 +303,7 @@ export default async function OpportunityProfilePage({
 
   const [user, opportunity] =
     await Promise.all([
-      getCurrentUser(),
+      localized ? Promise.resolve(null) : getCurrentUser(),
 
       prisma.opportunity.findUnique({
         where: {
@@ -286,6 +324,8 @@ export default async function OpportunityProfilePage({
     user?.role === "admin";
 
   if (!opportunity) {
+    if (localized) notFound();
+
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
         <h1 className="text-4xl font-bold">
@@ -336,22 +376,22 @@ export default async function OpportunityProfilePage({
   const opportunitySchema =
     createOpportunityPageJsonLd({
       page: {
-        canonicalPath: `/opportunities/${opportunity.id}`,
+        canonicalPath: `${opportunitiesPath}/${opportunity.id}`,
         name: opportunity.title,
         description: opportunityDescription,
         language: locale,
         breadcrumbs: [
           {
             name: navigation("home"),
-            pathname: "/",
+            pathname: localized ? `/${locale}` : "/",
           },
           {
             name: navigation("opportunities"),
-            pathname: "/opportunities",
+            pathname: opportunitiesPath,
           },
           {
             name: opportunity.title,
-            pathname: `/opportunities/${opportunity.id}`,
+            pathname: `${opportunitiesPath}/${opportunity.id}`,
           },
         ],
       },
@@ -379,7 +419,7 @@ export default async function OpportunityProfilePage({
 
       <div className="mx-auto max-w-7xl px-6 py-20">
         <Link
-          href="/opportunities"
+          href={opportunitiesPath}
           className="mb-8 inline-block text-blue-400 hover:underline"
         >
           {t("backToOpportunities")}
@@ -655,7 +695,7 @@ export default async function OpportunityProfilePage({
               </Link>
 
               <Link
-                href="/companies"
+                href={localized ? `/${locale}/companies` : "/companies"}
                 className="mt-3 block rounded-xl bg-slate-800 px-6 py-3 text-center transition hover:bg-slate-700"
               >
                 {t(
@@ -664,7 +704,7 @@ export default async function OpportunityProfilePage({
               </Link>
 
               <Link
-                href="/experts"
+                href={localized ? `/${locale}/experts` : "/experts"}
                 className="mt-3 block rounded-xl bg-slate-800 px-6 py-3 text-center transition hover:bg-slate-700"
               >
                 {t(
@@ -693,7 +733,9 @@ export default async function OpportunityProfilePage({
                     (company) => (
                       <Link
                         key={company.id}
-                        href={`/companies/${company.id}`}
+                        href={localized
+                          ? `/${locale}/companies/${company.id}`
+                          : `/companies/${company.id}`}
                         className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 transition hover:border-blue-500"
                       >
                         <p className="font-semibold">
@@ -739,7 +781,9 @@ export default async function OpportunityProfilePage({
                     (expert) => (
                       <Link
                         key={expert.id}
-                        href={`/experts/${expert.id}`}
+                        href={localized
+                          ? `/${locale}/experts/${expert.id}`
+                          : `/experts/${expert.id}`}
                         className="block rounded-2xl border border-slate-800 bg-slate-950 p-4 transition hover:border-cyan-500"
                       >
                         <p className="font-semibold">

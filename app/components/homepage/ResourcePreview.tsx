@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import type { Locale } from "../../../lib/locale";
 
 const resources = [
   { key: "tutorials", href: "/resources/tutorials", icon: "book" },
@@ -22,8 +23,9 @@ function ResourceIcon({ name }: { name: (typeof resources)[number]["icon"] }) {
   return <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name]} /></svg>;
 }
 
-export default async function ResourcePreview() {
+export default async function ResourcePreview({ locale, localized }: { locale: Locale; localized: boolean }) {
   const t = await getTranslations("publicSite.pages.resources");
+  const resourcesPath = localized ? `/${locale}/resources` : "/resources";
 
   return (
     <section className="relative overflow-hidden border-y border-slate-800/80 bg-slate-900/30 ui-section">
@@ -35,12 +37,12 @@ export default async function ResourcePreview() {
             <h2 className="mt-3 text-balance text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">{t("title")}</h2>
             <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-400">{t("sectionDescription")}</p>
           </div>
-          <Link href="/resources" className="ui-button ui-button-outline shrink-0 self-start sm:self-auto">{t("title")} <span aria-hidden="true">→</span></Link>
+          <Link href={resourcesPath} className="ui-button ui-button-outline shrink-0 self-start sm:self-auto">{t("title")} <span aria-hidden="true">→</span></Link>
         </div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {resources.map((resource) => (
-            <Link key={resource.key} href={resource.href} className="ui-card ui-card-interactive group flex min-h-48 flex-col">
+            <Link key={resource.key} href={`${localized ? `/${locale}` : ""}${resource.href}`} className="ui-card ui-card-interactive group flex min-h-48 flex-col">
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300 transition group-hover:border-cyan-300/40 group-hover:bg-cyan-300/15" aria-hidden="true"><ResourceIcon name={resource.icon} /></span>
               <h3 className="mt-6 text-xl font-bold text-white">{t(`cards.${resource.key}.title`)}</h3>
               <p className="mt-3 line-clamp-3 leading-7 text-slate-400">{t(`cards.${resource.key}.description`)}</p>

@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
 
 import { prisma } from "../../lib/prisma";
+import type { Locale } from "../../lib/locale";
 
 const getHomepageOpportunities = unstable_cache(
   async () => {
@@ -23,7 +24,8 @@ const getHomepageOpportunities = unstable_cache(
   },
 );
 
-export default async function Opportunities() {
+export default async function Opportunities({ locale, localized }: { locale: Locale; localized: boolean }) {
+  const opportunitiesPath = localized ? `/${locale}/opportunities` : "/opportunities";
   const t = await getTranslations("opportunitiesSection");
   const tc = await getTranslations("common.countries");
 
@@ -136,7 +138,7 @@ export default async function Opportunities() {
           </div>
 
           <Link
-            href="/opportunities"
+            href={opportunitiesPath}
             className="
               rounded-xl
               border
@@ -320,7 +322,7 @@ export default async function Opportunities() {
                     </span>
 
                     <Link
-                      href={`/opportunities/${opportunity.id}`}
+                      href={`${opportunitiesPath}/${opportunity.id}`}
                       className="
                         font-bold
                         text-blue-400

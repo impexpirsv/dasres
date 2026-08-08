@@ -4,6 +4,7 @@ import { PublicPageHero, PublicPageShell } from "./PublicPage";
 
 export function LegalPage({
   homeLabel,
+  homeHref = "/",
   eyebrow,
   title,
   description,
@@ -11,6 +12,7 @@ export function LegalPage({
   children,
 }: {
   homeLabel: string;
+  homeHref?: string;
   eyebrow: string;
   title: string;
   description: string;
@@ -23,7 +25,7 @@ export function LegalPage({
         eyebrow={eyebrow}
         title={title}
         description={description}
-        breadcrumbs={[{ href: "/", label: homeLabel }, { label: title }]}
+        breadcrumbs={[{ href: homeHref, label: homeLabel }, { label: title }]}
       />
       <div className="mx-auto max-w-4xl px-6 py-14">
         <aside className="mb-10 rounded-2xl border border-amber-400/30 bg-amber-400/10 p-5 leading-7 text-amber-100" role="note">

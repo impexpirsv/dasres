@@ -2,6 +2,7 @@ import Link from "next/link";
 import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "../../lib/prisma";
+import type { Locale } from "../../lib/locale";
 
 const getHomepageExperts = unstable_cache(
   async () => {
@@ -28,7 +29,8 @@ const getHomepageExperts = unstable_cache(
 );
 
 
-export default async function Experts() {
+export default async function Experts({ locale, localized }: { locale: Locale; localized: boolean }) {
+  const expertsPath = localized ? `/${locale}/experts` : "/experts";
   const t = await getTranslations(
     "expertsSection",
   );
@@ -169,7 +171,7 @@ export default async function Experts() {
 
 
           <Link
-            href="/experts"
+            href={expertsPath}
             className="
               rounded-xl
               border
@@ -367,7 +369,7 @@ export default async function Experts() {
 
 
                     <Link
-                      href={`/experts/${expert.id}`}
+                      href={`${expertsPath}/${expert.id}`}
                       className="
                         font-bold
                         text-blue-400

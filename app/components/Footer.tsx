@@ -15,14 +15,29 @@ const groups = [
   { key: "legal", links: [["/privacy", "privacy"], ["/terms", "terms"], ["/cookies", "cookies"]] },
 ] as const;
 
+const localizedPublicPaths = new Set<string>([
+  "/companies",
+  "/experts",
+  "/opportunities",
+  "/about",
+  "/contact",
+  "/pricing",
+  "/faq",
+  "/privacy",
+  "/terms",
+  "/cookies",
+  "/help",
+  "/resources",
+]);
+
 export default function Footer({ year }: { year: number }) {
   const t = useTranslations("publicSite.footer");
   const pathname = usePathname();
   const homepageLocale = getLocalizedPublicPathLocale(pathname);
   const homepageHref = homepageLocale ? `/${homepageLocale}` : "/";
   const resolvePublicHref = (href: string) =>
-    homepageLocale && href === "/companies"
-      ? `/${homepageLocale}/companies`
+    homepageLocale && localizedPublicPaths.has(href)
+      ? `/${homepageLocale}${href}`
       : href;
 
   return (
@@ -32,7 +47,7 @@ export default function Footer({ year }: { year: number }) {
           <div>
             <Link href={homepageHref} className="inline-block rounded-sm bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-3xl font-black tracking-[0.14em] text-transparent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400">DASRES</Link>
             <p className="mt-5 max-w-md leading-7 text-slate-400">{t("trustStatement")}</p>
-            <Link href="/contact" className="ui-button ui-button-outline mt-6 text-cyan-200">{t("supportEntry")}</Link>
+            <Link href={resolvePublicHref("/contact")} className="ui-button ui-button-outline mt-6 text-cyan-200">{t("supportEntry")}</Link>
           </div>
 
           <nav aria-label={t("navigationLabel")} className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">

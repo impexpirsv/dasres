@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 
 import { routing } from "./i18n/routing";
-import { isLocale, type Locale } from "./lib/locale";
+import { contentRepository } from "./lib/content/repository";
+import { defaultLocale, isLocale, type Locale } from "./lib/locale";
 import {
   InMemoryRateLimiter,
   type RateLimitResult,
@@ -32,7 +33,7 @@ const handleLocaleRouting = createMiddleware(routing);
 export type ProxyBranch =
   | "api"
   | "public-locale"
-  | "root"
+  | "legacy-public"
   | "dashboard"
   | "auth"
   | "static"
@@ -48,6 +49,7 @@ function isStaticPath(pathname: string): boolean {
   return (
     hasPathPrefix(pathname, "/_next") ||
     pathname === "/sitemap.xml" ||
+    hasPathPrefix(pathname, "/sitemaps") ||
     pathname === "/robots.txt" ||
     pathname === "/favicon.ico" ||
     pathname === "/icon" ||
@@ -56,6 +58,64 @@ function isStaticPath(pathname: string): boolean {
     pathname.startsWith("/apple-icon.") ||
     STATIC_FILE_PATTERN.test(pathname)
   );
+}
+
+const LEGACY_PUBLIC_PATH_PATTERN = /^\/(?:companies|experts|opportunities)(?:\/[^/]+)?\/?$|^\/(?:about|contact|pricing|faq|privacy|terms|cookies)\/?$|^\/help(?:\/[^/]+)?\/?$|^\/resources(?:\/[^/]+(?:\/[^/]+)?)?\/?$/;
+
+export function isLegacyPublicPath(pathname: string): boolean {
+  return pathname === "/" || LEGACY_PUBLIC_PATH_PATTERN.test(pathname);
+}
+
+function getCookieLocale(request: NextRequest): Locale {
+  const candidate = request.cookies.get("NEXT_LOCALE")?.value;
+  return candidate && isLocale(candidate) ? candidate : defaultLocale;
+}
+
+async function getLegacyRedirectLocale(
+  pathname: string,
+  cookieLocale: Locale,
+): Promise<Locale | null> {
+  const articleMatch = /^\/resources\/([^/]+)\/([^/]+)\/?$/.exec(pathname);
+  if (!articleMatch) return cookieLocale;
+
+  const [, category, slug] = articleMatch;
+  const records = (await contentRepository.getAll({ status: "published" }))
+    .filter((record) => record.slug === slug && record.canonical === `/resources/${category}/${slug}`);
+  if (records.length === 0) return null;
+
+  return records.some((record) => record.locale === cookieLocale)
+    ? cookieLocale
+    : records.some((record) => record.locale === defaultLocale)
+      ? defaultLocale
+      : records.some((record) => record.locale === "en")
+        ? "en"
+        : records[0].locale;
+}
+
+async function hasPublishedLocalizedArticle(pathname: string): Promise<boolean> {
+  const match = /^\/([^/]+)\/resources\/([^/]+)\/([^/]+)\/?$/.exec(pathname);
+  if (!match) return true;
+
+  const [, locale, category, slug] = match;
+  if (!isLocale(locale)) return false;
+
+  const records = await contentRepository.getAll({ status: "published" });
+  return records.some(
+    (record) =>
+      record.locale === locale &&
+      record.slug === slug &&
+      record.canonical === `/resources/${category}/${slug}`,
+  );
+}
+
+export async function getLegacyRedirectPath(
+  request: NextRequest,
+): Promise<string | null> {
+  const { pathname } = request.nextUrl;
+  if (!isLegacyPublicPath(pathname)) return null;
+  const normalizedPath = pathname === "/" ? "" : pathname.replace(/\/$/, "");
+  const locale = await getLegacyRedirectLocale(normalizedPath, getCookieLocale(request));
+  return locale ? `/${locale}${normalizedPath}` : null;
 }
 
 function getPrefixedPublicLocale(pathname: string): Locale | null {
@@ -86,28 +146,24 @@ export function getProxyBranch(pathname: string): ProxyBranch {
     return "api";
   }
 
-  if (pathname === "/") {
-    return "root";
-  }
-
-  if (getPrefixedPublicLocale(pathname)) {
-    return "public-locale";
+  if (isStaticPath(pathname)) {
+    return "static";
   }
 
   if (hasPathPrefix(pathname, "/dashboard")) {
     return "dashboard";
   }
 
-  if (pathname === "/login" || pathname === "/login/") {
+  if (pathname === "/login" || pathname === "/login/" || pathname === "/register" || pathname === "/register/") {
     return "auth";
   }
 
-  if (pathname === "/register" || pathname === "/register/") {
-    return "auth";
+  if (getPrefixedPublicLocale(pathname)) {
+    return "public-locale";
   }
 
-  if (isStaticPath(pathname)) {
-    return "static";
+  if (isLegacyPublicPath(pathname)) {
+    return "legacy-public";
   }
 
   return "unknown";
@@ -237,18 +293,28 @@ function setRateLimitHeaders(
   }
 }
 
-export function proxy(
+export async function proxy(
   request: NextRequest,
-): NextResponse {
+): Promise<NextResponse> {
   const branch = getProxyBranch(request.nextUrl.pathname);
 
   if (branch === "public-locale") {
+    if (!(await hasPublishedLocalizedArticle(request.nextUrl.pathname))) {
+      return new NextResponse(null, { status: 404 });
+    }
     return handleLocaleRouting(request);
   }
 
-  if (branch === "root") {
-    handleLocaleRouting(request);
-    return NextResponse.next();
+  if (branch === "legacy-public") {
+    const redirectPath = await getLegacyRedirectPath(request);
+    if (!redirectPath) return new NextResponse(null, { status: 404 });
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = redirectPath;
+    return NextResponse.redirect(redirectUrl, 307);
+  }
+
+  if (branch === "unknown") {
+    return new NextResponse(null, { status: 404 });
   }
 
   if (branch !== "api") {

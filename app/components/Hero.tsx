@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import type { Locale } from "../../lib/locale";
 
 import HeroGlobe from "./homepage/HeroGlobe";
 
-export default function Hero() {
+export default function Hero({ locale, localized }: { locale: Locale; localized: boolean }) {
   const t = useTranslations("hero");
 
   return (
@@ -36,7 +37,7 @@ export default function Hero() {
             <Link href="/register" className="ui-button ui-button-primary min-h-14 px-7 text-base sm:px-8">
               {t("join")}
             </Link>
-            <Link href="/experts" className="ui-button ui-button-ghost min-h-14 px-7 text-base text-slate-300 sm:px-8">
+            <Link href={localized ? `/${locale}/experts` : "/experts"} className="ui-button ui-button-ghost min-h-14 px-7 text-base text-slate-300 sm:px-8">
               {t("exploreExperts")} <span aria-hidden="true">→</span>
             </Link>
           </div>
