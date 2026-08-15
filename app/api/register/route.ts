@@ -214,6 +214,8 @@ export async function POST(
         payload,
       );
 
+    assertTransactionalEmailConfigured();
+
     await ensureEmailAvailable(
       input.email,
     );
@@ -222,8 +224,6 @@ export async function POST(
       await hashPassword(
         input.password,
       );
-
-    assertTransactionalEmailConfigured();
 
     const registration =
       await createRegistration({

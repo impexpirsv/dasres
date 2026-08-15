@@ -18,7 +18,7 @@ function flatten(value: unknown, prefix = "", output = new Map<string, string>()
 }
 
 async function main(): Promise<void> {
-  const [schema, migration, tokens, registration, login, loginSession, verifyApi, resendApi, emailProvider, boundedJson, proxy, recoveryVerifier] = await Promise.all([
+  const [schema, migration, tokens, registration, login, loginSession, verifyApi, resendApi, emailProvider, emailConfig, boundedJson, proxy, recoveryVerifier] = await Promise.all([
     read("prisma/schema.prisma"),
     read("prisma/migrations/20260815120000_email_verification/migration.sql"),
     read("lib/auth/identity-token.ts"),
@@ -28,6 +28,7 @@ async function main(): Promise<void> {
     read("app/api/auth/verify-email/route.ts"),
     read("app/api/auth/resend-verification/route.ts"),
     read("lib/email/transactional-email.ts"),
+    read("lib/email/transactional-email-config.ts"),
     read("lib/http/bounded-json.ts"),
     read("proxy.ts"),
     read("scripts/verify-account-recovery.ts"),
@@ -56,8 +57,9 @@ async function main(): Promise<void> {
   assert(loginSession.indexOf("EMAIL_VERIFICATION_REQUIRED") < loginSession.indexOf("session.create"));
   assert.match(resendApi, /EMAIL_VERIFICATION_RESEND_ACCEPTED/);
   assert.match(resendApi, /parseBoundedJsonObject/);
-  assert.match(emailProvider, /process\.env\.NODE_ENV !== "production"/);
-  assert.match(emailProvider, /TRANSACTIONAL_EMAIL_NOT_CONFIGURED/);
+  assert.match(emailProvider, /process\.env\.NODE_ENV === "production"/);
+  assert.match(emailProvider, /ResendTransactionalEmailProvider/);
+  assert.match(emailConfig, /TRANSACTIONAL_EMAIL_NOT_CONFIGURED/);
   assert.match(verifyApi, /NextResponse\.redirect[\s\S]*303/);
   assert.doesNotMatch(verifyApi, /cookies|set-cookie|returnTo|callback/i);
   assert.match(boundedJson, /contentType !== "application\/json"/);

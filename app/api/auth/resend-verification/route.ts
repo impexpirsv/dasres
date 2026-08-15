@@ -2,6 +2,7 @@ import { apiHandler } from "../../../../lib/api";
 import { isValidEmail, normalizeEmail } from "../../../../lib/auth/credentials";
 import { issueEmailVerificationToken, revokeEmailVerificationToken } from "../../../../lib/auth/identity-token";
 import { enforceVerificationAccountRateLimit } from "../../../../lib/auth/verification-rate-limit";
+import { waitForGenericAuthResponse } from "../../../../lib/auth/generic-response-timing";
 import { assertTransactionalEmailConfigured } from "../../../../lib/email/transactional-email";
 import { deliverEmailVerification } from "../../../../lib/email/verification-email";
 import { AppError } from "../../../../lib/errors";
@@ -9,8 +10,6 @@ import { parseBoundedJsonObject } from "../../../../lib/http/bounded-json";
 import { logger } from "../../../../lib/logger";
 
 const ACCEPTED = { code: "EMAIL_VERIFICATION_RESEND_ACCEPTED" } as const;
-const MINIMUM_RESPONSE_TIME_MS = 250;
-
 export async function POST(request: Request): Promise<Response> {
   return apiHandler(async () => {
     const startedAt = Date.now();
@@ -34,8 +33,7 @@ export async function POST(request: Request): Promise<Response> {
       }
     }
 
-    const remainingDelay = MINIMUM_RESPONSE_TIME_MS - (Date.now() - startedAt);
-    if (remainingDelay > 0) await new Promise((resolve) => setTimeout(resolve, remainingDelay));
+    await waitForGenericAuthResponse(startedAt);
     return Response.json(ACCEPTED, { headers: { "Cache-Control": "no-store" } });
   });
 }

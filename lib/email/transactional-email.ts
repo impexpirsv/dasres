@@ -1,6 +1,6 @@
 import "server-only";
 
-import { AppError } from "../errors";
+import { ResendTransactionalEmailProvider } from "./resend-transactional-email-provider";
 
 export type PasswordResetEmail = {
   recipient: string;
@@ -31,8 +31,8 @@ class DevelopmentEmailProvider implements TransactionalEmailProvider {
 }
 
 function getProvider(): TransactionalEmailProvider {
-  if (process.env.NODE_ENV !== "production") return new DevelopmentEmailProvider();
-  throw new AppError("TRANSACTIONAL_EMAIL_NOT_CONFIGURED", 503);
+  if (process.env.NODE_ENV === "production") return new ResendTransactionalEmailProvider();
+  return new DevelopmentEmailProvider();
 }
 
 export function assertTransactionalEmailConfigured(): void {

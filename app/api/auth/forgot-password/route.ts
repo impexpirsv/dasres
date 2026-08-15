@@ -2,6 +2,8 @@ import { apiHandler } from "../../../../lib/api";
 import { isValidEmail, normalizeEmail } from "../../../../lib/auth/credentials";
 import { issuePasswordResetToken, revokePasswordResetToken, type IssuedPasswordReset } from "../../../../lib/auth/identity-token";
 import { enforceForgotAccountRateLimit } from "../../../../lib/auth/recovery-rate-limit";
+import { waitForGenericAuthResponse } from "../../../../lib/auth/generic-response-timing";
+import { createCanonicalSecurityEmailUrl } from "../../../../lib/email/canonical-email-url";
 import { assertTransactionalEmailConfigured, sendPasswordResetEmail } from "../../../../lib/email/transactional-email";
 import { AppError } from "../../../../lib/errors";
 import { parseBoundedJsonObject } from "../../../../lib/http/bounded-json";
@@ -9,21 +11,8 @@ import { prisma } from "../../../../lib/prisma";
 import { logger } from "../../../../lib/logger";
 
 const ACCEPTED = { code: "PASSWORD_RESET_REQUEST_ACCEPTED" } as const;
-const MINIMUM_RESPONSE_TIME_MS = 250;
-
 function getResetPageUrl(): URL {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  if (!siteUrl) throw new AppError("SITE_URL_NOT_CONFIGURED", 503);
-  let resetUrl: URL;
-  try {
-    resetUrl = new URL("/reset-password", siteUrl);
-  } catch {
-    throw new AppError("SITE_URL_NOT_CONFIGURED", 503);
-  }
-  if ((resetUrl.protocol !== "http:" && resetUrl.protocol !== "https:") || resetUrl.username || resetUrl.password) {
-    throw new AppError("SITE_URL_NOT_CONFIGURED", 503);
-  }
-  return resetUrl;
+  return createCanonicalSecurityEmailUrl("/reset-password");
 }
 
 export async function POST(request: Request) {
@@ -61,8 +50,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const remainingDelay = MINIMUM_RESPONSE_TIME_MS - (Date.now() - startedAt);
-    if (remainingDelay > 0) await new Promise((resolve) => setTimeout(resolve, remainingDelay));
+    await waitForGenericAuthResponse(startedAt);
     return Response.json(ACCEPTED, { headers: { "Cache-Control": "no-store" } });
   });
 }

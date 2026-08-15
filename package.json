@@ -22,6 +22,8 @@
     "content:validate": "tsx scripts/validate-content.ts",
     "auth:verify": "tsx scripts/verify-account-recovery.ts",
     "auth:verify-email": "tsx scripts/verify-email-verification.ts",
+    "email:test": "tsx scripts/test-transactional-email-provider.ts",
+    "email:verify": "tsx scripts/verify-transactional-email.ts",
     "auth:integration": "tsx scripts/integration/account-recovery-postgres.ts",
     "check": "npm run lint && npm run typecheck && npm run db:validate && npm run content:validate && npm run build"
   },
