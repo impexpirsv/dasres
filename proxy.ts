@@ -22,6 +22,7 @@ const FALLBACK_CLIENT_IDENTIFIER =
 type RateLimitPolicy = {
   name: string;
   limit: number;
+  windowMs: number;
 };
 
 const rateLimiter = new InMemoryRateLimiter(
@@ -133,6 +134,8 @@ function getPrefixedPublicLocale(pathname: string): Locale | null {
     hasPathPrefix(unprefixedPath, "/dashboard") ||
     hasPathPrefix(unprefixedPath, "/login") ||
     hasPathPrefix(unprefixedPath, "/register") ||
+    hasPathPrefix(unprefixedPath, "/forgot-password") ||
+    hasPathPrefix(unprefixedPath, "/reset-password") ||
     isStaticPath(unprefixedPath)
   ) {
     return null;
@@ -154,7 +157,7 @@ export function getProxyBranch(pathname: string): ProxyBranch {
     return "dashboard";
   }
 
-  if (pathname === "/login" || pathname === "/login/" || pathname === "/register" || pathname === "/register/") {
+  if (/^\/(?:login|register|forgot-password|reset-password)\/?$/.test(pathname)) {
     return "auth";
   }
 
@@ -179,12 +182,20 @@ function getRateLimitPolicy(
       ? pathname.replace(/\/+$/, "")
       : pathname;
 
+  if (normalizedMethod === "POST" && normalizedPathname === "/api/auth/forgot-password") {
+    return { name: "password-recovery-forgot", limit: 5, windowMs: 15 * 60_000 };
+  }
+
+  if (normalizedMethod === "POST" && normalizedPathname === "/api/auth/reset-password") {
+    return { name: "password-recovery-reset", limit: 10, windowMs: 15 * 60_000 };
+  }
+
   if (
     normalizedMethod === "POST" &&
     (normalizedPathname === "/api/login" ||
       normalizedPathname === "/api/register")
   ) {
-    return { name: "authentication", limit: 5 };
+    return { name: "authentication", limit: 5, windowMs: RATE_LIMIT_WINDOW_MS };
   }
 
   if (
@@ -195,7 +206,7 @@ function getRateLimitPolicy(
         normalizedPathname,
       ))
   ) {
-    return { name: "messaging", limit: 30 };
+    return { name: "messaging", limit: 30, windowMs: RATE_LIMIT_WINDOW_MS };
   }
 
   if (
@@ -204,7 +215,7 @@ function getRateLimitPolicy(
       normalizedPathname,
     )
   ) {
-    return { name: "uploads", limit: 10 };
+    return { name: "uploads", limit: 10, windowMs: RATE_LIMIT_WINDOW_MS };
   }
 
   if (
@@ -212,14 +223,14 @@ function getRateLimitPolicy(
       normalizedMethod,
     )
   ) {
-    return { name: "mutation", limit: 60 };
+    return { name: "mutation", limit: 60, windowMs: RATE_LIMIT_WINDOW_MS };
   }
 
   if (
     normalizedMethod === "GET" ||
     normalizedMethod === "HEAD"
   ) {
-    return { name: "read", limit: 300 };
+    return { name: "read", limit: 300, windowMs: RATE_LIMIT_WINDOW_MS };
   }
 
   return null;
@@ -298,6 +309,24 @@ export async function proxy(
 ): Promise<NextResponse> {
   const branch = getProxyBranch(request.nextUrl.pathname);
 
+  if (branch === "auth" && /^\/reset-password\/?$/.test(request.nextUrl.pathname)) {
+    const rawToken = request.nextUrl.searchParams.get("token");
+    if (rawToken !== null) {
+      const cleanUrl = request.nextUrl.clone();
+      cleanUrl.searchParams.delete("token");
+      const response = NextResponse.redirect(cleanUrl, 303);
+      response.headers.set("Cache-Control", "no-store");
+      response.cookies.set("dasres_password_reset", /^[A-Za-z0-9_-]{43}$/.test(rawToken) ? rawToken : "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/api/auth/reset-password",
+        maxAge: /^[A-Za-z0-9_-]{43}$/.test(rawToken) ? 30 * 60 : 0,
+      });
+      return response;
+    }
+  }
+
   if (branch === "public-locale") {
     if (!(await hasPublishedLocalizedArticle(request.nextUrl.pathname))) {
       return new NextResponse(null, { status: 404 });
@@ -329,7 +358,7 @@ export async function proxy(
     ? rateLimiter.consume({
         key: `${policy.name}:${getClientIdentifier(request)}`,
         limit: policy.limit,
-        windowMs: RATE_LIMIT_WINDOW_MS,
+        windowMs: policy.windowMs,
       })
     : null;
 

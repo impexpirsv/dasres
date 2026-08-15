@@ -983,6 +983,8 @@
       "manageUsers": "Gestisci utenti"
     }
   },
+  "forgotPasswordPage":{"title":"Password dimenticata","description":"Inserisci la tua email per richiedere il ripristino della password.","emailLabel":"Indirizzo email","submit":"Invia link","submitting":"Invio...","accepted":"Se esiste un account con questa email, è stato inviato un link di ripristino.","error":"Impossibile elaborare la richiesta. Riprova più tardi.","backToLogin":"Torna all’accesso","link":"Password dimenticata?"},
+  "resetPasswordPage":{"title":"Reimposta password","description":"Scegli una nuova password per il tuo account.","passwordLabel":"Nuova password","confirmLabel":"Conferma nuova password","requirements":"Usa da 8 a 128 caratteri.","submit":"Reimposta password","submitting":"Ripristino...","mismatch":"Le password non corrispondono.","invalid":"Questo link non è valido, è scaduto o è già stato utilizzato.","success":"La password è stata reimpostata e tutte le sessioni esistenti sono state chiuse.","continueToLogin":"Continua all’accesso","requestAnother":"Richiedi un altro link","error":"Impossibile reimpostare la password. Riprova più tardi."},
   "loginPage": {
     "title": "Bentornato",
     "description": "Accedi al tuo account Dasres",
@@ -1005,7 +1007,7 @@
     "password": {
       "label": "Password",
       "placeholder": "Inserisci la tua password",
-      "hint": "La tua password deve contenere almeno 6 caratteri."
+      "hint": "La tua password deve contenere almeno 8 caratteri."
     },
     "submit": "Creare un account",
     "submitting": "Creazione dell'account...",

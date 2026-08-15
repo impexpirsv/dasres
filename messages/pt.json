@@ -983,6 +983,8 @@
       "manageUsers": "Gerenciar usuários"
     }
   },
+  "forgotPasswordPage":{"title":"Esqueci a senha","description":"Introduza o seu email para pedir a reposição da senha.","emailLabel":"Endereço de email","submit":"Enviar ligação","submitting":"A enviar...","accepted":"Se existir uma conta com este email, foi enviada uma ligação de reposição.","error":"Não foi possível processar o pedido. Tente novamente mais tarde.","backToLogin":"Voltar ao início de sessão","link":"Esqueceu a senha?"},
+  "resetPasswordPage":{"title":"Repor senha","description":"Escolha uma nova senha para a sua conta.","passwordLabel":"Nova senha","confirmLabel":"Confirmar nova senha","requirements":"Use entre 8 e 128 caracteres.","submit":"Repor senha","submitting":"A repor...","mismatch":"As senhas não coincidem.","invalid":"Esta ligação é inválida, expirou ou já foi utilizada.","success":"A sua senha foi reposta e todas as sessões existentes foram terminadas.","continueToLogin":"Continuar para o início de sessão","requestAnother":"Pedir outra ligação","error":"Não foi possível repor a senha. Tente novamente mais tarde."},
   "loginPage": {
     "title": "Bem vindo de volta",
     "description": "Faça login em sua conta Dasres",
@@ -1005,7 +1007,7 @@
     "password": {
       "label": "Senha",
       "placeholder": "Digite sua senha",
-      "hint": "Sua senha deve ter pelo menos 6 caracteres."
+      "hint": "Sua senha deve ter pelo menos 8 caracteres."
     },
     "submit": "Criar uma conta",
     "submitting": "Criando conta...",

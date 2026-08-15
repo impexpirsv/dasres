@@ -92,6 +92,7 @@ model User {
   caseMessages           CaseMessage[]
   companies              Company[]
   experts                Expert[]
+  identityTokens         IdentityToken[]
   notifications          Notification[]
   projectMessages        ProjectMessage[]
   assignedProjectTasks   ProjectTask[]           @relation("ProjectTaskAssignee")
@@ -125,6 +126,24 @@ model Session {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+model IdentityToken {
+  id          Int                  @id @default(autoincrement())
+  userId      Int
+  purpose     IdentityTokenPurpose
+  tokenHash   String               @unique
+  targetEmail String?
+  createdAt   DateTime             @default(now())
+  expiresAt   DateTime
+  consumedAt  DateTime?
+  revokedAt   DateTime?
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([purpose])
+  @@index([expiresAt])
+  @@index([userId, purpose])
 }
 
 model Subscription {
@@ -604,4 +623,10 @@ enum ApprovalStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum IdentityTokenPurpose {
+  PASSWORD_RESET
+  EMAIL_VERIFICATION
+  EMAIL_CHANGE
 }

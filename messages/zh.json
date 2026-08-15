@@ -983,6 +983,8 @@
       "manageUsers": "管理用户"
     }
   },
+  "forgotPasswordPage":{"title":"忘记密码","description":"输入您的电子邮箱以申请重置密码。","emailLabel":"电子邮箱","submit":"发送重置链接","submitting":"正在发送...","accepted":"如果该邮箱对应的账户存在，密码重置链接已发送。","error":"无法处理您的请求，请稍后重试。","backToLogin":"返回登录","link":"忘记密码？"},
+  "resetPasswordPage":{"title":"重置密码","description":"为您的账户设置新密码。","passwordLabel":"新密码","confirmLabel":"确认新密码","requirements":"请输入 8 至 128 个字符。","submit":"重置密码","submitting":"正在重置...","mismatch":"两次输入的密码不一致。","invalid":"此重置链接无效、已过期或已使用。","success":"密码已重置，所有现有会话均已退出。","continueToLogin":"继续登录","requestAnother":"申请其他链接","error":"无法重置密码，请稍后重试。"},
   "loginPage": {
     "title": "欢迎回来",
     "description": "登录您的 Dasres 帐户",
@@ -1005,7 +1007,7 @@
     "password": {
       "label": "密码",
       "placeholder": "输入您的密码",
-      "hint": "您的密码必须至少包含 6 个字符。"
+      "hint": "您的密码必须至少包含 8 个字符。"
     },
     "submit": "创建账户",
     "submitting": "正在创建帐户...",

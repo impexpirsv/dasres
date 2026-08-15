@@ -983,6 +983,8 @@
       "manageUsers": "ユーザーの管理"
     }
   },
+  "forgotPasswordPage":{"title":"パスワードをお忘れですか","description":"パスワードのリセットを申請するにはメールアドレスを入力してください。","emailLabel":"メールアドレス","submit":"リセットリンクを送信","submitting":"送信中...","accepted":"そのメールのアカウントが存在する場合、パスワードリセットリンクを送信しました。","error":"リクエストを処理できませんでした。後でもう一度お試しください。","backToLogin":"ログインに戻る","link":"パスワードをお忘れですか？"},
+  "resetPasswordPage":{"title":"パスワードをリセット","description":"アカウントの新しいパスワードを設定してください。","passwordLabel":"新しいパスワード","confirmLabel":"新しいパスワードを確認","requirements":"8文字以上128文字以下で入力してください。","submit":"パスワードをリセット","submitting":"リセット中...","mismatch":"パスワードが一致しません。","invalid":"このリンクは無効、期限切れ、または使用済みです。","success":"パスワードをリセットし、既存のすべてのセッションからログアウトしました。","continueToLogin":"ログインへ進む","requestAnother":"別のリンクを申請","error":"パスワードをリセットできませんでした。後でもう一度お試しください。"},
   "loginPage": {
     "title": "おかえり",
     "description": "Dasres アカウントにサインインします",
@@ -1005,7 +1007,7 @@
     "password": {
       "label": "パスワード",
       "placeholder": "パスワードを入力してください",
-      "hint": "パスワードは 6 文字以上である必要があります。"
+      "hint": "パスワードは 8 文字以上である必要があります。"
     },
     "submit": "アカウントを作成する",
     "submitting": "アカウントを作成しています...",

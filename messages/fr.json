@@ -983,6 +983,8 @@
       "manageUsers": "Gérer les utilisateurs"
     }
   },
+  "forgotPasswordPage":{"title":"Mot de passe oublié","description":"Saisissez votre adresse e-mail pour demander une réinitialisation.","emailLabel":"Adresse e-mail","submit":"Envoyer le lien","submitting":"Envoi...","accepted":"Si un compte correspond à cette adresse, un lien de réinitialisation a été envoyé.","error":"Votre demande n’a pas pu être traitée. Réessayez plus tard.","backToLogin":"Retour à la connexion","link":"Mot de passe oublié ?"},
+  "resetPasswordPage":{"title":"Réinitialiser le mot de passe","description":"Choisissez un nouveau mot de passe pour votre compte.","passwordLabel":"Nouveau mot de passe","confirmLabel":"Confirmer le nouveau mot de passe","requirements":"Utilisez entre 8 et 128 caractères.","submit":"Réinitialiser","submitting":"Réinitialisation...","mismatch":"Les mots de passe ne correspondent pas.","invalid":"Ce lien est invalide, expiré ou déjà utilisé.","success":"Votre mot de passe a été réinitialisé et toutes les sessions ont été fermées.","continueToLogin":"Continuer vers la connexion","requestAnother":"Demander un autre lien","error":"Le mot de passe n’a pas pu être réinitialisé. Réessayez plus tard."},
   "loginPage": {
     "title": "Content de te revoir",
     "description": "Connectez-vous à votre compte Dasres",
@@ -1005,7 +1007,7 @@
     "password": {
       "label": "Mot de passe",
       "placeholder": "Entrez votre mot de passe",
-      "hint": "Votre mot de passe doit comporter au moins 6 caractères."
+      "hint": "Votre mot de passe doit comporter au moins 8 caractères."
     },
     "submit": "Créer un compte",
     "submitting": "Création d'un compte...",

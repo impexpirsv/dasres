@@ -957,6 +957,8 @@
       "manageUsers": "Manage Users"
     }
   },
+  "forgotPasswordPage": {"title":"Forgot password","description":"Enter your email address to request a password reset.","emailLabel":"Email address","submit":"Send reset link","submitting":"Sending...","accepted":"If an account exists for that email, a password reset link has been sent.","error":"We could not process your request. Please try again later.","backToLogin":"Back to login","link":"Forgot password?"},
+  "resetPasswordPage": {"title":"Reset password","description":"Choose a new password for your account.","passwordLabel":"New password","confirmLabel":"Confirm new password","requirements":"Use between 8 and 128 characters.","submit":"Reset password","submitting":"Resetting...","mismatch":"The passwords do not match.","invalid":"This reset link is invalid, expired, or has already been used.","success":"Your password has been reset. All existing sessions were signed out.","continueToLogin":"Continue to login","requestAnother":"Request another link","error":"We could not reset your password. Please try again later."},
   "loginPage": {
     "title": "Welcome Back",
     "description": "Sign in to your Dasres account",
@@ -979,7 +981,7 @@
     "password": {
       "label": "Password",
       "placeholder": "Enter your password",
-      "hint": "Your password must be at least 6 characters."
+      "hint": "Your password must be at least 8 characters."
     },
     "submit": "Create Account",
     "submitting": "Creating account...",

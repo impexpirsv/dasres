@@ -983,6 +983,8 @@
     "manageUsers": "Gestionar usuarios"
   }
   },
+  "forgotPasswordPage":{"title":"Olvidé mi contraseña","description":"Introduce tu correo para solicitar un restablecimiento de contraseña.","emailLabel":"Correo electrónico","submit":"Enviar enlace","submitting":"Enviando...","accepted":"Si existe una cuenta con ese correo, se ha enviado un enlace de restablecimiento.","error":"No pudimos procesar tu solicitud. Inténtalo más tarde.","backToLogin":"Volver al inicio de sesión","link":"¿Olvidaste tu contraseña?"},
+  "resetPasswordPage":{"title":"Restablecer contraseña","description":"Elige una nueva contraseña para tu cuenta.","passwordLabel":"Nueva contraseña","confirmLabel":"Confirmar nueva contraseña","requirements":"Usa entre 8 y 128 caracteres.","submit":"Restablecer contraseña","submitting":"Restableciendo...","mismatch":"Las contraseñas no coinciden.","invalid":"Este enlace no es válido, ha caducado o ya fue utilizado.","success":"Tu contraseña se restableció y se cerraron todas las sesiones existentes.","continueToLogin":"Continuar al inicio de sesión","requestAnother":"Solicitar otro enlace","error":"No pudimos restablecer tu contraseña. Inténtalo más tarde."},
   "loginPage": {
     "title": "Bienvenido de nuevo",
     "description": "Inicia sesión en tu cuenta de Dasres",
@@ -1005,7 +1007,7 @@
     "password": {
       "label": "Contraseña",
       "placeholder": "Ingresa tu contraseña",
-      "hint": "Tu contraseña debe tener al menos 6 caracteres."
+      "hint": "Tu contraseña debe tener al menos 8 caracteres."
     },
     "submit": "Crear cuenta",
     "submitting": "Creando cuenta...",

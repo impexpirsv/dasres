@@ -1,21 +1,14 @@
-import bcrypt from "bcryptjs";
 import { Prisma } from "@prisma/client";
 import { apiHandler } from "../../../lib/api";
+import { hashPassword, isValidEmail, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH, normalizeEmail } from "../../../lib/auth/credentials";
 import { AppError } from "../../../lib/errors";
 import { prisma } from "../../../lib/prisma";
 
-const MIN_PASSWORD_LENGTH = 8;
-const MAX_PASSWORD_LENGTH = 128;
 const MAX_NAME_LENGTH = 150;
-const MAX_EMAIL_LENGTH = 254;
 
 const MAX_REQUEST_BODY_SIZE =
   16 * 1024;
 
-const PASSWORD_HASH_ROUNDS = 12;
-
-const EMAIL_PATTERN =
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type RegisterInput = {
   name: string;
@@ -114,12 +107,7 @@ function validateRegisterInput(
     "name",
   ).trim();
 
-  const email = getStringField(
-    payload,
-    "email",
-  )
-    .trim()
-    .toLowerCase();
+  const email = normalizeEmail(getStringField(payload, "email"));
 
   const password = getStringField(
     payload,
@@ -151,9 +139,7 @@ function validateRegisterInput(
   }
 
   if (
-    email.length >
-      MAX_EMAIL_LENGTH ||
-    !EMAIL_PATTERN.test(email)
+    !isValidEmail(email)
   ) {
     throw new AppError(
       "REGISTER_EMAIL_INVALID",
@@ -227,29 +213,6 @@ async function ensureEmailAvailable(
     }
 
     throw error;
-  }
-}
-
-async function hashPassword(
-  password: string,
-): Promise<string> {
-  try {
-    return await bcrypt.hash(
-      password,
-      PASSWORD_HASH_ROUNDS,
-    );
-  } catch (error) {
-    console.error(
-      "REGISTER_PASSWORD_HASH_ERROR",
-      {
-        error,
-      },
-    );
-
-    throw new AppError(
-      "REGISTER_PASSWORD_HASH_FAILED",
-      500,
-    );
   }
 }
 

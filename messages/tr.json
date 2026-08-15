@@ -983,6 +983,8 @@
       "manageUsers": "Kullanıcıları Yönet"
     }
   },
+  "forgotPasswordPage":{"title":"Şifremi unuttum","description":"Şifre sıfırlama isteği için e-posta adresinizi girin.","emailLabel":"E-posta adresi","submit":"Sıfırlama bağlantısı gönder","submitting":"Gönderiliyor...","accepted":"Bu e-posta için bir hesap varsa şifre sıfırlama bağlantısı gönderildi.","error":"İsteğiniz işlenemedi. Lütfen daha sonra tekrar deneyin.","backToLogin":"Girişe dön","link":"Şifrenizi mi unuttunuz?"},
+  "resetPasswordPage":{"title":"Şifreyi sıfırla","description":"Hesabınız için yeni bir şifre seçin.","passwordLabel":"Yeni şifre","confirmLabel":"Yeni şifreyi doğrulayın","requirements":"8 ile 128 karakter kullanın.","submit":"Şifreyi sıfırla","submitting":"Sıfırlanıyor...","mismatch":"Şifreler eşleşmiyor.","invalid":"Bu bağlantı geçersiz, süresi dolmuş veya daha önce kullanılmış.","success":"Şifreniz sıfırlandı ve mevcut tüm oturumlar kapatıldı.","continueToLogin":"Girişe devam et","requestAnother":"Başka bağlantı iste","error":"Şifreniz sıfırlanamadı. Lütfen daha sonra tekrar deneyin."},
   "loginPage": {
     "title": "Tekrar hoşgeldiniz",
     "description": "Dasres hesabınızda oturum açın",
@@ -1005,7 +1007,7 @@
     "password": {
       "label": "Şifre",
       "placeholder": "Şifrenizi girin",
-      "hint": "Şifreniz en az 6 karakter olmalıdır."
+      "hint": "Şifreniz en az 8 karakter olmalıdır."
     },
     "submit": "Hesap oluşturmak",
     "submitting": "Hesap oluşturuluyor...",

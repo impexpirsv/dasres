@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 const t = useTranslations("loginPage");
+  const recovery = useTranslations("forgotPasswordPage");
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (isSubmitting) return;
@@ -81,6 +83,12 @@ const t = useTranslations("loginPage");
             }
             className="ui-field"
           />
+
+          <div className="text-end">
+            <Link href="/forgot-password" className="text-sm font-medium text-blue-400 hover:underline">
+              {recovery("link")}
+            </Link>
+          </div>
 
           <button disabled={isSubmitting} aria-busy={isSubmitting} className="ui-button ui-button-primary w-full">
             {t("login")}
