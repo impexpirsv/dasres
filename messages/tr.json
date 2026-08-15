@@ -985,13 +985,17 @@
   },
   "forgotPasswordPage":{"title":"Şifremi unuttum","description":"Şifre sıfırlama isteği için e-posta adresinizi girin.","emailLabel":"E-posta adresi","submit":"Sıfırlama bağlantısı gönder","submitting":"Gönderiliyor...","accepted":"Bu e-posta için bir hesap varsa şifre sıfırlama bağlantısı gönderildi.","error":"İsteğiniz işlenemedi. Lütfen daha sonra tekrar deneyin.","backToLogin":"Girişe dön","link":"Şifrenizi mi unuttunuz?"},
   "resetPasswordPage":{"title":"Şifreyi sıfırla","description":"Hesabınız için yeni bir şifre seçin.","passwordLabel":"Yeni şifre","confirmLabel":"Yeni şifreyi doğrulayın","requirements":"8 ile 128 karakter kullanın.","submit":"Şifreyi sıfırla","submitting":"Sıfırlanıyor...","mismatch":"Şifreler eşleşmiyor.","invalid":"Bu bağlantı geçersiz, süresi dolmuş veya daha önce kullanılmış.","success":"Şifreniz sıfırlandı ve mevcut tüm oturumlar kapatıldı.","continueToLogin":"Girişe devam et","requestAnother":"Başka bağlantı iste","error":"Şifreniz sıfırlanamadı. Lütfen daha sonra tekrar deneyin."},
+  "verifyEmailPage": {"title":"E-postanızı doğrulayın","description":"Giriş yapmadan önce gelen kutunuzu kontrol edin ve doğrulama bağlantısını açın.","verifying":"E-postanız doğrulanıyor...","success":"E-postanız doğrulandı. Artık giriş yapabilirsiniz.","invalidOrExpired":"Bu doğrulama bağlantısı geçersiz, süresi dolmuş veya daha önce kullanılmış.","alreadyVerified":"Bu e-posta adresi zaten doğrulanmış.","continueToLogin":"Girişe devam et","resendTitle":"Başka bir bağlantıya mı ihtiyacınız var?","resendDescription":"Yeni bir doğrulama bağlantısı istemek için e-posta adresinizi girin.","emailLabel":"E-posta adresi","resend":"Doğrulama e-postasını yeniden gönder","resending":"Gönderiliyor...","resendAccepted":"Hesabın doğrulanması gerekiyorsa yeni bir bağlantı gönderildi.","error":"İsteğiniz işlenemedi. Lütfen daha sonra tekrar deneyin."},
   "loginPage": {
     "title": "Tekrar hoşgeldiniz",
     "description": "Dasres hesabınızda oturum açın",
     "email": "E-posta",
     "password": "Şifre",
     "login": "Giriş yapmak",
-    "loginFailed": "Giriş başarısız oldu."
+    "loginFailed": "Giriş başarısız oldu.",
+    "emailVerificationRequired": "Giriş yapmadan önce e-postanızı doğrulayın.",
+    "resendVerification": "Doğrulama e-postasını yeniden gönder",
+    "verificationResent": "Doğrulama gerekiyorsa yeni bir bağlantı gönderildi."
   },
   "registerPage": {
     "title": "Dasres'ye katılın",
@@ -1013,7 +1017,10 @@
     "submitting": "Hesap oluşturuluyor...",
     "registrationFailed": "Hesap oluşturma başarısız oldu.",
     "alreadyHaveAccount": "Zaten bir hesabınız var mı?",
-    "login": "Giriş yapmak"
+    "login": "Giriş yapmak",
+    "verificationRequired": "Giriş yapmadan önce e-posta doğrulaması gerekir.",
+    "verificationEmailSent": "E-posta adresinize bir doğrulama bağlantısı gönderdik.",
+    "continueToVerification": "E-posta doğrulamaya devam et"
   },
   "projectDetailPage": {
     "backToProjects": "Projelere Geri Dön"

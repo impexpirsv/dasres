@@ -86,6 +86,7 @@ model User {
   password               String
   role                   String                  @default("user")
   createdAt              DateTime                @default(now())
+  emailVerifiedAt        DateTime?
   planType               PlanType                @default(FREE)
   caseActivities         CaseActivity[]
   caseDocuments          CaseDocument[]

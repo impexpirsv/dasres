@@ -41,7 +41,7 @@ export default function RegisterPage() {
         return;
       }
 
-      router.push("/login");
+      router.push("/verify-email?status=pending");
     } catch {
       setMessage(t("registrationFailed"));
     } finally {

@@ -985,13 +985,17 @@
   },
   "forgotPasswordPage":{"title":"Olvidé mi contraseña","description":"Introduce tu correo para solicitar un restablecimiento de contraseña.","emailLabel":"Correo electrónico","submit":"Enviar enlace","submitting":"Enviando...","accepted":"Si existe una cuenta con ese correo, se ha enviado un enlace de restablecimiento.","error":"No pudimos procesar tu solicitud. Inténtalo más tarde.","backToLogin":"Volver al inicio de sesión","link":"¿Olvidaste tu contraseña?"},
   "resetPasswordPage":{"title":"Restablecer contraseña","description":"Elige una nueva contraseña para tu cuenta.","passwordLabel":"Nueva contraseña","confirmLabel":"Confirmar nueva contraseña","requirements":"Usa entre 8 y 128 caracteres.","submit":"Restablecer contraseña","submitting":"Restableciendo...","mismatch":"Las contraseñas no coinciden.","invalid":"Este enlace no es válido, ha caducado o ya fue utilizado.","success":"Tu contraseña se restableció y se cerraron todas las sesiones existentes.","continueToLogin":"Continuar al inicio de sesión","requestAnother":"Solicitar otro enlace","error":"No pudimos restablecer tu contraseña. Inténtalo más tarde."},
+  "verifyEmailPage": {"title":"Verifica tu correo","description":"Revisa tu bandeja de entrada y sigue el enlace de verificación antes de iniciar sesión.","verifying":"Verificando tu correo...","success":"Tu correo ha sido verificado. Ya puedes iniciar sesión.","invalidOrExpired":"Este enlace de verificación no es válido, ha caducado o ya se utilizó.","alreadyVerified":"Esta dirección de correo ya está verificada.","continueToLogin":"Continuar al inicio de sesión","resendTitle":"¿Necesitas otro enlace?","resendDescription":"Introduce tu correo para solicitar otro enlace de verificación.","emailLabel":"Correo electrónico","resend":"Reenviar correo de verificación","resending":"Enviando...","resendAccepted":"Si la cuenta necesita verificación, se ha enviado un nuevo enlace.","error":"No pudimos procesar tu solicitud. Inténtalo de nuevo más tarde."},
   "loginPage": {
     "title": "Bienvenido de nuevo",
     "description": "Inicia sesión en tu cuenta de Dasres",
     "email": "Correo",
     "password": "Contraseña",
     "login": "Iniciar sesión",
-    "loginFailed": "El inicio de sesión falló."
+    "loginFailed": "El inicio de sesión falló.",
+    "emailVerificationRequired": "Verifica tu correo antes de iniciar sesión.",
+    "resendVerification": "Reenviar correo de verificación",
+    "verificationResent": "Si se requiere verificación, se ha enviado un nuevo enlace."
   },
   "registerPage": {
     "title": "Unirse a Dasres",
@@ -1013,7 +1017,10 @@
     "submitting": "Creando cuenta...",
     "registrationFailed": "La creación de la cuenta falló.",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "verificationRequired": "Debes verificar tu correo antes de iniciar sesión.",
+    "verificationEmailSent": "Hemos enviado un enlace de verificación a tu correo.",
+    "continueToVerification": "Continuar a la verificación del correo"
   },
   "projectDetailPage": {
     "backToProjects": "Volver a proyectos"

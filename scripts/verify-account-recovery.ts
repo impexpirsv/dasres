@@ -17,11 +17,11 @@ function flatten(value: unknown, prefix = "", output = new Map<string, string>()
 }
 
 async function main(): Promise<void> {
-  const [schema, migration, proxySource, registrationApi, registrationPage, tokenService, forgotApi, resetApi, emailProvider, rateLimits, boundedJson] = await Promise.all([
+  const [schema, migration, proxySource, registrationApi, registrationPage, tokenService, forgotApi, resetApi, emailProvider, rateLimits, identityRateLimits, boundedJson] = await Promise.all([
     read("prisma/schema.prisma"), read("prisma/migrations/20260808120000_identity_tokens/migration.sql"), read("proxy.ts"),
     read("app/api/register/route.ts"), read("app/register/page.tsx"), read("lib/auth/identity-token.ts"),
     read("app/api/auth/forgot-password/route.ts"), read("app/api/auth/reset-password/route.ts"),
-    read("lib/email/transactional-email.ts"), read("lib/auth/recovery-rate-limit.ts"),
+    read("lib/email/transactional-email.ts"), read("lib/auth/recovery-rate-limit.ts"), read("lib/auth/identity-rate-limit.ts"),
     read("lib/http/bounded-json.ts"),
   ]);
 
@@ -46,12 +46,12 @@ async function main(): Promise<void> {
   assert.match(proxySource, /path: "\/api\/auth\/reset-password"/);
   assert.match(proxySource, /password-recovery-forgot[\s\S]*limit: 5[\s\S]*15 \* 60_000/);
   assert.match(proxySource, /password-recovery-reset[\s\S]*limit: 10[\s\S]*15 \* 60_000/);
-  assert.match(rateLimits, /createHmac\("sha256"/);
+  assert.match(identityRateLimits, /createHmac\("sha256"/);
   assert.doesNotMatch(rateLimits, /forgot-account:\$\{normalizedEmail\}/);
-  assert.match(rateLimits, /forgot-account:\$\{keyedIdentifier\(normalizedEmail\)\}/);
+  assert.match(rateLimits, /forgot-account:\$\{keyedIdentityIdentifier\(normalizedEmail\)\}/);
   assert.match(emailProvider, /process\.env\.NODE_ENV !== "production"/);
   assert.match(emailProvider, /TRANSACTIONAL_EMAIL_NOT_CONFIGURED/);
-  assert.match(rateLimits, /configured !== DOCUMENTED_EXAMPLE_SECRET/);
+  assert.match(identityRateLimits, /configured !== DOCUMENTED_EXAMPLE_SECRET/);
   assert.match(boundedJson, /request\.body\.getReader\(\)/);
   assert.match(boundedJson, /receivedBytes > maximumBytes/);
 

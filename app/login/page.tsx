@@ -8,12 +8,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [verificationRequired, setVerificationRequired] = useState(false);
 const t = useTranslations("loginPage");
   const recovery = useTranslations("forgotPasswordPage");
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (isSubmitting) return;
     setMessage("");
+    setVerificationRequired(false);
     setIsSubmitting(true);
 
     try {
@@ -33,7 +35,12 @@ const t = useTranslations("loginPage");
       if (response.ok) {
         window.location.href = "/dashboard";
       } else {
-        setMessage(data.message || t("loginFailed"));
+        if (data.code === "EMAIL_VERIFICATION_REQUIRED") {
+          setVerificationRequired(true);
+          setMessage(t("emailVerificationRequired"));
+        } else {
+          setMessage(data.message || t("loginFailed"));
+        }
       }
     } catch {
       setMessage(t("loginFailed"));
@@ -98,6 +105,13 @@ const t = useTranslations("loginPage");
         {message && (
           <p role="alert" className="mt-6 text-red-300">
             {message}
+          </p>
+        )}
+        {verificationRequired && (
+          <p className="mt-4 text-center text-sm">
+            <Link href="/verify-email?status=pending" className="font-medium text-blue-400 hover:underline">
+              {t("resendVerification")}
+            </Link>
           </p>
         )}
       </div>

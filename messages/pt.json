@@ -985,13 +985,17 @@
   },
   "forgotPasswordPage":{"title":"Esqueci a senha","description":"Introduza o seu email para pedir a reposição da senha.","emailLabel":"Endereço de email","submit":"Enviar ligação","submitting":"A enviar...","accepted":"Se existir uma conta com este email, foi enviada uma ligação de reposição.","error":"Não foi possível processar o pedido. Tente novamente mais tarde.","backToLogin":"Voltar ao início de sessão","link":"Esqueceu a senha?"},
   "resetPasswordPage":{"title":"Repor senha","description":"Escolha uma nova senha para a sua conta.","passwordLabel":"Nova senha","confirmLabel":"Confirmar nova senha","requirements":"Use entre 8 e 128 caracteres.","submit":"Repor senha","submitting":"A repor...","mismatch":"As senhas não coincidem.","invalid":"Esta ligação é inválida, expirou ou já foi utilizada.","success":"A sua senha foi reposta e todas as sessões existentes foram terminadas.","continueToLogin":"Continuar para o início de sessão","requestAnother":"Pedir outra ligação","error":"Não foi possível repor a senha. Tente novamente mais tarde."},
+  "verifyEmailPage": {"title":"Verifique seu e-mail","description":"Confira sua caixa de entrada e abra o link de verificação antes de entrar.","verifying":"Verificando seu e-mail...","success":"Seu e-mail foi verificado. Agora você pode entrar.","invalidOrExpired":"Este link de verificação é inválido, expirou ou já foi usado.","alreadyVerified":"Este endereço de e-mail já foi verificado.","continueToLogin":"Continuar para o login","resendTitle":"Precisa de outro link?","resendDescription":"Digite seu endereço de e-mail para solicitar outro link de verificação.","emailLabel":"Endereço de e-mail","resend":"Reenviar e-mail de verificação","resending":"Enviando...","resendAccepted":"Se a conta precisar de verificação, um novo link foi enviado.","error":"Não foi possível processar sua solicitação. Tente novamente mais tarde."},
   "loginPage": {
     "title": "Bem vindo de volta",
     "description": "Faça login em sua conta Dasres",
     "email": "E-mail",
     "password": "Senha",
     "login": "Conecte-se",
-    "loginFailed": "Falha no login."
+    "loginFailed": "Falha no login.",
+    "emailVerificationRequired": "Verifique seu e-mail antes de entrar.",
+    "resendVerification": "Reenviar e-mail de verificação",
+    "verificationResent": "Se a verificação for necessária, um novo link foi enviado."
   },
   "registerPage": {
     "title": "Junte-se a Dasres",
@@ -1013,7 +1017,10 @@
     "submitting": "Criando conta...",
     "registrationFailed": "Falha na criação da conta.",
     "alreadyHaveAccount": "Já tem uma conta?",
-    "login": "Conecte-se"
+    "login": "Conecte-se",
+    "verificationRequired": "É necessário verificar o e-mail antes de entrar.",
+    "verificationEmailSent": "Enviamos um link de verificação para seu e-mail.",
+    "continueToVerification": "Continuar para a verificação do e-mail"
   },
   "projectDetailPage": {
     "backToProjects": "Voltar para Projetos"

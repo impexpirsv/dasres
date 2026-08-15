@@ -7,23 +7,16 @@ import {
   SESSION_COOKIE_NAME,
 } from "../../../lib/auth/constants";
 import {
-  generateSessionToken,
-  hashSessionToken,
-} from "../../../lib/auth/session-token";
+  createLoginSession,
+  SESSION_DURATION_SECONDS,
+} from "../../../lib/auth/login-session";
 import { AppError } from "../../../lib/errors";
 import { prisma } from "../../../lib/prisma";
-
-const MAX_TRANSACTION_RETRIES = 3;
-const MAX_TOKEN_GENERATION_ATTEMPTS = 3;
-const BASE_RETRY_DELAY_MS = 50;
 
 const MAX_REQUEST_BODY_SIZE = 16 * 1024;
 
 const MAX_EMAIL_LENGTH = 254;
 const MAX_PASSWORD_LENGTH = 200;
-
-const SESSION_DURATION_SECONDS =
-  60 * 60 * 24 * 7;
 
 type LoginInput = {
   email: string;
@@ -37,96 +30,11 @@ type AuthenticatedUser = {
   role: string;
 };
 
-function sleep(
-  milliseconds: number,
-): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, milliseconds);
-  });
-}
-
 function isValidEmail(
   value: string,
 ): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
     value,
-  );
-}
-
-function isRetryableTransactionError(
-  error: unknown,
-): boolean {
-  return (
-    error instanceof
-      Prisma.PrismaClientKnownRequestError &&
-    error.code === "P2034"
-  );
-}
-
-function isUniqueConstraintError(
-  error: unknown,
-): boolean {
-  return (
-    error instanceof
-      Prisma.PrismaClientKnownRequestError &&
-    error.code === "P2002"
-  );
-}
-
-async function runSerializableTransaction<T>(
-  operation: (
-    transaction:
-      Prisma.TransactionClient,
-  ) => Promise<T>,
-): Promise<T> {
-  for (
-    let attempt = 1;
-    attempt <=
-    MAX_TRANSACTION_RETRIES;
-    attempt += 1
-  ) {
-    try {
-      return await prisma.$transaction(
-        operation,
-        {
-          isolationLevel:
-            Prisma
-              .TransactionIsolationLevel
-              .Serializable,
-        },
-      );
-    } catch (error) {
-      const retryable =
-        isRetryableTransactionError(
-          error,
-        );
-
-      if (
-        !retryable ||
-        attempt ===
-          MAX_TRANSACTION_RETRIES
-      ) {
-        if (retryable) {
-          throw new AppError(
-            "LOGIN_SESSION_CONFLICT",
-            409,
-          );
-        }
-
-        throw error;
-      }
-
-      const retryDelay =
-        BASE_RETRY_DELAY_MS *
-        2 ** (attempt - 1);
-
-      await sleep(retryDelay);
-    }
-  }
-
-  throw new AppError(
-    "LOGIN_SESSION_CONFLICT",
-    409,
   );
 }
 
@@ -312,111 +220,6 @@ async function authenticateUser({
   };
 }
 
-async function createSession({
-  userId,
-}: {
-  userId: number;
-}): Promise<{
-  token: string;
-  expiresAt: Date;
-}> {
-  for (
-    let attempt = 1;
-    attempt <=
-    MAX_TOKEN_GENERATION_ATTEMPTS;
-    attempt += 1
-  ) {
-    const token = generateSessionToken();
-    const tokenHash = hashSessionToken(token);
-
-    if (!tokenHash) {
-      throw new AppError(
-        "SESSION_TOKEN_GENERATION_FAILED",
-        500,
-      );
-    }
-
-    const expiresAt = new Date(
-      Date.now() +
-        SESSION_DURATION_SECONDS *
-          1000,
-    );
-
-    try {
-      return await runSerializableTransaction(
-        async (transaction) => {
-          const userExists =
-            await transaction.user.findUnique({
-              where: {
-                id: userId,
-              },
-              select: {
-                id: true,
-              },
-            });
-
-          if (!userExists) {
-            throw new AppError(
-              "USER_NOT_FOUND",
-              404,
-            );
-          }
-
-          await transaction.session.deleteMany({
-            where: {
-              userId,
-            },
-          });
-
-          await transaction.session.create({
-            data: {
-              tokenHash,
-              userId,
-              expiresAt,
-            },
-            select: {
-              id: true,
-            },
-          });
-
-          return {
-            token,
-            expiresAt,
-          };
-        },
-      );
-    } catch (error) {
-      if (
-        isUniqueConstraintError(
-          error,
-        ) &&
-        attempt <
-          MAX_TOKEN_GENERATION_ATTEMPTS
-      ) {
-        continue;
-      }
-
-      if (
-        isUniqueConstraintError(
-          error,
-        )
-      ) {
-        throw new AppError(
-          "SESSION_TOKEN_GENERATION_FAILED",
-          500,
-        );
-      }
-
-      throw error;
-    }
-  }
-
-  throw new AppError(
-    "SESSION_TOKEN_GENERATION_FAILED",
-    500,
-  );
-}
-
 async function setSessionCookie({
   token,
 }: {
@@ -501,9 +304,7 @@ export async function POST(
         );
 
       const session =
-        await createSession({
-          userId: user.id,
-        });
+        await createLoginSession(user.id);
 
       await setSessionCookie({
         token: session.token,

@@ -985,13 +985,17 @@
   },
   "forgotPasswordPage":{"title":"Password dimenticata","description":"Inserisci la tua email per richiedere il ripristino della password.","emailLabel":"Indirizzo email","submit":"Invia link","submitting":"Invio...","accepted":"Se esiste un account con questa email, è stato inviato un link di ripristino.","error":"Impossibile elaborare la richiesta. Riprova più tardi.","backToLogin":"Torna all’accesso","link":"Password dimenticata?"},
   "resetPasswordPage":{"title":"Reimposta password","description":"Scegli una nuova password per il tuo account.","passwordLabel":"Nuova password","confirmLabel":"Conferma nuova password","requirements":"Usa da 8 a 128 caratteri.","submit":"Reimposta password","submitting":"Ripristino...","mismatch":"Le password non corrispondono.","invalid":"Questo link non è valido, è scaduto o è già stato utilizzato.","success":"La password è stata reimpostata e tutte le sessioni esistenti sono state chiuse.","continueToLogin":"Continua all’accesso","requestAnother":"Richiedi un altro link","error":"Impossibile reimpostare la password. Riprova più tardi."},
+  "verifyEmailPage": {"title":"Verifica la tua e-mail","description":"Controlla la posta in arrivo e segui il link di verifica prima di accedere.","verifying":"Verifica dell’e-mail in corso...","success":"La tua e-mail è stata verificata. Ora puoi accedere.","invalidOrExpired":"Questo link di verifica non è valido, è scaduto o è già stato utilizzato.","alreadyVerified":"Questo indirizzo e-mail è già verificato.","continueToLogin":"Continua al login","resendTitle":"Ti serve un altro link?","resendDescription":"Inserisci il tuo indirizzo e-mail per richiedere un nuovo link di verifica.","emailLabel":"Indirizzo e-mail","resend":"Invia di nuovo l’e-mail di verifica","resending":"Invio in corso...","resendAccepted":"Se l’account richiede la verifica, è stato inviato un nuovo link.","error":"Non è stato possibile elaborare la richiesta. Riprova più tardi."},
   "loginPage": {
     "title": "Bentornato",
     "description": "Accedi al tuo account Dasres",
     "email": "E-mail",
     "password": "Password",
     "login": "Login",
-    "loginFailed": "Accesso non riuscito."
+    "loginFailed": "Accesso non riuscito.",
+    "emailVerificationRequired": "Verifica la tua e-mail prima di accedere.",
+    "resendVerification": "Invia di nuovo l’e-mail di verifica",
+    "verificationResent": "Se è richiesta la verifica, è stato inviato un nuovo link."
   },
   "registerPage": {
     "title": "Unisciti a Dasres",
@@ -1013,7 +1017,10 @@
     "submitting": "Creazione dell'account...",
     "registrationFailed": "Creazione dell'account non riuscita.",
     "alreadyHaveAccount": "Hai già un account?",
-    "login": "Login"
+    "login": "Login",
+    "verificationRequired": "Devi verificare la tua e-mail prima di accedere.",
+    "verificationEmailSent": "Abbiamo inviato un link di verifica al tuo indirizzo e-mail.",
+    "continueToVerification": "Continua alla verifica dell’e-mail"
   },
   "projectDetailPage": {
     "backToProjects": "Torna a Progetti"

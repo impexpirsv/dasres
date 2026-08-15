@@ -136,6 +136,7 @@ function getPrefixedPublicLocale(pathname: string): Locale | null {
     hasPathPrefix(unprefixedPath, "/register") ||
     hasPathPrefix(unprefixedPath, "/forgot-password") ||
     hasPathPrefix(unprefixedPath, "/reset-password") ||
+    hasPathPrefix(unprefixedPath, "/verify-email") ||
     isStaticPath(unprefixedPath)
   ) {
     return null;
@@ -157,7 +158,7 @@ export function getProxyBranch(pathname: string): ProxyBranch {
     return "dashboard";
   }
 
-  if (/^\/(?:login|register|forgot-password|reset-password)\/?$/.test(pathname)) {
+  if (/^\/(?:login|register|forgot-password|reset-password|verify-email)\/?$/.test(pathname)) {
     return "auth";
   }
 
@@ -188,6 +189,10 @@ function getRateLimitPolicy(
 
   if (normalizedMethod === "POST" && normalizedPathname === "/api/auth/reset-password") {
     return { name: "password-recovery-reset", limit: 10, windowMs: 15 * 60_000 };
+  }
+
+  if (normalizedMethod === "POST" && normalizedPathname === "/api/auth/resend-verification") {
+    return { name: "email-verification-resend", limit: 5, windowMs: 15 * 60_000 };
   }
 
   if (

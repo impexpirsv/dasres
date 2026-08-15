@@ -8,6 +8,8 @@ import { prisma } from "../prisma";
 
 export const PASSWORD_RESET_TOKEN_LIFETIME_MS = 30 * 60 * 1000;
 export const PASSWORD_RESET_ISSUANCE_COOLDOWN_MS = 15 * 60 * 1000;
+export const EMAIL_VERIFICATION_TOKEN_LIFETIME_MS = 24 * 60 * 60 * 1000;
+export const EMAIL_VERIFICATION_ISSUANCE_COOLDOWN_MS = 15 * 60 * 1000;
 export const RESET_COOKIE_NAME = "dasres_password_reset";
 export const RESET_COOKIE_MAX_AGE_SECONDS = 30 * 60;
 export const RESET_COOKIE_PATH = "/api/auth/reset-password";
@@ -27,7 +29,7 @@ export function hashIdentityToken(token: string): string {
   return createHash("sha256").update(token, "utf8").digest("hex");
 }
 
-async function runSerializable<T>(operation: (transaction: Prisma.TransactionClient) => Promise<T>): Promise<T> {
+export async function runSerializableIdentityTransaction<T>(operation: (transaction: Prisma.TransactionClient) => Promise<T>): Promise<T> {
   for (let attempt = 1; attempt <= MAX_TRANSACTION_RETRIES; attempt += 1) {
     try {
       return await prisma.$transaction(operation, {
@@ -45,7 +47,7 @@ async function runSerializable<T>(operation: (transaction: Prisma.TransactionCli
 export type IssuedPasswordReset = { rawToken: string; expiresAt: Date } | null;
 
 export async function issuePasswordResetToken(userId: number): Promise<IssuedPasswordReset> {
-  return runSerializable(async (transaction) => {
+  return runSerializableIdentityTransaction(async (transaction) => {
     const now = new Date();
     const cooldownStart = new Date(now.getTime() - PASSWORD_RESET_ISSUANCE_COOLDOWN_MS);
     const recent = await transaction.identityToken.findFirst({
@@ -81,7 +83,7 @@ export async function resetPasswordWithToken(token: string, passwordHash: string
   if (!isValidIdentityTokenSyntax(token)) return false;
   const tokenHash = hashIdentityToken(token);
 
-  return runSerializable(async (transaction) => {
+  return runSerializableIdentityTransaction(async (transaction) => {
     const now = new Date();
     const record = await transaction.identityToken.findUnique({
       where: { tokenHash },
@@ -102,5 +104,121 @@ export async function resetPasswordWithToken(token: string, passwordHash: string
     });
     await transaction.session.deleteMany({ where: { userId: record.userId } });
     return true;
+  });
+}
+
+export type IssuedEmailVerification = { rawToken: string; expiresAt: Date };
+export type EmailVerificationClaimResult = "verified" | "already-verified" | "invalid";
+
+export async function createEmailVerificationToken(
+  transaction: Prisma.TransactionClient,
+  userId: number,
+  normalizedEmail: string,
+): Promise<IssuedEmailVerification> {
+  const now = new Date();
+  await transaction.identityToken.updateMany({
+    where: { userId, purpose: "EMAIL_VERIFICATION", consumedAt: null, revokedAt: null },
+    data: { revokedAt: now },
+  });
+  const rawToken = generateIdentityToken();
+  const expiresAt = new Date(now.getTime() + EMAIL_VERIFICATION_TOKEN_LIFETIME_MS);
+  await transaction.identityToken.create({
+    data: {
+      userId,
+      purpose: "EMAIL_VERIFICATION",
+      tokenHash: hashIdentityToken(rawToken),
+      targetEmail: normalizedEmail,
+      expiresAt,
+    },
+    select: { id: true },
+  });
+  return { rawToken, expiresAt };
+}
+
+export async function issueEmailVerificationToken(normalizedEmail: string): Promise<IssuedEmailVerification | null> {
+  return runSerializableIdentityTransaction(async (transaction) => {
+    const user = await transaction.user.findUnique({
+      where: { email: normalizedEmail },
+      select: { id: true, email: true, emailVerifiedAt: true },
+    });
+    if (!user || user.emailVerifiedAt) return null;
+
+    const cooldownStart = new Date(Date.now() - EMAIL_VERIFICATION_ISSUANCE_COOLDOWN_MS);
+    const recent = await transaction.identityToken.findFirst({
+      where: { userId: user.id, purpose: "EMAIL_VERIFICATION", createdAt: { gte: cooldownStart } },
+      select: { id: true },
+    });
+    if (recent) return null;
+
+    return createEmailVerificationToken(transaction, user.id, user.email);
+  });
+}
+
+export async function revokeEmailVerificationToken(rawToken: string): Promise<void> {
+  if (!isValidIdentityTokenSyntax(rawToken)) return;
+  await prisma.identityToken.updateMany({
+    where: { tokenHash: hashIdentityToken(rawToken), purpose: "EMAIL_VERIFICATION", consumedAt: null, revokedAt: null },
+    data: { revokedAt: new Date() },
+  });
+}
+
+export async function verifyEmailWithToken(rawToken: string): Promise<EmailVerificationClaimResult> {
+  if (!isValidIdentityTokenSyntax(rawToken)) return "invalid";
+  const tokenHash = hashIdentityToken(rawToken);
+
+  return runSerializableIdentityTransaction(async (transaction) => {
+    const now = new Date();
+    const record = await transaction.identityToken.findUnique({
+      where: { tokenHash },
+      select: {
+        id: true,
+        userId: true,
+        purpose: true,
+        targetEmail: true,
+        expiresAt: true,
+        consumedAt: true,
+        revokedAt: true,
+        user: { select: { email: true, emailVerifiedAt: true } },
+      },
+    });
+    if (!record || record.purpose !== "EMAIL_VERIFICATION" || !record.targetEmail) return "invalid";
+    if (record.user.emailVerifiedAt) return "already-verified";
+    if (
+      record.targetEmail !== record.user.email ||
+      record.expiresAt <= now ||
+      record.consumedAt ||
+      record.revokedAt
+    ) return "invalid";
+
+    const claimed = await transaction.identityToken.updateMany({
+      where: {
+        id: record.id,
+        purpose: "EMAIL_VERIFICATION",
+        targetEmail: record.user.email,
+        expiresAt: { gt: now },
+        consumedAt: null,
+        revokedAt: null,
+      },
+      data: { consumedAt: now },
+    });
+    if (claimed.count !== 1) return "invalid";
+
+    const verified = await transaction.user.updateMany({
+      where: { id: record.userId, email: record.targetEmail, emailVerifiedAt: null },
+      data: { emailVerifiedAt: now },
+    });
+    if (verified.count !== 1) return "already-verified";
+
+    await transaction.identityToken.updateMany({
+      where: {
+        userId: record.userId,
+        purpose: "EMAIL_VERIFICATION",
+        id: { not: record.id },
+        consumedAt: null,
+        revokedAt: null,
+      },
+      data: { revokedAt: now },
+    });
+    return "verified";
   });
 }

@@ -985,13 +985,17 @@
   },
   "forgotPasswordPage":{"title":"Mot de passe oublié","description":"Saisissez votre adresse e-mail pour demander une réinitialisation.","emailLabel":"Adresse e-mail","submit":"Envoyer le lien","submitting":"Envoi...","accepted":"Si un compte correspond à cette adresse, un lien de réinitialisation a été envoyé.","error":"Votre demande n’a pas pu être traitée. Réessayez plus tard.","backToLogin":"Retour à la connexion","link":"Mot de passe oublié ?"},
   "resetPasswordPage":{"title":"Réinitialiser le mot de passe","description":"Choisissez un nouveau mot de passe pour votre compte.","passwordLabel":"Nouveau mot de passe","confirmLabel":"Confirmer le nouveau mot de passe","requirements":"Utilisez entre 8 et 128 caractères.","submit":"Réinitialiser","submitting":"Réinitialisation...","mismatch":"Les mots de passe ne correspondent pas.","invalid":"Ce lien est invalide, expiré ou déjà utilisé.","success":"Votre mot de passe a été réinitialisé et toutes les sessions ont été fermées.","continueToLogin":"Continuer vers la connexion","requestAnother":"Demander un autre lien","error":"Le mot de passe n’a pas pu être réinitialisé. Réessayez plus tard."},
+  "verifyEmailPage": {"title":"Vérifiez votre adresse e-mail","description":"Consultez votre boîte de réception et suivez le lien de vérification avant de vous connecter.","verifying":"Vérification de votre adresse e-mail...","success":"Votre adresse e-mail a été vérifiée. Vous pouvez maintenant vous connecter.","invalidOrExpired":"Ce lien de vérification est invalide, expiré ou déjà utilisé.","alreadyVerified":"Cette adresse e-mail est déjà vérifiée.","continueToLogin":"Continuer vers la connexion","resendTitle":"Besoin d’un autre lien ?","resendDescription":"Saisissez votre adresse e-mail pour demander un nouveau lien de vérification.","emailLabel":"Adresse e-mail","resend":"Renvoyer l’e-mail de vérification","resending":"Envoi en cours...","resendAccepted":"Si le compte doit être vérifié, un nouveau lien a été envoyé.","error":"Nous n’avons pas pu traiter votre demande. Réessayez plus tard."},
   "loginPage": {
     "title": "Content de te revoir",
     "description": "Connectez-vous à votre compte Dasres",
     "email": "E-mail",
     "password": "Mot de passe",
     "login": "Se connecter",
-    "loginFailed": "La connexion a échoué."
+    "loginFailed": "La connexion a échoué.",
+    "emailVerificationRequired": "Vérifiez votre adresse e-mail avant de vous connecter.",
+    "resendVerification": "Renvoyer l’e-mail de vérification",
+    "verificationResent": "Si une vérification est requise, un nouveau lien a été envoyé."
   },
   "registerPage": {
     "title": "Rejoignez Dasres",
@@ -1013,7 +1017,10 @@
     "submitting": "Création d'un compte...",
     "registrationFailed": "La création du compte a échoué.",
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
-    "login": "Se connecter"
+    "login": "Se connecter",
+    "verificationRequired": "La vérification de l’adresse e-mail est requise avant la connexion.",
+    "verificationEmailSent": "Nous avons envoyé un lien de vérification à votre adresse e-mail.",
+    "continueToVerification": "Continuer vers la vérification de l’e-mail"
   },
   "projectDetailPage": {
     "backToProjects": "Retour aux projets"

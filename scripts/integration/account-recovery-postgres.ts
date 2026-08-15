@@ -66,6 +66,24 @@ async function waitForPostgres(containerName: string, environment: NodeJS.Proces
   throw new Error("Disposable PostgreSQL did not become ready");
 }
 
+async function runPostgresSql(
+  containerName: string,
+  databaseName: string,
+  username: string,
+  sql: string,
+  environment: NodeJS.ProcessEnv,
+): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn("docker", ["exec", "-i", containerName, "psql", "-v", "ON_ERROR_STOP=1", "-U", username, "-d", databaseName], {
+      env: environment,
+      stdio: ["pipe", "inherit", "inherit"],
+    });
+    child.once("error", reject);
+    child.once("exit", (code) => code === 0 ? resolve() : reject(new Error(`psql exited with code ${code ?? "unknown"}`)));
+    child.stdin.end(sql);
+  });
+}
+
 async function runSuite(): Promise<void> {
   const testUrl = process.env.TEST_DATABASE_URL;
   const projectUrl = process.env.PROJECT_DATABASE_URL_FOR_SAFETY;
@@ -81,6 +99,11 @@ async function runSuite(): Promise<void> {
   const rateLimits = await import("../../lib/auth/recovery-rate-limit");
   const { proxy } = await import("../../proxy");
   const { POST: forgotPassword } = await import("../../app/api/auth/forgot-password/route");
+  const { POST: register } = await import("../../app/api/register/route");
+  const { POST: login } = await import("../../app/api/login/route");
+  const { POST: resendVerification } = await import("../../app/api/auth/resend-verification/route");
+  const verificationRateLimits = await import("../../lib/auth/verification-rate-limit");
+  const { createLoginSession } = await import("../../lib/auth/login-session");
 
   const oldPassword = "Old-password-42";
   const newPassword = "New-password-84";
@@ -152,7 +175,7 @@ async function runSuite(): Promise<void> {
   assert.throws(() => rateLimits.enforceResetTokenRateLimit(limiterTokenHash));
 
   process.env.VERCEL = "1";
-  for (const [path, limit, ip] of [["forgot-password", 5, "192.0.2.41"], ["reset-password", 10, "192.0.2.42"]] as const) {
+  for (const [path, limit, ip] of [["forgot-password", 5, "192.0.2.41"], ["reset-password", 10, "192.0.2.42"], ["resend-verification", 5, "192.0.2.43"]] as const) {
     for (let index = 0; index < limit; index += 1) {
       const response = await proxy(new NextRequest(`https://example.test/api/auth/${path}`, { method: "POST", headers: { origin: "https://example.test", "x-vercel-forwarded-for": ip } }));
       assert.notEqual(response.status, 429);
@@ -161,6 +184,110 @@ async function runSuite(): Promise<void> {
     assert.equal(blocked.status, 429);
   }
 
+  const legacyUser = await prisma.user.findUniqueOrThrow({
+    where: { email: "legacy-verification-fixture@example.test" },
+    select: { id: true, emailVerifiedAt: true, password: true },
+  });
+  assert(legacyUser.emailVerifiedAt, "Batch B migration must backfill the pre-existing user");
+
+  const registrationEmail = `${randomIdentifier("verification_")}@example.test`;
+  const registrationPassword = "Verification-password-42";
+  const originalInfoForVerification = console.info;
+  console.info = () => undefined;
+  let registrationResponse: Response;
+  try {
+    registrationResponse = await register(new Request("https://example.test/api/register", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: "Verification Integration", email: registrationEmail, password: registrationPassword }),
+    }));
+  } finally {
+    console.info = originalInfoForVerification;
+  }
+  assert.equal(registrationResponse.status, 201);
+  const registeredUser = await prisma.user.findUniqueOrThrow({ where: { email: registrationEmail }, select: { id: true, emailVerifiedAt: true } });
+  assert.equal(registeredUser.emailVerifiedAt, null);
+  const registrationTokens = await prisma.identityToken.findMany({ where: { userId: registeredUser.id, purpose: "EMAIL_VERIFICATION" } });
+  assert.equal(registrationTokens.length, 1);
+  assert.equal(registrationTokens[0].targetEmail, registrationEmail);
+
+  const unverifiedLogin = await login(new Request("https://example.test/api/login", {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: registrationEmail, password: registrationPassword }),
+  }));
+  assert.equal(unverifiedLogin.status, 403);
+  assert.equal((await unverifiedLogin.json()).code, "EMAIL_VERIFICATION_REQUIRED");
+  assert.equal(await prisma.session.count({ where: { userId: registeredUser.id } }), 0);
+
+  const firstVerification = await tokens.issueEmailVerificationToken(registrationEmail);
+  assert.equal(firstVerification, null, "Registration token must enforce persisted cooldown");
+  await prisma.identityToken.updateMany({ where: { userId: registeredUser.id, purpose: "EMAIL_VERIFICATION" }, data: { createdAt: new Date(Date.now() - tokens.EMAIL_VERIFICATION_ISSUANCE_COOLDOWN_MS - 1_000) } });
+  const supersedingVerification = await tokens.issueEmailVerificationToken(registrationEmail);
+  assert(supersedingVerification);
+  assert((await prisma.identityToken.findUniqueOrThrow({ where: { id: registrationTokens[0].id } })).revokedAt);
+  assert.notEqual(tokens.hashIdentityToken(supersedingVerification.rawToken), supersedingVerification.rawToken);
+
+  const unrelatedSessionHash = randomIdentifier("verification_session_");
+  await prisma.session.create({ data: { userId: registeredUser.id, tokenHash: unrelatedSessionHash, expiresAt: new Date(Date.now() + 86_400_000) } });
+  const company = await prisma.company.create({ data: { name: "Verification Company", country: "Test", category: "Test", status: "Active", description: "Test", email: registrationEmail, website: "", ownerId: registeredUser.id }, select: { id: true } });
+  const expert = await prisma.expert.create({ data: { name: "Verification Expert", country: "Test", specialty: "Test", status: "Active", experience: "Test", email: registrationEmail, ownerId: registeredUser.id }, select: { id: true } });
+  assert.equal(await tokens.verifyEmailWithToken(supersedingVerification.rawToken), "verified");
+  assert((await prisma.user.findUniqueOrThrow({ where: { id: registeredUser.id }, select: { emailVerifiedAt: true } })).emailVerifiedAt);
+  assert.equal(await tokens.verifyEmailWithToken(supersedingVerification.rawToken), "already-verified");
+  assert.equal(await prisma.session.count({ where: { userId: registeredUser.id, tokenHash: unrelatedSessionHash } }), 1);
+  assert.equal((await prisma.company.findUniqueOrThrow({ where: { id: company.id }, select: { verificationStatus: true } })).verificationStatus, "PENDING");
+  assert.equal((await prisma.expert.findUniqueOrThrow({ where: { id: expert.id }, select: { verificationStatus: true } })).verificationStatus, "PENDING");
+
+  const concurrentEmail = `${randomIdentifier("concurrent_verification_")}@example.test`;
+  const concurrentUser = await prisma.user.create({ data: { name: "Concurrent Verification", email: concurrentEmail, password: oldHash, emailVerifiedAt: null }, select: { id: true } });
+  const concurrentToken = await tokens.runSerializableIdentityTransaction((transaction) => tokens.createEmailVerificationToken(transaction, concurrentUser.id, concurrentEmail));
+  const concurrentVerification = await Promise.all([tokens.verifyEmailWithToken(concurrentToken.rawToken), tokens.verifyEmailWithToken(concurrentToken.rawToken)]);
+  assert.equal(concurrentVerification.filter((result) => result === "verified").length, 1);
+
+  const rejectedEmail = `${randomIdentifier("rejected_verification_")}@example.test`;
+  const rejectedUser = await prisma.user.create({ data: { name: "Rejected Verification", email: rejectedEmail, password: oldHash }, select: { id: true } });
+  const expiredVerification = tokens.generateIdentityToken();
+  await prisma.identityToken.create({ data: { userId: rejectedUser.id, purpose: "EMAIL_VERIFICATION", tokenHash: tokens.hashIdentityToken(expiredVerification), targetEmail: rejectedEmail, expiresAt: new Date(Date.now() - 1_000) } });
+  assert.equal(await tokens.verifyEmailWithToken(expiredVerification), "invalid");
+  const revokedVerification = tokens.generateIdentityToken();
+  await prisma.identityToken.create({ data: { userId: rejectedUser.id, purpose: "EMAIL_VERIFICATION", tokenHash: tokens.hashIdentityToken(revokedVerification), targetEmail: rejectedEmail, expiresAt: new Date(Date.now() + 60_000), revokedAt: new Date() } });
+  assert.equal(await tokens.verifyEmailWithToken(revokedVerification), "invalid");
+
+  const resendEmail = `${randomIdentifier("resend_verification_")}@example.test`;
+  const resendUser = await prisma.user.create({ data: { name: "Resend Verification", email: resendEmail, password: oldHash }, select: { id: true } });
+  const unknownVerificationEmail = `${randomIdentifier("unknown_verification_")}@example.test`;
+  console.info = () => undefined;
+  let knownResend: Response;
+  let unknownResend: Response;
+  try {
+    knownResend = await resendVerification(new Request("https://example.test/api/auth/resend-verification", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: resendEmail }) }));
+    unknownResend = await resendVerification(new Request("https://example.test/api/auth/resend-verification", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: unknownVerificationEmail }) }));
+  } finally { console.info = originalInfoForVerification; }
+  assert.equal(knownResend.status, unknownResend.status);
+  assert.deepEqual(await knownResend.json(), await unknownResend.json());
+  const resendRecord = await prisma.identityToken.findFirstOrThrow({ where: { userId: resendUser.id, purpose: "EMAIL_VERIFICATION" }, orderBy: { createdAt: "desc" } });
+  assert.equal(resendRecord.revokedAt, null);
+
+  const failureEmail = `${randomIdentifier("failure_verification_")}@example.test`;
+  const failureUser = await prisma.user.create({ data: { name: "Failure Verification", email: failureEmail, password: oldHash }, select: { id: true } });
+  const originalSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  process.env.NEXT_PUBLIC_SITE_URL = "invalid-url";
+  try {
+    const failureResponse = await resendVerification(new Request("https://example.test/api/auth/resend-verification", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: failureEmail }) }));
+    assert.equal(failureResponse.status, 200);
+  } finally { process.env.NEXT_PUBLIC_SITE_URL = originalSiteUrl; }
+  assert((await prisma.identityToken.findFirstOrThrow({ where: { userId: failureUser.id, purpose: "EMAIL_VERIFICATION" }, orderBy: { createdAt: "desc" } })).revokedAt);
+
+  const verificationBucket = verificationRateLimits.getVerificationAccountBucketForVerification(`${randomIdentifier("bucket_")}@example.test`);
+  assert(!verificationBucket.includes("@"));
+  const verifiedResend = await resendVerification(new Request("https://example.test/api/auth/resend-verification", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: registrationEmail }) }));
+  assert.equal(verifiedResend.status, 200);
+
+  await createLoginSession(registeredUser.id);
+  assert.equal(await prisma.session.count({ where: { userId: registeredUser.id } }), 1);
+  assert(await bcrypt.compare("Legacy-password-42", legacyUser.password));
+  await createLoginSession(legacyUser.id);
+  assert.equal(await prisma.session.count({ where: { userId: legacyUser.id } }), 1);
+
   console.log("INTEGRATION TEST RESULTS: issuance, cooldown, supersession, expiry, revocation passed");
   console.log("CONCURRENCY RESULT: exactly one succeeded and one failed safely");
   console.log("PASSWORD RESULT: old rejected; new accepted");
@@ -168,6 +295,7 @@ async function runSuite(): Promise<void> {
   console.log("REPLAY RESULT: consumed token rejected");
   console.log("ROLLBACK RESULT: untested; no safe production failure-injection seam exists");
   console.log("RATE-LIMIT RESULT: forgot IP, account HMAC, reset IP, and token-hash buckets passed");
+  console.log("EMAIL VERIFICATION RESULT: migration backfill, registration, cooldown, supersession, claim, replay, expiry, revocation, concurrency, resend parity, delivery failure, login gating, session preservation, and directory independence passed");
   await prisma.$disconnect();
 }
 
@@ -193,9 +321,22 @@ async function main(): Promise<void> {
     await run("docker", ["run", "--rm", "-d", "--name", containerName, "-p", `127.0.0.1:${TEST_PORT}:5432`, "-e", `POSTGRES_DB=${databaseName}`, "-e", `POSTGRES_USER=${username}`, "-e", `POSTGRES_PASSWORD=${password}`, "postgres:16-alpine"], childEnvironment);
     started = true;
     await waitForPostgres(containerName, childEnvironment);
-    await run(process.execPath, ["node_modules/prisma/build/index.js", "migrate", "deploy"], childEnvironment);
-    await run(process.execPath, ["node_modules/prisma/build/index.js", "migrate", "status"], childEnvironment);
-    console.log("MIGRATIONS APPLIED TO DISPOSABLE DB: schema is current, including 20260808120000_identity_tokens");
+    const preVerificationMigrations = [
+      "00000000000000_baseline",
+      "20260727084433_enforce_database_integrity",
+      "20260728171956_enforce_review_case_integrity",
+      "20260803120000_hash_session_tokens",
+      "20260803130000_private_confidential_documents",
+      "20260808120000_identity_tokens",
+    ];
+    for (const migrationName of preVerificationMigrations) {
+      await runPostgresSql(containerName, databaseName, username, await readFile(path.join("prisma", "migrations", migrationName, "migration.sql"), "utf8"), childEnvironment);
+    }
+    const bcrypt = await import("bcryptjs");
+    const legacyHash = await bcrypt.hash("Legacy-password-42", 12);
+    await runPostgresSql(containerName, databaseName, username, `INSERT INTO "User" ("name", "email", "password", "role") VALUES ('Legacy Verification Fixture', 'legacy-verification-fixture@example.test', '${legacyHash}', 'user');`, childEnvironment);
+    await runPostgresSql(containerName, databaseName, username, await readFile(path.join("prisma", "migrations", "20260815120000_email_verification", "migration.sql"), "utf8"), childEnvironment);
+    console.log("MIGRATIONS APPLIED TO DISPOSABLE DB: Batch A applied, legacy fixture inserted, then Batch B applied");
     await run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "scripts/integration/account-recovery-postgres.ts", "--suite"], childEnvironment);
   } finally {
     delete process.env.TEST_DATABASE_URL;

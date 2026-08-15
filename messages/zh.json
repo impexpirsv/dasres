@@ -985,13 +985,17 @@
   },
   "forgotPasswordPage":{"title":"忘记密码","description":"输入您的电子邮箱以申请重置密码。","emailLabel":"电子邮箱","submit":"发送重置链接","submitting":"正在发送...","accepted":"如果该邮箱对应的账户存在，密码重置链接已发送。","error":"无法处理您的请求，请稍后重试。","backToLogin":"返回登录","link":"忘记密码？"},
   "resetPasswordPage":{"title":"重置密码","description":"为您的账户设置新密码。","passwordLabel":"新密码","confirmLabel":"确认新密码","requirements":"请输入 8 至 128 个字符。","submit":"重置密码","submitting":"正在重置...","mismatch":"两次输入的密码不一致。","invalid":"此重置链接无效、已过期或已使用。","success":"密码已重置，所有现有会话均已退出。","continueToLogin":"继续登录","requestAnother":"申请其他链接","error":"无法重置密码，请稍后重试。"},
+  "verifyEmailPage": {"title":"验证您的电子邮件","description":"登录前请检查收件箱并打开验证链接。","verifying":"正在验证您的电子邮件...","success":"您的电子邮件已验证，现在可以登录。","invalidOrExpired":"此验证链接无效、已过期或已使用。","alreadyVerified":"此电子邮件地址已经验证。","continueToLogin":"继续登录","resendTitle":"需要新的链接？","resendDescription":"请输入电子邮件地址以申请新的验证链接。","emailLabel":"电子邮件地址","resend":"重新发送验证邮件","resending":"正在发送...","resendAccepted":"如果该帐户需要验证，我们已发送新的链接。","error":"无法处理您的请求，请稍后重试。"},
   "loginPage": {
     "title": "欢迎回来",
     "description": "登录您的 Dasres 帐户",
     "email": "电子邮件",
     "password": "密码",
     "login": "登录",
-    "loginFailed": "登录失败。"
+    "loginFailed": "登录失败。",
+    "emailVerificationRequired": "请先验证电子邮件再登录。",
+    "resendVerification": "重新发送验证邮件",
+    "verificationResent": "如果需要验证，我们已发送新的链接。"
   },
   "registerPage": {
     "title": "加入Dasres",
@@ -1013,7 +1017,10 @@
     "submitting": "正在创建帐户...",
     "registrationFailed": "帐户创建失败。",
     "alreadyHaveAccount": "已经有帐户？",
-    "login": "登录"
+    "login": "登录",
+    "verificationRequired": "登录前必须验证电子邮件。",
+    "verificationEmailSent": "我们已向您的电子邮件地址发送验证链接。",
+    "continueToVerification": "继续验证电子邮件"
   },
   "projectDetailPage": {
     "backToProjects": "返回项目"

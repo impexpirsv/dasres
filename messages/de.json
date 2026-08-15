@@ -985,13 +985,17 @@
   },
   "forgotPasswordPage":{"title":"Passwort vergessen","description":"Geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen.","emailLabel":"E-Mail-Adresse","submit":"Link senden","submitting":"Wird gesendet...","accepted":"Falls ein Konto mit dieser E-Mail existiert, wurde ein Link zum Zurücksetzen gesendet.","error":"Ihre Anfrage konnte nicht verarbeitet werden. Versuchen Sie es später erneut.","backToLogin":"Zurück zur Anmeldung","link":"Passwort vergessen?"},
   "resetPasswordPage":{"title":"Passwort zurücksetzen","description":"Wählen Sie ein neues Passwort für Ihr Konto.","passwordLabel":"Neues Passwort","confirmLabel":"Neues Passwort bestätigen","requirements":"Verwenden Sie 8 bis 128 Zeichen.","submit":"Passwort zurücksetzen","submitting":"Wird zurückgesetzt...","mismatch":"Die Passwörter stimmen nicht überein.","invalid":"Dieser Link ist ungültig, abgelaufen oder wurde bereits verwendet.","success":"Ihr Passwort wurde zurückgesetzt. Alle bestehenden Sitzungen wurden abgemeldet.","continueToLogin":"Weiter zur Anmeldung","requestAnother":"Neuen Link anfordern","error":"Das Passwort konnte nicht zurückgesetzt werden. Versuchen Sie es später erneut."},
+  "verifyEmailPage": {"title":"E-Mail-Adresse bestätigen","description":"Prüfen Sie Ihren Posteingang und folgen Sie vor der Anmeldung dem Bestätigungslink.","verifying":"E-Mail-Adresse wird bestätigt...","success":"Ihre E-Mail-Adresse wurde bestätigt. Sie können sich jetzt anmelden.","invalidOrExpired":"Dieser Bestätigungslink ist ungültig, abgelaufen oder wurde bereits verwendet.","alreadyVerified":"Diese E-Mail-Adresse wurde bereits bestätigt.","continueToLogin":"Weiter zur Anmeldung","resendTitle":"Benötigen Sie einen neuen Link?","resendDescription":"Geben Sie Ihre E-Mail-Adresse ein, um einen neuen Bestätigungslink anzufordern.","emailLabel":"E-Mail-Adresse","resend":"Bestätigungs-E-Mail erneut senden","resending":"Wird gesendet...","resendAccepted":"Falls das Konto bestätigt werden muss, wurde ein neuer Link gesendet.","error":"Ihre Anfrage konnte nicht verarbeitet werden. Bitte versuchen Sie es später erneut."},
   "loginPage": {
     "title": "Willkommen zurück",
     "description": "Melden Sie sich bei Ihrem Dasres-Konto an",
     "email": "E-Mail",
     "password": "Passwort",
     "login": "Login",
-    "loginFailed": "Fehler bei der Anmeldung."
+    "loginFailed": "Fehler bei der Anmeldung.",
+    "emailVerificationRequired": "Bestätigen Sie Ihre E-Mail-Adresse, bevor Sie sich anmelden.",
+    "resendVerification": "Bestätigungs-E-Mail erneut senden",
+    "verificationResent": "Falls eine Bestätigung erforderlich ist, wurde ein neuer Link gesendet."
   },
   "registerPage": {
     "title": "Treten Sie Dasres bei",
@@ -1013,7 +1017,10 @@
     "submitting": "Konto erstellen...",
     "registrationFailed": "Die Kontoerstellung ist fehlgeschlagen.",
     "alreadyHaveAccount": "Sie haben bereits ein Konto?",
-    "login": "Login"
+    "login": "Login",
+    "verificationRequired": "Vor der Anmeldung ist eine E-Mail-Bestätigung erforderlich.",
+    "verificationEmailSent": "Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet.",
+    "continueToVerification": "Weiter zur E-Mail-Bestätigung"
   },
   "projectDetailPage": {
     "backToProjects": "Zurück zu Projekten"

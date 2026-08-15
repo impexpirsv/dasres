@@ -985,13 +985,17 @@
   },
   "forgotPasswordPage":{"title":"パスワードをお忘れですか","description":"パスワードのリセットを申請するにはメールアドレスを入力してください。","emailLabel":"メールアドレス","submit":"リセットリンクを送信","submitting":"送信中...","accepted":"そのメールのアカウントが存在する場合、パスワードリセットリンクを送信しました。","error":"リクエストを処理できませんでした。後でもう一度お試しください。","backToLogin":"ログインに戻る","link":"パスワードをお忘れですか？"},
   "resetPasswordPage":{"title":"パスワードをリセット","description":"アカウントの新しいパスワードを設定してください。","passwordLabel":"新しいパスワード","confirmLabel":"新しいパスワードを確認","requirements":"8文字以上128文字以下で入力してください。","submit":"パスワードをリセット","submitting":"リセット中...","mismatch":"パスワードが一致しません。","invalid":"このリンクは無効、期限切れ、または使用済みです。","success":"パスワードをリセットし、既存のすべてのセッションからログアウトしました。","continueToLogin":"ログインへ進む","requestAnother":"別のリンクを申請","error":"パスワードをリセットできませんでした。後でもう一度お試しください。"},
+  "verifyEmailPage": {"title":"メールアドレスを確認","description":"ログインする前に受信トレイを確認し、確認リンクを開いてください。","verifying":"メールアドレスを確認しています...","success":"メールアドレスを確認しました。ログインできます。","invalidOrExpired":"この確認リンクは無効、期限切れ、または使用済みです。","alreadyVerified":"このメールアドレスはすでに確認済みです。","continueToLogin":"ログインへ進む","resendTitle":"新しいリンクが必要ですか？","resendDescription":"確認リンクを再送するメールアドレスを入力してください。","emailLabel":"メールアドレス","resend":"確認メールを再送","resending":"送信中...","resendAccepted":"確認が必要なアカウントには、新しいリンクを送信しました。","error":"リクエストを処理できませんでした。しばらくしてからもう一度お試しください。"},
   "loginPage": {
     "title": "おかえり",
     "description": "Dasres アカウントにサインインします",
     "email": "電子メール",
     "password": "パスワード",
     "login": "ログイン",
-    "loginFailed": "ログインに失敗しました。"
+    "loginFailed": "ログインに失敗しました。",
+    "emailVerificationRequired": "ログインする前にメールアドレスを確認してください。",
+    "resendVerification": "確認メールを再送",
+    "verificationResent": "確認が必要な場合は、新しいリンクを送信しました。"
   },
   "registerPage": {
     "title": "Dasresに参加する",
@@ -1013,7 +1017,10 @@
     "submitting": "アカウントを作成しています...",
     "registrationFailed": "アカウントの作成に失敗しました。",
     "alreadyHaveAccount": "すでにアカウントをお持ちですか?",
-    "login": "ログイン"
+    "login": "ログイン",
+    "verificationRequired": "ログインするにはメールアドレスの確認が必要です。",
+    "verificationEmailSent": "メールアドレスに確認リンクを送信しました。",
+    "continueToVerification": "メール確認へ進む"
   },
   "projectDetailPage": {
     "backToProjects": "プロジェクトに戻る"

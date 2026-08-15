@@ -1,90 +1,21 @@
 import { Prisma } from "@prisma/client";
 import { apiHandler } from "../../../lib/api";
 import { hashPassword, isValidEmail, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH, normalizeEmail } from "../../../lib/auth/credentials";
+import { createEmailVerificationToken, revokeEmailVerificationToken, runSerializableIdentityTransaction } from "../../../lib/auth/identity-token";
+import { assertTransactionalEmailConfigured } from "../../../lib/email/transactional-email";
+import { deliverEmailVerification } from "../../../lib/email/verification-email";
 import { AppError } from "../../../lib/errors";
+import { parseBoundedJsonObject } from "../../../lib/http/bounded-json";
+import { logger } from "../../../lib/logger";
 import { prisma } from "../../../lib/prisma";
 
 const MAX_NAME_LENGTH = 150;
-
-const MAX_REQUEST_BODY_SIZE =
-  16 * 1024;
-
 
 type RegisterInput = {
   name: string;
   email: string;
   password: string;
 };
-
-function validateContentLength(
-  request: Request,
-): void {
-  const contentLengthHeader =
-    request.headers.get(
-      "content-length",
-    );
-
-  if (!contentLengthHeader) {
-    return;
-  }
-
-  const contentLength = Number(
-    contentLengthHeader,
-  );
-
-  if (
-    !Number.isInteger(contentLength) ||
-    contentLength < 0
-  ) {
-    throw new AppError(
-      "INVALID_CONTENT_LENGTH",
-      400,
-    );
-  }
-
-  if (
-    contentLength >
-    MAX_REQUEST_BODY_SIZE
-  ) {
-    throw new AppError(
-      "REQUEST_BODY_TOO_LARGE",
-      413,
-    );
-  }
-}
-
-async function parseJsonBody(
-  request: Request,
-): Promise<Record<string, unknown>> {
-  validateContentLength(request);
-
-  let body: unknown;
-
-  try {
-    body = await request.json();
-  } catch {
-    throw new AppError(
-      "INVALID_JSON_BODY",
-      400,
-    );
-  }
-
-  if (
-    !body ||
-    typeof body !== "object" ||
-    Array.isArray(body)
-  ) {
-    throw new AppError(
-      "INVALID_REQUEST_BODY",
-      400,
-    );
-  }
-
-  return body as Record<
-    string,
-    unknown
-  >;
-}
 
 function getStringField(
   payload: Record<string, unknown>,
@@ -216,7 +147,7 @@ async function ensureEmailAvailable(
   }
 }
 
-async function createUser({
+async function createRegistration({
   name,
   email,
   hashedPassword,
@@ -226,19 +157,13 @@ async function createUser({
   hashedPassword: string;
 }) {
   try {
-    return await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role: "user",
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-      },
+    return await runSerializableIdentityTransaction(async (transaction) => {
+      const user = await transaction.user.create({
+        data: { name, email, password: hashedPassword, role: "user", emailVerifiedAt: null },
+        select: { id: true, name: true, email: true, role: true },
+      });
+      const verification = await createEmailVerificationToken(transaction, user.id, user.email);
+      return { user, verification };
     });
   } catch (error) {
     if (
@@ -270,13 +195,9 @@ async function createUser({
       );
     }
 
-    console.error(
-      "USER_REGISTRATION_ERROR",
-      {
-        email,
-        error,
-      },
-    );
+    logger.error("User registration failed.", {
+      errorName: error instanceof Error ? error.name : "UnknownError",
+    });
 
     throw error;
   }
@@ -286,10 +207,7 @@ export async function POST(
   request: Request,
 ) {
   return apiHandler(async () => {
-    const payload =
-      await parseJsonBody(
-        request,
-      );
+    const payload = await parseBoundedJsonObject(request);
 
     const input =
       validateRegisterInput(
@@ -305,18 +223,36 @@ export async function POST(
         input.password,
       );
 
-    const user =
-      await createUser({
+    assertTransactionalEmailConfigured();
+
+    const registration =
+      await createRegistration({
         name: input.name,
         email: input.email,
         hashedPassword,
       });
 
+    try {
+      await deliverEmailVerification({
+        recipient: registration.user.email,
+        rawToken: registration.verification.rawToken,
+        expiresAt: registration.verification.expiresAt,
+      });
+    } catch {
+      try {
+        await revokeEmailVerificationToken(registration.verification.rawToken);
+      } catch {
+        logger.error("Registration verification token revocation failed.", { userId: registration.user.id });
+      }
+      logger.error("Registration verification delivery failed.", { userId: registration.user.id });
+    }
+
     return Response.json(
       {
         code:
-          "USER_REGISTERED",
-        user,
+          "USER_REGISTERED_VERIFICATION_REQUIRED",
+        verificationRequired: true,
+        user: registration.user,
       },
       {
         status: 201,

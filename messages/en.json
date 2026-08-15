@@ -959,13 +959,17 @@
   },
   "forgotPasswordPage": {"title":"Forgot password","description":"Enter your email address to request a password reset.","emailLabel":"Email address","submit":"Send reset link","submitting":"Sending...","accepted":"If an account exists for that email, a password reset link has been sent.","error":"We could not process your request. Please try again later.","backToLogin":"Back to login","link":"Forgot password?"},
   "resetPasswordPage": {"title":"Reset password","description":"Choose a new password for your account.","passwordLabel":"New password","confirmLabel":"Confirm new password","requirements":"Use between 8 and 128 characters.","submit":"Reset password","submitting":"Resetting...","mismatch":"The passwords do not match.","invalid":"This reset link is invalid, expired, or has already been used.","success":"Your password has been reset. All existing sessions were signed out.","continueToLogin":"Continue to login","requestAnother":"Request another link","error":"We could not reset your password. Please try again later."},
+  "verifyEmailPage": {"title":"Verify your email","description":"Check your inbox and follow the verification link before signing in.","verifying":"Verifying your email...","success":"Your email has been verified. You can now sign in.","invalidOrExpired":"This verification link is invalid, expired, or has already been used.","alreadyVerified":"This email address is already verified.","continueToLogin":"Continue to login","resendTitle":"Need another link?","resendDescription":"Enter your email address to request another verification link.","emailLabel":"Email address","resend":"Resend verification email","resending":"Sending...","resendAccepted":"If the account needs verification, a new link has been sent.","error":"We could not process your request. Please try again later."},
   "loginPage": {
     "title": "Welcome Back",
     "description": "Sign in to your Dasres account",
     "email": "Email",
     "password": "Password",
     "login": "Login",
-    "loginFailed": "Login failed."
+    "loginFailed": "Login failed.",
+    "emailVerificationRequired": "Verify your email before signing in.",
+    "resendVerification": "Resend verification email",
+    "verificationResent": "If verification is required, a new link has been sent."
   },
   "registerPage": {
     "title": "Join Dasres",
@@ -987,7 +991,10 @@
     "submitting": "Creating account...",
     "registrationFailed": "Account creation failed.",
     "alreadyHaveAccount": "Already have an account?",
-    "login": "Login"
+    "login": "Login",
+    "verificationRequired": "Email verification is required before you can sign in.",
+    "verificationEmailSent": "We sent a verification link to your email address.",
+    "continueToVerification": "Continue to email verification"
   },
   "projectDetailPage": {
     "backToProjects": "Back to Projects"
