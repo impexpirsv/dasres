@@ -31,8 +31,9 @@ export class NoOpUploadScanner
   }
 }
 
-// A future ClamAV adapter belongs here as another UploadScanner implementation.
-// Upload storage code remains unchanged when the composition selects that adapter.
+// Batch A compatibility boundary: legacy, not-yet-migrated flows deliberately keep
+// this scanner. Secure storage workflows must inject a StoredByteScanner and can
+// never obtain this no-op implementation through an implicit production fallback.
 export const uploadScanner: UploadScanner =
   new NoOpUploadScanner();
 

@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "prisma": {
-  "seed": "tsx prisma/seed.ts"
-},
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -24,10 +24,13 @@
     "auth:verify-email": "tsx scripts/verify-email-verification.ts",
     "email:test": "tsx scripts/test-transactional-email-provider.ts",
     "email:verify": "tsx scripts/verify-transactional-email.ts",
+    "files:test": "tsx --import ./scripts/integration/server-only-register.mjs scripts/test-file-storage-security.ts",
+    "files:verify": "tsx scripts/verify-file-storage-security.ts",
     "auth:integration": "tsx scripts/integration/account-recovery-postgres.ts",
     "check": "npm run lint && npm run typecheck && npm run db:validate && npm run content:validate && npm run build"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1101.0",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
@@ -37,21 +40,26 @@
     "@fullcalendar/timegrid": "^6.1.21",
     "@prisma/client": "^6.19.3",
     "bcryptjs": "^3.0.3",
-    "next": "16.2.7",
+    "busboy": "1.6.0",
+    "next": "16.3.1",
     "next-intl": "^4.13.1",
     "prisma": "^6.19.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "sharp": "0.35.3",
+    "yauzl": "3.4.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^2.4.6",
+    "@types/busboy": "1.5.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/yauzl": "3.4.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.7",
+    "eslint-config-next": "16.3.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.0",
     "typescript": "^5"

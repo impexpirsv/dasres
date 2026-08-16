@@ -8,22 +8,29 @@ datasource db {
 }
 
 model Expert {
-  id                 Int                @id @default(autoincrement())
-  name               String
-  country            String
-  specialty          String
-  status             String
-  experience         String
-  email              String
-  imageUrl           String?
-  createdAt          DateTime           @default(now())
-  planType           PlanType           @default(FREE)
-  verificationStatus VerificationStatus @default(PENDING)
-  verifiedAt         DateTime?
-  ownerId            Int?
-  proposals          CaseProposal[]
-  owner              User?              @relation(fields: [ownerId], references: [id])
-  savedBy            SavedExpert[]
+  id                   Int                @id @default(autoincrement())
+  name                 String
+  country              String
+  specialty            String
+  status               String
+  experience           String
+  email                String
+  imageUrl             String?
+  imageStorageKey      String?            @unique
+  imageStorageProvider String?
+  imageMimeType        String?
+  imageFileSize        Int?
+  imageChecksumSha256  String?
+  imageScanStatus      FileScanStatus?
+  imageScannedAt       DateTime?
+  createdAt            DateTime           @default(now())
+  planType             PlanType           @default(FREE)
+  verificationStatus   VerificationStatus @default(PENDING)
+  verifiedAt           DateTime?
+  ownerId              Int?
+  proposals            CaseProposal[]
+  owner                User?              @relation(fields: [ownerId], references: [id])
+  savedBy              SavedExpert[]
 
   @@index([ownerId])
   @@index([verificationStatus])
@@ -37,23 +44,30 @@ model Expert {
 }
 
 model Company {
-  id                 Int                @id @default(autoincrement())
-  name               String
-  country            String
-  category           String
-  status             String
-  description        String
-  email              String
-  website            String
-  logoUrl            String?
-  createdAt          DateTime           @default(now())
-  planType           PlanType           @default(FREE)
-  verificationStatus VerificationStatus @default(PENDING)
-  verifiedAt         DateTime?
-  ownerId            Int?
-  proposals          CaseProposal[]
-  owner              User?              @relation(fields: [ownerId], references: [id])
-  savedBy            SavedCompany[]
+  id                  Int                @id @default(autoincrement())
+  name                String
+  country             String
+  category            String
+  status              String
+  description         String
+  email               String
+  website             String
+  logoUrl             String?
+  logoStorageKey      String?            @unique
+  logoStorageProvider String?
+  logoMimeType        String?
+  logoFileSize        Int?
+  logoChecksumSha256  String?
+  logoScanStatus      FileScanStatus?
+  logoScannedAt       DateTime?
+  createdAt           DateTime           @default(now())
+  planType            PlanType           @default(FREE)
+  verificationStatus  VerificationStatus @default(PENDING)
+  verifiedAt          DateTime?
+  ownerId             Int?
+  proposals           CaseProposal[]
+  owner               User?              @relation(fields: [ownerId], references: [id])
+  savedBy             SavedCompany[]
 
   @@index([ownerId])
   @@index([verificationStatus])
@@ -67,12 +81,19 @@ model Company {
 }
 
 model Opportunity {
-  id          Int     @id @default(autoincrement())
-  title       String
-  country     String
-  status      String
-  description String
-  imageUrl    String?
+  id                   Int             @id @default(autoincrement())
+  title                String
+  country              String
+  status               String
+  description          String
+  imageUrl             String?
+  imageStorageKey      String?         @unique
+  imageStorageProvider String?
+  imageMimeType        String?
+  imageFileSize        Int?
+  imageChecksumSha256  String?
+  imageScanStatus      FileScanStatus?
+  imageScannedAt       DateTime?
 
   @@index([country])
   @@index([status])
@@ -285,22 +306,27 @@ model ProjectTaskChecklist {
 }
 
 model ProjectTaskAttachment {
-  id              Int            @id @default(autoincrement())
+  id              Int             @id @default(autoincrement())
   taskId          Int
   fileName        String
-  storageKey      String         @unique
-  storageProvider String         @default("local")
+  storageKey      String          @unique
+  storageProvider String          @default("local")
   mimeType        String?
   fileSize        Int?
+  checksumSha256  String?
+  scanStatus      FileScanStatus?
+  scannedAt       DateTime?
+  scanEngine      String?
+  scanAttempts    Int             @default(0)
   uploadedById    Int?
-  createdAt       DateTime       @default(now())
-  approvalStatus  ApprovalStatus @default(PENDING)
+  createdAt       DateTime        @default(now())
+  approvalStatus  ApprovalStatus  @default(PENDING)
   approvedAt      DateTime?
   approvedById    Int?
   rejectionReason String?
-  approvedBy      User?          @relation("AttachmentApprover", fields: [approvedById], references: [id])
-  task            ProjectTask    @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  uploadedBy      User?          @relation(fields: [uploadedById], references: [id])
+  approvedBy      User?           @relation("AttachmentApprover", fields: [approvedById], references: [id])
+  task            ProjectTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedBy      User?           @relation(fields: [uploadedById], references: [id])
 
   @@index([taskId])
   @@index([uploadedById])
@@ -309,6 +335,7 @@ model ProjectTaskAttachment {
   @@index([createdAt])
   @@index([taskId, createdAt])
   @@index([taskId, approvalStatus])
+  @@index([scanStatus, createdAt])
 }
 
 model ProjectTaskComment {
@@ -371,21 +398,35 @@ model CaseStep {
 }
 
 model CaseDocument {
-  id         Int       @id @default(autoincrement())
-  caseId     Int
-  name       String
-  storageKey String    @unique
-  mimeType   String?
-  fileSize   Int?
-  createdAt  DateTime  @default(now())
-  uploaderId Int
-  tradeCase  TradeCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  uploader   User      @relation(fields: [uploaderId], references: [id])
+  id              Int             @id @default(autoincrement())
+  caseId          Int
+  name            String
+  storageKey      String          @unique
+  storageProvider String          @default("local")
+  mimeType        String?
+  fileSize        Int?
+  checksumSha256  String?
+  scanStatus      FileScanStatus?
+  scannedAt       DateTime?
+  scanEngine      String?
+  scanAttempts    Int             @default(0)
+  createdAt       DateTime        @default(now())
+  uploaderId      Int
+  tradeCase       TradeCase       @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  uploader        User            @relation(fields: [uploaderId], references: [id])
 
   @@index([caseId])
   @@index([uploaderId])
   @@index([createdAt])
   @@index([caseId, createdAt])
+  @@index([scanStatus, createdAt])
+}
+
+enum FileScanStatus {
+  PENDING_SCAN
+  CLEAN
+  INFECTED
+  SCAN_FAILED
 }
 
 model CaseMessage {
