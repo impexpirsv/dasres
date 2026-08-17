@@ -12,6 +12,7 @@ import { FileSecurityError } from "../lib/security/file-security-errors";
 import { R2StorageProvider } from "../lib/storage/r2-storage-provider";
 import type { ObjectStorageConfig } from "../lib/storage/object-storage-config";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { storeConfidentialUpload, readLegacyPrivateFile, streamBoundedObject } from "../lib/storage/confidential-file-storage";
 
 async function rejects(operation: () => Promise<unknown> | unknown): Promise<void> {
   await assert.rejects(async () => operation(), FileSecurityError);
@@ -86,6 +87,18 @@ const largeField = Buffer.from(`--test-boundary\r\nContent-Disposition: form-dat
 await rejects(() => parseBoundedMultipartUpload(multipartRequest(largeField), { maximumRequestBytes: largeField.length, maximumFileBytes: 3 }));
 const malformed = new Request("http://localhost/upload", { method: "POST", headers: { "content-type": "multipart/form-data" }, body: "x" });
 await rejects(() => parseBoundedMultipartUpload(malformed, { maximumRequestBytes: 10, maximumFileBytes: 3 }));
+let cancelledOversizedReader = false; let oversizedPulls = 0; let oversizedSettlements = 0;
+const cancellableOversizedBody = new ReadableStream<Uint8Array>({
+  pull(controller) { oversizedPulls += 1; controller.enqueue(Buffer.alloc(8, 0x41)); },
+  cancel() { cancelledOversizedReader = true; },
+});
+const cancellableOversizedRequest = new Request("http://localhost/upload", {
+  method: "POST", headers: { "content-type": "multipart/form-data; boundary=test-boundary" },
+  body: cancellableOversizedBody, duplex: "half",
+} as RequestInit);
+await parseBoundedMultipartUpload(cancellableOversizedRequest, { maximumRequestBytes: 16, maximumFileBytes: 8 })
+  .then(() => { oversizedSettlements += 1; }, () => { oversizedSettlements += 1; });
+assert.equal(oversizedSettlements, 1); assert.equal(cancelledOversizedReader, true); assert(oversizedPulls >= 3);
 
 const pdf = Buffer.from("%PDF-1.7\n1 0 obj\n<<>>\nendobj\n%%EOF");
 await validateFileContent({ kind: "pdf", fileName: "x.pdf", mimeType: "application/pdf", bytes: pdf });
@@ -113,6 +126,45 @@ const stored = await storeWithSha256(storage, key, source, "application/pdf");
 assert.equal((await scanStoredObject({ storage, scanner: new DeterministicStoredByteScanner(), key, expectedSize: stored.size, expectedChecksumSha256: stored.checksumSha256 })).status, "CLEAN");
 await rejects(() => scanStoredObject({ storage, scanner: new DeterministicStoredByteScanner(), key, expectedSize: stored.size + 1, expectedChecksumSha256: stored.checksumSha256 }));
 await rejects(() => scanStoredObject({ storage, scanner: new DeterministicStoredByteScanner("INFECTED"), key, expectedSize: stored.size, expectedChecksumSha256: stored.checksumSha256 }));
+
+let streamPulls = 0; let streamCancelled = false;
+const incrementalSource = (async function* () {
+  try { streamPulls += 1; yield Buffer.from("ab"); streamPulls += 1; yield Buffer.from("cd"); }
+  finally { streamCancelled = true; }
+})();
+const incrementalStream = streamBoundedObject({ size: 4, body: incrementalSource });
+assert.equal(streamPulls, 0);
+const incrementalReader = incrementalStream.getReader();
+assert.equal(Buffer.from((await incrementalReader.read()).value ?? []).toString(), "ab");
+assert.equal(Buffer.from((await incrementalReader.read()).value ?? []).toString(), "cd");
+assert.equal((await incrementalReader.read()).done, true);
+const cancelSource = (async function* () { try { yield Buffer.from("a"); yield Buffer.from("b"); } finally { streamCancelled = true; } })();
+streamCancelled = false;
+const cancelReader = streamBoundedObject({ size: 2, body: cancelSource }).getReader();
+await cancelReader.read(); await cancelReader.cancel(); assert.equal(streamCancelled, true);
+let oversizedSourceReturned = false;
+const oversizedSource = (async function* () { try { yield Buffer.from("abc"); } finally { oversizedSourceReturned = true; } })();
+const oversizedStreamReader = streamBoundedObject({ size: 2, body: oversizedSource }).getReader();
+await assert.rejects(() => oversizedStreamReader.read()); assert.equal(oversizedSourceReturned, true);
+
+function fileMultipart(fileName: string, mimeType: string, bytes: Buffer): Buffer {
+  return Buffer.concat([Buffer.from(`--test-boundary\r\nContent-Disposition: form-data; name="file"; filename="${fileName}"\r\nContent-Type: ${mimeType}\r\n\r\n`), bytes, Buffer.from("\r\n--test-boundary--\r\n")]);
+}
+for (const domainKind of ["case-document", "project-attachment"] as const) {
+  const domainStorage = new InMemorySecureObjectStorage();
+  const requestBytes = fileMultipart("safe.pdf", "application/pdf", pdf);
+  const uploaded = await storeConfidentialUpload({ request: multipartRequest(requestBytes), kind: domainKind,
+    dependencies: { storage: domainStorage, scanner: new DeterministicStoredByteScanner() } });
+  assert.equal(uploaded.scanStatus, "CLEAN"); assert.equal(uploaded.fileSize, pdf.length); assert.equal((await domainStorage.head(uploaded.storageKey)).size, pdf.length);
+  const infectedStorage = new InMemorySecureObjectStorage();
+  await rejects(() => storeConfidentialUpload({ request: multipartRequest(requestBytes), kind: domainKind,
+    dependencies: { storage: infectedStorage, scanner: new DeterministicStoredByteScanner("INFECTED") } }));
+  const invalidBytes = fileMultipart("spoof.pdf", "application/pdf", Buffer.from("not a pdf"));
+  await rejects(() => storeConfidentialUpload({ request: multipartRequest(invalidBytes), kind: domainKind,
+    dependencies: { storage: new InMemorySecureObjectStorage(), scanner: new DeterministicStoredByteScanner() } }));
+}
+await assert.rejects(() => readLegacyPrivateFile({ root: "cases", storageKey: "../outside.pdf" }));
+await assert.rejects(() => readLegacyPrivateFile({ root: "project-task-attachments", storageKey: "C:\\outside.pdf" }));
 
 const r2Config: ObjectStorageConfig = {
   endpoint: new URL("https://account.r2.cloudflarestorage.com"), region: "auto", bucket: "private-files",

@@ -3,12 +3,12 @@ import { execFile, spawn } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import net from "node:net";
+import { once } from "node:events";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
-const TEST_PORT = 55432;
 const DATABASE_PREFIX = "dasres_recovery_";
 const CLOUD_HOST_PATTERNS = ["neon.tech", "neon.build", "supabase.co", "render.com", "railway.app", "amazonaws.com", "azure.com", "cloud.google.com", "pooler"];
 
@@ -16,9 +16,23 @@ function randomIdentifier(prefix: string): string {
   return `${prefix}${randomBytes(8).toString("hex")}`;
 }
 
-async function isPortOccupied(): Promise<boolean> {
+async function selectLoopbackPort(): Promise<number> {
   return new Promise((resolve, reject) => {
-    const socket = net.createConnection({ host: "127.0.0.1", port: TEST_PORT });
+    const server = net.createServer();
+    server.unref();
+    server.once("error", reject);
+    server.listen({ host: "127.0.0.1", port: 0, exclusive: true }, () => {
+      const address = server.address();
+      if (!address || typeof address === "string") return server.close(() => reject(new Error("Failed to select loopback port")));
+      const selectedPort = address.port;
+      server.close((error) => error ? reject(error) : resolve(selectedPort));
+    });
+  });
+}
+
+async function isLoopbackPortListening(port: number): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const socket = net.createConnection({ host: "127.0.0.1", port });
     socket.once("connect", () => { socket.destroy(); resolve(true); });
     socket.once("error", (error: NodeJS.ErrnoException) => {
       socket.destroy();
@@ -28,6 +42,51 @@ async function isPortOccupied(): Promise<boolean> {
   });
 }
 
+async function runFileRouteHttpSuite(environment: NodeJS.ProcessEnv): Promise<void> {
+  const port = await selectLoopbackPort();
+  const baseUrl = `http://127.0.0.1:${port}`;
+  const { NODE_OPTIONS: omittedNodeOptions, ...environmentWithoutNodeOptions } = environment;
+  void omittedNodeOptions;
+  const serverEnvironment: NodeJS.ProcessEnv = { ...environmentWithoutNodeOptions, NODE_ENV: "production", NEXT_PUBLIC_SITE_URL: baseUrl };
+  await run(process.execPath, ["node_modules/next/dist/bin/next", "build"], serverEnvironment);
+  const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", String(port)], {
+    cwd: process.cwd(), env: serverEnvironment, stdio: "pipe", windowsHide: true,
+  });
+  server.stdin.end();
+  let diagnostics = "";
+  server.stdout?.on("data", (chunk: Buffer) => { diagnostics = `${diagnostics}${chunk.toString()}`.slice(-8_000); });
+  server.stderr?.on("data", (chunk: Buffer) => { diagnostics = `${diagnostics}${chunk.toString()}`.slice(-8_000); });
+  try {
+    const deadline = Date.now() + 60_000;
+    while (true) {
+      if (server.exitCode !== null) throw new Error(`Next route test server exited early:\n${diagnostics}`);
+      const ready = await fetch(`${baseUrl}/api/cases/1/documents`, { method: "OPTIONS" }).catch(() => null);
+      if (ready) break;
+      if (Date.now() >= deadline) throw new Error(`Next route test server did not become ready:\n${diagnostics}`);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    const requests: ReadonlyArray<readonly [string, RequestInit]> = [
+      ["/api/cases/1/documents", { method: "POST", body: "unauthenticated" }],
+      ["/api/cases/documents/1/download", { method: "GET" }],
+      ["/api/cases/documents/1/download", { method: "DELETE" }],
+      ["/api/project-tasks/1/attachments", { method: "POST", body: "unauthenticated" }],
+      ["/api/project-task-attachments/1/download", { method: "GET" }],
+      ["/api/project-task-attachments/1/download", { method: "DELETE" }],
+    ];
+    for (const [pathname, init] of requests) {
+      const response = await fetch(`${baseUrl}${pathname}`, { ...init, headers: { Origin: baseUrl }, redirect: "manual" });
+      assert.equal(response.status, 401, `${init.method} ${pathname} must reject unauthenticated HTTP requests`);
+      const body = await response.json() as { code?: unknown };
+      assert.equal(body.code, "UNAUTHENTICATED");
+    }
+    console.log(`FILE ROUTE HTTP RESULT: six unauthenticated Case/Task route requests rejected with 401 on loopback port ${port}`);
+  } finally {
+    if (server.exitCode === null) server.kill();
+    if (server.exitCode === null) await once(server, "exit").catch(() => undefined);
+    assert.equal(await isLoopbackPortListening(port), false, "Next route test port cleanup failed");
+  }
+}
+
 function parseEnvironmentValue(source: string, name: string): string | undefined {
   const line = source.split(/\r?\n/).find((candidate) => candidate.trimStart().startsWith(`${name}=`));
   if (!line) return undefined;
@@ -35,13 +94,14 @@ function parseEnvironmentValue(source: string, name: string): string | undefined
   return value.replace(/^(['"])(.*)\1$/, "$2");
 }
 
-function assertSafeTestDatabase(testUrl: string, projectUrl?: string): URL {
+function assertSafeTestDatabase(testUrl: string, expectedPort: number, projectUrl?: string): URL {
   assert(testUrl, "TEST_DATABASE_URL must exist");
   assert(!projectUrl || testUrl !== projectUrl, "TEST_DATABASE_URL must differ from DATABASE_URL");
   const parsed = new URL(testUrl);
   assert.equal(parsed.protocol, "postgresql:", "TEST_DATABASE_URL must use PostgreSQL");
   assert(["127.0.0.1", "localhost"].includes(parsed.hostname), "Test database host must be local");
-  assert.equal(parsed.port, String(TEST_PORT), `Test database port must be ${TEST_PORT}`);
+  assert(Number.isInteger(expectedPort) && expectedPort >= 1024 && expectedPort <= 65535, "Selected test port must be a high TCP port");
+  assert.equal(parsed.port, String(expectedPort), `Test database port must be ${expectedPort}`);
   const databaseName = decodeURIComponent(parsed.pathname.slice(1));
   assert(databaseName.startsWith(DATABASE_PREFIX), `Test database name must start with ${DATABASE_PREFIX}`);
   const hostname = parsed.hostname.toLowerCase();
@@ -87,8 +147,9 @@ async function runPostgresSql(
 async function runSuite(): Promise<void> {
   const testUrl = process.env.TEST_DATABASE_URL;
   const projectUrl = process.env.PROJECT_DATABASE_URL_FOR_SAFETY;
+  const expectedPort = Number(process.env.TEST_DATABASE_PORT);
   assert(testUrl, "TEST_DATABASE_URL must exist");
-  assertSafeTestDatabase(testUrl, projectUrl);
+  assertSafeTestDatabase(testUrl, expectedPort, projectUrl);
   assert.equal(process.env.DATABASE_URL, testUrl, "Prisma DATABASE_URL must be the guarded disposable URL");
 
   const bcrypt = await import("bcryptjs");
@@ -302,23 +363,23 @@ async function runSuite(): Promise<void> {
 async function main(): Promise<void> {
   if (process.argv.includes("--suite")) { await runSuite(); return; }
   assert(!process.env.TEST_DATABASE_URL, "Refusing to overwrite an existing TEST_DATABASE_URL");
-  if (await isPortOccupied()) throw new Error(`Port ${TEST_PORT} is already occupied; refusing to continue`);
+  const testPort = await selectLoopbackPort();
 
   const containerName = randomIdentifier("dasres-recovery-");
   const databaseName = randomIdentifier(DATABASE_PREFIX);
   const username = randomIdentifier("recovery_user_");
   const password = randomBytes(32).toString("base64url");
-  const testUrl = `postgresql://${encodeURIComponent(username)}:${encodeURIComponent(password)}@127.0.0.1:${TEST_PORT}/${databaseName}`;
+  const testUrl = `postgresql://${encodeURIComponent(username)}:${encodeURIComponent(password)}@127.0.0.1:${testPort}/${databaseName}`;
   const envFile = await readFile(".env", "utf8").catch(() => "");
   const projectUrl = process.env.DATABASE_URL ?? parseEnvironmentValue(envFile, "DATABASE_URL");
-  const parsed = assertSafeTestDatabase(testUrl, projectUrl);
+  const parsed = assertSafeTestDatabase(testUrl, testPort, projectUrl);
   const serverOnlyShim = pathToFileURL(path.join(process.cwd(), "scripts", "integration", "server-only-register.mjs")).href;
-  const childEnvironment: NodeJS.ProcessEnv = { ...process.env, TEST_DATABASE_URL: testUrl, DATABASE_URL: testUrl, PROJECT_DATABASE_URL_FOR_SAFETY: projectUrl, NEXT_PUBLIC_SITE_URL: "https://example.test", ACCOUNT_RATE_LIMIT_SECRET: randomBytes(32).toString("hex"), NODE_ENV: "test", NODE_OPTIONS: `--import=\"${serverOnlyShim}\"` };
+  const childEnvironment: NodeJS.ProcessEnv = { ...process.env, TEST_DATABASE_URL: testUrl, TEST_DATABASE_PORT: String(testPort), DATABASE_URL: testUrl, PROJECT_DATABASE_URL_FOR_SAFETY: projectUrl, NEXT_PUBLIC_SITE_URL: "https://example.test", ACCOUNT_RATE_LIMIT_SECRET: randomBytes(32).toString("hex"), NODE_ENV: "test", NODE_OPTIONS: `--import=\"${serverOnlyShim}\"` };
   let started = false;
   try {
     console.log(`ISOLATION PROOF: host=${parsed.hostname} port=${parsed.port} database-prefix=${DATABASE_PREFIX} container=${containerName}`);
     console.log(`ISOLATION PROOF: TEST_DATABASE_URL differs from DATABASE_URL=${testUrl !== projectUrl}; Neon/cloud hostname=false`);
-    await run("docker", ["run", "--rm", "-d", "--name", containerName, "-p", `127.0.0.1:${TEST_PORT}:5432`, "-e", `POSTGRES_DB=${databaseName}`, "-e", `POSTGRES_USER=${username}`, "-e", `POSTGRES_PASSWORD=${password}`, "postgres:16-alpine"], childEnvironment);
+    await run("docker", ["run", "--rm", "-d", "--name", containerName, "-p", `127.0.0.1:${testPort}:5432`, "-e", `POSTGRES_DB=${databaseName}`, "-e", `POSTGRES_USER=${username}`, "-e", `POSTGRES_PASSWORD=${password}`, "postgres:16-alpine"], childEnvironment);
     started = true;
     await waitForPostgres(containerName, childEnvironment);
     const preVerificationMigrations = [
@@ -336,14 +397,20 @@ async function main(): Promise<void> {
     const legacyHash = await bcrypt.hash("Legacy-password-42", 12);
     await runPostgresSql(containerName, databaseName, username, `INSERT INTO "User" ("name", "email", "password", "role") VALUES ('Legacy Verification Fixture', 'legacy-verification-fixture@example.test', '${legacyHash}', 'user');`, childEnvironment);
     await runPostgresSql(containerName, databaseName, username, await readFile(path.join("prisma", "migrations", "20260815120000_email_verification", "migration.sql"), "utf8"), childEnvironment);
+    await runPostgresSql(containerName, databaseName, username, await readFile(path.join("prisma", "migrations", "20260815160000_secure_file_storage_foundation", "migration.sql"), "utf8"), childEnvironment);
     console.log("MIGRATIONS APPLIED TO DISPOSABLE DB: Batch A applied, legacy fixture inserted, then Batch B applied");
+    // This guarded orchestrator owns the disposable PostgreSQL lifecycle for
+    // both auth integration and Secure File Storage Batch B integration.
     await run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "scripts/integration/account-recovery-postgres.ts", "--suite"], childEnvironment);
+    await runFileRouteHttpSuite(childEnvironment);
+    await run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "scripts/integration/file-storage-domains-postgres.ts"], childEnvironment);
   } finally {
     delete process.env.TEST_DATABASE_URL;
     if (started) await execFileAsync("docker", ["stop", containerName], { env: process.env }).catch(() => undefined);
     const remaining = await execFileAsync("docker", ["ps", "-a", "--filter", `name=^/${containerName}$`, "--format", "{{.Names}}"], { env: process.env }).catch(() => ({ stdout: "unknown" }));
     assert.equal(remaining.stdout.trim(), "", "Disposable container cleanup failed");
-    console.log("CLEANUP RESULT: disposable container removed; TEST_DATABASE_URL cleared; no volume created");
+    assert.equal(await isLoopbackPortListening(testPort), false, "Disposable database port cleanup failed");
+    console.log(`CLEANUP RESULT: disposable container removed; dynamic port ${testPort} released; TEST_DATABASE_URL cleared; no volume created`);
   }
 }
 

@@ -10,23 +10,25 @@ function sanitizeDownloadFileName(fileName: string): string {
 }
 
 export function createPrivateDownloadResponse({
-  bytes,
+  body,
+  contentLength,
   fileName,
   mimeType,
 }: {
-  bytes: Buffer;
+  body: BodyInit;
+  contentLength: number;
   fileName: string;
   mimeType: string;
 }): Response {
   const safeFileName = sanitizeDownloadFileName(fileName);
   const encodedFileName = encodeURIComponent(safeFileName);
 
-  return new Response(new Uint8Array(bytes), {
+  return new Response(body, {
     status: 200,
     headers: {
       "Cache-Control": "private, no-store",
       "Content-Disposition": `attachment; filename="${safeFileName}"; filename*=UTF-8''${encodedFileName}`,
-      "Content-Length": String(bytes.byteLength),
+      "Content-Length": String(contentLength),
       "Content-Type": mimeType,
       "X-Content-Type-Options": "nosniff",
     },

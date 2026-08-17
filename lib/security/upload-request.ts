@@ -82,6 +82,10 @@ export async function parseBoundedMultipartUpload(
   parser.on("file", (fieldName, stream, info) => {
     if (file || fieldName !== (options.fileField ?? "file")) invalid = true;
     file = { fieldName, fileName: info.filename, mimeType: info.mimeType, bytes: Buffer.alloc(0) };
+    // Busboy can report a truncated file asynchronously after the parser is
+    // intentionally destroyed for an authoritative request-size rejection.
+    // Consume that stream error so a rejected upload cannot crash the process.
+    stream.on("error", () => { invalid = true; });
     stream.on("limit", () => { invalid = true; });
     stream.on("data", (chunk: Buffer) => {
       chunks.push(Buffer.from(chunk));
@@ -93,9 +97,9 @@ export async function parseBoundedMultipartUpload(
   parser.on("partsLimit", () => { invalid = true; });
 
   const completed = once(parser, "finish");
+  const reader = request.body.getReader();
   let total = 0;
   try {
-    const reader = request.body.getReader();
     while (true) {
       const read = await reader.read();
       if (read.done) break;
@@ -108,6 +112,7 @@ export async function parseBoundedMultipartUpload(
     await completed;
   } catch (error) {
     parser.destroy();
+    await reader.cancel(error).catch(() => undefined);
     await completed.catch(() => undefined);
     if (error instanceof FileSecurityError) throw error;
     throw new FileSecurityError("invalid_upload", 400);

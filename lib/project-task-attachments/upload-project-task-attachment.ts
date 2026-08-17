@@ -12,6 +12,7 @@ import {
 } from "../storage/project-task-attachment-storage";
 import { runInTransaction } from "../transactions";
 import { canAccessProjectTaskAttachments } from "./project-task-attachment-permissions";
+import type { ConfidentialFileDependencies } from "../storage/confidential-file-storage";
 
 const ATTACHMENT_SELECT = {
   id: true,
@@ -121,10 +122,12 @@ export async function uploadProjectTaskAttachment({
   request,
   taskId,
   authenticatedUserId,
+  fileDependencies,
 }: {
   request: Request;
   taskId: number;
   authenticatedUserId: number;
+  fileDependencies?: ConfidentialFileDependencies;
 }): Promise<UploadedProjectTaskAttachment> {
   const [accessUser, accessTask] = await Promise.all([
     prisma.user.findUnique({ where: { id: authenticatedUserId }, select: { role: true } }),
@@ -150,6 +153,7 @@ export async function uploadProjectTaskAttachment({
       await storeProjectTaskAttachmentFile({
         request,
         taskId,
+        dependencies: fileDependencies,
       });
 
     storedFileKey = storedFile.storageKey;
@@ -227,6 +231,16 @@ export async function uploadProjectTaskAttachment({
                   storedFile.mimeType,
                 fileSize:
                   storedFile.fileSize,
+                checksumSha256:
+                  storedFile.checksumSha256,
+                scanStatus:
+                  storedFile.scanStatus,
+                scannedAt:
+                  storedFile.scannedAt,
+                scanEngine:
+                  storedFile.scanEngine,
+                scanAttempts:
+                  storedFile.scanAttempts,
                 uploadedById:
                   authenticatedUser.id,
               },
@@ -329,6 +343,8 @@ export async function uploadProjectTaskAttachment({
   } catch (error) {
     await removeProjectTaskAttachmentFile(
       storedFileKey,
+      "r2",
+      fileDependencies?.storage,
     );
 
     throw error;

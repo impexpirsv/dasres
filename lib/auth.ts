@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { AppError } from "./errors";
 import {
   CAPABILITIES,
   hasCapability,
@@ -41,6 +42,16 @@ export async function requireUser(): Promise<AuthenticatedUser> {
 
   if (!user) {
     redirect("/login");
+  }
+
+  return user;
+}
+
+export async function requireApiUser(): Promise<AuthenticatedUser> {
+  const user = await getAuthenticatedUser();
+
+  if (!user) {
+    throw new AppError("AUTHENTICATION_REQUIRED", 401);
   }
 
   return user;

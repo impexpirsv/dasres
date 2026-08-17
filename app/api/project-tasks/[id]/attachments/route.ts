@@ -1,5 +1,5 @@
 import { apiHandler } from "../../../../../lib/api";
-import { requireUser } from "../../../../../lib/auth";
+import { requireApiUser } from "../../../../../lib/auth";
 import { uploadProjectTaskAttachment } from "../../../../../lib/project-task-attachments";
 import { parseId } from "../../../../../lib/validation";
 
@@ -16,7 +16,7 @@ export async function POST(
   },
 ): Promise<Response> {
   return apiHandler(async () => {
-    const user = await requireUser();
+    const user = await requireApiUser();
 
     const { id } = await params;
     const taskId = parseId(

@@ -3,13 +3,16 @@ import { prisma } from "../prisma";
 import { readProjectTaskAttachmentFile } from "../storage/project-task-attachment-storage";
 import { createPrivateDownloadResponse } from "../storage/private-download-response";
 import { canAccessProjectTaskAttachments } from "./project-task-attachment-permissions";
+import type { SecureObjectStorage } from "../storage/secure-object-storage";
 
 export async function downloadProjectTaskAttachment({
   attachmentId,
   authenticatedUserId,
+  objectStorage,
 }: {
   attachmentId: number;
   authenticatedUserId: number;
+  objectStorage?: SecureObjectStorage;
 }): Promise<Response> {
   const [user, attachment] = await Promise.all([
     prisma.user.findUnique({ where: { id: authenticatedUserId }, select: { id: true, role: true } }),
@@ -18,7 +21,9 @@ export async function downloadProjectTaskAttachment({
       select: {
         fileName: true,
         storageKey: true,
+        storageProvider: true,
         mimeType: true,
+        scanStatus: true,
         task: { select: { project: { select: { createdBy: true, assignedTo: true } } } },
       },
     }),
@@ -33,9 +38,14 @@ export async function downloadProjectTaskAttachment({
     throw new AppError("PROJECT_TASK_ATTACHMENT_NOT_FOUND", 404);
   }
 
-  const file = await readProjectTaskAttachmentFile(attachment.storageKey);
+  if (attachment.storageProvider === "r2" && attachment.scanStatus !== "CLEAN") {
+    throw new AppError("PROJECT_TASK_ATTACHMENT_NOT_FOUND", 404);
+  }
+
+  const file = await readProjectTaskAttachmentFile(attachment.storageKey, attachment.storageProvider, objectStorage);
   return createPrivateDownloadResponse({
-    bytes: file.bytes,
+    body: "body" in file ? file.body : new Uint8Array(file.bytes),
+    contentLength: file.size,
     fileName: attachment.fileName,
     mimeType: attachment.mimeType || "application/octet-stream",
   });

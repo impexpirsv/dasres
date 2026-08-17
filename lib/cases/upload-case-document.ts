@@ -8,6 +8,7 @@ import {
 } from "../storage/case-document-storage";
 import { runInTransaction } from "../transactions";
 import { canAccessCaseDocuments } from "./case-document-permissions";
+import type { ConfidentialFileDependencies } from "../storage/confidential-file-storage";
 
 type CaseDocumentResult = {
   id: number;
@@ -36,10 +37,12 @@ export async function uploadCaseDocument({
   request,
   caseId,
   authenticatedUserId,
+  fileDependencies,
 }: {
   request: Request;
   caseId: number;
   authenticatedUserId: number;
+  fileDependencies?: ConfidentialFileDependencies;
 }): Promise<CaseDocumentResult> {
   const access = await prisma.tradeCase.findUnique({
     where: { id: caseId },
@@ -85,6 +88,7 @@ export async function uploadCaseDocument({
     const storedFile =
       await storeCaseDocumentFile(
         request,
+        fileDependencies,
       );
 
     storedFileKey = storedFile.storageKey;
@@ -237,8 +241,14 @@ export async function uploadCaseDocument({
                 name:
                   storedFile.originalFileName,
                 storageKey: storedFile.storageKey,
+                storageProvider: storedFile.storageProvider,
                 mimeType: storedFile.mimeType,
                 fileSize: storedFile.fileSize,
+                checksumSha256: storedFile.checksumSha256,
+                scanStatus: storedFile.scanStatus,
+                scannedAt: storedFile.scannedAt,
+                scanEngine: storedFile.scanEngine,
+                scanAttempts: storedFile.scanAttempts,
               },
               select: {
                 id: true,
@@ -342,6 +352,8 @@ export async function uploadCaseDocument({
   } catch (error) {
     await removeCaseDocumentFile(
       storedFileKey,
+      "r2",
+      fileDependencies?.storage,
     );
 
     throw error;

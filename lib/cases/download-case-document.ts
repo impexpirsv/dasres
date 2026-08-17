@@ -3,13 +3,16 @@ import { prisma } from "../prisma";
 import { createPrivateDownloadResponse } from "../storage/private-download-response";
 import { readCaseDocumentFile } from "../storage/case-document-storage";
 import { canAccessCaseDocuments } from "./case-document-permissions";
+import type { SecureObjectStorage } from "../storage/secure-object-storage";
 
 export async function downloadCaseDocument({
   documentId,
   authenticatedUserId,
+  objectStorage,
 }: {
   documentId: number;
   authenticatedUserId: number;
+  objectStorage?: SecureObjectStorage;
 }): Promise<Response> {
   const [user, document] = await Promise.all([
     prisma.user.findUnique({ where: { id: authenticatedUserId }, select: { id: true, role: true } }),
@@ -18,7 +21,9 @@ export async function downloadCaseDocument({
       select: {
         name: true,
         storageKey: true,
+        storageProvider: true,
         mimeType: true,
+        scanStatus: true,
         tradeCase: {
           select: {
             customerId: true,
@@ -47,9 +52,14 @@ export async function downloadCaseDocument({
     throw new AppError("CASE_DOCUMENT_NOT_FOUND", 404);
   }
 
-  const file = await readCaseDocumentFile(document.storageKey);
+  if (document.storageProvider === "r2" && document.scanStatus !== "CLEAN") {
+    throw new AppError("CASE_DOCUMENT_NOT_FOUND", 404);
+  }
+
+  const file = await readCaseDocumentFile(document.storageKey, document.storageProvider, objectStorage);
   return createPrivateDownloadResponse({
-    bytes: file.bytes,
+    body: "body" in file ? file.body : new Uint8Array(file.bytes),
+    contentLength: file.size,
     fileName: document.name,
     mimeType: document.mimeType || "application/octet-stream",
   });
