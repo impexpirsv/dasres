@@ -1,5 +1,5 @@
 import { apiHandler } from "../../../lib/api";
-import { requireUser } from "../../../lib/auth";
+import { requireApiUser } from "../../../lib/auth";
 import {
   createExpert,
   parseCreateExpertInput,
@@ -11,7 +11,7 @@ export async function POST(
   request: Request,
 ): Promise<Response> {
   return apiHandler(async () => {
-    const user = await requireUser();
+    const user = await requireApiUser();
 
     const input =
       await parseCreateExpertInput(

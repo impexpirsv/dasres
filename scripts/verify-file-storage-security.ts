@@ -23,9 +23,15 @@ const files = await Promise.all([
   "app/api/project-tasks/[id]/attachments/route.ts",
   "app/api/project-task-attachments/[id]/download/route.ts",
   "scripts/integration/account-recovery-postgres.ts",
+  "lib/storage/public-image-storage.ts",
+  "app/api/images/[domain]/[id]/route.ts",
+  "scripts/migrate-public-images.ts",
+  "prisma/migrations/20260819120000_secure_public_images/migration.sql",
+  "scripts/integration/public-images-postgres.ts",
 ].map((file) => readFile(file, "utf8")));
 const [r2, multipart, clam, content, workflow, migration, confidential, caseStorage, taskStorage, caseUpload, caseDownload, taskUpload, taskDownload,
-  caseDelete, taskDelete, caseUploadRoute, caseDownloadRoute, taskUploadRoute, taskDownloadRoute, integration] = files;
+  caseDelete, taskDelete, caseUploadRoute, caseDownloadRoute, taskUploadRoute, taskDownloadRoute, integration,
+  publicImage, publicImageRoute, publicImageMigration, imageMigration, publicImageIntegration] = files;
 assert.match(r2, /IfNoneMatch: "\*"/);
 assert.doesNotMatch(r2, /ACL:|getSignedUrl|publicUrl/);
 assert.match(multipart, /maximumRequestBytes/);
@@ -59,7 +65,23 @@ assert.match(integration, /Test database host must be local/); assert.match(inte
 assert.doesNotMatch(integration, /const TEST_PORT = 55432/);
 assert.match(integration, /runFileRouteHttpSuite/);
 assert.match(integration, /file-storage-domains-postgres\.ts/);
-console.log("File-storage static structural guardrails verified; security behavior is proven by runtime suites.");
+assert.match(publicImage, /limitInputPixels: PUBLIC_IMAGE_LIMITS\.pixels/);
+assert.match(publicImage, /\(metadata\.pages \?\? 1\) !== 1/);
+assert.match(publicImage, /storeWithSha256/);
+assert.match(publicImage, /scanStoredObject/);
+assert.doesNotMatch(publicImage, /withMetadata|getSignedUrl|publicUrl|ACL:/);
+assert.match(publicImageRoute, /scanStatus !== "CLEAN"/);
+assert.match(publicImageRoute, /storageProvider !== "r2"/);
+assert.match(publicImageMigration, /--apply/);
+assert.match(publicImageMigration, /TEST_DATABASE_URL is required/);
+assert.match(publicImageMigration, /TEST_DATABASE_URL must differ from DATABASE_URL/);
+assert.match(publicImageMigration, /disposable loopback PostgreSQL/);
+assert.match(publicImageMigration, /--acknowledge-production/);
+assert.doesNotMatch(publicImageMigration, /unlink|rmSync|rename\(/);
+assert.doesNotMatch(imageMigration, /DROP|TRUNCATE|DELETE FROM|UPDATE /i);
+assert.match(publicImageIntegration, /TEST_DATABASE_URL/);
+assert.match(publicImageIntegration, /InMemorySecureObjectStorage/);
+console.log("File-storage static structural guardrails verified; runtime behavior requires the dedicated runtime and integration suites.");
 }
 
 main().catch((error: unknown) => { throw error; });

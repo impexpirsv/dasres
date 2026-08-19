@@ -1,5 +1,5 @@
 import { apiHandler } from "../../../../lib/api";
-import { requireAdmin } from "../../../../lib/auth";
+import { requireApiAdmin } from "../../../../lib/auth";
 import {
   deleteOpportunity,
 } from "../../../../lib/opportunities/delete-opportunity";
@@ -53,7 +53,7 @@ export async function PUT(
   }: RouteContext,
 ): Promise<Response> {
   return apiHandler(async () => {
-    const admin = await requireAdmin();
+    const admin = await requireApiAdmin();
 
     const { id } = await params;
     const opportunityId = parseId(
@@ -91,7 +91,7 @@ export async function DELETE(
   }: RouteContext,
 ): Promise<Response> {
   return apiHandler(async () => {
-    const admin = await requireAdmin();
+    const admin = await requireApiAdmin();
 
     const { id } = await params;
     const opportunityId = parseId(

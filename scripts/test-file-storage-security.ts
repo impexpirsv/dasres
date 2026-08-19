@@ -13,6 +13,8 @@ import { R2StorageProvider } from "../lib/storage/r2-storage-provider";
 import type { ObjectStorageConfig } from "../lib/storage/object-storage-config";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { storeConfidentialUpload, readLegacyPrivateFile, streamBoundedObject } from "../lib/storage/confidential-file-storage";
+import { createVerifiedPublicImageStream, storePublicImage } from "../lib/storage/public-image-storage";
+import { resolveBackfillDatabaseUrl } from "./migrate-public-images";
 
 async function rejects(operation: () => Promise<unknown> | unknown): Promise<void> {
   await assert.rejects(async () => operation(), FileSecurityError);
@@ -202,6 +204,159 @@ const address = server.address(); assert(address && typeof address === "object")
 const scanner = new ClamAvUploadScanner({ host: "127.0.0.1", port: address.port, timeoutMs: 1000 });
 assert.equal(await scanner.scanStream((async function* () { yield Buffer.from("safe"); })()), "CLEAN");
 await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
+
+for (const format of ["jpeg", "png", "webp"] as const) {
+  const source = sharp({ create: { width: 2, height: 2, channels: 3, background: "red" } }).withMetadata({
+    exif: { IFD0: { Artist: "remove-me" } },
+  });
+  const bytes = await source[format]().toBuffer();
+  const mimeType = `image/${format}`.replace("image/jpeg", "image/jpeg");
+  const extension = format === "jpeg" ? "jpg" : format;
+  const imageStorage = new InMemorySecureObjectStorage();
+  const result = await storePublicImage({
+    file: new File([new Uint8Array(bytes)], `safe.${extension}`, { type: mimeType }),
+    kind: "company-logo",
+    dependencies: { storage: imageStorage, scanner: new DeterministicStoredByteScanner() },
+  });
+  assert.equal(result.scanStatus, "CLEAN");
+  assert.equal(result.scanAttempts, 1);
+  const normalized = await imageStorage.get(result.storageKey);
+  const chunks: Buffer[] = [];
+  for await (const chunk of normalized.body) chunks.push(Buffer.from(chunk));
+  const metadata = await sharp(Buffer.concat(chunks)).metadata();
+  assert.equal(metadata.format, format);
+  assert.equal(metadata.exif, undefined);
+}
+
+const smallPng = await sharp({ create: { width: 1, height: 1, channels: 3, background: "blue" } }).png().toBuffer();
+const noAccessStorage = new InMemorySecureObjectStorage();
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(smallPng)], "spoof.jpg", { type: "image/jpeg" }), kind: "expert-image",
+  dependencies: { storage: noAccessStorage, scanner: new DeterministicStoredByteScanner() },
+}));
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(Buffer.from("<svg/>"))], "x.svg", { type: "image/svg+xml" }), kind: "expert-image",
+  dependencies: { storage: noAccessStorage, scanner: new DeterministicStoredByteScanner() },
+}));
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(Buffer.from("not-an-image"))], "x.png", { type: "image/png" }), kind: "expert-image",
+  dependencies: { storage: noAccessStorage, scanner: new DeterministicStoredByteScanner() },
+}));
+const tooWide = await sharp({ create: { width: 8193, height: 1, channels: 3, background: "black" } }).png().toBuffer();
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(tooWide)], "wide.png", { type: "image/png" }), kind: "opportunity-image",
+  dependencies: { storage: noAccessStorage, scanner: new DeterministicStoredByteScanner() },
+}));
+const tooTall = await sharp({ create: { width: 1, height: 8193, channels: 3, background: "black" } }).png().toBuffer();
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(tooTall)], "tall.png", { type: "image/png" }), kind: "opportunity-image",
+  dependencies: { storage: noAccessStorage, scanner: new DeterministicStoredByteScanner() },
+}));
+const tooManyPixels = await sharp({ create: { width: 5001, height: 5000, channels: 3, background: "black" } }).png().toBuffer();
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(tooManyPixels)], "pixels.png", { type: "image/png" }), kind: "opportunity-image",
+  dependencies: { storage: noAccessStorage, scanner: new DeterministicStoredByteScanner() },
+}));
+const animatedFrames = await Promise.all(["red", "blue"].map((background) =>
+  sharp({ create: { width: 2, height: 2, channels: 4, background } }).png().toBuffer(),
+));
+const animatedWebp = await sharp(animatedFrames, { join: { animated: true } }).webp({ loop: 0, delay: [100, 100] }).toBuffer();
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(animatedWebp)], "animated.webp", { type: "image/webp" }), kind: "opportunity-image",
+  dependencies: { storage: noAccessStorage, scanner: new DeterministicStoredByteScanner() },
+}));
+const infectedStorage = new InMemorySecureObjectStorage();
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(smallPng)], "infected.png", { type: "image/png" }), kind: "opportunity-image",
+  dependencies: { storage: infectedStorage, scanner: new DeterministicStoredByteScanner("INFECTED") },
+}));
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(smallPng)], "scanner-error.png", { type: "image/png" }), kind: "opportunity-image",
+  dependencies: { storage: new InMemorySecureObjectStorage(), scanner: new DeterministicStoredByteScanner("ERROR") },
+}));
+class PublicImagePutFailureStorage extends InMemorySecureObjectStorage {
+  cleanupCalls = 0;
+  override async putImmutable(): Promise<{ size: number }> { throw new FileSecurityError("storage_failure"); }
+  override async remove(key: string): Promise<void> { this.cleanupCalls += 1; await super.remove(key); }
+}
+const publicPutFailure = new PublicImagePutFailureStorage();
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(smallPng)], "write.png", { type: "image/png" }), kind: "company-logo",
+  dependencies: { storage: publicPutFailure, scanner: new DeterministicStoredByteScanner() },
+}));
+assert.equal(publicPutFailure.cleanupCalls, 1);
+class PublicImageSizeMismatchStorage extends InMemorySecureObjectStorage {
+  cleanupCalls = 0;
+  override async putImmutable(key: string, body: AsyncIterable<Uint8Array>): Promise<{ size: number }> {
+    const storedResult = await super.putImmutable(key, body); return { size: storedResult.size + 1 };
+  }
+  override async remove(key: string): Promise<void> { this.cleanupCalls += 1; await super.remove(key); }
+}
+const publicSizeMismatch = new PublicImageSizeMismatchStorage();
+await rejects(() => storePublicImage({
+  file: new File([new Uint8Array(smallPng)], "size.png", { type: "image/png" }), kind: "company-logo",
+  dependencies: { storage: publicSizeMismatch, scanner: new DeterministicStoredByteScanner() },
+}));
+assert.equal(publicSizeMismatch.cleanupCalls, 1);
+
+const streamBytes = Buffer.from("multi-chunk-image");
+const streamHash = (await import("node:crypto")).createHash("sha256").update(streamBytes).digest("hex");
+let pulls = 0;
+let returned = false;
+const incrementalBody = {
+  [Symbol.asyncIterator]() {
+    let index = 0;
+    const chunks = [streamBytes.subarray(0, 5), streamBytes.subarray(5, 11), streamBytes.subarray(11)];
+    return {
+      async next() { pulls += 1; return index < chunks.length ? { done: false as const, value: chunks[index++] } : { done: true as const, value: undefined }; },
+      async return() { returned = true; return { done: true as const, value: undefined }; },
+    };
+  },
+};
+const publicImageReader = createVerifiedPublicImageStream({
+  object: { body: incrementalBody, size: streamBytes.length }, expectedSize: streamBytes.length, expectedChecksumSha256: streamHash,
+}).getReader();
+assert.equal(pulls, 0, "public image stream must not eagerly consume its source");
+const firstChunk = await publicImageReader.read();
+assert.equal(Buffer.from(firstChunk.value ?? []).toString(), "multi");
+assert.equal(pulls, 1, "one downstream read must pull only one upstream chunk");
+await publicImageReader.cancel();
+assert.equal(returned, true, "downstream cancellation must close the upstream iterator");
+
+async function consumeStream(stream: ReadableStream<Uint8Array>): Promise<void> {
+  const reader = stream.getReader();
+  while (!(await reader.read()).done) { /* consume */ }
+}
+await assert.rejects(() => consumeStream(createVerifiedPublicImageStream({
+  object: { size: 3, body: (async function* () { yield Buffer.from("ab"); })() },
+  expectedSize: 3, expectedChecksumSha256: streamHash,
+})));
+let overrunReturned = false;
+const overrunBody = {
+  [Symbol.asyncIterator]() {
+    let done = false;
+    return {
+      async next() { if (done) return { done: true as const, value: undefined }; done = true; return { done: false as const, value: Buffer.from("abcd") }; },
+      async return() { overrunReturned = true; return { done: true as const, value: undefined }; },
+    };
+  },
+};
+await assert.rejects(() => consumeStream(createVerifiedPublicImageStream({
+  object: { size: 3, body: overrunBody }, expectedSize: 3, expectedChecksumSha256: streamHash,
+})));
+assert.equal(overrunReturned, true, "overrun must terminate the upstream iterator");
+
+assert.throws(() => resolveBackfillDatabaseUrl({}, []), /TEST_DATABASE_URL/);
+assert.throws(() => resolveBackfillDatabaseUrl({ TEST_DATABASE_URL: "postgresql://u:p@db.example.test/db" }, []), /loopback/);
+assert.throws(() => resolveBackfillDatabaseUrl({
+  TEST_DATABASE_URL: "postgresql://u:p@127.0.0.1:5432/test",
+  DATABASE_URL: "postgresql://u:p@127.0.0.1:5432/test",
+}, []), /must differ/);
+assert.equal(resolveBackfillDatabaseUrl({
+  TEST_DATABASE_URL: "postgresql://u:p@127.0.0.1:5432/test",
+  DATABASE_URL: "postgresql://u:p@remote.example.test/prod",
+}, []), "postgresql://u:p@127.0.0.1:5432/test");
+assert.throws(() => resolveBackfillDatabaseUrl({ DATABASE_URL: "postgresql://u:p@remote.example.test/prod" }, ["--production", "--apply"]), /acknowledge/);
 
 console.log("File-storage security runtime tests passed.");
 }

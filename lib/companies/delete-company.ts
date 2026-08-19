@@ -6,6 +6,8 @@ import {
   resolveCompanyLogoFilePath,
 } from "../storage/company-logo-storage";
 import { runInTransaction } from "../transactions";
+import { removePublicImageBestEffort } from "../storage/public-image-storage";
+import type { SecureObjectStorage } from "../storage/secure-object-storage";
 
 function ensureCompanyPermission({
   userId,
@@ -62,11 +64,14 @@ function mapDeleteCompanyError(
 export async function deleteCompany({
   companyId,
   authenticatedUserId,
+  imageStorage,
 }: {
   companyId: number;
   authenticatedUserId: number;
+  imageStorage?: SecureObjectStorage;
 }): Promise<void> {
   let logoUrl: string | null;
+  let logoStorageKey: string | null;
 
   try {
     const result =
@@ -99,6 +104,7 @@ export async function deleteCompany({
               select: {
                 id: true,
                 logoUrl: true,
+                logoStorageKey: true,
                 ownerId: true,
               },
             });
@@ -128,11 +134,13 @@ export async function deleteCompany({
           return {
             logoUrl:
               company.logoUrl,
+            logoStorageKey: company.logoStorageKey,
           };
         },
       );
 
     logoUrl = result.logoUrl;
+    logoStorageKey = result.logoStorageKey;
   } catch (error) {
     mapDeleteCompanyError(
       error,
@@ -144,4 +152,5 @@ export async function deleteCompany({
       logoUrl,
     ),
   );
+  await removePublicImageBestEffort(logoStorageKey, imageStorage);
 }

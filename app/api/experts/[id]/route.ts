@@ -1,5 +1,5 @@
 import { apiHandler } from "../../../../lib/api";
-import { getAuthenticatedUser, requireUser } from "../../../../lib/auth";
+import { getAuthenticatedUser, requireApiUser } from "../../../../lib/auth";
 import {
   deleteExpert,
 } from "../../../../lib/experts/delete-expert";
@@ -56,7 +56,7 @@ export async function PUT(
   }: RouteContext,
 ): Promise<Response> {
   return apiHandler(async () => {
-    const user = await requireUser();
+    const user = await requireApiUser();
 
     const { id } = await params;
     const expertId = parseId(
@@ -100,7 +100,7 @@ export async function DELETE(
   }: RouteContext,
 ): Promise<Response> {
   return apiHandler(async () => {
-    const user = await requireUser();
+    const user = await requireApiUser();
 
     const { id } = await params;
     const expertId = parseId(

@@ -6,6 +6,8 @@ import {
   resolveOpportunityImageFilePath,
 } from "../storage/opportunity-image-storage";
 import { runInTransaction } from "../transactions";
+import { removePublicImageBestEffort } from "../storage/public-image-storage";
+import type { SecureObjectStorage } from "../storage/secure-object-storage";
 
 async function assertAdminInsideTransaction({
   transaction,
@@ -86,11 +88,14 @@ function mapOpportunityDeleteError(
 export async function deleteOpportunity({
   opportunityId,
   authenticatedAdminId,
+  imageStorage,
 }: {
   opportunityId: number;
   authenticatedAdminId: number;
+  imageStorage?: SecureObjectStorage;
 }): Promise<void> {
   let imageUrl: string | null;
+  let imageStorageKey: string | null;
 
   try {
     const result =
@@ -110,6 +115,7 @@ export async function deleteOpportunity({
               select: {
                 id: true,
                 imageUrl: true,
+                imageStorageKey: true,
               },
             });
 
@@ -132,11 +138,13 @@ export async function deleteOpportunity({
           return {
             imageUrl:
               opportunity.imageUrl,
+            imageStorageKey: opportunity.imageStorageKey,
           };
         },
       );
 
     imageUrl = result.imageUrl;
+    imageStorageKey = result.imageStorageKey;
   } catch (error) {
     mapOpportunityDeleteError(
       error,
@@ -148,4 +156,5 @@ export async function deleteOpportunity({
       imageUrl,
     ),
   );
+  await removePublicImageBestEffort(imageStorageKey, imageStorage);
 }

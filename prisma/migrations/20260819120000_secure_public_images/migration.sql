@@ -1,0 +1,11 @@
+ALTER TABLE "Company"
+ADD COLUMN "logoScanEngine" TEXT,
+ADD COLUMN "logoScanAttempts" INTEGER NOT NULL DEFAULT 0;
+
+ALTER TABLE "Expert"
+ADD COLUMN "imageScanEngine" TEXT,
+ADD COLUMN "imageScanAttempts" INTEGER NOT NULL DEFAULT 0;
+
+ALTER TABLE "Opportunity"
+ADD COLUMN "imageScanEngine" TEXT,
+ADD COLUMN "imageScanAttempts" INTEGER NOT NULL DEFAULT 0;

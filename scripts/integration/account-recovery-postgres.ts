@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
-import { randomBytes } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { createHash, randomBytes } from "node:crypto";
+import { readFile, readdir } from "node:fs/promises";
 import net from "node:net";
+import http from "node:http";
 import { once } from "node:events";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -42,12 +43,50 @@ async function isLoopbackPortListening(port: number): Promise<boolean> {
   });
 }
 
-async function runFileRouteHttpSuite(environment: NodeJS.ProcessEnv): Promise<void> {
+async function runFileRouteHttpSuite(environment: NodeJS.ProcessEnv, containerName: string, databaseName: string, username: string): Promise<void> {
   const port = await selectLoopbackPort();
+  const objectPort = await selectLoopbackPort();
   const baseUrl = `http://127.0.0.1:${port}`;
   const { NODE_OPTIONS: omittedNodeOptions, ...environmentWithoutNodeOptions } = environment;
   void omittedNodeOptions;
-  const serverEnvironment: NodeJS.ProcessEnv = { ...environmentWithoutNodeOptions, NODE_ENV: "production", NEXT_PUBLIC_SITE_URL: baseUrl };
+  const imageBytes = Buffer.from("batch-c-public-image");
+  const imageChecksum = createHash("sha256").update(imageBytes).digest("hex");
+  const keys = {
+    company: "quarantine/company-logo/2026/08/11111111-1111-4111-8111-111111111111",
+    expert: "quarantine/expert-image/2026/08/22222222-2222-4222-8222-222222222222",
+    opportunity: "quarantine/opportunity-image/2026/08/33333333-3333-4333-8333-333333333333",
+  } as const;
+  const objects = new Map<string, Buffer>(Object.values(keys).map((key) => [key, imageBytes]));
+  const objectServer = http.createServer((request, response) => {
+    const pathname = decodeURIComponent(new URL(request.url ?? "/", `http://127.0.0.1:${objectPort}`).pathname);
+    const bytes = objects.get(pathname.split("/").slice(2).join("/"));
+    if (request.method !== "GET" || !bytes) { response.writeHead(404).end(); return; }
+    response.writeHead(200, { "content-length": String(bytes.length), "content-type": "image/png" });
+    response.write(bytes.subarray(0, 5)); setImmediate(() => response.end(bytes.subarray(5)));
+  });
+  await new Promise<void>((resolve) => objectServer.listen(objectPort, "127.0.0.1", resolve));
+  const serverEnvironment: NodeJS.ProcessEnv = {
+    ...environmentWithoutNodeOptions, NODE_ENV: "production", NEXT_PUBLIC_SITE_URL: baseUrl,
+    OBJECT_STORAGE_ENDPOINT: `http://127.0.0.1:${objectPort}`, OBJECT_STORAGE_REGION: "auto", OBJECT_STORAGE_BUCKET: "test-images",
+    OBJECT_STORAGE_ACCESS_KEY_ID: "test-access-key", OBJECT_STORAGE_SECRET_ACCESS_KEY: "test-secret-key",
+    OBJECT_STORAGE_ALLOW_INSECURE_LOOPBACK_TESTS: "1",
+  };
+  const values = (key: string, status: string | null, complete = true): string => complete
+    ? `'${key}','r2','image/png',${imageBytes.length},'${imageChecksum}',${status ? `'${status}'` : "NULL"},NOW(),'clamav',1`
+    : `'${key}','r2',NULL,NULL,NULL,'CLEAN',NOW(),'clamav',1`;
+  await runPostgresSql(containerName, databaseName, username, `
+    INSERT INTO "Company" ("id","name","country","category","status","description","email","website","logoUrl","logoStorageKey","logoStorageProvider","logoMimeType","logoFileSize","logoChecksumSha256","logoScanStatus","logoScannedAt","logoScanEngine","logoScanAttempts") VALUES
+    (900001,'HTTP Company','IR','Tech','Active','HTTP','http-company@example.test','https://example.test','/api/images/company/900001',${values(keys.company,"CLEAN")}),
+    (900011,'Pending Company','IR','Tech','Active','HTTP','pending-company@example.test','https://example.test','/api/images/company/900011',${values("quarantine/company-logo/2026/08/41111111-1111-4111-8111-111111111111","PENDING_SCAN")}),
+    (900012,'Infected Company','IR','Tech','Active','HTTP','infected-company@example.test','https://example.test','/api/images/company/900012',${values("quarantine/company-logo/2026/08/51111111-1111-4111-8111-111111111111","INFECTED")}),
+    (900013,'Failed Company','IR','Tech','Active','HTTP','failed-company@example.test','https://example.test','/api/images/company/900013',${values("quarantine/company-logo/2026/08/61111111-1111-4111-8111-111111111111","SCAN_FAILED")}),
+    (900014,'Null Company','IR','Tech','Active','HTTP','null-company@example.test','https://example.test','/api/images/company/900014',${values("quarantine/company-logo/2026/08/71111111-1111-4111-8111-111111111111",null)}),
+    (900015,'Partial Company','IR','Tech','Active','HTTP','partial-company@example.test','https://example.test','/api/images/company/900015',${values("quarantine/company-logo/2026/08/81111111-1111-4111-8111-111111111111","CLEAN",false)});
+    INSERT INTO "Expert" ("id","name","country","specialty","status","experience","email","imageUrl","imageStorageKey","imageStorageProvider","imageMimeType","imageFileSize","imageChecksumSha256","imageScanStatus","imageScannedAt","imageScanEngine","imageScanAttempts") VALUES
+    (900002,'HTTP Expert','IR','Security','Active','HTTP','http-expert@example.test','/api/images/expert/900002',${values(keys.expert,"CLEAN")});
+    INSERT INTO "Opportunity" ("id","title","country","status","description","imageUrl","imageStorageKey","imageStorageProvider","imageMimeType","imageFileSize","imageChecksumSha256","imageScanStatus","imageScannedAt","imageScanEngine","imageScanAttempts") VALUES
+    (900003,'HTTP Opportunity','IR','Open','HTTP','/api/images/opportunity/900003',${values(keys.opportunity,"CLEAN")});
+  `, serverEnvironment);
   await run(process.execPath, ["node_modules/next/dist/bin/next", "build"], serverEnvironment);
   const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", String(port)], {
     cwd: process.cwd(), env: serverEnvironment, stdio: "pipe", windowsHide: true,
@@ -72,6 +111,12 @@ async function runFileRouteHttpSuite(environment: NodeJS.ProcessEnv): Promise<vo
       ["/api/project-tasks/1/attachments", { method: "POST", body: "unauthenticated" }],
       ["/api/project-task-attachments/1/download", { method: "GET" }],
       ["/api/project-task-attachments/1/download", { method: "DELETE" }],
+      ["/api/companies", { method: "POST", body: "unauthenticated" }],
+      ["/api/companies/1", { method: "PUT", body: "unauthenticated" }],
+      ["/api/experts", { method: "POST", body: "unauthenticated" }],
+      ["/api/experts/1", { method: "PUT", body: "unauthenticated" }],
+      ["/api/opportunities", { method: "POST", body: "unauthenticated" }],
+      ["/api/opportunities/1", { method: "PUT", body: "unauthenticated" }],
     ];
     for (const [pathname, init] of requests) {
       const response = await fetch(`${baseUrl}${pathname}`, { ...init, headers: { Origin: baseUrl }, redirect: "manual" });
@@ -79,11 +124,23 @@ async function runFileRouteHttpSuite(environment: NodeJS.ProcessEnv): Promise<vo
       const body = await response.json() as { code?: unknown };
       assert.equal(body.code, "UNAUTHENTICATED");
     }
-    console.log(`FILE ROUTE HTTP RESULT: six unauthenticated Case/Task route requests rejected with 401 on loopback port ${port}`);
+    for (const pathname of ["/api/images/company/900001", "/api/images/expert/900002", "/api/images/opportunity/900003"]) {
+      const response = await fetch(`${baseUrl}${pathname}`);
+      assert.equal(response.status, 200); assert.equal(response.headers.get("content-type"), "image/png");
+      assert.equal(response.headers.get("content-length"), String(imageBytes.length)); assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+      assert.equal(response.headers.get("content-disposition"), "inline"); assert.match(response.headers.get("cache-control") ?? "", /max-age=300/);
+      assert.deepEqual(Buffer.from(await response.arrayBuffer()), imageBytes);
+    }
+    for (const pathname of ["/api/images/company/900011", "/api/images/company/900012", "/api/images/company/900013", "/api/images/company/900014", "/api/images/company/900015", "/api/images/company/999999", "/api/images/unknown/900001"]) {
+      assert.equal((await fetch(`${baseUrl}${pathname}`)).status, 404, `${pathname} must not render`);
+    }
+    console.log(`FILE ROUTE HTTP RESULT: twelve unauthenticated file/image mutation requests rejected with 401 on loopback port ${port}`);
   } finally {
     if (server.exitCode === null) server.kill();
     if (server.exitCode === null) await once(server, "exit").catch(() => undefined);
     assert.equal(await isLoopbackPortListening(port), false, "Next route test port cleanup failed");
+    await new Promise<void>((resolve, reject) => objectServer.close((error) => error ? reject(error) : resolve()));
+    assert.equal(await isLoopbackPortListening(objectPort), false, "Object test port cleanup failed");
   }
 }
 
@@ -398,12 +455,21 @@ async function main(): Promise<void> {
     await runPostgresSql(containerName, databaseName, username, `INSERT INTO "User" ("name", "email", "password", "role") VALUES ('Legacy Verification Fixture', 'legacy-verification-fixture@example.test', '${legacyHash}', 'user');`, childEnvironment);
     await runPostgresSql(containerName, databaseName, username, await readFile(path.join("prisma", "migrations", "20260815120000_email_verification", "migration.sql"), "utf8"), childEnvironment);
     await runPostgresSql(containerName, databaseName, username, await readFile(path.join("prisma", "migrations", "20260815160000_secure_file_storage_foundation", "migration.sql"), "utf8"), childEnvironment);
-    console.log("MIGRATIONS APPLIED TO DISPOSABLE DB: Batch A applied, legacy fixture inserted, then Batch B applied");
+    const alreadyApplied = new Set([...preVerificationMigrations, "20260815120000_email_verification", "20260815160000_secure_file_storage_foundation"]);
+    const repositoryMigrations = (await readdir(path.join("prisma", "migrations"), { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory() && !alreadyApplied.has(entry.name))
+      .map((entry) => entry.name)
+      .sort();
+    for (const migrationName of repositoryMigrations) {
+      await runPostgresSql(containerName, databaseName, username, await readFile(path.join("prisma", "migrations", migrationName, "migration.sql"), "utf8"), childEnvironment);
+    }
+    console.log(`MIGRATIONS APPLIED TO DISPOSABLE DB: legacy fixture sequence preserved; remaining repository migrations applied=${repositoryMigrations.join(",")}`);
     // This guarded orchestrator owns the disposable PostgreSQL lifecycle for
     // both auth integration and Secure File Storage Batch B integration.
     await run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "scripts/integration/account-recovery-postgres.ts", "--suite"], childEnvironment);
-    await runFileRouteHttpSuite(childEnvironment);
+    await runFileRouteHttpSuite(childEnvironment, containerName, databaseName, username);
     await run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "scripts/integration/file-storage-domains-postgres.ts"], childEnvironment);
+    await run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "scripts/integration/public-images-postgres.ts"], childEnvironment);
   } finally {
     delete process.env.TEST_DATABASE_URL;
     if (started) await execFileAsync("docker", ["stop", containerName], { env: process.env }).catch(() => undefined);

@@ -1,13 +1,15 @@
 import { Prisma } from "@prisma/client";
 
 import { AppError } from "../errors";
+import { prisma } from "../prisma";
 import {
-  removeExpertImageFile,
   storeExpertImageFile,
   type StoredExpertImage,
 } from "../storage/expert-image-storage";
 import { runInTransaction } from "../transactions";
-import { assertUploadRequestSize, UPLOAD_REQUEST_LIMITS } from "../security/upload-request";
+import { parseBoundedMultipartFormData } from "../security/upload-request";
+import { PUBLIC_IMAGE_LIMITS } from "../storage/public-image-storage";
+import { createPublicImageUrl, removePublicImageBestEffort, type PublicImageDependencies } from "../storage/public-image-storage";
 
 const MAX_NAME_LENGTH = 150;
 const MAX_COUNTRY_LENGTH = 100;
@@ -55,33 +57,11 @@ function isValidEmail(
 async function readExpertFormData(
   request: Request,
 ): Promise<FormData> {
-  const contentType =
-    request.headers.get(
-      "content-type",
-    );
-
-  if (
-    contentType &&
-    !contentType
-      .toLowerCase()
-      .includes(
-        "multipart/form-data",
-      )
-  ) {
-    throw new AppError(
-      "UNSUPPORTED_MEDIA_TYPE",
-      415,
-    );
-  }
-
-  try {
-    return await request.formData();
-  } catch {
-    throw new AppError(
-      "INVALID_FORM_DATA",
-      400,
-    );
-  }
+  return parseBoundedMultipartFormData(request, {
+    maximumRequestBytes: PUBLIC_IMAGE_LIMITS.requestBytes,
+    maximumFileBytes: PUBLIC_IMAGE_LIMITS.fileBytes,
+    fileField: "image",
+  });
 }
 
 function getFormText(
@@ -211,8 +191,6 @@ function parseExpertFormData(
 export async function parseCreateExpertInput(
   request: Request,
 ): Promise<CreateExpertInput> {
-  assertUploadRequestSize(request, UPLOAD_REQUEST_LIMITS.IMAGE);
-
   const formData =
     await readExpertFormData(
       request,
@@ -258,19 +236,25 @@ function mapCreateExpertError(
 export async function createExpert({
   authenticatedUserId,
   input,
+  imageDependencies,
 }: {
   authenticatedUserId: number;
   input: CreateExpertInput;
+  imageDependencies?: PublicImageDependencies;
 }): Promise<CreatedExpert> {
   let storedImage:
     | StoredExpertImage
     | null = null;
 
   try {
+    const authorizedUser = await prisma.user.findUnique({ where: { id: authenticatedUserId }, select: { id: true } });
+    if (!authorizedUser) throw new AppError("USER_NOT_FOUND", 404);
+
     if (input.imageFile) {
       storedImage =
         await storeExpertImageFile(
           input.imageFile,
+          imageDependencies,
         );
     }
 
@@ -295,7 +279,7 @@ export async function createExpert({
             );
           }
 
-          return transaction.expert.create({
+          const created = await transaction.expert.create({
             data: {
               name:
                 input.name,
@@ -309,14 +293,26 @@ export async function createExpert({
                 input.experience,
               email:
                 input.email,
-              imageUrl:
-                storedImage?.imageUrl ??
-                null,
+              imageUrl: null,
+              imageStorageKey: storedImage?.storageKey,
+              imageStorageProvider: storedImage?.storageProvider,
+              imageMimeType: storedImage?.mimeType,
+              imageFileSize: storedImage?.fileSize,
+              imageChecksumSha256: storedImage?.checksumSha256,
+              imageScanStatus: storedImage?.scanStatus,
+              imageScannedAt: storedImage?.scannedAt,
+              imageScanEngine: storedImage?.scanEngine,
+              imageScanAttempts: storedImage?.scanAttempts ?? 0,
               ownerId:
                 currentUser.id,
             },
-            select:
-              EXPERT_SELECT,
+            select: { id: true },
+          });
+
+          return transaction.expert.update({
+            where: { id: created.id },
+            data: { imageUrl: storedImage ? createPublicImageUrl("expert", created.id) : null },
+            select: EXPERT_SELECT,
           });
         },
       );
@@ -325,10 +321,7 @@ export async function createExpert({
 
     return expert;
   } catch (error) {
-    await removeExpertImageFile(
-      storedImage?.savedFilePath ??
-      null,
-    );
+    await removePublicImageBestEffort(storedImage?.storageKey ?? null, imageDependencies?.storage);
 
     mapCreateExpertError(
       error,

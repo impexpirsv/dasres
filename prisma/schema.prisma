@@ -23,6 +23,8 @@ model Expert {
   imageChecksumSha256  String?
   imageScanStatus      FileScanStatus?
   imageScannedAt       DateTime?
+  imageScanEngine      String?
+  imageScanAttempts    Int                @default(0)
   createdAt            DateTime           @default(now())
   planType             PlanType           @default(FREE)
   verificationStatus   VerificationStatus @default(PENDING)
@@ -60,6 +62,8 @@ model Company {
   logoChecksumSha256  String?
   logoScanStatus      FileScanStatus?
   logoScannedAt       DateTime?
+  logoScanEngine      String?
+  logoScanAttempts    Int                @default(0)
   createdAt           DateTime           @default(now())
   planType            PlanType           @default(FREE)
   verificationStatus  VerificationStatus @default(PENDING)
@@ -94,6 +98,8 @@ model Opportunity {
   imageChecksumSha256  String?
   imageScanStatus      FileScanStatus?
   imageScannedAt       DateTime?
+  imageScanEngine      String?
+  imageScanAttempts    Int             @default(0)
 
   @@index([country])
   @@index([status])

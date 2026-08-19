@@ -1,13 +1,15 @@
 import { Prisma } from "@prisma/client";
 
 import { AppError } from "../errors";
+import { prisma } from "../prisma";
 import {
-  removeOpportunityImageFile,
   storeOpportunityImageFile,
   type StoredOpportunityImage,
 } from "../storage/opportunity-image-storage";
 import { runInTransaction } from "../transactions";
-import { assertUploadRequestSize, UPLOAD_REQUEST_LIMITS } from "../security/upload-request";
+import { parseBoundedMultipartFormData } from "../security/upload-request";
+import { PUBLIC_IMAGE_LIMITS } from "../storage/public-image-storage";
+import { createPublicImageUrl, removePublicImageBestEffort, type PublicImageDependencies } from "../storage/public-image-storage";
 import {
   OPPORTUNITY_SELECT,
   type OpportunityResponse,
@@ -27,33 +29,11 @@ export type CreateOpportunityInput = {
 async function readOpportunityFormData(
   request: Request,
 ): Promise<FormData> {
-  const contentType =
-    request.headers.get(
-      "content-type",
-    );
-
-  if (
-    contentType &&
-    !contentType
-      .toLowerCase()
-      .includes(
-        "multipart/form-data",
-      )
-  ) {
-    throw new AppError(
-      "UNSUPPORTED_MEDIA_TYPE",
-      415,
-    );
-  }
-
-  try {
-    return await request.formData();
-  } catch {
-    throw new AppError(
-      "INVALID_FORM_DATA",
-      400,
-    );
-  }
+  return parseBoundedMultipartFormData(request, {
+    maximumRequestBytes: PUBLIC_IMAGE_LIMITS.requestBytes,
+    maximumFileBytes: PUBLIC_IMAGE_LIMITS.fileBytes,
+    fileField: "image",
+  });
 }
 
 function getRequiredTextField(
@@ -174,8 +154,6 @@ function parseOpportunityFormData(
 export async function parseCreateOpportunityInput(
   request: Request,
 ): Promise<CreateOpportunityInput> {
-  assertUploadRequestSize(request, UPLOAD_REQUEST_LIMITS.IMAGE);
-
   const formData =
     await readOpportunityFormData(
       request,
@@ -238,19 +216,26 @@ function mapCreateOpportunityError(
 export async function createOpportunity({
   authenticatedAdminId,
   input,
+  imageDependencies,
 }: {
   authenticatedAdminId: number;
   input: CreateOpportunityInput;
+  imageDependencies?: PublicImageDependencies;
 }): Promise<OpportunityResponse> {
   let storedImage:
     | StoredOpportunityImage
     | null = null;
 
   try {
+    const authorizedAdmin = await prisma.user.findUnique({ where: { id: authenticatedAdminId }, select: { role: true } });
+    if (!authorizedAdmin) throw new AppError("ADMIN_NOT_FOUND", 404);
+    if (authorizedAdmin.role !== "admin") throw new AppError("ADMIN_ACCESS_REQUIRED", 403);
+
     if (input.imageFile) {
       storedImage =
         await storeOpportunityImageFile(
           input.imageFile,
+          imageDependencies,
         );
     }
 
@@ -283,7 +268,7 @@ export async function createOpportunity({
             );
           }
 
-          return transaction.opportunity.create({
+          const created = await transaction.opportunity.create({
             data: {
               title:
                 input.title,
@@ -293,12 +278,24 @@ export async function createOpportunity({
                 "Open",
               description:
                 input.description,
-              imageUrl:
-                storedImage?.imageUrl ??
-                null,
+              imageUrl: null,
+              imageStorageKey: storedImage?.storageKey,
+              imageStorageProvider: storedImage?.storageProvider,
+              imageMimeType: storedImage?.mimeType,
+              imageFileSize: storedImage?.fileSize,
+              imageChecksumSha256: storedImage?.checksumSha256,
+              imageScanStatus: storedImage?.scanStatus,
+              imageScannedAt: storedImage?.scannedAt,
+              imageScanEngine: storedImage?.scanEngine,
+              imageScanAttempts: storedImage?.scanAttempts ?? 0,
             },
-            select:
-              OPPORTUNITY_SELECT,
+            select: { id: true },
+          });
+
+          return transaction.opportunity.update({
+            where: { id: created.id },
+            data: { imageUrl: storedImage ? createPublicImageUrl("opportunity", created.id) : null },
+            select: OPPORTUNITY_SELECT,
           });
         },
       );
@@ -307,10 +304,7 @@ export async function createOpportunity({
 
     return opportunity;
   } catch (error) {
-    await removeOpportunityImageFile(
-      storedImage?.absolutePath ??
-      null,
-    );
+    await removePublicImageBestEffort(storedImage?.storageKey ?? null, imageDependencies?.storage);
 
     mapCreateOpportunityError(
       error,

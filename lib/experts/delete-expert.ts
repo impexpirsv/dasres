@@ -6,6 +6,8 @@ import {
   resolveExpertImageFilePath,
 } from "../storage/expert-image-storage";
 import { runInTransaction } from "../transactions";
+import { removePublicImageBestEffort } from "../storage/public-image-storage";
+import type { SecureObjectStorage } from "../storage/secure-object-storage";
 
 function ensureExpertPermission({
   userId,
@@ -58,11 +60,14 @@ function mapDeleteExpertError(
 export async function deleteExpert({
   expertId,
   authenticatedUserId,
+  imageStorage,
 }: {
   expertId: number;
   authenticatedUserId: number;
+  imageStorage?: SecureObjectStorage;
 }): Promise<void> {
   let imageUrl: string | null;
+  let imageStorageKey: string | null;
 
   try {
     const result =
@@ -96,6 +101,7 @@ export async function deleteExpert({
                 id: true,
                 ownerId: true,
                 imageUrl: true,
+                imageStorageKey: true,
               },
             });
 
@@ -124,11 +130,13 @@ export async function deleteExpert({
           return {
             imageUrl:
               expert.imageUrl,
+            imageStorageKey: expert.imageStorageKey,
           };
         },
       );
 
     imageUrl = result.imageUrl;
+    imageStorageKey = result.imageStorageKey;
   } catch (error) {
     mapDeleteExpertError(
       error,
@@ -140,4 +148,5 @@ export async function deleteExpert({
       imageUrl,
     ),
   );
+  await removePublicImageBestEffort(imageStorageKey, imageStorage);
 }

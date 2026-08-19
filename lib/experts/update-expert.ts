@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 import { AppError } from "../errors";
+import { prisma } from "../prisma";
 import {
   removeExpertImageFile,
   resolveExpertImageFilePath,
@@ -8,7 +9,9 @@ import {
   type StoredExpertImage,
 } from "../storage/expert-image-storage";
 import { runInTransaction } from "../transactions";
-import { assertUploadRequestSize, UPLOAD_REQUEST_LIMITS } from "../security/upload-request";
+import { parseBoundedMultipartFormData } from "../security/upload-request";
+import { PUBLIC_IMAGE_LIMITS } from "../storage/public-image-storage";
+import { createPublicImageUrl, removePublicImageBestEffort, type PublicImageDependencies } from "../storage/public-image-storage";
 import {
   EXPERT_DETAIL_SELECT,
   type ExpertDetail,
@@ -40,33 +43,11 @@ function isValidEmail(
 async function readExpertFormData(
   request: Request,
 ): Promise<FormData> {
-  const contentType =
-    request.headers.get(
-      "content-type",
-    );
-
-  if (
-    !contentType ||
-    !contentType
-      .toLowerCase()
-      .includes(
-        "multipart/form-data",
-      )
-  ) {
-    throw new AppError(
-      "UNSUPPORTED_MEDIA_TYPE",
-      415,
-    );
-  }
-
-  try {
-    return await request.formData();
-  } catch {
-    throw new AppError(
-      "INVALID_FORM_DATA",
-      400,
-    );
-  }
+  return parseBoundedMultipartFormData(request, {
+    maximumRequestBytes: PUBLIC_IMAGE_LIMITS.requestBytes,
+    maximumFileBytes: PUBLIC_IMAGE_LIMITS.fileBytes,
+    fileField: "image",
+  });
 }
 
 function getFormText(
@@ -222,8 +203,6 @@ function parseExpertFormData(
 export async function parseUpdateExpertInput(
   request: Request,
 ): Promise<UpdateExpertInput> {
-  assertUploadRequestSize(request, UPLOAD_REQUEST_LIMITS.IMAGE);
-
   const formData =
     await readExpertFormData(
       request,
@@ -293,20 +272,29 @@ export async function updateExpert({
   expertId,
   authenticatedUserId,
   input,
+  imageDependencies,
 }: {
   expertId: number;
   authenticatedUserId: number;
   input: UpdateExpertInput;
+  imageDependencies?: PublicImageDependencies;
 }): Promise<ExpertDetail> {
   let storedImage:
     | StoredExpertImage
     | null = null;
 
   try {
+    const authorized = await prisma.expert.findUnique({ where: { id: expertId }, select: { ownerId: true } });
+    const user = await prisma.user.findUnique({ where: { id: authenticatedUserId }, select: { role: true } });
+    if (!user) throw new AppError("USER_NOT_FOUND", 404);
+    if (!authorized) throw new AppError("EXPERT_NOT_FOUND", 404);
+    ensureExpertPermission({ userId: authenticatedUserId, userRole: user.role, ownerId: authorized.ownerId });
+
     if (input.imageFile) {
       storedImage =
         await storeExpertImageFile(
           input.imageFile,
+          imageDependencies,
         );
     }
 
@@ -341,6 +329,7 @@ export async function updateExpert({
                 id: true,
                 ownerId: true,
                 imageUrl: true,
+                imageStorageKey: true,
               },
             });
 
@@ -379,7 +368,16 @@ export async function updateExpert({
                 ...(storedImage
                   ? {
                       imageUrl:
-                        storedImage.imageUrl,
+                        createPublicImageUrl("expert", expertId),
+                      imageStorageKey: storedImage.storageKey,
+                      imageStorageProvider: storedImage.storageProvider,
+                      imageMimeType: storedImage.mimeType,
+                      imageFileSize: storedImage.fileSize,
+                      imageChecksumSha256: storedImage.checksumSha256,
+                      imageScanStatus: storedImage.scanStatus,
+                      imageScannedAt: storedImage.scannedAt,
+                      imageScanEngine: storedImage.scanEngine,
+                      imageScanAttempts: storedImage.scanAttempts,
                     }
                   : {}),
               },
@@ -391,6 +389,7 @@ export async function updateExpert({
             expert,
             previousImageUrl:
               currentExpert.imageUrl,
+            previousStorageKey: currentExpert.imageStorageKey,
           };
         },
       );
@@ -402,6 +401,7 @@ export async function updateExpert({
           )
         : null;
 
+    const replacementStorageKey = storedImage?.storageKey ?? null;
     storedImage = null;
 
     if (previousImagePath) {
@@ -410,12 +410,13 @@ export async function updateExpert({
       );
     }
 
+    if (replacementStorageKey && result.previousStorageKey !== replacementStorageKey) {
+      await removePublicImageBestEffort(result.previousStorageKey, imageDependencies?.storage);
+    }
+
     return result.expert;
   } catch (error) {
-    await removeExpertImageFile(
-      storedImage?.savedFilePath ??
-      null,
-    );
+    await removePublicImageBestEffort(storedImage?.storageKey ?? null, imageDependencies?.storage);
 
     mapUpdateExpertError(
       error,

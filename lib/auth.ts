@@ -57,6 +57,18 @@ export async function requireApiUser(): Promise<AuthenticatedUser> {
   return user;
 }
 
+export async function requireApiCapability(capability: Capability): Promise<AuthenticatedUser> {
+  const user = await requireApiUser();
+  if (!hasCapability(user.role, capability)) {
+    throw new AppError("AUTHORIZATION_REQUIRED", 403);
+  }
+  return user;
+}
+
+export async function requireApiAdmin(): Promise<AuthenticatedUser> {
+  return requireApiCapability(CAPABILITIES.ADMIN_ACCESS);
+}
+
 export async function requireCapability(
   capability: Capability,
 ): Promise<AuthenticatedUser> {

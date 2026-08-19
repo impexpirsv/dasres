@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 import { AppError } from "../errors";
+import { prisma } from "../prisma";
 import {
   removeOpportunityImageFile,
   resolveOpportunityImageFilePath,
@@ -8,7 +9,9 @@ import {
   type StoredOpportunityImage,
 } from "../storage/opportunity-image-storage";
 import { runInTransaction } from "../transactions";
-import { assertUploadRequestSize, UPLOAD_REQUEST_LIMITS } from "../security/upload-request";
+import { parseBoundedMultipartFormData } from "../security/upload-request";
+import { PUBLIC_IMAGE_LIMITS } from "../storage/public-image-storage";
+import { createPublicImageUrl, removePublicImageBestEffort, type PublicImageDependencies } from "../storage/public-image-storage";
 import {
   OPPORTUNITY_SELECT,
   type OpportunityResponse,
@@ -28,33 +31,11 @@ export type UpdateOpportunityInput = {
 async function readOpportunityFormData(
   request: Request,
 ): Promise<FormData> {
-  const contentType =
-    request.headers.get(
-      "content-type",
-    );
-
-  if (
-    !contentType ||
-    !contentType
-      .toLowerCase()
-      .includes(
-        "multipart/form-data",
-      )
-  ) {
-    throw new AppError(
-      "UNSUPPORTED_MEDIA_TYPE",
-      415,
-    );
-  }
-
-  try {
-    return await request.formData();
-  } catch {
-    throw new AppError(
-      "INVALID_FORM_DATA",
-      400,
-    );
-  }
+  return parseBoundedMultipartFormData(request, {
+    maximumRequestBytes: PUBLIC_IMAGE_LIMITS.requestBytes,
+    maximumFileBytes: PUBLIC_IMAGE_LIMITS.fileBytes,
+    fileField: "image",
+  });
 }
 
 function getRequiredTextField(
@@ -175,8 +156,6 @@ function parseOpportunityFormData(
 export async function parseUpdateOpportunityInput(
   request: Request,
 ): Promise<UpdateOpportunityInput> {
-  assertUploadRequestSize(request, UPLOAD_REQUEST_LIMITS.IMAGE);
-
   const formData =
     await readOpportunityFormData(
       request,
@@ -274,20 +253,27 @@ export async function updateOpportunity({
   opportunityId,
   authenticatedAdminId,
   input,
+  imageDependencies,
 }: {
   opportunityId: number;
   authenticatedAdminId: number;
   input: UpdateOpportunityInput;
+  imageDependencies?: PublicImageDependencies;
 }): Promise<OpportunityResponse> {
   let storedImage:
     | StoredOpportunityImage
     | null = null;
 
   try {
+    const admin = await prisma.user.findUnique({ where: { id: authenticatedAdminId }, select: { role: true } });
+    if (!admin) throw new AppError("ADMIN_NOT_FOUND", 404);
+    if (admin.role !== "admin") throw new AppError("ADMIN_ACCESS_REQUIRED", 403);
+
     if (input.imageFile) {
       storedImage =
         await storeOpportunityImageFile(
           input.imageFile,
+          imageDependencies,
         );
     }
 
@@ -308,6 +294,7 @@ export async function updateOpportunity({
               select: {
                 id: true,
                 imageUrl: true,
+                imageStorageKey: true,
               },
             });
 
@@ -319,7 +306,7 @@ export async function updateOpportunity({
           }
 
           const nextImageUrl =
-            storedImage?.imageUrl ??
+            (storedImage ? createPublicImageUrl("opportunity", opportunityId) : null) ??
             currentOpportunity.imageUrl;
 
           const opportunity =
@@ -337,6 +324,17 @@ export async function updateOpportunity({
                   input.description,
                 imageUrl:
                   nextImageUrl,
+                ...(storedImage ? {
+                  imageStorageKey: storedImage.storageKey,
+                  imageStorageProvider: storedImage.storageProvider,
+                  imageMimeType: storedImage.mimeType,
+                  imageFileSize: storedImage.fileSize,
+                  imageChecksumSha256: storedImage.checksumSha256,
+                  imageScanStatus: storedImage.scanStatus,
+                  imageScannedAt: storedImage.scannedAt,
+                  imageScanEngine: storedImage.scanEngine,
+                  imageScanAttempts: storedImage.scanAttempts,
+                } : {}),
               },
               select:
                 OPPORTUNITY_SELECT,
@@ -346,6 +344,7 @@ export async function updateOpportunity({
             opportunity,
             previousImageUrl:
               currentOpportunity.imageUrl,
+            previousStorageKey: currentOpportunity.imageStorageKey,
           };
         },
       );
@@ -357,6 +356,7 @@ export async function updateOpportunity({
           )
         : null;
 
+    const replacementStorageKey = storedImage?.storageKey ?? null;
     storedImage = null;
 
     if (previousImagePath) {
@@ -365,12 +365,13 @@ export async function updateOpportunity({
       );
     }
 
+    if (replacementStorageKey && result.previousStorageKey !== replacementStorageKey) {
+      await removePublicImageBestEffort(result.previousStorageKey, imageDependencies?.storage);
+    }
+
     return result.opportunity;
   } catch (error) {
-    await removeOpportunityImageFile(
-      storedImage?.absolutePath ??
-      null,
-    );
+    await removePublicImageBestEffort(storedImage?.storageKey ?? null, imageDependencies?.storage);
 
     mapOpportunityMutationError(
       error,

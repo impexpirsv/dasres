@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 import { AppError } from "../errors";
+import { prisma } from "../prisma";
 import {
   removeCompanyLogoFile,
   resolveCompanyLogoFilePath,
@@ -8,7 +9,9 @@ import {
   type StoredCompanyLogo,
 } from "../storage/company-logo-storage";
 import { runInTransaction } from "../transactions";
-import { assertUploadRequestSize, UPLOAD_REQUEST_LIMITS } from "../security/upload-request";
+import { parseBoundedMultipartFormData } from "../security/upload-request";
+import { PUBLIC_IMAGE_LIMITS } from "../storage/public-image-storage";
+import { createPublicImageUrl, removePublicImageBestEffort, type PublicImageDependencies } from "../storage/public-image-storage";
 import {
   COMPANY_DETAIL_SELECT,
   type CompanyDetail,
@@ -65,33 +68,11 @@ function isValidWebsite(
 async function readCompanyFormData(
   request: Request,
 ): Promise<FormData> {
-  const contentType =
-    request.headers.get(
-      "content-type",
-    );
-
-  if (
-    !contentType ||
-    !contentType
-      .toLowerCase()
-      .includes(
-        "multipart/form-data",
-      )
-  ) {
-    throw new AppError(
-      "UNSUPPORTED_MEDIA_TYPE",
-      415,
-    );
-  }
-
-  try {
-    return await request.formData();
-  } catch {
-    throw new AppError(
-      "INVALID_FORM_DATA",
-      400,
-    );
-  }
+  return parseBoundedMultipartFormData(request, {
+    maximumRequestBytes: PUBLIC_IMAGE_LIMITS.requestBytes,
+    maximumFileBytes: PUBLIC_IMAGE_LIMITS.fileBytes,
+    fileField: "logo",
+  });
 }
 
 function getFormText(
@@ -240,8 +221,6 @@ function parseCompanyFormData(
 export async function parseUpdateCompanyInput(
   request: Request,
 ): Promise<UpdateCompanyInput> {
-  assertUploadRequestSize(request, UPLOAD_REQUEST_LIMITS.IMAGE);
-
   const formData =
     await readCompanyFormData(
       request,
@@ -342,20 +321,32 @@ export async function updateCompany({
   companyId,
   authenticatedUserId,
   input,
+  imageDependencies,
 }: {
   companyId: number;
   authenticatedUserId: number;
   input: UpdateCompanyInput;
+  imageDependencies?: PublicImageDependencies;
 }): Promise<UpdateCompanyResult> {
   let storedLogo:
     | StoredCompanyLogo
     | null = null;
 
   try {
+    const authorized = await prisma.company.findUnique({
+      where: { id: companyId },
+      select: { ownerId: true, logoStorageKey: true },
+    });
+    const user = await prisma.user.findUnique({ where: { id: authenticatedUserId }, select: { role: true } });
+    if (!user) throw new AppError("AUTHENTICATED_USER_NOT_FOUND", 401);
+    if (!authorized) throw new AppError("COMPANY_NOT_FOUND", 404);
+    ensureCompanyPermission({ userId: authenticatedUserId, userRole: user.role, ownerId: authorized.ownerId });
+
     if (input.logoFile) {
       storedLogo =
         await storeCompanyLogoFile(
           input.logoFile,
+          imageDependencies,
         );
     }
 
@@ -386,8 +377,7 @@ export async function updateCompany({
               where: {
                 id: companyId,
               },
-              select:
-                COMPANY_DETAIL_SELECT,
+              select: { ...COMPANY_DETAIL_SELECT, logoStorageKey: true },
             });
 
           if (!currentCompany) {
@@ -407,10 +397,11 @@ export async function updateCompany({
           });
 
           const nextLogoUrl =
-            storedLogo?.logoUrl ??
+            (storedLogo ? createPublicImageUrl("company", companyId) : null) ??
             currentCompany.logoUrl;
 
           if (
+            !storedLogo &&
             !companyHasChanged({
               company:
                 currentCompany,
@@ -424,6 +415,7 @@ export async function updateCompany({
                 currentCompany,
               previousLogoUrl:
                 currentCompany.logoUrl,
+              previousStorageKey: currentCompany.logoStorageKey,
               changed: false,
             };
           }
@@ -448,6 +440,17 @@ export async function updateCompany({
                   input.website,
                 logoUrl:
                   nextLogoUrl,
+                ...(storedLogo ? {
+                  logoStorageKey: storedLogo.storageKey,
+                  logoStorageProvider: storedLogo.storageProvider,
+                  logoMimeType: storedLogo.mimeType,
+                  logoFileSize: storedLogo.fileSize,
+                  logoChecksumSha256: storedLogo.checksumSha256,
+                  logoScanStatus: storedLogo.scanStatus,
+                  logoScannedAt: storedLogo.scannedAt,
+                  logoScanEngine: storedLogo.scanEngine,
+                  logoScanAttempts: storedLogo.scanAttempts,
+                } : {}),
               },
               select:
                 COMPANY_DETAIL_SELECT,
@@ -457,27 +460,26 @@ export async function updateCompany({
             company,
             previousLogoUrl:
               currentCompany.logoUrl,
+            previousStorageKey: currentCompany.logoStorageKey,
             changed: true,
           };
         },
       );
 
+    const replacementStorageKey = storedLogo?.storageKey ?? null;
+
     if (
       storedLogo &&
-      result.company.logoUrl !==
-        storedLogo.logoUrl
+      result.company.logoUrl !== createPublicImageUrl("company", companyId)
     ) {
-      await removeCompanyLogoFile(
-        storedLogo.savedFilePath,
-      );
+      await removePublicImageBestEffort(storedLogo.storageKey, imageDependencies?.storage);
 
       storedLogo = null;
     }
 
     if (
       storedLogo &&
-      result.company.logoUrl ===
-        storedLogo.logoUrl
+      result.company.logoUrl === createPublicImageUrl("company", companyId)
     ) {
       storedLogo = null;
     }
@@ -495,6 +497,10 @@ export async function updateCompany({
       );
     }
 
+    if (replacementStorageKey && result.changed && result.previousStorageKey && result.previousStorageKey !== replacementStorageKey) {
+      await removePublicImageBestEffort(result.previousStorageKey, imageDependencies?.storage);
+    }
+
     return {
       company:
         result.company,
@@ -502,10 +508,7 @@ export async function updateCompany({
         result.changed,
     };
   } catch (error) {
-    await removeCompanyLogoFile(
-      storedLogo?.savedFilePath ??
-      null,
-    );
+    await removePublicImageBestEffort(storedLogo?.storageKey ?? null, imageDependencies?.storage);
 
     mapUpdateCompanyError(
       error,

@@ -42,10 +42,68 @@ export type BoundedMultipartUpload = {
   fields: Readonly<Record<string, string>>;
 };
 
+export type BoundedMultipartForm = {
+  file: BoundedMultipartUpload["file"] | null;
+  fields: Readonly<Record<string, string>>;
+};
+
+type MultipartOptions = {
+  maximumRequestBytes: number;
+  maximumFileBytes: number;
+  fileField?: string;
+  requireFile: boolean;
+};
+
 export async function parseBoundedMultipartUpload(
   request: Request,
   options: { maximumRequestBytes: number; maximumFileBytes: number; fileField?: string },
 ): Promise<BoundedMultipartUpload> {
+  const parsed = await parseBoundedMultipart(request, {
+    ...options,
+    requireFile: true,
+  });
+
+  if (!parsed.file) {
+    throw new FileSecurityError("invalid_upload", 400);
+  }
+
+  return { file: parsed.file, fields: parsed.fields };
+}
+
+export async function parseBoundedMultipartFormData(
+  request: Request,
+  options: {
+    maximumRequestBytes: number;
+    maximumFileBytes: number;
+    fileField: string;
+  },
+): Promise<FormData> {
+  const parsed = await parseBoundedMultipart(request, {
+    ...options,
+    requireFile: false,
+  });
+  const formData = new FormData();
+
+  for (const [name, value] of Object.entries(parsed.fields)) {
+    formData.set(name, value);
+  }
+
+  if (parsed.file) {
+    formData.set(
+      parsed.file.fieldName,
+      new File([new Uint8Array(parsed.file.bytes)], parsed.file.fileName, {
+        type: parsed.file.mimeType,
+      }),
+    );
+  }
+
+  return formData;
+}
+
+async function parseBoundedMultipart(
+  request: Request,
+  options: MultipartOptions,
+): Promise<BoundedMultipartForm> {
   const contentType = request.headers.get("content-type") ?? "";
   if (!/^multipart\/form-data\s*;.*boundary=/i.test(contentType) || !request.body) {
     throw new FileSecurityError("invalid_upload", 400);
@@ -117,8 +175,10 @@ export async function parseBoundedMultipartUpload(
     if (error instanceof FileSecurityError) throw error;
     throw new FileSecurityError("invalid_upload", 400);
   }
-  if (invalid || !file) throw new FileSecurityError("invalid_upload", 400);
-  file.bytes = Buffer.concat(chunks);
-  if (file.bytes.length > options.maximumFileBytes) throw new FileSecurityError("payload_too_large", 413);
-  return { file, fields };
+  if (invalid || (options.requireFile && !file)) throw new FileSecurityError("invalid_upload", 400);
+  if (file) {
+    file.bytes = Buffer.concat(chunks);
+    if (file.bytes.length > options.maximumFileBytes) throw new FileSecurityError("payload_too_large", 413);
+  }
+  return { file: file ?? null, fields };
 }

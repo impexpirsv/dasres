@@ -39,8 +39,16 @@ export function getObjectStorageConfig(): ObjectStorageConfig {
     throw new FileSecurityError("configuration", 503);
   }
 
+  const allowLoopbackHttp = (() => {
+    if (process.env.OBJECT_STORAGE_ALLOW_INSECURE_LOOPBACK_TESTS !== "1" || endpoint.protocol !== "http:" || process.env.TEST_DATABASE_URL !== process.env.DATABASE_URL) return false;
+    try {
+      const database = new URL(process.env.TEST_DATABASE_URL ?? "");
+      return ["127.0.0.1", "localhost", "::1"].includes(endpoint.hostname) && ["127.0.0.1", "localhost", "::1"].includes(database.hostname);
+    } catch { return false; }
+  })();
+
   if (
-    endpoint.protocol !== "https:" ||
+    (endpoint.protocol !== "https:" && !allowLoopbackHttp) ||
     endpoint.username ||
     endpoint.password ||
     endpoint.search ||

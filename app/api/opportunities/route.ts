@@ -1,5 +1,5 @@
 import { apiHandler } from "../../../lib/api";
-import { requireAdmin } from "../../../lib/auth";
+import { requireApiAdmin } from "../../../lib/auth";
 import {
   createOpportunity,
   parseCreateOpportunityInput,
@@ -11,7 +11,7 @@ export async function POST(
   request: Request,
 ): Promise<Response> {
   return apiHandler(async () => {
-    const admin = await requireAdmin();
+    const admin = await requireApiAdmin();
 
     const input =
       await parseCreateOpportunityInput(

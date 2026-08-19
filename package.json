@@ -18,6 +18,7 @@
     "db:migrate:deploy": "prisma migrate deploy",
     "db:audit": "tsx scripts/audit-database.ts",
     "storage:migrate-confidential": "tsx scripts/migrate-confidential-files.ts",
+    "storage:migrate-public-images": "tsx --import ./scripts/integration/server-only-register.mjs scripts/migrate-public-images.ts",
     "translate": "tsx scripts/translate.ts",
     "content:validate": "tsx scripts/validate-content.ts",
     "auth:verify": "tsx scripts/verify-account-recovery.ts",
