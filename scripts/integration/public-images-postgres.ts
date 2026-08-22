@@ -147,17 +147,29 @@ async function main(): Promise<void> {
       name: `Legacy ${suffix}`, country: "IR", category: "Tech", status: "Active", description: "Legacy", email: `legacy-${suffix}@example.test`, website: "https://example.test", logoUrl: `/uploads/companies/${legacyName}`, ownerId: owner.id,
     } });
     const sourceBefore = await readFile(legacyPath);
-    await migratePublicImageRecord("company", legacy.id, legacy.logoUrl!, false, dependencies);
+    const readOnlyPutsBefore = storage.puts;
+    const readOnlyRemovalsBefore = storage.removes.length;
+    const readOnlyScansBefore = scanner.calls;
+    await migratePublicImageRecord("company", legacy.id, legacy.logoUrl!, "inventory", {
+      storage: new Proxy(storage, { get() { throw new Error("inventory_storage_access"); } }),
+      scanner: new Proxy(scanner, { get() { throw new Error("inventory_scanner_access"); } }),
+    });
     assert.equal((await prisma.company.findUniqueOrThrow({ where: { id: legacy.id } })).logoStorageKey, null);
     assert.deepEqual(await readFile(legacyPath), sourceBefore);
+    await migratePublicImageRecord("company", legacy.id, legacy.logoUrl!, "dry-run", dependencies);
+    assert.equal((await prisma.company.findUniqueOrThrow({ where: { id: legacy.id } })).logoStorageKey, null);
+    assert.deepEqual(await readFile(legacyPath), sourceBefore);
+    assert.equal(storage.puts, readOnlyPutsBefore);
+    assert.equal(storage.removes.length, readOnlyRemovalsBefore);
+    assert.equal(scanner.calls, readOnlyScansBefore);
     await assert.rejects(() => readLegacyPublicImage("company", "/uploads/companies/../outside.png"));
     await assert.rejects(() => readLegacyPublicImage("company", "C:\\outside.png"));
-    await migratePublicImageRecord("company", legacy.id, legacy.logoUrl!, true, dependencies);
+    await migratePublicImageRecord("company", legacy.id, legacy.logoUrl!, "apply", dependencies);
     const migrated = await prisma.company.findUniqueOrThrow({ where: { id: legacy.id } });
     assert.equal(migrated.logoScanStatus, "CLEAN"); assert(migrated.logoStorageKey);
     assert.deepEqual(await readFile(legacyPath), sourceBefore);
     const removalsBeforeConflict = storage.removes.length;
-    await assert.rejects(() => migratePublicImageRecord("company", legacy.id, legacy.logoUrl!, true, dependencies));
+    await assert.rejects(() => migratePublicImageRecord("company", legacy.id, legacy.logoUrl!, "apply", dependencies));
     assert.equal((await prisma.company.findUniqueOrThrow({ where: { id: legacy.id } })).logoStorageKey, migrated.logoStorageKey);
     assert.equal(storage.removes.length, removalsBeforeConflict + 1, "conditional conflict must clean the newly uploaded object");
   } finally {

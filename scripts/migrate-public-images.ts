@@ -38,16 +38,31 @@ function selectedDomain(): PublicImageDomain {
 
 const CLOUD_HOST_PATTERNS = ["neon.tech", "neon.build", "supabase.co", "render.com", "railway.app", "amazonaws.com", "azure.com", "cloud.google.com", "pooler"];
 
+export type PublicImageMigrationMode = "inventory" | "dry-run" | "apply";
+
+export function resolvePublicImageMigrationMode(argumentsList: readonly string[]): PublicImageMigrationMode {
+  const modes = (["inventory", "dry-run", "apply"] as const).filter((mode) => argumentsList.includes(`--${mode}`));
+  if (modes.length !== 1) throw new Error("Specify exactly one --inventory, --dry-run, or --apply");
+  return modes[0];
+}
+
 export function resolveBackfillDatabaseUrl(environment: Readonly<Record<string, string | undefined>>, argumentsList: readonly string[]): string {
   const production = argumentsList.includes("--production");
-  const apply = argumentsList.includes("--apply");
+  const mode = resolvePublicImageMigrationMode(argumentsList);
   if (production) {
-    if (!apply || !argumentsList.includes("--acknowledge-production")) {
-      throw new Error("Production mode requires --apply and --acknowledge-production");
+    if (mode === "apply" && !argumentsList.includes("--acknowledge-production")) {
+      throw new Error("Production apply requires --production --apply --acknowledge-production");
+    }
+    if (mode !== "apply" && !argumentsList.includes("--acknowledge-production-read-only")) {
+      throw new Error("Production read-only mode requires --production --inventory|--dry-run --acknowledge-production-read-only");
     }
     const productionUrl = environment.DATABASE_URL;
     if (!productionUrl) throw new Error("DATABASE_URL is required for acknowledged production mode");
     return productionUrl;
+  }
+
+  if (argumentsList.includes("--acknowledge-production") || argumentsList.includes("--acknowledge-production-read-only")) {
+    throw new Error("Production acknowledgement cannot be used without --production");
   }
 
   const testUrl = environment.TEST_DATABASE_URL;
@@ -89,11 +104,15 @@ export async function migratePublicImageRecord(
   domain: PublicImageDomain,
   id: number,
   url: string,
-  apply: boolean,
+  mode: PublicImageMigrationMode,
   dependencies?: PublicImageDependencies,
 ): Promise<void> {
+  if (mode === "inventory") {
+    console.log(JSON.stringify({ domain, id, outcome: "inventory" }));
+    return;
+  }
   const file = await readLegacyPublicImage(domain, url);
-  if (!apply) {
+  if (mode === "dry-run") {
     await normalizePublicImage(file);
     console.log(JSON.stringify({ domain, id, outcome: "valid_dry_run" }));
     return;
@@ -144,7 +163,7 @@ export async function migratePublicImageRecord(
 
 async function main(): Promise<void> {
   const domain = selectedDomain();
-  const apply = process.argv.includes("--apply");
+  const mode = resolvePublicImageMigrationMode(process.argv);
   process.env.DATABASE_URL = resolveBackfillDatabaseUrl(process.env, process.argv);
   const records = domain === "company"
     ? await prisma.company.findMany({ where: { logoStorageKey: null, logoUrl: { startsWith: DOMAIN_CONFIG.company.prefix } }, select: { id: true, logoUrl: true }, orderBy: { id: "asc" } })
@@ -155,7 +174,7 @@ async function main(): Promise<void> {
   for (const record of records) {
     const url = "logoUrl" in record ? record.logoUrl : record.imageUrl;
     if (!url) continue;
-    try { await migratePublicImageRecord(domain, record.id, url, apply); }
+    try { await migratePublicImageRecord(domain, record.id, url, mode); }
     catch (error) { console.error(JSON.stringify({ domain, id: record.id, outcome: "failed", error: error instanceof Error ? error.message : "unknown" })); }
   }
 }

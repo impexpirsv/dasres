@@ -14,7 +14,7 @@ import type { ObjectStorageConfig } from "../lib/storage/object-storage-config";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { storeConfidentialUpload, readLegacyPrivateFile, streamBoundedObject } from "../lib/storage/confidential-file-storage";
 import { createVerifiedPublicImageStream, storePublicImage } from "../lib/storage/public-image-storage";
-import { resolveBackfillDatabaseUrl } from "./migrate-public-images";
+import { resolveBackfillDatabaseUrl, resolvePublicImageMigrationMode } from "./migrate-public-images";
 
 async function rejects(operation: () => Promise<unknown> | unknown): Promise<void> {
   await assert.rejects(async () => operation(), FileSecurityError);
@@ -346,17 +346,26 @@ await assert.rejects(() => consumeStream(createVerifiedPublicImageStream({
 })));
 assert.equal(overrunReturned, true, "overrun must terminate the upstream iterator");
 
-assert.throws(() => resolveBackfillDatabaseUrl({}, []), /TEST_DATABASE_URL/);
-assert.throws(() => resolveBackfillDatabaseUrl({ TEST_DATABASE_URL: "postgresql://u:p@db.example.test/db" }, []), /loopback/);
+assert.throws(() => resolvePublicImageMigrationMode([]), /exactly one/);
+assert.throws(() => resolvePublicImageMigrationMode(["--inventory", "--apply"]), /exactly one/);
+assert.equal(resolvePublicImageMigrationMode(["--inventory"]), "inventory");
+assert.equal(resolvePublicImageMigrationMode(["--dry-run"]), "dry-run");
+assert.equal(resolvePublicImageMigrationMode(["--apply"]), "apply");
+assert.throws(() => resolveBackfillDatabaseUrl({}, ["--inventory"]), /TEST_DATABASE_URL/);
+assert.throws(() => resolveBackfillDatabaseUrl({ TEST_DATABASE_URL: "postgresql://u:p@db.example.test/db" }, ["--dry-run"]), /loopback/);
 assert.throws(() => resolveBackfillDatabaseUrl({
   TEST_DATABASE_URL: "postgresql://u:p@127.0.0.1:5432/test",
   DATABASE_URL: "postgresql://u:p@127.0.0.1:5432/test",
-}, []), /must differ/);
+}, ["--apply"]), /must differ/);
 assert.equal(resolveBackfillDatabaseUrl({
   TEST_DATABASE_URL: "postgresql://u:p@127.0.0.1:5432/test",
   DATABASE_URL: "postgresql://u:p@remote.example.test/prod",
-}, []), "postgresql://u:p@127.0.0.1:5432/test");
+}, ["--inventory"]), "postgresql://u:p@127.0.0.1:5432/test");
 assert.throws(() => resolveBackfillDatabaseUrl({ DATABASE_URL: "postgresql://u:p@remote.example.test/prod" }, ["--production", "--apply"]), /acknowledge/);
+assert.throws(() => resolveBackfillDatabaseUrl({ DATABASE_URL: "postgresql://u:p@remote.example.test/prod" }, ["--production", "--inventory"]), /read-only/);
+assert.equal(resolveBackfillDatabaseUrl({ DATABASE_URL: "postgresql://u:p@remote.example.test/prod" }, ["--production", "--inventory", "--acknowledge-production-read-only"]), "postgresql://u:p@remote.example.test/prod");
+assert.equal(resolveBackfillDatabaseUrl({ DATABASE_URL: "postgresql://u:p@remote.example.test/prod" }, ["--production", "--dry-run", "--acknowledge-production-read-only"]), "postgresql://u:p@remote.example.test/prod");
+assert.throws(() => resolveBackfillDatabaseUrl({ TEST_DATABASE_URL: "postgresql://u:p@127.0.0.1:5432/test" }, ["--inventory", "--acknowledge-production-read-only"]), /without --production/);
 
 console.log("File-storage security runtime tests passed.");
 }
