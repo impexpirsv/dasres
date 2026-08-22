@@ -1,0 +1,19 @@
+services:
+  clamd:
+    image: clamav/clamav:1.4
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3310:3310"
+    environment:
+      CLAMD_CONF_StreamMaxLength: 16M
+    healthcheck:
+      test: ["CMD", "clamdscan", "--ping", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    volumes:
+      - clamav_signatures:/var/lib/clamav
+
+volumes:
+  clamav_signatures:

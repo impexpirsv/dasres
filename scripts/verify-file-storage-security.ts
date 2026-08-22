@@ -28,10 +28,17 @@ const files = await Promise.all([
   "scripts/migrate-public-images.ts",
   "prisma/migrations/20260819120000_secure_public_images/migration.sql",
   "scripts/integration/public-images-postgres.ts",
+  "lib/security/trusted-client-ip.ts",
+  "lib/health/readiness.ts",
+  "scripts/migrate-confidential-files.ts",
+  "lib/storage/confidential-legacy-migration.ts",
+  "deploy/Caddyfile",
+  "deploy/dasres.service",
 ].map((file) => readFile(file, "utf8")));
 const [r2, multipart, clam, content, workflow, migration, confidential, caseStorage, taskStorage, caseUpload, caseDownload, taskUpload, taskDownload,
   caseDelete, taskDelete, caseUploadRoute, caseDownloadRoute, taskUploadRoute, taskDownloadRoute, integration,
-  publicImage, publicImageRoute, publicImageMigration, imageMigration, publicImageIntegration] = files;
+  publicImage, publicImageRoute, publicImageMigration, imageMigration, publicImageIntegration,
+  trustedIp, readiness, confidentialMigration, confidentialMigrationCore, caddy, systemd] = files;
 assert.match(r2, /IfNoneMatch: "\*"/);
 assert.doesNotMatch(r2, /ACL:|getSignedUrl|publicUrl/);
 assert.match(multipart, /maximumRequestBytes/);
@@ -81,6 +88,21 @@ assert.doesNotMatch(publicImageMigration, /unlink|rmSync|rename\(/);
 assert.doesNotMatch(imageMigration, /DROP|TRUNCATE|DELETE FROM|UPDATE /i);
 assert.match(publicImageIntegration, /TEST_DATABASE_URL/);
 assert.match(publicImageIntegration, /InMemorySecureObjectStorage/);
+assert.match(trustedIp, /timingSafeEqual/); assert.match(trustedIp, /TRUSTED_PROXY_SECRET/);
+assert.doesNotMatch(trustedIp, /x-forwarded-for|x-real-ip|cf-connecting-ip|x-vercel-forwarded-for/i);
+assert.match(readiness, /SELECT 1/); assert.match(readiness, /READINESS_TIMEOUT_MS/);
+assert.match(confidentialMigration, /--production --apply --acknowledge-production/);
+assert.match(confidentialMigration, /TEST_DATABASE_URL must differ from DATABASE_URL/);
+assert.match(confidentialMigrationCore, /conditional_conflict/);
+assert.doesNotMatch(confidentialMigrationCore, /unlink|rename\(|https?:\/\//);
+assert.match(caddy, /127\.0\.0\.1:3000/); assert.match(caddy, /max_size 12MB/);
+assert.match(caddy, /X-Dasres-Proxy-Secret/); assert.doesNotMatch(systemd, /migrate|prisma/);
+assert.match(systemd, /^ProtectSystem=strict$/m);
+assert.match(systemd, /^CacheDirectory=dasres-next$/m);
+assert.match(systemd, /^CacheDirectoryMode=0750$/m);
+assert.match(systemd, /^BindPaths=\/var\/cache\/dasres-next:\/srv\/dasres\/current\/\.next\/cache$/m);
+assert.match(systemd, /^ReadWritePaths=\/srv\/dasres\/legacy-private$/m);
+assert.doesNotMatch(systemd, /^ReadWritePaths=.*(?:\/srv\/dasres\/current|\/\.next(?:\s|$))/m);
 console.log("File-storage static structural guardrails verified; runtime behavior requires the dedicated runtime and integration suites.");
 }
 

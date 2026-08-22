@@ -1,115 +1,84 @@
-import { constants } from "fs";
-import { copyFile, mkdir, readdir, stat, unlink } from "fs/promises";
-import path from "path";
-import { randomUUID } from "crypto";
+import "server-only";
+
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+import type { FileScanStatus, PrismaClient } from "@prisma/client";
 
 import { prisma } from "../lib/prisma";
+import { ClamAvUploadScanner } from "../lib/security/clamav-upload-scanner";
+import { runConfidentialLegacyMigration, type ConfidentialLegacyFinalization, type ConfidentialLegacyMode,
+  type ConfidentialLegacyRecord, type ConfidentialLegacyRepository } from "../lib/storage/confidential-legacy-migration";
+import { R2StorageProvider } from "../lib/storage/r2-storage-provider";
 
-type ConfidentialKind = "cases" | "project-task-attachments";
+const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "::1"]);
+const CLOUD_HOST_PATTERNS = ["neon.tech", "neon.build", "supabase.co", "render.com", "railway.app", "amazonaws.com", "azure.com", "cloud.google.com", "pooler"];
 
-const MIME_BY_EXTENSION: Readonly<Record<string, string>> = {
-  ".doc": "application/msword",
-  ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ".jpeg": "image/jpeg",
-  ".jpg": "image/jpeg",
-  ".pdf": "application/pdf",
-  ".png": "image/png",
-  ".webp": "image/webp",
-  ".xls": "application/vnd.ms-excel",
-  ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-};
-
-function legacyFileName(storageKey: string, kind: ConfidentialKind): string {
-  const prefix = `/uploads/${kind}/`;
-  const candidate = storageKey.startsWith(prefix)
-    ? decodeURIComponent(storageKey.slice(prefix.length))
-    : storageKey;
-  if (!candidate || path.basename(candidate) !== candidate || candidate.includes("..")) {
-    throw new Error(`Unsafe legacy storage key for ${kind}`);
+export function resolveConfidentialMigrationDatabaseUrl(environment: Readonly<Record<string, string | undefined>>, argumentsList: readonly string[]): string {
+  const production = argumentsList.includes("--production"); const apply = argumentsList.includes("--apply");
+  if (production) {
+    if (apply && !argumentsList.includes("--acknowledge-production")) throw new Error("Production apply requires --production --apply --acknowledge-production");
+    if (!apply && !argumentsList.includes("--acknowledge-production-read-only")) throw new Error("Production report mode requires --production --acknowledge-production-read-only");
+    if (!environment.DATABASE_URL) throw new Error("DATABASE_URL is required for production apply");
+    return environment.DATABASE_URL;
   }
-  return candidate;
+  if (apply && argumentsList.includes("--acknowledge-production")) throw new Error("Production acknowledgement cannot be used without --production");
+  const testUrl = environment.TEST_DATABASE_URL;
+  if (!testUrl) throw new Error("TEST_DATABASE_URL is required");
+  if (testUrl === environment.DATABASE_URL) throw new Error("TEST_DATABASE_URL must differ from DATABASE_URL");
+  const parsed = new URL(testUrl); const host = parsed.hostname.toLowerCase();
+  if (parsed.protocol !== "postgresql:" || !LOOPBACK_HOSTS.has(host) || CLOUD_HOST_PATTERNS.some((item) => host.includes(item))) {
+    throw new Error("TEST_DATABASE_URL must use disposable loopback PostgreSQL");
+  }
+  return testUrl;
 }
 
-async function copyToPrivate(kind: ConfidentialKind, currentKey: string): Promise<{
-  storageKey: string;
-  mimeType: string;
-  fileSize: number;
-  sourcePath: string;
-}> {
-  const fileName = legacyFileName(currentKey, kind);
-  const sourcePath = path.join(process.cwd(), "public", "uploads", kind, fileName);
-  const extension = path.extname(fileName).toLowerCase();
-  const mimeType = MIME_BY_EXTENSION[extension];
-  if (!mimeType) throw new Error(`Unsupported legacy file extension for ${kind}`);
-
-  const storageKey = `${randomUUID()}${extension}`;
-  const privateDirectory = path.join(process.cwd(), "storage", "private", kind);
-  const destinationPath = path.join(privateDirectory, storageKey);
-  await mkdir(privateDirectory, { recursive: true });
-  await copyFile(sourcePath, destinationPath, constants.COPYFILE_EXCL);
-  const metadata = await stat(destinationPath);
-  return { storageKey, mimeType, fileSize: metadata.size, sourcePath };
+export function parseConfidentialMigrationMode(argumentsList: readonly string[]): ConfidentialLegacyMode {
+  const modes: ConfidentialLegacyMode[] = [];
+  if (argumentsList.includes("--inventory")) modes.push("inventory");
+  if (argumentsList.includes("--dry-run")) modes.push("dry-run");
+  if (argumentsList.includes("--apply")) modes.push("apply");
+  if (argumentsList.includes("--reconcile")) modes.push("reconcile");
+  if (modes.length > 1) throw new Error("Specify only one migration mode");
+  return modes[0] ?? "inventory";
 }
 
-async function migrateRecords(): Promise<void> {
-  const caseDocuments = await prisma.caseDocument.findMany({
-    select: { id: true, storageKey: true },
-  });
-  for (const document of caseDocuments) {
-    if (/^[0-9a-f-]{36}\.[a-z0-9]+$/i.test(document.storageKey)) continue;
-    const moved = await copyToPrivate("cases", document.storageKey);
-    await prisma.caseDocument.update({
-      where: { id: document.id },
-      data: { storageKey: moved.storageKey, mimeType: moved.mimeType, fileSize: moved.fileSize },
-    });
-    await unlink(moved.sourcePath);
-  }
-
-  const attachments = await prisma.projectTaskAttachment.findMany({
-    select: { id: true, storageKey: true },
-  });
-  for (const attachment of attachments) {
-    if (/^[0-9a-f-]{36}\.[a-z0-9]+$/i.test(attachment.storageKey)) continue;
-    const moved = await copyToPrivate("project-task-attachments", attachment.storageKey);
-    await prisma.projectTaskAttachment.update({
-      where: { id: attachment.id },
-      data: { storageKey: moved.storageKey, mimeType: moved.mimeType, fileSize: moved.fileSize },
-    });
-    await unlink(moved.sourcePath);
-  }
+function matches(record: ConfidentialLegacyRecord) {
+  return { id: record.id, storageKey: record.storageKey, storageProvider: record.storageProvider, mimeType: record.mimeType,
+    fileSize: record.fileSize, checksumSha256: record.checksumSha256, scanStatus: record.scanStatus as FileScanStatus | null,
+    scannedAt: record.scannedAt, scanEngine: record.scanEngine, scanAttempts: record.scanAttempts };
 }
 
-async function quarantineUnreferencedFiles(kind: ConfidentialKind): Promise<void> {
-  const publicDirectory = path.join(process.cwd(), "public", "uploads", kind);
-  const quarantineDirectory = path.join(process.cwd(), "storage", "private", "legacy-orphans", kind);
-  let files: string[];
-  try {
-    files = await readdir(publicDirectory);
-  } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") return;
-    throw error;
-  }
-  await mkdir(quarantineDirectory, { recursive: true });
-  for (const fileName of files) {
-    if (path.basename(fileName) !== fileName) throw new Error("Unsafe public upload filename");
-    const sourcePath = path.join(publicDirectory, fileName);
-    const metadata = await stat(sourcePath);
-    if (!metadata.isFile()) throw new Error(`Unexpected directory in ${publicDirectory}`);
-    const destinationPath = path.join(quarantineDirectory, `${randomUUID()}${path.extname(fileName).toLowerCase()}`);
-    await copyFile(sourcePath, destinationPath, constants.COPYFILE_EXCL);
-    await unlink(sourcePath);
-  }
+export function createConfidentialLegacyRepository(client: PrismaClient): ConfidentialLegacyRepository {
+  return {
+    async list() {
+      const [documents, attachments] = await Promise.all([
+        client.caseDocument.findMany({ orderBy: { id: "asc" } }), client.projectTaskAttachment.findMany({ orderBy: { id: "asc" } }),
+      ]);
+      return [...documents.map((item) => ({ ...item, domain: "case-document" as const, displayName: item.name })),
+        ...attachments.map((item) => ({ ...item, domain: "project-attachment" as const, displayName: item.fileName }))];
+    },
+    async finalize(expected, finalized: ConfidentialLegacyFinalization) {
+      const result = expected.domain === "case-document"
+        ? await client.caseDocument.updateMany({ where: matches(expected), data: finalized })
+        : await client.projectTaskAttachment.updateMany({ where: matches(expected), data: finalized });
+      return result.count === 1;
+    },
+  };
 }
 
 async function main(): Promise<void> {
-  await migrateRecords();
-  await quarantineUnreferencedFiles("cases");
-  await quarantineUnreferencedFiles("project-task-attachments");
+  const mode = parseConfidentialMigrationMode(process.argv);
+  process.env.DATABASE_URL = resolveConfidentialMigrationDatabaseUrl(process.env, process.argv);
+  const root = process.env.CONFIDENTIAL_LEGACY_ROOT?.trim();
+  if (!root || !path.isAbsolute(root)) throw new Error("CONFIDENTIAL_LEGACY_ROOT must be an absolute path");
+  const report = await runConfidentialLegacyMigration(mode, { repository: createConfidentialLegacyRepository(prisma), storage: new R2StorageProvider(),
+    scanner: new ClamAvUploadScanner(), legacyRoot: root });
+  console.log(JSON.stringify(report));
+  const accepted = new Set(["already_migrated", "valid_source", "would_migrate", "migrated", "clean_r2"]);
+  if (report.items.some((item) => !accepted.has(item.outcome))) process.exitCode = 1;
 }
 
-main()
-  .catch((error: unknown) => {
-    process.exitCode = 1;
-    console.error(error instanceof Error ? error.message : "Confidential file migration failed");
-  })
-  .finally(async () => prisma.$disconnect());
+const entrypoint = process.argv[1] ? pathToFileURL(path.resolve(process.argv[1])).href : null;
+if (entrypoint === import.meta.url) main().finally(() => prisma.$disconnect()).catch((error: unknown) => {
+  console.error(error instanceof Error ? error.message : "Confidential migration failed"); process.exitCode = 1;
+});

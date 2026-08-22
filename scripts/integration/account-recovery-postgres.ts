@@ -431,7 +431,7 @@ async function main(): Promise<void> {
   const projectUrl = process.env.DATABASE_URL ?? parseEnvironmentValue(envFile, "DATABASE_URL");
   const parsed = assertSafeTestDatabase(testUrl, testPort, projectUrl);
   const serverOnlyShim = pathToFileURL(path.join(process.cwd(), "scripts", "integration", "server-only-register.mjs")).href;
-  const childEnvironment: NodeJS.ProcessEnv = { ...process.env, TEST_DATABASE_URL: testUrl, TEST_DATABASE_PORT: String(testPort), DATABASE_URL: testUrl, PROJECT_DATABASE_URL_FOR_SAFETY: projectUrl, NEXT_PUBLIC_SITE_URL: "https://example.test", ACCOUNT_RATE_LIMIT_SECRET: randomBytes(32).toString("hex"), NODE_ENV: "test", NODE_OPTIONS: `--import=\"${serverOnlyShim}\"` };
+  const childEnvironment: NodeJS.ProcessEnv = { ...process.env, TEST_DATABASE_URL: testUrl, TEST_DATABASE_PORT: String(testPort), DATABASE_URL: testUrl, PROJECT_DATABASE_URL_FOR_SAFETY: projectUrl, NEXT_PUBLIC_SITE_URL: "https://example.test", ACCOUNT_RATE_LIMIT_SECRET: randomBytes(32).toString("hex"), TRUSTED_PROXY_MODE: "local", TRUSTED_PROXY_SECRET: randomBytes(32).toString("hex"), NODE_ENV: "test", NODE_OPTIONS: `--import=\"${serverOnlyShim}\"` };
   let started = false;
   try {
     console.log(`ISOLATION PROOF: host=${parsed.hostname} port=${parsed.port} database-prefix=${DATABASE_PREFIX} container=${containerName}`);

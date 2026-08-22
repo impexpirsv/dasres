@@ -2,9 +2,6 @@
   "name": "dasres",
   "version": "0.1.0",
   "private": true,
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -27,6 +24,7 @@
     "email:verify": "tsx scripts/verify-transactional-email.ts",
     "files:test": "tsx --import ./scripts/integration/server-only-register.mjs scripts/test-file-storage-security.ts",
     "files:verify": "tsx scripts/verify-file-storage-security.ts",
+    "deployment:test": "tsx --import ./scripts/integration/server-only-register.mjs scripts/test-deployment-safety.ts",
     "auth:integration": "tsx scripts/integration/account-recovery-postgres.ts",
     "check": "npm run lint && npm run typecheck && npm run db:validate && npm run content:validate && npm run build"
   },

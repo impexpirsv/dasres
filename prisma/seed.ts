@@ -1,13 +1,27 @@
 
 import { PrismaClient, CaseStatus, ProposalStatus, ProjectStatus, TaskStatus, TaskPriority, PlanType, VerificationStatus } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+
+export function assertDisposableSeedTarget(environment: Readonly<Record<string, string | undefined>>): void {
+  if (environment.NODE_ENV === "production") throw new Error("Production seeding is forbidden.");
+  if (environment.SEED_ALLOW_DISPOSABLE_LOOPBACK !== "1") throw new Error("Set SEED_ALLOW_DISPOSABLE_LOOPBACK=1 for an acknowledged disposable database.");
+  const value = environment.DATABASE_URL;
+  if (!value) throw new Error("DATABASE_URL is required.");
+  const database = new URL(value);
+  if (database.protocol !== "postgresql:" || !["127.0.0.1", "localhost", "::1"].includes(database.hostname.toLowerCase())) {
+    throw new Error("Seed is restricted to disposable loopback PostgreSQL.");
+  }
+}
 
 const prisma = new PrismaClient();
 
 async function main() {
+  assertDisposableSeedTarget(process.env);
   const password = await bcrypt.hash("Test12345!", 10);
 
-  const admin = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: { email: "admin@dasres.test" },
     update: {},
     create: { name: "Admin", email: "admin@dasres.test", password, role: "ADMIN", planType: PlanType.ENTERPRISE },
@@ -136,6 +150,12 @@ async function main() {
   console.log("Dasres full seed completed");
 }
 
-main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+const entrypoint = process.argv[1] ? pathToFileURL(path.resolve(process.argv[1])).href : null;
+if (entrypoint === import.meta.url) {
+  main()
+    .catch((error: unknown) => {
+      console.error(error instanceof Error ? error.message : "Seed failed");
+      process.exitCode = 1;
+    })
+    .finally(() => prisma.$disconnect());
+}

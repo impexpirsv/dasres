@@ -1,0 +1,27 @@
+[Unit]
+Description=Dasres Next.js application
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dasres
+Group=dasres
+WorkingDirectory=/srv/dasres/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/dasres/production.env
+ExecStart=/usr/bin/npm run start -- --hostname 127.0.0.1 --port 3000
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=30s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+CacheDirectory=dasres-next
+CacheDirectoryMode=0750
+BindPaths=/var/cache/dasres-next:/srv/dasres/current/.next/cache
+ReadWritePaths=/srv/dasres/legacy-private
+
+[Install]
+WantedBy=multi-user.target

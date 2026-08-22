@@ -5,8 +5,12 @@ import { uploadProjectTaskAttachment, downloadProjectTaskAttachment, deleteProje
 import { DeterministicStoredByteScanner, type StoredByteScanner } from "../../lib/storage/file-scan-workflow";
 import { InMemorySecureObjectStorage, type SecureObjectStorage } from "../../lib/storage/secure-object-storage";
 import { FileSecurityError } from "../../lib/security/file-security-errors";
-import { mkdir, rmdir, symlink, unlink, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rmdir, rm, symlink, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
+import os from "node:os";
+import { runConfidentialLegacyMigration } from "../../lib/storage/confidential-legacy-migration";
+import { createConfidentialLegacyRepository } from "../migrate-confidential-files";
+import { isApplicationReady } from "../../lib/health/readiness";
 
 const PDF = Buffer.from("%PDF-1.7\n1 0 obj\n<<>>\nendobj\n%%EOF");
 function request(bytes = PDF, name = "evidence.pdf", mime = "application/pdf"): Request {
@@ -268,6 +272,35 @@ async function main(): Promise<void> {
     assert.equal((await prisma.projectTaskAttachment.findUniqueOrThrow({ where: { id: legacy.id } })).scanStatus, null);
     await prisma.projectTaskAttachment.delete({ where: { id: legacy.id } });
   } finally { await unlink(legacyTaskPath).catch(() => undefined); await rmdir(legacyTaskOutsidePath).catch(() => undefined); await rmdir(path.dirname(legacyTaskPath)).catch(() => undefined); }
+  assert.equal(await isApplicationReady(), true, "readiness must query disposable PostgreSQL successfully");
+  const migrationRoot = await mkdtemp(path.join(os.tmpdir(), "dasres-confidential-integration-"));
+  try {
+    await mkdir(path.join(migrationRoot, "cases")); await mkdir(path.join(migrationRoot, "project-task-attachments"));
+    await writeFile(path.join(migrationRoot, "cases", "legacy-case.pdf"), PDF);
+    await writeFile(path.join(migrationRoot, "project-task-attachments", "legacy-task.pdf"), PDF);
+    const legacyCase = await prisma.caseDocument.create({ data: { caseId: caseOne.id, uploaderId: customer.id, name: "legacy-case.pdf",
+      storageKey: "/uploads/cases/legacy-case.pdf", storageProvider: "local" } });
+    const legacyTask = await prisma.projectTaskAttachment.create({ data: { taskId: taskOne.id, uploadedById: provider.id, fileName: "legacy-task.pdf",
+      storageKey: "/uploads/project-task-attachments/legacy-task.pdf", storageProvider: "local" } });
+    const migrationStorage = new InMemorySecureObjectStorage();
+    const migrationDependencies = { repository: createConfidentialLegacyRepository(prisma), storage: migrationStorage, scanner: clean, legacyRoot: migrationRoot };
+    const dryRun = await runConfidentialLegacyMigration("dry-run", migrationDependencies);
+    assert.equal(dryRun.totals.would_migrate, 2); assert.equal((await prisma.caseDocument.findUniqueOrThrow({ where: { id: legacyCase.id } })).storageProvider, "local");
+    const applied = await runConfidentialLegacyMigration("apply", migrationDependencies);
+    assert.equal(applied.totals.migrated, 2);
+    const [migratedCase, migratedTask] = await Promise.all([
+      prisma.caseDocument.findUniqueOrThrow({ where: { id: legacyCase.id } }),
+      prisma.projectTaskAttachment.findUniqueOrThrow({ where: { id: legacyTask.id } }),
+    ]);
+    for (const migrated of [migratedCase, migratedTask]) {
+      assert.equal(migrated.storageProvider, "r2"); assert.equal(migrated.scanStatus, "CLEAN");
+      assert.equal(migrated.scanEngine, "clamav"); assert.equal(migrated.scanAttempts, 1); assert.equal(migrated.fileSize, PDF.length);
+      assert.equal((await migrationStorage.head(migrated.storageKey)).size, PDF.length);
+    }
+    assert.equal((await runConfidentialLegacyMigration("apply", migrationDependencies)).totals.already_migrated, 2);
+    assert.equal((await runConfidentialLegacyMigration("reconcile", migrationDependencies)).totals.clean_r2, 2);
+    await prisma.caseDocument.delete({ where: { id: legacyCase.id } }); await prisma.projectTaskAttachment.delete({ where: { id: legacyTask.id } });
+  } finally { await rm(migrationRoot, { recursive: true, force: true }); }
   assert.equal(await prisma.caseDocument.count(), 0); assert.equal(await prisma.projectTaskAttachment.count(), 0);
   await prisma.$disconnect();
   console.log("Storage Batch B domain integration passed: exact-resource IDOR, bounded uploads, protected legacy paths, CLEAN downloads, streaming, and deletion semantics.");

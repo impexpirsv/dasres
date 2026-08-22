@@ -10,14 +10,15 @@ import {
   type RateLimitResult,
 } from "./lib/security/rate-limit";
 import { validateRequestOrigin } from "./lib/security/request-origin";
+import {
+  getTrustedClientIdentifier,
+} from "./lib/security/trusted-client-ip";
 
 const isDevelopment =
   process.env.NODE_ENV === "development";
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const MAXIMUM_BUCKET_COUNT = 10_000;
-const FALLBACK_CLIENT_IDENTIFIER =
-  "unidentified-client";
 
 type RateLimitPolicy = {
   name: string;
@@ -183,6 +184,14 @@ function getRateLimitPolicy(
       ? pathname.replace(/\/+$/, "")
       : pathname;
 
+  if (normalizedMethod === "GET" && normalizedPathname === "/api/health/live") {
+    return { name: "health-live", limit: 1_200, windowMs: RATE_LIMIT_WINDOW_MS };
+  }
+
+  if (normalizedMethod === "GET" && normalizedPathname === "/api/health/ready") {
+    return { name: "health-ready", limit: 120, windowMs: RATE_LIMIT_WINDOW_MS };
+  }
+
   if (normalizedMethod === "POST" && normalizedPathname === "/api/auth/forgot-password") {
     return { name: "password-recovery-forgot", limit: 5, windowMs: 15 * 60_000 };
   }
@@ -241,47 +250,10 @@ function getRateLimitPolicy(
   return null;
 }
 
-function isUsableIpAddress(
-  value: string,
-): boolean {
-  if (
-    value.length === 0 ||
-    value.length > 45
-  ) {
-    return false;
-  }
-
-  const ipv4Parts = value.split(".");
-
-  if (ipv4Parts.length === 4) {
-    return ipv4Parts.every(
-      (part) =>
-        /^\d{1,3}$/.test(part) &&
-        Number(part) <= 255,
-    );
-  }
-
-  return (
-    value.includes(":") &&
-    /^[0-9a-f:.]+$/i.test(value)
-  );
-}
-
 function getClientIdentifier(
   request: NextRequest,
 ): string {
-  if (process.env.VERCEL !== "1") {
-    return FALLBACK_CLIENT_IDENTIFIER;
-  }
-
-  const platformIp = request.headers
-    .get("x-vercel-forwarded-for")
-    ?.split(",", 1)[0]
-    ?.trim();
-
-  return platformIp && isUsableIpAddress(platformIp)
-    ? platformIp
-    : FALLBACK_CLIENT_IDENTIFIER;
+  return getTrustedClientIdentifier(request.headers);
 }
 
 function setRateLimitHeaders(
