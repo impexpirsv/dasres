@@ -630,7 +630,8 @@
     "viewAll": "Tümünü Görüntüle",
     "verified": "Doğrulandı",
     "available": "Mevcut",
-    "viewProfile": "Profili Görüntüle"
+    "viewProfile": "Profili Görüntüle",
+    "empty": "Görüntülenecek uzman bulunmuyor."
   },
   "companiesSection": {
     "eyebrow": "Şirket Ağı",
@@ -639,7 +640,8 @@
     "viewAll": "Tümünü Görüntüle",
     "verified": "Doğrulandı",
     "acceptingProjects": "Proje Kabulü",
-    "viewProfile": "Profili Görüntüle"
+    "viewProfile": "Profili Görüntüle",
+    "empty": "Görüntülenecek şirket bulunmuyor."
   },
   "opportunitiesSection": {
     "eyebrow": "Küresel Pazaryeri",

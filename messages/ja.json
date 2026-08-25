@@ -630,7 +630,8 @@
     "viewAll": "すべて見る",
     "verified": "確認済み",
     "available": "利用可能",
-    "viewProfile": "プロフィールを見る"
+    "viewProfile": "プロフィールを見る",
+    "empty": "表示できる専門家はいません。"
   },
   "companiesSection": {
     "eyebrow": "社内ネットワーク",
@@ -639,7 +640,8 @@
     "viewAll": "すべて見る",
     "verified": "確認済み",
     "acceptingProjects": "プロジェクトの受け入れ",
-    "viewProfile": "プロフィールを見る"
+    "viewProfile": "プロフィールを見る",
+    "empty": "表示できる企業はありません。"
   },
   "opportunitiesSection": {
     "eyebrow": "グローバルマーケットプレイス",

@@ -630,7 +630,8 @@
     "viewAll": "查看全部",
     "verified": "已验证",
     "available": "可用的",
-    "viewProfile": "查看资料"
+    "viewProfile": "查看资料",
+    "empty": "没有可显示的专家。"
   },
   "companiesSection": {
     "eyebrow": "公司网络",
@@ -639,7 +640,8 @@
     "viewAll": "查看全部",
     "verified": "已验证",
     "acceptingProjects": "接受项目",
-    "viewProfile": "查看资料"
+    "viewProfile": "查看资料",
+    "empty": "没有可显示的公司。"
   },
   "opportunitiesSection": {
     "eyebrow": "全球市场",

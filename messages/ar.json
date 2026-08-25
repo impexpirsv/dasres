@@ -604,7 +604,8 @@
     "viewAll": "عرض الكل",
     "verified": "موثق",
     "available": "متاح",
-    "viewProfile": "عرض الملف"
+    "viewProfile": "عرض الملف",
+    "empty": "لا يوجد خبراء لعرضهم."
   },
   "companiesSection": {
     "eyebrow": "شبكة الشركات",
@@ -613,7 +614,8 @@
     "viewAll": "عرض الكل",
     "verified": "موثق",
     "acceptingProjects": "تستقبل مشروعات",
-    "viewProfile": "عرض الملف"
+    "viewProfile": "عرض الملف",
+    "empty": "لا توجد شركات لعرضها."
   },
   "opportunitiesSection": {
     "eyebrow": "السوق العالمي",

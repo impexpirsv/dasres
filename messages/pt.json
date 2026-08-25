@@ -630,7 +630,8 @@
     "viewAll": "Ver tudo",
     "verified": "Verificado",
     "available": "Disponível",
-    "viewProfile": "Ver perfil"
+    "viewProfile": "Ver perfil",
+    "empty": "Não há especialistas disponíveis para exibição."
   },
   "companiesSection": {
     "eyebrow": "Rede da Empresa",
@@ -639,7 +640,8 @@
     "viewAll": "Ver tudo",
     "verified": "Verificado",
     "acceptingProjects": "Aceitando Projetos",
-    "viewProfile": "Ver perfil"
+    "viewProfile": "Ver perfil",
+    "empty": "Não há empresas disponíveis para exibição."
   },
   "opportunitiesSection": {
     "eyebrow": "Mercado global",
