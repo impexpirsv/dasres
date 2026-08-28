@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { parse } from "@formatjs/icu-messageformat-parser";
@@ -71,10 +71,17 @@ assert.equal(ENTITY_CLUSTERS_PER_SHARD, 3_333);
 assert.ok(ENTITY_CLUSTERS_PER_SHARD * LOCALIZED_ENTITY_URLS_PER_CLUSTER <= SITEMAP_TARGET_URL_LIMIT);
 assert.ok(SITEMAP_TARGET_URL_LIMIT < SITEMAP_PROTOCOL_URL_LIMIT);
 
-const sitemapSource = await readFile(path.join(process.cwd(), "app/sitemaps/sitemap.ts"), "utf8");
+await assert.rejects(access(path.join(process.cwd(), "app/sitemaps/sitemap.ts")));
+const sitemapSource = await readFile(path.join(process.cwd(), "lib/seo/sitemap-generation.ts"), "utf8");
 for (const legacyExpression of ["getAbsoluteUrl(\"/\")", "getAbsoluteUrl(\"/companies\")", "getAbsoluteUrl(\"/experts\")", "getAbsoluteUrl(\"/opportunities\")", "getAbsoluteUrl(`/resources/${category}/${slug}`)"]) {
   assert.ok(!sitemapSource.includes(legacyExpression), `Redirecting sitemap URL remains: ${legacyExpression}`);
 }
+for (const relativePath of ["app/sitemap.xml/route.ts", "app/sitemaps/sitemap/[id].xml/route.ts"]) {
+  const source = await readFile(path.join(process.cwd(), relativePath), "utf8");
+  assert.ok(source.includes('export const dynamic = "force-dynamic"'), `${relativePath} may execute database work during next build`);
+}
+const sitemapIndexSource = await readFile(path.join(process.cwd(), "app/sitemap.xml/route.ts"), "utf8");
+assert.ok(sitemapIndexSource.includes("/sitemaps/sitemap/${id}.xml"), "Public sitemap URL contract changed");
 
 for (const relativePath of ["app/components/Hero.tsx", "app/components/Experts.tsx", "app/components/Opportunities.tsx", "app/components/TopRatedShowcase.tsx", "app/components/homepage/ResourcePreview.tsx", "app/components/Navbar.tsx", "app/components/Footer.tsx"]) {
   const source = await readFile(path.join(process.cwd(), relativePath), "utf8");
