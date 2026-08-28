@@ -69,6 +69,7 @@ const securityHeaders: NonNullable<Awaited<ReturnType<NonNullable<NextConfig["he
 ];
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   async headers() {
     return [
       {
