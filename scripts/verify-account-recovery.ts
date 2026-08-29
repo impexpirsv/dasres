@@ -50,7 +50,7 @@ async function main(): Promise<void> {
   assert.doesNotMatch(rateLimits, /forgot-account:\$\{normalizedEmail\}/);
   assert.match(rateLimits, /forgot-account:\$\{keyedIdentityIdentifier\(normalizedEmail\)\}/);
   assert.match(emailProvider, /process\.env\.NODE_ENV === "production"/);
-  assert.match(emailProvider, /ResendTransactionalEmailProvider/);
+  assert.match(emailProvider, /SmtpTransactionalEmailProvider/);
   assert.match(emailConfig, /TRANSACTIONAL_EMAIL_NOT_CONFIGURED/);
   assert.match(identityRateLimits, /configured !== DOCUMENTED_EXAMPLE_SECRET/);
   assert.match(boundedJson, /request\.body\.getReader\(\)/);

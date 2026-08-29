@@ -58,7 +58,7 @@ async function main(): Promise<void> {
   assert.match(resendApi, /EMAIL_VERIFICATION_RESEND_ACCEPTED/);
   assert.match(resendApi, /parseBoundedJsonObject/);
   assert.match(emailProvider, /process\.env\.NODE_ENV === "production"/);
-  assert.match(emailProvider, /ResendTransactionalEmailProvider/);
+  assert.match(emailProvider, /SmtpTransactionalEmailProvider/);
   assert.match(emailConfig, /TRANSACTIONAL_EMAIL_NOT_CONFIGURED/);
   assert.match(verifyApi, /NextResponse\.redirect[\s\S]*303/);
   assert.doesNotMatch(verifyApi, /cookies|set-cookie|returnTo|callback/i);

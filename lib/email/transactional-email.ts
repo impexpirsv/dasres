@@ -1,6 +1,6 @@
 import "server-only";
 
-import { ResendTransactionalEmailProvider } from "./resend-transactional-email-provider";
+import { SmtpTransactionalEmailProvider } from "./smtp-transactional-email-provider";
 
 export type PasswordResetEmail = {
   recipient: string;
@@ -31,7 +31,7 @@ class DevelopmentEmailProvider implements TransactionalEmailProvider {
 }
 
 function getProvider(): TransactionalEmailProvider {
-  if (process.env.NODE_ENV === "production") return new ResendTransactionalEmailProvider();
+  if (process.env.NODE_ENV === "production") return new SmtpTransactionalEmailProvider();
   return new DevelopmentEmailProvider();
 }
 

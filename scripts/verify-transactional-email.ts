@@ -7,7 +7,7 @@ const read = (relativePath: string) => readFile(path.join(process.cwd(), relativ
 async function main(): Promise<void> {
   const [facade, provider, config, canonicalUrl, content, forgot, resend, timing, environmentExample, integration] = await Promise.all([
     read("lib/email/transactional-email.ts"),
-    read("lib/email/resend-transactional-email-provider.ts"),
+    read("lib/email/smtp-transactional-email-provider.ts"),
     read("lib/email/transactional-email-config.ts"),
     read("lib/email/canonical-email-url.ts"),
     read("lib/email/transactional-email-content.ts"),
@@ -18,20 +18,19 @@ async function main(): Promise<void> {
     read("scripts/integration/account-recovery-postgres.ts"),
   ]);
 
-  assert.match(facade, /process\.env\.NODE_ENV === "production"[\s\S]*ResendTransactionalEmailProvider/);
+  assert.match(facade, /process\.env\.NODE_ENV === "production"[\s\S]*SmtpTransactionalEmailProvider/);
   assert.match(facade, /DevelopmentEmailProvider/);
-  assert.match(provider, /https:\/\/api\.resend\.com\/emails/);
-  assert.match(provider, /redirect: "manual"/);
-  assert.match(provider, /Authorization: `Bearer \$\{this\.config\.apiKey\}`/);
-  assert.match(provider, /"User-Agent"/);
-  assert.match(provider, /DELIVERY_TIMEOUT_MS = 5_000/);
-  assert.match(provider, /MAXIMUM_RESPONSE_BYTES/);
-  assert.doesNotMatch(provider, /response\.(?:json|text)\(/);
-  assert.match(config, /RESEND_API_KEY/);
+  assert.match(provider, /nodemailer\.createTransport/);
+  assert.match(provider, /connectionTimeout: CONNECTION_TIMEOUT_MS/);
+  assert.match(provider, /greetingTimeout: GREETING_TIMEOUT_MS/);
+  assert.match(provider, /socketTimeout: SOCKET_TIMEOUT_MS/);
+  assert.match(provider, /DELIVERY_TIMEOUT_MS = 15_000/);
+  assert.match(provider, /Promise\.race/);
+  for (const name of ["SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_USERNAME", "SMTP_PASSWORD"]) assert.match(config, new RegExp(name));
   assert.match(config, /TRANSACTIONAL_EMAIL_FROM/);
   assert.match(config, /TRANSACTIONAL_EMAIL_REPLY_TO/);
   assert.match(config, /CONTROL_CHARACTER_PATTERN/);
-  assert.match(config, /RESEND_API_KEY_PATTERN/);
+  assert.match(config, /PLACEHOLDER_CREDENTIAL_PATTERN/);
   assert.match(config, /RESERVED_PLACEHOLDER_DOMAIN_PATTERN/);
   assert.match(canonicalUrl, /siteUrl\.protocol === "https:"/);
   assert.match(canonicalUrl, /localhost/);
@@ -45,14 +44,14 @@ async function main(): Promise<void> {
   assert.match(resend, /waitForGenericAuthResponse/);
   assert.match(timing, /MINIMUM_RESPONSE_TIME_MS = 850/);
   assert.match(timing, /RESPONSE_JITTER_RANGE_MS = 150/);
-  assert.match(environmentExample, /^RESEND_API_KEY=replace-/m);
-  assert.doesNotMatch(environmentExample, /^RESEND_API_KEY=re_[A-Za-z0-9]{10,}$/m);
+  for (const name of ["SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_USERNAME", "SMTP_PASSWORD"]) assert.match(environmentExample, new RegExp(`^${name}=`, "m"));
+  assert.doesNotMatch(environmentExample, /^RESEND_API_KEY=/m);
   assert.doesNotMatch(provider, /console\.(?:log|info|warn|error)/);
   assert.match(integration, /NODE_ENV: "test"/);
-  assert.doesNotMatch(integration, /RESEND_API_KEY|TRANSACTIONAL_EMAIL_FROM/);
+  assert.doesNotMatch(integration, /SMTP_(?:HOST|PORT|SECURE|USERNAME|PASSWORD)|TRANSACTIONAL_EMAIL_FROM/);
 
   console.log("Transactional email static verification passed.");
-  console.log("Runtime provider behavior is covered separately by mocked-fetch tests.");
+  console.log("Runtime provider behavior is covered separately by mocked SMTP transport tests.");
 }
 
 void main();
