@@ -8,9 +8,18 @@ RUN npm ci --no-audit --no-fund
 
 FROM ${NODE_IMAGE} AS migrate-dependencies
 WORKDIR /app
-ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    PRISMA_CLI_BINARY_TARGETS=debian-openssl-3.0.x
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends openssl \
+    && rm -rf /var/lib/apt/lists/*
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --no-audit --no-fund \
+    && ./node_modules/.bin/prisma --version \
+    && test -x node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x \
+    && test -f node_modules/@prisma/engines/libquery_engine-debian-openssl-3.0.x.so.node \
+    && node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x --version \
+        | grep -F 'c2990dca591cba766e3b7ef5d9e8a84796e47ab7' \
     && find node_modules -type f -name AGENTS.md -delete
 
 FROM ${NODE_IMAGE} AS builder
@@ -60,7 +69,8 @@ FROM ${NODE_IMAGE} AS migrate
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
-    NEXT_PUBLIC_SITE_URL=https://dasres.com
+    NEXT_PUBLIC_SITE_URL=https://dasres.com \
+    PRISMA_SCHEMA_ENGINE_BINARY=/app/node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends openssl \
     && rm -rf /var/lib/apt/lists/* \
