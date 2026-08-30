@@ -1,7 +1,9 @@
 import "server-only";
 
+import net from "node:net";
 import nodemailer from "nodemailer";
 import type Mail from "nodemailer/lib/mailer";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { logger } from "../logger";
 import { getTransactionalEmailConfig, type TransactionalEmailConfig } from "./transactional-email-config";
@@ -29,6 +31,8 @@ type MailTransport = Readonly<{
   sendMail(message: Mail.Options): Promise<unknown>;
 }>;
 
+type SocketCallback = (error: Error | null, options: { connection?: net.Socket }) => void;
+
 type SmtpError = Readonly<{
   code?: unknown;
   command?: unknown;
@@ -50,6 +54,36 @@ function createTransport(config: TransactionalEmailConfig): MailTransport {
     connectionTimeout: CONNECTION_TIMEOUT_MS,
     greetingTimeout: GREETING_TIMEOUT_MS,
     socketTimeout: SOCKET_TIMEOUT_MS,
+    getSocket(_options: SMTPTransport.Options, callback: SocketCallback) {
+      const socket = net.connect({ host: config.host, port: config.port });
+      let completed = false;
+
+      const finish = (error?: Error): void => {
+        if (completed) return;
+        completed = true;
+        socket.setTimeout(0);
+        socket.removeListener("connect", handleConnect);
+        socket.removeListener("error", finish);
+        socket.removeListener("timeout", handleTimeout);
+        if (error) {
+          socket.destroy();
+          callback(error, {});
+          return;
+        }
+        callback(null, { connection: socket });
+      };
+
+      const handleConnect = (): void => finish();
+      const handleTimeout = (): void => {
+        const error = new Error("Connection timeout") as NodeJS.ErrnoException;
+        error.code = "ETIMEDOUT";
+        finish(error);
+      };
+
+      socket.once("connect", handleConnect);
+      socket.once("error", finish);
+      socket.setTimeout(CONNECTION_TIMEOUT_MS, handleTimeout);
+    },
   });
 }
 

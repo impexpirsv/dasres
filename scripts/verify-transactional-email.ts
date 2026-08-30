@@ -24,6 +24,8 @@ async function main(): Promise<void> {
   assert.match(provider, /connectionTimeout: CONNECTION_TIMEOUT_MS/);
   assert.match(provider, /greetingTimeout: GREETING_TIMEOUT_MS/);
   assert.match(provider, /socketTimeout: SOCKET_TIMEOUT_MS/);
+  assert.match(provider, /net\.connect\(\{ host: config\.host, port: config\.port \}\)/);
+  assert.match(provider, /getSocket/);
   assert.match(provider, /DELIVERY_TIMEOUT_MS = 15_000/);
   assert.match(provider, /Promise\.race/);
   for (const name of ["SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_USERNAME", "SMTP_PASSWORD"]) assert.match(config, new RegExp(name));

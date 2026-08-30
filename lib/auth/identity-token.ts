@@ -9,7 +9,7 @@ import { prisma } from "../prisma";
 export const PASSWORD_RESET_TOKEN_LIFETIME_MS = 30 * 60 * 1000;
 export const PASSWORD_RESET_ISSUANCE_COOLDOWN_MS = 15 * 60 * 1000;
 export const EMAIL_VERIFICATION_TOKEN_LIFETIME_MS = 24 * 60 * 60 * 1000;
-export const EMAIL_VERIFICATION_ISSUANCE_COOLDOWN_MS = 15 * 60 * 1000;
+export const EMAIL_VERIFICATION_ISSUANCE_COOLDOWN_MS = 2 * 60 * 1000;
 export const RESET_COOKIE_NAME = "dasres_password_reset";
 export const RESET_COOKIE_MAX_AGE_SECONDS = 30 * 60;
 export const RESET_COOKIE_PATH = "/api/auth/reset-password";
